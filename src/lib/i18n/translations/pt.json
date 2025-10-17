@@ -1,0 +1,697 @@
+{
+  "metadata": {
+    "root": {
+      "title": "MyFlowCheck | Gestão da Qualidade que flui",
+      "description": "MyFlowCheck é um sistema moderno de gestão da qualidade para controlar documentos, auditorias e ações corretivas em um só lugar. Ideal para equipes que buscam clareza, conformidade e melhoria contínua."
+    }
+  },
+  "landing": {
+    "metadata_title": "MyFlowCheck | Gestão da Qualidade que flui",
+    "hero": {
+      "title_01": "Qualidade",
+      "title_02": "que realmente",
+      "title_03": "flui",
+      "subtitle_01": "Controle de documentos, auditorias e CAPA em um só lugar.",
+      "subtitle_02": "Feito para equipes que valorizam clareza e conformidade.",
+      "kpi_0": "Estrutura pronta para ISO",
+      "kpi_1": "Rastreabilidade de auditoria em segundos",
+      "kpi_2": "Painéis em tempo real"
+    },
+    "how": {
+      "title": "Como funciona",
+      "subtitle": "Configure em minutos, cresça junto com seus processos.",
+      "steps": [
+        {
+          "number": "1",
+          "title": "Configurar",
+          "description": "Defina áreas, funções e permissões."
+        },
+        {
+          "number": "2",
+          "title": "Controlar",
+          "description": "Gerencie documentos, auditorias e não conformidades."
+        },
+        {
+          "number": "3",
+          "title": "Melhorar",
+          "description": "Automatize CAPA e acompanhe seus indicadores."
+        }
+      ]
+    },
+    "docs": {
+      "title": "Controle de Documentos",
+      "subtitle": "Versionamento, aprovações e rastreabilidade sem caos.",
+      "features": [
+        "Histórico de versões e aprovações",
+        "Modelos e fluxos de revisão",
+        "Permissões granulares por função ou área",
+        "Registros de mudanças e exportações prontas para auditoria"
+      ]
+    },
+    "capa": {
+      "title": "Auditorias e CAPA",
+      "subtitle": "Detecte, corrija e previna problemas rapidamente.",
+      "description": "Crie achados a partir de auditorias, atribua responsáveis, defina prazos e automatize ações corretivas e preventivas.",
+      "highlights": [
+        "Checklists de auditoria",
+        "Análise de causa raiz",
+        "Planos de ação com prazos definidos",
+        "Anexos de evidências"
+      ]
+    },
+    "dash": {
+      "title": "Painéis e Conformidade",
+      "subtitle": "Veja o essencial e identifique gargalos.",
+      "description": "KPIs principais: ações em atraso, tempos de aprovação, não conformidades por área e muito mais.",
+      "benefits": {
+        "title": "Por que as equipes escolhem o MyFlowCheck",
+        "0": "Clareza em auditorias e inspeções",
+        "1": "Responsabilidade e rastreabilidade",
+        "2": "Melhoria contínua visível para todos"
+      }
+    }
+  },
+  "auth": {
+    "register": {
+      "registerButton": "Criar conta",
+      "title_01": "Crie sua conta",
+      "description_01": "Comece agora! Cadastre-se em segundos.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "exemplo: usuario@empresa.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "Escolha uma senha forte",
+      "passwordDescription": "(Pelo menos 8 caracteres, com letras e números)",
+      "confirmPasswordLabel": "Confirmar senha",
+      "confirmPasswordPlaceholder": "Repita a senha",
+      "haveAccount": "Já tem uma conta?",
+      "login": "Entrar",
+      "acceptTerms": { "first": "Aceito os ", "second": " e as " },
+      "termsAndConditions": "Termos e Condições",
+      "privacyPolicies": "Políticas de Privacidade",
+      "toast": {
+        "success": "Conta criada com sucesso!",
+        "error": "Ocorreu um erro ao registrar."
+      },
+      "alreadyHaveStore": "Você já pertence a um espaço de trabalho. ",
+      "login_account": "Entrar",
+      "loading": "Carregando..."
+    },
+    "login": {
+      "title_01": "Acesse sua conta",
+      "description_01": "Digite seus dados para gerenciar seu sistema QMS.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "exemplo: usuario@empresa.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "Digite sua senha",
+      "forgotPassword": "Esqueceu sua senha?",
+      "recover": "Recuperar",
+      "noAccount": "Não tem uma conta?",
+      "createAccount": "Criar conta",
+      "alreadyAccount": "Já tem uma conta?",
+      "loginButton": "Entrar",
+      "logout": "Sair",
+      "alternativeLogin": "Ou continue com o Google",
+      "googleLogin": "Entrar com Google",
+      "googleLoginSuccess": "Sessão iniciada com Google",
+      "googleLoginError": "Erro ao entrar com Google",
+      "toast": {
+        "success": "Login realizado com sucesso!",
+        "error": "Ocorreu um erro ao fazer login."
+      },
+      "loading": "Carregando..."
+    },
+    "forgot-password": {
+      "title": "Recuperar senha",
+      "description": "Digite seu e-mail para receber um código de recuperação.",
+      "emailPlaceholder": "E-mail",
+      "recoverButton": "Enviar código",
+      "recoverButtonSent": "Código enviado",
+      "toast": {
+        "success": "Verifique sua caixa de entrada. Enviamos um código.",
+        "error": "Erro ao enviar o código de recuperação."
+      }
+    },
+    "reset-password": {
+      "title": "Redefinir senha",
+      "description": "Digite uma nova senha que atenda aos requisitos.",
+      "passwordLabel": "Nova senha",
+      "passwordPlaceholder": "Escolha uma senha forte",
+      "passwordDescription": "(Pelo menos 8 caracteres, com letras e números)",
+      "confirmPasswordLabel": "Confirmar senha",
+      "confirmPasswordPlaceholder": "Repita a senha",
+      "recoverButton": "Atualizar senha",
+      "toast": {
+        "success": "Sua senha foi atualizada.",
+        "error": "Ocorreu um erro ao redefinir a senha."
+      }
+    }
+  },
+  "support": {
+    "metadata_title": "Suporte | MyFlowCheck",
+    "title": "Central de Suporte",
+    "description": "Envie-nos seus comentários, sugestões ou problemas. Sua opinião é importante para nós.",
+    "subjectPlaceholder": "Assunto",
+    "descriptionPlaceholder": "Descreva sua dúvida...",
+    "sendButton": "Enviar Mensagem"
+  },
+  "plans": {
+    "metadata_title": "Planos | MyFlowCheck",
+    "title": "Escolha o seu plano MyFlowCheck",
+    "description": "Selecione o plano que melhor atende às suas necessidades. Comece grátis e faça upgrade conforme crescer.",
+    "planPeriodMonth": "/mês",
+    "planPeriodYear": "/ano",
+
+    "monthly": {
+      "label": "Mais Popular",
+      "title": "Plano Mensal",
+      "feature1": "Acesso total a todos os recursos",
+      "feature2": "Cancele a qualquer momento"
+    },
+    "yearly": {
+      "label": "Melhor Custo-Benefício",
+      "title": "Plano Anual",
+      "feature1": "Economize até 20% em comparação ao mensal",
+      "feature2": "Suporte prioritário incluído"
+    },
+
+    "subscribe-button": {
+      "subscribeButton": "Assinar",
+      "subscribedButton": "Assinado",
+      "comingSoon": "Em breve..."
+    }
+  },
+  "privacy-policies": {
+    "title": "Políticas de Privacidade",
+    "policies": [
+      {
+        "title": "1. Controlador de Dados Pessoais",
+        "description": "MyFlowCheck SRL\n* Endereço: Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail: MyFlowCheck@gmail.com"
+      },
+      {
+        "title": "2. Dados Pessoais que Coletamos",
+        "description": "Coletamos os seguintes tipos de informação:\n* Dados de registro: Nome, e-mail, telefone e senha.\n* Dados de faturamento: Número de identificação fiscal (NIT), endereço fiscal.\n* Dados de uso: Informações sobre como você interage com nossa plataforma.\n* Dados opcionais: Que você decide nos fornecer, como referências de contato."
+      },
+      {
+        "title": "3. Finalidades do Processamento de Dados",
+        "description": "Seus dados pessoais serão utilizados para:\n* Fornecer os serviços contratados em nossa plataforma.\n* Gerenciar faturamento e cumprimento de obrigações legais.\n* Melhorar sua experiência de usuário através da personalização.\n* Enviar informações sobre promoções, sempre com seu consentimento prévio."
+      },
+      {
+        "title": "4. Base Legal para o Processamento de Dados",
+        "description": "O processamento de seus dados pessoais é realizado com base em:\n* Consentimento expresso: Concedido ao se registrar ou usar nosso serviço.\n* Cumprimento de obrigações legais: Em conformidade com a legislação boliviana vigente.\n* Execução de um contrato: Necessário para fornecer nossos serviços."
+      },
+      {
+        "title": "5. Compartilhamento de Dados",
+        "description": "Podemos compartilhar seus dados pessoais com terceiros, como:\n* Provedores de serviços de tecnologia e armazenamento em nuvem.\n* Entidades governamentais quando exigido por lei.\n* Em todos os casos, garantimos que esses terceiros cumprem com altos padrões de proteção de dados."
+      },
+      {
+        "title": "6. Transferências Internacionais de Dados",
+        "description": "Embora nossa base principal seja na Bolívia, alguns provedores podem estar localizados em outros países. Quando transferências internacionais de dados forem realizadas, garantimos que medidas de proteção adequadas sejam implementadas de acordo com a regulamentação aplicável."
+      },
+      {
+        "title": "7. Segurança dos Seus Dados",
+        "description": "Implementamos medidas técnicas e organizacionais para proteger seus dados contra acessos não autorizados, perdas ou divulgação indevida. No entanto, nenhuma medida de segurança é completamente infalível, por isso recomendamos proteger sua senha e não compartilhar informações sensíveis desnecessariamente."
+      },
+      {
+        "title": "8. Seus Direitos",
+        "description": "De acordo com a legislação boliviana, você tem o direito de:\n* Acesso: Solicitar informações sobre os dados que armazenamos sobre você.\n* Retificação: Corrigir dados incorretos ou incompletos.\n* Cancelamento: Solicitar a exclusão de seus dados, exceto quando houver uma obrigação legal de retê-los.\n* Oposição: Recusar o processamento de seus dados para certas finalidades.\n* Você pode exercer esses direitos entrando em contato conosco em MyFlowCheck@gmail.com, indicando seu nome completo, documento de identidade e o direito que deseja exercer."
+      },
+      {
+        "title": "9. Retenção de Dados",
+        "description": "Retemos seus dados pessoais apenas pelo tempo necessário para cumprir as finalidades descritas, ou conforme exigido pela legislação vigente."
+      },
+      {
+        "title": "10. Modificações a esta Política",
+        "description": "Reservamo-nos o direito de atualizar esta política de privacidade a qualquer momento. Notificaremos quaisquer alterações através de nossa plataforma ou por e-mail.\nObrigado por confiar na MyFlowCheck. Sua privacidade é essencial para nós."
+      }
+    ]
+  },
+  "terms-and-conditions": {
+    "title": "Termos e Condições",
+    "conditions": [
+      {
+        "title": "Condições de Uso",
+        "description": "O seguinte conteúdo não pode ser publicado na plataforma web MyFlowCheck.\n\n* A publicação de qualquer material ilegal de acordo com as leis vigentes no Estado Plurinacional da Bolívia não é permitida.\n* A divulgação de nudez ou material pornográfico neste site é estritamente proibida.\n* A troca, promoção ou venda de substâncias entorpecentes ilegais é estritamente proibida.\n* Nenhum conteúdo explícito ilegal será tolerado, incluindo, mas não se limitando a, incitação à violência, ódio, assédio ou discriminação.\n* Não é permitido oferecer ou solicitar qualquer tipo de armas de fogo ou armas brancas através deste serviço web.\n* Todos os usuários devem respeitar os direitos autorais e não fazer upload, compartilhar ou distribuir conteúdo digital que não seja autorizado por seus detentores de direitos autorais.\n* É estritamente proibido usar este serviço web com intenções fraudulentas, incluindo, mas não se limitando a, phishing, fraude de identidade ou qualquer outro tipo de atividade enganosa.\n* Além das restrições mencionadas acima, os usuários devem cumprir todas as leis e regulamentos locais, nacionais e internacionais aplicáveis ao usar este serviço web.\n* O não cumprimento de qualquer uma destas condições de uso pode resultar na suspensão ou exclusão de sua conta e na tomada de medidas legais, conforme apropriado.\n* Reservamo-nos o direito de modificar estas condições de uso a qualquer momento e recomendamos revisá-las periodicamente para estar ciente de quaisquer alterações."
+      },
+      {
+        "title": "Proibições",
+        "description": "As seguintes proibições se aplicam ao uso da plataforma MyFlowCheck.\n\n* Proibição de Fraude: É estritamente proibido o uso das lojas virtuais da Mercagi para qualquer atividade fraudulenta na internet. Os afiliados devem operar suas lojas com total transparência e honestidade.\n* Responsabilidade do Afiliado: Os afiliados são totalmente responsáveis por qualquer dano ou prejuízo causado por sua loja virtual. A Mercagi se isenta de qualquer responsabilidade decorrente das ações ou conteúdo das lojas afiliadas.\n* Proibição de Venda de Cursos com Direitos Autorais: Não é permitido o uso das lojas para revender cursos online protegidos por direitos autorais, a menos que haja autorização expressa para isso.\n* Venda de Produtos Ilegais: A venda de itens roubados ou contrabandeados é proibida. A Mercagi se reserva o direito de tomar medidas legais contra qualquer afiliado que se envolva nessas práticas.\n* Consequências de Reclamações e Denúncias: Em caso de recebimento de múltiplas reclamações ou denúncias verificadas sobre fraudes ou atividades ilegais em uma loja, a Mercagi se reserva o direito de excluir a loja do afiliado sem possibilidade de reativação."
+      }
+    ]
+  },
+  "who-we-are": {
+    "metadata_title": "Quem Somos? | MyFlowCheck",
+    "history": {
+      "title": "Nossa História",
+      "paragraph1": "O MyFlowCheck nasceu da necessidade de um sistema QMS (Quality Management System) acessível, simples e econômico, que ajude empresas a melhorar seus processos e empreendedores a digitalizar suas operações com facilidade.",
+      "paragraph2": "Foi criado por dois jovens visionários: um boliviano e um belga, que uniram forças ao observar como era desafiador para muitas empresas implementar sistemas de qualidade eficazes e gerenciar seu crescimento de forma digital.",
+      "paragraph3": "O nome \"MyFlowCheck\" reflete a agilidade, acessibilidade e simplicidade com que qualquer organização pode profissionalizar seus processos e manter o controle em um só lugar."
+    },
+    "misionTitle": "MISSÃO",
+    "mision": "Oferecer uma plataforma QMS fácil de usar e acessível que ajude empresas a organizar seus processos, garantir conformidade e crescer de forma sustentável, tudo em um só lugar.",
+    "visionTitle": "VISÃO",
+    "vision": "Tornar-se uma referência global em soluções QMS acessíveis e práticas, capacitando empresas de todos os tamanhos a digitalizar, otimizar e melhorar continuamente suas operações."
+  },
+  "app": {
+    "common": {
+      "create": "Criar",
+      "save": "Salvar",
+      "projectStatus": {
+        "ACTIVE": "Ativo",
+        "ON_HOLD": "Em pausa",
+        "FINISHED": "Concluído"
+      },
+      "visibility": {
+        "PRIVATE": "Privado",
+        "PUBLIC": "Público"
+      },
+      "featureStatus": {
+        "PENDING": "Pendente",
+        "IN_PROGRESS": "Em andamento",
+        "DONE": "Concluída"
+      },
+      "featurePriority": {
+        "LOW": "Baixa",
+        "MEDIUM": "Média",
+        "HIGH": "Alta"
+      }
+    },
+    "settings": {
+      "nav": {
+        "profile": "Perfil",
+        "general": "Geral"
+      },
+      "profile": {
+        "pageTitle": "Perfil",
+        "title": "Informações pessoais",
+        "save": "Salvar alterações",
+        "hint": "As alterações são aplicadas imediatamente.",
+        "alerts": {
+          "success": "Perfil atualizado com sucesso.",
+          "error": "Não foi possível atualizar seu perfil."
+        },
+        "errors": {
+          "nameRequired": "Informe seu nome.",
+          "emailInvalid": "Informe um e-mail válido."
+        },
+        "name": { "title": "Nome" },
+        "email": { "title": "E-mail" },
+        "password": {
+          "title": "Senha",
+          "current": "Senha atual",
+          "new": "Nova senha",
+          "confirm": "Confirmar senha",
+          "rules": "Pelo menos 8 caracteres, com letras e números",
+          "save": "Atualizar senha",
+          "hint": "Refine a segurança com uma senha mais forte.",
+          "alerts": {
+            "success": "Senha atualizada com sucesso.",
+            "validation": "Revise os campos destacados.",
+            "invalidPassword": "Não foi possível atualizar a senha.",
+            "invalidCurrentPassword": "A senha atual está incorreta.",
+            "serverError": "Ocorreu um erro ao atualizar a senha.",
+            "error": "Não foi possível atualizar a senha."
+          },
+          "errors": {
+            "current": "Informe a senha atual.",
+            "new": "A nova senha deve ter pelo menos 8 caracteres.",
+            "confirm": "As senhas devem coincidir."
+          }
+        }
+      },
+      "general": {
+        "pageTitle": "Geral",
+        "api": {
+          "title": "Token de API",
+          "subtitle": "Use-o para integrar o MyFlowCheck com outras ferramentas.",
+          "placeholder": "Gere seu token de API pelo backend."
+        },
+        "copy": "Copiar",
+        "copySuccess": "Copiado!",
+        "preferences": {
+          "title": "Preferências",
+          "darkMode": {
+            "label": "Modo escuro",
+            "desc": "Usar o tema escuro no aplicativo"
+          }
+        },
+        "alerts": {
+          "success": "Preferências atualizadas.",
+          "error": "Não foi possível atualizar suas preferências."
+        },
+        "save": "Salvar alterações",
+        "hint": "Suas preferências são salvas instantaneamente.",
+        "github": {
+          "title": "Token do GitHub",
+          "subtitle": "Armazene um token de acesso pessoal com escopo repo para vincular repositórios privados.",
+          "maskedLabel": "Token armazenado",
+          "maskedHint": "Há um token armazenado. Você pode sobrescrevê-lo ou removê-lo abaixo.",
+          "inputLabel": "Token de acesso pessoal",
+          "placeholder": "ghp_xxxxxxxxxxxxxxxxx",
+          "save": "Salvar token",
+          "disconnect": "Remover token",
+          "noToken": "Nenhum token salvo ainda.",
+          "alerts": {
+            "saved": "Token do GitHub salvo.",
+            "removed": "Token do GitHub removido.",
+            "error": "Não foi possível atualizar o token do GitHub.",
+            "validation": "Informe um token de acesso pessoal válido."
+          },
+          "errors": {
+            "required": "Informe seu token de acesso pessoal."
+          }
+        }
+      }
+    },
+    "projects": {
+      "list": {
+        "title": "Projetos",
+        "subtitle": "Acompanhe suas iniciativas e módulos.",
+        "create": "Novo projeto",
+        "empty": {
+          "title": "Nenhum projeto encontrado.",
+          "cta": "Crie seu primeiro projeto"
+        },
+        "updatedAt": "Atualizado em {date}",
+        "pagination": {
+          "aria": "Paginação de projetos",
+          "previous": "Anterior",
+          "next": "Próximo"
+        }
+      },
+      "errors": {
+        "title": "Não foi possível carregar os projetos",
+        "description": "Atualize a página ou tente novamente mais tarde.",
+        "retry": "Tentar novamente"
+      },
+      "detail": {
+        "updated": "Última atualização: {date}",
+        "actions": {
+          "edit": "Editar",
+          "delete": "Excluir",
+          "addModule": "Adicionar módulo"
+        },
+        "modules": {
+          "title": "Módulos",
+          "empty": "Nenhum módulo por enquanto.",
+          "sortOrder": "Ordem #{order}",
+          "noDescription": "Sem descrição disponível",
+          "expandAll": "Expandir tudo",
+          "collapseAll": "Colapsar tudo"
+        }
+      },
+      "detailErrors": {
+        "title": "Falha ao carregar o projeto",
+        "description": "Não foi possível obter o projeto. Tente novamente.",
+        "retry": "Tentar novamente",
+        "backToList": "Voltar aos projetos"
+      },
+      "form": {
+        "fields": {
+          "name": {
+            "label": "Nome do projeto",
+            "placeholder": "ex. Implementação QMS"
+          },
+          "description": {
+            "label": "Descrição",
+            "placeholder": "Descrição opcional"
+          },
+          "repository": {
+            "label": "URL do repositório",
+            "placeholder": "https://github.com/org/repo"
+          },
+          "status": { "label": "Status" },
+          "visibility": { "label": "Visibilidade" }
+        },
+        "errors": {
+          "required": "Este campo é obrigatório.",
+          "validation": "Revise as informações.",
+          "generic": "Algo deu errado."
+        },
+        "hint": "Você poderá ajustar os detalhes depois."
+      },
+      "edit": {
+        "title": "Editar projeto",
+        "updated": "Última atualização: {date}",
+        "dangerZone": {
+          "title": "Excluir projeto",
+          "description": "Esta ação não pode ser desfeita.",
+          "delete": "Excluir projeto"
+        }
+      },
+      "new": { "title": "Criar projeto" },
+      "module": {
+        "header": {
+          "project": "Projeto: {id}",
+          "updated": "Última atualização: {date}"
+        },
+        "badges": {
+          "root": "Módulo raiz"
+        },
+        "actions": {
+          "edit": "Editar",
+          "delete": "Excluir",
+          "backToParent": "Voltar ao módulo pai",
+          "addChild": "Adicionar submódulo",
+          "addFeature": "Adicionar feature"
+        },
+        "children": {
+          "title": "Submódulos",
+          "empty": "Nenhum submódulo no momento.",
+          "sortOrder": "Ordem #{order}"
+        },
+        "features": {
+          "title": "Features",
+          "empty": "Nenhuma feature no momento."
+        },
+        "new": {
+          "title": "Criar módulo"
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "Nome do módulo",
+              "placeholder": "ex. Checkout"
+            },
+            "description": {
+              "label": "Descrição",
+              "placeholder": "Descrição opcional"
+            },
+            "parent": {
+              "label": "Módulo pai",
+              "rootOption": "Módulo raiz",
+              "hint": "Deixe em branco para criar um módulo raiz."
+            }
+          },
+          "errors": {
+            "required": "Este campo é obrigatório.",
+            "invalidParent": "Não é possível usar o próprio módulo como pai.",
+            "validation": "Revise as informações.",
+            "generic": "Algo deu errado."
+          },
+          "hint": "Você poderá reorganizar os módulos depois."
+        },
+        "edit": {
+          "title": "Editar módulo",
+          "subtitle": "Atualizando {name}",
+          "dangerZone": {
+            "title": "Excluir módulo",
+            "description": "Excluir um módulo também remove seus submódulos e features.",
+            "delete": "Excluir módulo"
+          }
+        },
+        "errors": {
+          "title": "Falha ao carregar o módulo",
+          "description": "Não foi possível obter o módulo. Tente novamente.",
+          "retry": "Tentar novamente",
+          "back": "Voltar ao projeto"
+        }
+      },
+      "feature": {
+        "header": {
+          "project": "Projeto: {id}",
+          "updated": "Última atualização: {date}",
+          "viewModule": "Ver módulo"
+        },
+        "actions": {
+          "edit": "Editar",
+          "delete": "Excluir"
+        },
+        "description": {
+          "title": "Descrição",
+          "empty": "Nenhuma descrição informada."
+        },
+        "issues": {
+          "title": "Issues e PR vinculados",
+          "issueLink": "Issue",
+          "pullRequestLink": "Pull request",
+          "empty": "Nenhum item vinculado."
+        },
+        "versions": {
+          "title": "Versões",
+          "label": "v{version}",
+          "rollback": "Reversão",
+          "empty": "Nenhuma versão publicada."
+        },
+        "new": {
+          "title": "Criar feature"
+        },
+        "edit": {
+          "title": "Editar feature",
+          "subtitle": "Atualizando {name}",
+          "dangerZone": {
+            "title": "Excluir feature",
+            "description": "Excluir uma feature remove todo o seu histórico.",
+            "delete": "Excluir feature"
+          }
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "Nome da feature",
+              "placeholder": "ex. 3DS v2"
+            },
+            "description": {
+              "label": "Descrição",
+              "placeholder": "Descrição opcional"
+            },
+            "module": {
+              "label": "Módulo",
+              "placeholder": "Selecione um módulo"
+            },
+            "status": {
+              "label": "Status"
+            },
+            "priority": {
+              "label": "Prioridade"
+            }
+          },
+          "errors": {
+            "required": "Este campo é obrigatório.",
+            "validation": "Revise as informações.",
+            "generic": "Algo deu errado."
+          },
+          "hint": "Mantenha o texto objetivo para agilizar revisões."
+        },
+        "errors": {
+          "title": "Falha ao carregar a feature",
+          "description": "Não foi possível obter a feature. Tente novamente.",
+          "retry": "Tentar novamente",
+          "back": "Voltar ao módulo"
+        }
+      }
+    },
+    "sidebar": {
+      "menuAdmin": "Menu de administração",
+      "home": "Início",
+      "projectSection": "Projetos",
+      "settingSection": "Configurações",
+      "logout": "Sair",
+      "lightMode": "Modo claro",
+      "darkMode": "Modo escuro"
+    }
+  },
+  "ui": {
+    "i18n": {
+      "langSelector": {
+        "label": "Idioma",
+        "en": "Inglês",
+        "es": "Espanhol",
+        "pt": "Português",
+        "fr": "Francês",
+        "nl": "Holandês"
+      }
+    },
+    "dialog": {
+      "delete": {
+        "cancel": "Cancelar",
+        "delete": "Excluir"
+      },
+      "back-button": {
+        "label": "Voltar"
+      }
+    },
+    "form": {
+      "phone-number": {
+        "label": "Número de telefone"
+      },
+      "upload-image": {
+        "uploadTitle": "Clique para enviar",
+        "uploadSubtitle": "ou arraste e solte",
+        "uploadTypes": "JPG, JPEG, PNG com menos de 3 MB",
+        "fileTooLarge": "O arquivo é muito grande. Máximo de 3 MB permitido.",
+        "invalidFileType": "Tipo de arquivo inválido. Somente imagens são permitidas"
+      }
+    },
+    "navbar": {
+      "mobile-menu-drawer": {
+        "menu": "Menu",
+        "close": "Fechar"
+      },
+      "landing": {
+        "whoWeAre": "Quem somos?",
+        "plans": "Planos",
+        "support": "Suporte"
+      },
+      "profile-menu-client": {
+        "logout": "Sair"
+      },
+      "profile-menu": {
+        "logout": "Sair"
+      }
+    },
+    "footer": {
+      "privacy": "Políticas de Privacidade",
+      "terms": "Termos e Condições",
+      "connect": "Conecte-se conosco",
+      "rights": "© 2025 MyFlowCheck. Todos os direitos reservados."
+    },
+    "pricing-card": {
+      "planPeriod": "/mês",
+      "subscribeButton": "Contrato",
+      "free": "Grátis"
+    }
+  },
+  "error-pages": {
+    "error": {
+      "title": "Erro",
+      "description": "Desculpe, ocorreu um erro inesperado. Tente novamente mais tarde.",
+      "button": "Voltar à página principal"
+    },
+    "error-unauthorized": {
+      "title": "Acesso restrito",
+      "description": "Desculpe, você não tem acesso. Tente fazer login."
+    },
+    "not-found": {
+      "title": "Não encontrada",
+      "description": "A página que você está procurando não existe ou foi movida.",
+      "button": "Ir para a página inicial"
+    }
+  },
+  "lib": {
+    "actions": {
+      "invalidCredentials": "E-mail ou senha incorretos.",
+      "somethingWentWrong": "Algo deu errado. Por favor, tente novamente mais tarde.",
+      "emailAlreadyExists": "O e-mail já está cadastrado.",
+      "invalidEmail": "Este e-mail não está cadastrado.",
+      "wrongCurrentPassword": "A senha atual está incorreta."
+    },
+    "data": {
+      "loadCategoryVariantsError": "Erro ao carregar variantes da categoria"
+    },
+    "validation-schemas": {
+      "requiredField": "O campo é obrigatório",
+      "invalidEmail": "Insira um e-mail válido.",
+      "invalidPhoneNumber": {
+        "required": "O número de telefone é obrigatório.",
+        "invalid": "Número de telefone inválido."
+      },
+      "invalidPassword": {
+        "noNumbers": "Insira pelo menos um número.",
+        "noLetters": "Insira pelo menos uma letra.",
+        "lessChars": "Insira pelo menos 8 caracteres.",
+        "notMatch": "As senhas não coincidem."
+      },
+      "invalidLength": "O campo deve ter pelo menos 3 letras."
+    }
+  }
+}

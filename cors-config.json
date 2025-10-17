@@ -1,0 +1,15 @@
+[
+  {
+    "origin": [
+      "http://localhost:3000",
+      "http://*.localhost:3000",
+      "http://localhost:3001",
+      "http://*.localhost:3001",
+      "https://myflowcheck.com",
+      "https://*.myflowcheck.com"
+    ],
+    "method": ["GET"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]

@@ -1,0 +1,622 @@
+{
+  "metadata": {
+    "root": {
+      "title": "MyFlowCheck | Kwaliteitsbeheer dat stroomt",
+      "description": "MyFlowCheck is een modern QMS voor het beheren van documenten, audits en corrigerende maatregelen op één plek. Ideaal voor teams die helderheid, naleving en continue verbetering nodig hebben."
+    }
+  },
+  "landing": {
+    "metadata_title": "MyFlowCheck | Kwaliteitsbeheer dat stroomt",
+    "hero": {
+      "title_01": "Kwaliteit",
+      "title_02": "die echt",
+      "title_03": "stroomt",
+      "subtitle_01": "Documentbeheer, audits en CAPA op één plek.",
+      "subtitle_02": "Gemaakt voor teams die waarde hechten aan helderheid en naleving.",
+      "kpi_0": "ISO-klaar structuur",
+      "kpi_1": "Audit trails in seconden",
+      "kpi_2": "Realtime dashboards"
+    },
+    "how": {
+      "title": "Hoe het werkt",
+      "subtitle": "Binnen enkele minuten opgezet, schaalbaar met je processen.",
+      "steps": [
+        {
+          "number": "1",
+          "title": "Configureren",
+          "description": "Definieer gebieden, rollen en machtigingen."
+        },
+        {
+          "number": "2",
+          "title": "Beheren",
+          "description": "Beheer documenten, audits en afwijkingen."
+        },
+        {
+          "number": "3",
+          "title": "Verbeteren",
+          "description": "Automatiseer CAPA en volg KPI’s."
+        }
+      ]
+    },
+    "docs": {
+      "title": "Documentbeheer",
+      "subtitle": "Versiebeheer, goedkeuringen en traceerbaarheid zonder chaos.",
+      "features": [
+        "Versiegeschiedenis en goedkeuringen",
+        "Sjablonen en beoordelingsworkflows",
+        "Gedetailleerde machtigingen per rol/gebied",
+        "Wijzigingslogboeken en auditklare export"
+      ]
+    },
+    "capa": {
+      "title": "Audits & CAPA",
+      "subtitle": "Vind, los op en voorkom problemen—snel.",
+      "description": "Maak bevindingen van audits, wijs verantwoordelijken toe, stel deadlines in en automatiseer corrigerende en preventieve acties.",
+      "highlights": [
+        "Auditchecklists",
+        "Oorzaakanalyse",
+        "Actieplannen met SLA's",
+        "Bijlagen als bewijs"
+      ]
+    },
+    "dash": {
+      "title": "Dashboards & Naleving",
+      "subtitle": "Bekijk het geheel—en de knelpunten.",
+      "description": "KPI’s die ertoe doen: achterstallige acties, goedkeuringstijden, afwijkingen per gebied en meer.",
+      "benefits": {
+        "title": "Waarom teams kiezen voor MyFlowCheck",
+        "0": "Duidelijkheid voor audits en inspecties",
+        "1": "Eigenaarschap en verantwoordelijkheid",
+        "2": "Continue verbetering zichtbaar voor iedereen"
+      }
+    }
+  },
+  "auth": {
+    "register": {
+      "registerButton": "Account aanmaken",
+      "title_01": "Maak je account aan",
+      "description_01": "Begin nu! Registreer binnen enkele seconden.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "bijv. gebruiker@bedrijf.com",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Kies een sterk wachtwoord",
+      "passwordDescription": "(Minstens 8 tekens, met letters en cijfers)",
+      "confirmPasswordLabel": "Bevestig wachtwoord",
+      "confirmPasswordPlaceholder": "Voer wachtwoord opnieuw in",
+      "haveAccount": "Heb je al een account?",
+      "login": "Inloggen",
+      "acceptTerms": { "first": "Ik accepteer de ", "second": " en de " },
+      "termsAndConditions": "Algemene voorwaarden",
+      "privacyPolicies": "Privacybeleid",
+      "toast": {
+        "success": "Account succesvol aangemaakt!",
+        "error": "Er is een fout opgetreden bij de registratie."
+      },
+      "alreadyHaveStore": "Je behoort al tot een werkruimte. ",
+      "login_account": "Inloggen",
+      "loading": "Laden..."
+    },
+    "login": {
+      "title_01": "Toegang tot je account",
+      "description_01": "Voer je gegevens in om in te loggen en je QMS te beheren.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "bijv. gebruiker@bedrijf.com",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Voer je wachtwoord in",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "recover": "Herstellen",
+      "noAccount": "Heb je geen account?",
+      "createAccount": "Account aanmaken",
+      "alreadyAccount": "Heb je al een account?",
+      "loginButton": "Inloggen",
+      "logout": "Uitloggen",
+      "alternativeLogin": "Of ga verder met Google",
+      "googleLogin": "Inloggen met Google",
+      "googleLoginSuccess": "Succesvol ingelogd met Google",
+      "googleLoginError": "Fout bij inloggen met Google",
+      "toast": {
+        "success": "Succesvol ingelogd!",
+        "error": "Er is een fout opgetreden bij het inloggen."
+      },
+      "loading": "Laden..."
+    },
+    "forgot-password": {
+      "title": "Wachtwoord herstellen",
+      "description": "Voer je e-mailadres in om een herstelcode te ontvangen.",
+      "emailPlaceholder": "E-mail",
+      "recoverButton": "Code verzenden",
+      "recoverButtonSent": "Code verzonden",
+      "toast": {
+        "success": "Controleer je inbox. We hebben een herstelcode gestuurd.",
+        "error": "Er is een fout opgetreden bij het verzenden van de herstelcode."
+      }
+    },
+    "reset-password": {
+      "title": "Wachtwoord opnieuw instellen",
+      "description": "Voer een nieuw wachtwoord in dat aan de vereisten voldoet.",
+      "passwordLabel": "Nieuw wachtwoord",
+      "passwordPlaceholder": "Kies een sterk wachtwoord",
+      "passwordDescription": "(Minstens 8 tekens, met letters en cijfers)",
+      "confirmPasswordLabel": "Bevestig wachtwoord",
+      "confirmPasswordPlaceholder": "Voer wachtwoord opnieuw in",
+      "recoverButton": "Wachtwoord bijwerken",
+      "toast": {
+        "success": "Je wachtwoord is bijgewerkt.",
+        "error": "Er is een fout opgetreden bij het resetten van je wachtwoord."
+      }
+    }
+  },
+  "support": {
+    "metadata_title": "Supportcentrum | MyFlowCheck",
+    "title": "Supportcentrum",
+    "description": "Stuur ons je opmerkingen, suggesties of problemen. Jouw mening is belangrijk voor ons.",
+    "subjectPlaceholder": "Onderwerp",
+    "descriptionPlaceholder": "Beschrijf je vraag...",
+    "sendButton": "Bericht verzenden"
+  },
+  "plans": {
+    "metadata_title": "Plannen | MyFlowCheck",
+    "title": "Kies je MyFlowCheck-plan",
+    "description": "Kies het plan dat het beste bij je past. Begin gratis en upgrade naarmate je groeit.",
+    "planPeriodMonth": "/maand",
+    "planPeriodYear": "/jaar",
+    "monthly": {
+      "label": "Meest populair",
+      "title": "Maandelijks plan",
+      "feature1": "Volledige toegang tot alle functies",
+      "feature2": "Op elk moment opzegbaar"
+    },
+    "yearly": {
+      "label": "Beste waarde",
+      "title": "Jaarlijks plan",
+      "feature1": "Bespaar tot 20% vergeleken met maandelijks",
+      "feature2": "Prioritaire ondersteuning inbegrepen"
+    },
+    "subscribe-button": {
+      "subscribeButton": "Abonneren",
+      "subscribedButton": "Geabonneerd",
+      "comingSoon": "Binnenkort beschikbaar..."
+    }
+  },
+  "privacy-policies": {
+    "title": "Privacybeleid"
+  },
+  "terms-and-conditions": {
+    "title": "Algemene voorwaarden"
+  },
+  "who-we-are": {
+    "metadata_title": "Wie zijn wij? | MyFlowCheck",
+    "history": {
+      "title": "Onze geschiedenis",
+      "paragraph1": "MyFlowCheck is ontstaan uit de behoefte aan een toegankelijk, eenvoudig en betaalbaar QMS dat bedrijven helpt hun processen te verbeteren en ondernemers hun activiteiten eenvoudig te digitaliseren.",
+      "paragraph2": "Het is opgericht door een jonge Boliviaan en een Belg, die hun krachten bundelden nadat ze zagen hoe moeilijk het voor veel bedrijven was om effectieve kwaliteitssystemen te implementeren.",
+      "paragraph3": "De naam \"MyFlowCheck\" weerspiegelt de wendbaarheid, toegankelijkheid en eenvoud waarmee elke organisatie haar processen kan professionaliseren en alles op één plek kan beheren."
+    },
+    "misionTitle": "MISSIE",
+    "mision": "Een gebruiksvriendelijk en betaalbaar QMS-platform leveren dat bedrijven helpt hun processen te organiseren, naleving te garanderen en duurzaam te groeien, allemaal op één plek.",
+    "visionTitle": "VISIE",
+    "vision": "Een wereldwijde referentie worden voor toegankelijke en praktische QMS-oplossingen, waarmee bedrijven van elke omvang hun activiteiten kunnen digitaliseren, optimaliseren en continu verbeteren."
+  },
+  "app": {
+    "common": {
+      "create": "Aanmaken",
+      "save": "Opslaan",
+      "projectStatus": {
+        "ACTIVE": "Actief",
+        "ON_HOLD": "In de wacht",
+        "FINISHED": "Afgerond"
+      },
+      "visibility": {
+        "PRIVATE": "Privé",
+        "PUBLIC": "Openbaar"
+      },
+      "featureStatus": {
+        "PENDING": "In afwachting",
+        "IN_PROGRESS": "Bezig",
+        "DONE": "Afgerond"
+      },
+      "featurePriority": {
+        "LOW": "Laag",
+        "MEDIUM": "Gemiddeld",
+        "HIGH": "Hoog"
+      }
+    },
+    "settings": {
+      "nav": {
+        "profile": "Profiel",
+        "general": "Algemeen"
+      },
+      "profile": {
+        "pageTitle": "Profiel",
+        "title": "Persoonlijke gegevens",
+        "save": "Wijzigingen opslaan",
+        "hint": "Deze wijzigingen zijn binnenkort beschikbaar.",
+        "name": { "title": "Naam" },
+        "email": { "title": "E-mail" },
+        "password": {
+          "title": "Wachtwoord",
+          "current": "Huidig wachtwoord",
+          "new": "Nieuw wachtwoord",
+          "confirm": "Bevestig wachtwoord",
+          "rules": "Minstens 8 tekens, met letters en cijfers",
+          "save": "Wachtwoord bijwerken",
+          "hint": "Het bijwerken van het wachtwoord wordt binnenkort ingeschakeld."
+        }
+      },
+      "general": {
+        "pageTitle": "Algemeen",
+        "api": {
+          "title": "API-token",
+          "subtitle": "Gebruik dit om MyFlowCheck te koppelen met andere tools.",
+          "placeholder": "Genereer je API-token vanuit de backend."
+        },
+        "copy": "Kopiëren",
+        "copySuccess": "Gekopieerd!",
+        "preferences": {
+          "title": "Voorkeuren",
+          "darkMode": {
+            "label": "Donkere modus",
+            "desc": "Gebruik het donkere thema in de applicatie"
+          }
+        },
+        "alerts": {
+          "success": "Voorkeuren bijgewerkt.",
+          "error": "Voorkeuren konden niet worden bijgewerkt."
+        },
+        "save": "Wijzigingen opslaan",
+        "hint": "Je voorkeuren worden onmiddellijk opgeslagen.",
+        "github": {
+          "title": "GitHub-token",
+          "subtitle": "Sla een persoonlijk access token met repo-rechten op om privérepositories te koppelen.",
+          "maskedLabel": "Opgeslagen token",
+          "maskedHint": "Er is een token opgeslagen. Je kunt het hieronder overschrijven of verwijderen.",
+          "inputLabel": "Persoonlijk access token",
+          "placeholder": "ghp_xxxxxxxxxxxxxxxxx",
+          "save": "Token opslaan",
+          "disconnect": "Token verwijderen",
+          "noToken": "Nog geen token opgeslagen.",
+          "alerts": {
+            "saved": "GitHub-token opgeslagen.",
+            "removed": "GitHub-token verwijderd.",
+            "error": "Het GitHub-token kon niet worden bijgewerkt.",
+            "validation": "Voer een geldig persoonlijk access token in."
+          },
+          "errors": {
+            "required": "Voer je persoonlijk access token in."
+          }
+        }
+      }
+    },
+    "projects": {
+      "list": {
+        "title": "Projecten",
+        "subtitle": "Volg je initiatieven en bijbehorende modules.",
+        "create": "Nieuw project",
+        "empty": {
+          "title": "Geen projecten gevonden.",
+          "cta": "Maak je eerste project aan"
+        },
+        "updatedAt": "Bijgewerkt op {date}",
+        "pagination": {
+          "aria": "Projectpaginering",
+          "previous": "Vorige",
+          "next": "Volgende"
+        }
+      },
+      "errors": {
+        "title": "Projecten konden niet worden geladen",
+        "description": "Ververs de pagina of probeer het later opnieuw.",
+        "retry": "Opnieuw proberen"
+      },
+      "detail": {
+        "updated": "Laatste update: {date}",
+        "actions": {
+          "edit": "Bewerken",
+          "delete": "Verwijderen",
+          "addModule": "Module toevoegen"
+        },
+        "modules": {
+          "title": "Modules",
+          "empty": "Nog geen modules.",
+          "sortOrder": "Volgorde #{order}",
+          "noDescription": "Geen beschrijving beschikbaar",
+          "expandAll": "Alles uitvouwen",
+          "collapseAll": "Alles samenvouwen"
+        }
+      },
+      "detailErrors": {
+        "title": "Project laden mislukt",
+        "description": "We konden het project niet ophalen. Probeer het opnieuw.",
+        "retry": "Opnieuw proberen",
+        "backToList": "Terug naar projecten"
+      },
+      "form": {
+        "fields": {
+          "name": {
+            "label": "Projectnaam",
+            "placeholder": "bijv. QMS-implementatie"
+          },
+          "description": {
+            "label": "Beschrijving",
+            "placeholder": "Optionele beschrijving"
+          },
+          "repository": {
+            "label": "Repository-URL",
+            "placeholder": "https://github.com/org/repo"
+          },
+          "status": { "label": "Status" },
+          "visibility": { "label": "Zichtbaarheid" }
+        },
+        "errors": {
+          "required": "Dit veld is verplicht.",
+          "validation": "Controleer de gegevens.",
+          "generic": "Er is iets misgegaan."
+        },
+        "hint": "Je kunt de details later aanpassen."
+      },
+      "edit": {
+        "title": "Project bewerken",
+        "updated": "Laatste update: {date}",
+        "dangerZone": {
+          "title": "Project verwijderen",
+          "description": "Deze actie kan niet ongedaan worden gemaakt.",
+          "delete": "Project verwijderen"
+        }
+      },
+      "new": { "title": "Project aanmaken" },
+      "module": {
+        "header": {
+          "project": "Project: {id}",
+          "updated": "Laatste update: {date}"
+        },
+        "badges": {
+          "root": "Hoofdmodule"
+        },
+        "actions": {
+          "edit": "Bewerken",
+          "delete": "Verwijderen",
+          "backToParent": "Terug naar bovenliggende module",
+          "addChild": "Submodule toevoegen",
+          "addFeature": "Feature toevoegen"
+        },
+        "children": {
+          "title": "Submodules",
+          "empty": "Nog geen submodules.",
+          "sortOrder": "Volgorde #{order}"
+        },
+        "features": {
+          "title": "Features",
+          "empty": "Nog geen features."
+        },
+        "new": {
+          "title": "Module aanmaken"
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "Naam van de module",
+              "placeholder": "bijv. Checkout"
+            },
+            "description": {
+              "label": "Beschrijving",
+              "placeholder": "Optionele beschrijving"
+            },
+            "parent": {
+              "label": "Bovenliggende module",
+              "rootOption": "Hoofdmodule",
+              "hint": "Laat leeg om een hoofdmodule te maken."
+            }
+          },
+          "errors": {
+            "required": "Dit veld is verplicht.",
+            "invalidParent": "Een module kan niet zichzelf als ouder hebben.",
+            "validation": "Controleer de gegevens.",
+            "generic": "Er is iets misgegaan."
+          },
+          "hint": "Modules kunnen later opnieuw worden ingedeeld."
+        },
+        "edit": {
+          "title": "Module bewerken",
+          "subtitle": "Werkt {name} bij",
+          "dangerZone": {
+            "title": "Module verwijderen",
+            "description": "Het verwijderen van een module verwijdert ook submodules en features.",
+            "delete": "Module verwijderen"
+          }
+        },
+        "errors": {
+          "title": "Module laden mislukt",
+          "description": "We konden de module niet ophalen. Probeer het opnieuw.",
+          "retry": "Opnieuw proberen",
+          "back": "Terug naar project"
+        }
+      },
+      "feature": {
+        "header": {
+          "project": "Project: {id}",
+          "updated": "Laatste update: {date}",
+          "viewModule": "Module bekijken"
+        },
+        "actions": {
+          "edit": "Bewerken",
+          "delete": "Verwijderen"
+        },
+        "description": {
+          "title": "Beschrijving",
+          "empty": "Geen beschrijving beschikbaar."
+        },
+        "issues": {
+          "title": "Gekoppelde issues & PR’s",
+          "issueLink": "Issue",
+          "pullRequestLink": "Pull request",
+          "empty": "Geen gekoppelde items."
+        },
+        "versions": {
+          "title": "Versies",
+          "label": "v{version}",
+          "rollback": "Rollback",
+          "empty": "Nog geen gepubliceerde versies."
+        },
+        "new": {
+          "title": "Feature aanmaken"
+        },
+        "edit": {
+          "title": "Feature bewerken",
+          "subtitle": "{name} bijwerken",
+          "dangerZone": {
+            "title": "Feature verwijderen",
+            "description": "Een feature verwijderen wist de volledige geschiedenis.",
+            "delete": "Feature verwijderen"
+          }
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "Naam van de feature",
+              "placeholder": "bijv. 3DS v2"
+            },
+            "description": {
+              "label": "Beschrijving",
+              "placeholder": "Optionele beschrijving"
+            },
+            "module": {
+              "label": "Module",
+              "placeholder": "Kies een module"
+            },
+            "status": {
+              "label": "Status"
+            },
+            "priority": {
+              "label": "Prioriteit"
+            }
+          },
+          "errors": {
+            "required": "Dit veld is verplicht.",
+            "validation": "Controleer de gegevens.",
+            "generic": "Er is iets misgegaan."
+          },
+          "hint": "Houd informatie beknopt om reviews te versnellen."
+        },
+        "errors": {
+          "title": "Feature laden mislukt",
+          "description": "We konden de feature niet ophalen. Probeer het opnieuw.",
+          "retry": "Opnieuw proberen",
+          "back": "Terug naar module"
+        }
+      }
+    },
+    "sidebar": {
+      "menuAdmin": "Beheer Menu",
+      "home": "Home",
+      "projectSection": "Projecten",
+      "settingSection": "Instellingen",
+      "logout": "Uitloggen",
+      "lightMode": "Lichte modus",
+      "darkMode": "Donkere modus"
+    }
+  },
+  "ui": {
+    "i18n": {
+      "langSelector": {
+        "label": "Taal",
+        "en": "Engels",
+        "es": "Spaans",
+        "pt": "Portugees",
+        "fr": "Frans",
+        "nl": "Nederlands"
+      }
+    },
+    "dialog": {
+      "delete": {
+        "cancel": "Annuleren",
+        "delete": "Verwijderen"
+      },
+      "back-button": {
+        "label": "Terug"
+      }
+    },
+    "form": {
+      "phone-number": {
+        "label": "Telefoonnummer"
+      },
+      "upload-image": {
+        "uploadTitle": "Klik om te uploaden",
+        "uploadSubtitle": "of sleep bestanden hierheen",
+        "uploadTypes": "JPG, JPEG, PNG kleiner dan 3MB",
+        "fileTooLarge": "Het bestand is te groot. Maximaal 3MB toegestaan.",
+        "invalidFileType": "Ongeldig bestandstype. Alleen afbeeldingen zijn toegestaan"
+      }
+    },
+    "navbar": {
+      "mobile-menu-drawer": {
+        "menu": "Menu",
+        "close": "Sluiten"
+      },
+      "landing": {
+        "whoWeAre": "Wie zijn wij?",
+        "plans": "Plannen",
+        "support": "Support"
+      },
+      "profile-menu-client": {
+        "logout": "Uitloggen"
+      },
+      "profile-menu": {
+        "logout": "Uitloggen"
+      }
+    },
+    "footer": {
+      "privacy": "Privacybeleid",
+      "terms": "Algemene voorwaarden",
+      "connect": "Verbind met ons",
+      "rights": "© 2025 MyFlowCheck. Alle rechten voorbehouden."
+    },
+    "pricing-card": {
+      "planPeriod": "/maand",
+      "subscribeButton": "Abonneren",
+      "free": "Gratis"
+    }
+  },
+  "error-pages": {
+    "error": {
+      "title": "Fout",
+      "description": "Sorry, er is een onverwachte fout opgetreden. Probeer het later opnieuw.",
+      "button": "Terug naar de hoofdpagina"
+    },
+    "error-unauthorized": {
+      "title": "Toegang geweigerd",
+      "description": "Sorry, je hebt geen toegang. Probeer in te loggen."
+    },
+    "not-found": {
+      "title": "Niet gevonden",
+      "description": "De pagina die je zoekt bestaat niet of is verplaatst.",
+      "button": "Ga naar Home"
+    }
+  },
+  "lib": {
+    "actions": {
+      "invalidCredentials": "Onjuiste e-mail of wachtwoord.",
+      "somethingWentWrong": "Er is iets misgegaan. Probeer het later opnieuw.",
+      "emailAlreadyExists": "Dit e-mailadres is al geregistreerd.",
+      "invalidEmail": "Dit e-mailadres is niet geregistreerd.",
+      "wrongCurrentPassword": "Het huidige wachtwoord is onjuist."
+    },
+    "data": {
+      "loadCategoryVariantsError": "Fout bij het laden van categorievarianten"
+    },
+    "validation-schemas": {
+      "requiredField": "Dit veld is verplicht",
+      "invalidEmail": "Voer een geldig e-mailadres in.",
+      "invalidPhoneNumber": {
+        "required": "Het telefoonnummer is verplicht.",
+        "invalid": "Ongeldig telefoonnummer."
+      },
+      "invalidPassword": {
+        "noNumbers": "Voer minstens één cijfer in.",
+        "noLetters": "Voer minstens één letter in.",
+        "lessChars": "Voer minstens 8 tekens in.",
+        "notMatch": "Wachtwoorden komen niet overeen."
+      },
+      "invalidLength": "Het veld moet minstens 3 letters bevatten."
+    }
+  }
+}

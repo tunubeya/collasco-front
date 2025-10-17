@@ -2,12 +2,10 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { ProjectStatus, ProjectStructureResponse, StructureFeatureItem, StructureModuleNode } from "@/lib/definitions";
+import { ProjectStatus, ProjectStructureResponse} from "@/lib/definitions";
 import { fetchProjectById, fetchProjectStructure } from "@/lib/data";
 import { getSession } from "@/lib/session";
-import type { Module } from "@/lib/model-definitions/module";
 import type { Project } from "@/lib/model-definitions/project";
-import type { Feature } from "@/lib/model-definitions/feature";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";

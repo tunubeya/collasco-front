@@ -8,7 +8,6 @@ import { getSession } from "@/lib/session";
 import type { Module } from "@/lib/model-definitions/module";
 import { RoutesEnum } from "@/lib/utils";
 import { ModuleForm } from "@/ui/components/projects/ModuleForm.client";
-import { handlePageError } from "@/lib/handle-page-error";
 import { handleUnauthorized } from "@/lib/server-auth-helpers";
 import { StructureModuleNode } from "@/lib/definitions";
 

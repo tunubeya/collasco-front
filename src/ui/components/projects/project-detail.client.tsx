@@ -4,8 +4,6 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-
-import type { Module } from "@/lib/model-definitions/module";
 import type { Project } from "@/lib/model-definitions/project";
 import type { Feature } from "@/lib/model-definitions/feature";
 import { StructureFeatureItem, StructureModuleNode } from "@/lib/definitions";

@@ -7,7 +7,7 @@ import { Checkbox } from '@/ui/components/form/checkbox';
 import { signup } from '@/lib/actions';
 import { useActionState, useState, useEffect, useRef, FormEvent, useTransition } from 'react';
 import { toast } from 'sonner';
-import type { SignUpErrorState, Session } from '@/lib/definitions';
+import type { SignUpErrorState } from '@/lib/definitions';
 import { useRouter } from 'next/navigation';
 import { RoutesEnum } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
@@ -20,7 +20,7 @@ type Field = {
   description?: string;
 };
 
-export default function RegisterAccount({ session }: Readonly<{ session: Session | null }>) {
+export default function RegisterAccount() {
   const t = useTranslations('auth.register');
   const [isPending, startTransition] = useTransition();
   const [state, action] = useActionState(signup, undefined);

@@ -43,7 +43,7 @@ export default async function EditModulePage({
 
   // 2) (Opcional pero recomendado) obtener el subárbol del módulo actual
   //    para excluir el propio módulo y sus hijos del selector de "padre".
-  let descendants = new Set<string>([moduleId]);
+  const descendants = new Set<string>([moduleId]);
   try {
     const { node } = await fetchModuleStructure(session.token, moduleId);
     const walkDesc = (n: StructureModuleNode) => {
@@ -56,8 +56,7 @@ export default async function EditModulePage({
     };
     walkDesc(node);
   } catch (error) {
-    // si falla, no es crítico; solo no excluiremos descendientes
-    // (el backend debería validar de todas formas)
+    await handlePageError(error);
   }
 
   // 3) Estructura completa del proyecto → aplanar a opciones con “prettyPath”

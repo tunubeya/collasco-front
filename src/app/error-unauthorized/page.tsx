@@ -21,7 +21,7 @@ export default function ErrorUnauthorizedPage() {
       .catch((error) => {
         console.error('Error during logout:', error);
       });
-  }, []);
+  }, [router]);
 
   return (
     <div className="w-full min-h-dvh bg-linear-to-r from-background to-light-orange flex p-8 md:p-24 justify-around items-center">

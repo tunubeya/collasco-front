@@ -16,11 +16,12 @@ type SearchParams = {
   sort?: string;
 };
 
-export default async function ProjectsPage({
-  searchParams,
-}: {
-  searchParams?: SearchParams;
-}) {
+// 👇 Cambia la firma: Promise<SearchParams>
+type Props = {
+  searchParams?: Promise<SearchParams>;
+};
+
+export default async function ProjectsPage({ searchParams }: Props) {
   const session = await getSession();
   if (!session?.token) redirect(RoutesEnum.LOGIN);
   const token = session.token;

@@ -13,9 +13,7 @@ import { useTranslations } from "next-intl";
 
 import {
   deleteGithubTokenAction,
-  type GeneralFormState,
   type GithubTokenFormState,
-  updateGeneralPreferencesAction,
   upsertGithubTokenAction,
 } from "@/app/app/settings/general/actions";
 
@@ -35,12 +33,6 @@ export default function SettingsGeneralClient({ initial }: Props) {
     type: "success" | "error";
     message: string;
   } | null>(null);
-
-  const INITIAL_PREFERENCES_STATE: GeneralFormState = {};
-  const [state, dispatch] = useActionState(
-    updateGeneralPreferencesAction,
-    INITIAL_PREFERENCES_STATE
-  );
 
   const INITIAL_GITHUB_STATE: GithubTokenFormState = { fieldErrors: {} };
   const [githubState, submitGithubToken] = useActionState(

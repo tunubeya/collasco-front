@@ -14,20 +14,16 @@ import { ProjectForm } from "@/ui/components/projects/ProjectForm.client";
 import { handlePageError } from "@/lib/handle-page-error";
 
 type Params = { projectId: string };
+type Props = { params: Promise<Params> };
 
-export default async function EditProjectPage({
-  params,
-}: {
-  params: Params;
-}) {
+export default async function EditProjectPage({ params }: Props) {
+    const { projectId } = await params; // 👈 importante
+
   const session = await getSession();
   if (!session?.token) redirect(RoutesEnum.LOGIN);
 
   const t = await getTranslations("app.projects.edit");
   const formatter = await getFormatter();
-
-  const { projectId } = params;
-
   let project: Project | null = null;
   try {
     project = await fetchProjectById(session.token, projectId);

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import RegisterButton from '@/ui/components/auth/register-button';
-import LoginButton from '@/ui/components/auth/login-button';
-import { getSession } from '@/lib/session';
+// import RegisterButton from '@/ui/components/auth/register-button';
+// import LoginButton from '@/ui/components/auth/login-button';
+//import { getSession } from '@/lib/session';
 import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -90,7 +90,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function LandingPage() {
   const t = await getTranslations('landing');
-  const session = await getSession();
+  //const session = await getSession();
 
   // return (
   //   <div className="w-full flex-1">

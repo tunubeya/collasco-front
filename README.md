@@ -5,7 +5,7 @@ POST /auth/register — Crea usuario developer + devuelve tokens. · Public · B
 
 POST /auth/login — Login (estrategia local) + tokens. · Public · Body: { email, password }
 
-GET /auth/me — Perfil mínimo del token. · JWT requerido
+GET /auth/me — Perfil mínimo del token. · JWT requerido 
 
 # POST /auth/refresh — Rota refresh y devuelve access+refresh. · JWT refresh requerido · Header: Authorization: Bearer <refresh>
 

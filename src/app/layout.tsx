@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('root.title'),
     description: t('root.description'),
     icons: {
-      icon: '/logos/isotipo-myflowcheck.svg',
+      icon: '/logos/isotipo.svg',
     }
   };
 }

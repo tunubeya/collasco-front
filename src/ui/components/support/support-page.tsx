@@ -23,7 +23,7 @@ export default function SupportPageClient() {
   );
 
   const buildMessage = () => {
-    const header = `MyFlowCheck • Support`;
+    const header = `Collasco • Support`;
     const lines = [
       header,
       `Subject: ${subject.trim()}`,

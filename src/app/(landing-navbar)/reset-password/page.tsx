@@ -44,7 +44,7 @@ export default async function ResetPasswordPage({
         </div>
 
         <p className="mt-4 text-center text-xs text-[color:var(--color-muted-fg)]">
-          © {new Date().getFullYear()} MyFlowCheck. All rights reserved.
+          © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
       </div>
     </div>

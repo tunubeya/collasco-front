@@ -1,12 +1,16 @@
 {
   "metadata": {
     "root": {
-      "title": "MyFlowCheck | Kwaliteitsbeheer dat stroomt",
-      "description": "MyFlowCheck is een modern QMS voor het beheren van documenten, audits en corrigerende maatregelen op één plek. Ideaal voor teams die helderheid, naleving en continue verbetering nodig hebben."
+      "title": "Collasco | Kwaliteitsbeheer dat stroomt",
+      "description": "Collasco is een modern QMS voor het beheren van documenten, audits en corrigerende maatregelen op één plek. Ideaal voor teams die helderheid, naleving en continue verbetering nodig hebben."
     }
   },
   "landing": {
-    "metadata_title": "MyFlowCheck | Kwaliteitsbeheer dat stroomt",
+    "metadata_title": "Collasco | Kwaliteitsbeheer dat stroomt",
+    "comingSoon": {
+      "title": "Binnenkort beschikbaar",
+      "description": "We werken aan een nieuwe ervaring. Kom snel terug."
+    },
     "hero": {
       "title_01": "Kwaliteit",
       "title_02": "die echt",
@@ -64,7 +68,7 @@
       "subtitle": "Bekijk het geheel—en de knelpunten.",
       "description": "KPI’s die ertoe doen: achterstallige acties, goedkeuringstijden, afwijkingen per gebied en meer.",
       "benefits": {
-        "title": "Waarom teams kiezen voor MyFlowCheck",
+        "title": "Waarom teams kiezen voor Collasco",
         "0": "Duidelijkheid voor audits en inspecties",
         "1": "Eigenaarschap en verantwoordelijkheid",
         "2": "Continue verbetering zichtbaar voor iedereen"
@@ -147,7 +151,7 @@
     }
   },
   "support": {
-    "metadata_title": "Supportcentrum | MyFlowCheck",
+    "metadata_title": "Supportcentrum | Collasco",
     "title": "Supportcentrum",
     "description": "Stuur ons je opmerkingen, suggesties of problemen. Jouw mening is belangrijk voor ons.",
     "subjectPlaceholder": "Onderwerp",
@@ -155,8 +159,8 @@
     "sendButton": "Bericht verzenden"
   },
   "plans": {
-    "metadata_title": "Plannen | MyFlowCheck",
-    "title": "Kies je MyFlowCheck-plan",
+    "metadata_title": "Plannen | Collasco",
+    "title": "Kies je Collasco-plan",
     "description": "Kies het plan dat het beste bij je past. Begin gratis en upgrade naarmate je groeit.",
     "planPeriodMonth": "/maand",
     "planPeriodYear": "/jaar",
@@ -185,12 +189,12 @@
     "title": "Algemene voorwaarden"
   },
   "who-we-are": {
-    "metadata_title": "Wie zijn wij? | MyFlowCheck",
+    "metadata_title": "Wie zijn wij? | Collasco",
     "history": {
       "title": "Onze geschiedenis",
-      "paragraph1": "MyFlowCheck is ontstaan uit de behoefte aan een toegankelijk, eenvoudig en betaalbaar QMS dat bedrijven helpt hun processen te verbeteren en ondernemers hun activiteiten eenvoudig te digitaliseren.",
+      "paragraph1": "Collasco is ontstaan uit de behoefte aan een toegankelijk, eenvoudig en betaalbaar QMS dat bedrijven helpt hun processen te verbeteren en ondernemers hun activiteiten eenvoudig te digitaliseren.",
       "paragraph2": "Het is opgericht door een jonge Boliviaan en een Belg, die hun krachten bundelden nadat ze zagen hoe moeilijk het voor veel bedrijven was om effectieve kwaliteitssystemen te implementeren.",
-      "paragraph3": "De naam \"MyFlowCheck\" weerspiegelt de wendbaarheid, toegankelijkheid en eenvoud waarmee elke organisatie haar processen kan professionaliseren en alles op één plek kan beheren."
+      "paragraph3": "De naam \"Collasco\" weerspiegelt de wendbaarheid, toegankelijkheid en eenvoud waarmee elke organisatie haar processen kan professionaliseren en alles op één plek kan beheren."
     },
     "misionTitle": "MISSIE",
     "mision": "Een gebruiksvriendelijk en betaalbaar QMS-platform leveren dat bedrijven helpt hun processen te organiseren, naleving te garanderen en duurzaam te groeien, allemaal op één plek.",
@@ -247,7 +251,7 @@
         "pageTitle": "Algemeen",
         "api": {
           "title": "API-token",
-          "subtitle": "Gebruik dit om MyFlowCheck te koppelen met andere tools.",
+          "subtitle": "Gebruik dit om Collasco te koppelen met andere tools.",
           "placeholder": "Genereer je API-token vanuit de backend."
         },
         "copy": "Kopiëren",
@@ -568,7 +572,7 @@
       "privacy": "Privacybeleid",
       "terms": "Algemene voorwaarden",
       "connect": "Verbind met ons",
-      "rights": "© 2025 MyFlowCheck. Alle rechten voorbehouden."
+      "rights": "© 2025 Collasco. Alle rechten voorbehouden."
     },
     "pricing-card": {
       "planPeriod": "/maand",

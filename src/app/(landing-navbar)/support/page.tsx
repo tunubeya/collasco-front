@@ -15,7 +15,7 @@ export default async function SupportPage() {
       <div className="w-full max-w-md">
         <SupportPageClient />
         <p className="mt-4 text-center text-xs text-[color:var(--color-muted-fg)]">
-          © {new Date().getFullYear()} MyFlowCheck. All rights reserved.
+          © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
       </div>
     </div>

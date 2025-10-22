@@ -13,7 +13,7 @@ export default function LangSelector() {
         value: l,
         label: t(l)
       }))}
-      label={t('label')}
+      label={"Change language"}
     />
   );
 }

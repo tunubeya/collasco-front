@@ -33,7 +33,7 @@ export default function LoginPageClient() {
   // Lo dejo comentado por si luego lo necesitas.
   // useEffect(() => {
   //   const host = window.location.hostname;
-  //   if (host !== 'myflowcheck.com' && host.endsWith('.myflowcheck.com')) {
+  //   if (host !== 'Collasco.com' && host.endsWith('.Collasco.com')) {
   //     localStorage.setItem('returnToSubdomain', window.location.origin);
   //   }
   // }, []);
@@ -101,7 +101,7 @@ export default function LoginPageClient() {
 
         {/* Mini disclaimer/brand */}
         <p className="mt-4 text-center text-xs text-[color:var(--color-muted-fg)]">
-          © {new Date().getFullYear()} MyFlowCheck. All rights reserved.
+          © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
       </div>
     </div>

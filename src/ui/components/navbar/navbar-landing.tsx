@@ -18,9 +18,9 @@ export default async function NavbarLanding() {
       <Button variant="link" redirect={RoutesEnum.WHO_WE_ARE}>
         <span>{t('whoWeAre')}</span>
       </Button>
-      <Button variant="link" redirect={RoutesEnum.PLANS}>
+      {/* <Button variant="link" redirect={RoutesEnum.PLANS}>
         <span>{t('plans')}</span>
-      </Button>
+      </Button> */}
       <Button variant="link" redirect={RoutesEnum.SUPPORT}>
         <span>{t('support')}</span>
       </Button>
@@ -38,8 +38,8 @@ export default async function NavbarLanding() {
         {/* Logo */}
         <Link href={RoutesEnum.HOME_LANDING} className="flex items-center gap-2">
           <Image
-            src="/logos/horizontal-myflowcheck.svg"  /* <-- actualiza el asset */
-            alt="MyFlowCheck"
+            src="/logos/logo.svg"  /* <-- actualiza el asset */
+            alt="Collasco"
             width={180}
             height={40}
             className="h-8 w-auto md:h-10"
@@ -54,11 +54,11 @@ export default async function NavbarLanding() {
           </div>
 
           {/* CTA / Auth */}
-          <div className="ml-3 flex items-center gap-2">
+          {/* <div className="ml-3 flex items-center gap-2">
             {!session?.token && <RegisterButton />}
             <LoginButton session={session} />
             <ProfileMenu session={session} />
-          </div>
+          </div> */}
         </div>
 
         {/* Mobile */}

@@ -1,12 +1,16 @@
 {
   "metadata": {
     "root": {
-      "title": "MyFlowCheck | Gestión de Calidad que fluye",
-      "description": "MyFlowCheck es un sistema moderno de gestión de calidad para administrar documentos, auditorías y acciones correctivas en un solo lugar. Ideal para equipos que buscan claridad, cumplimiento y mejora continua."
+      "title": "Collasco | Gestión de Calidad que fluye",
+      "description": "Collasco es un sistema moderno de gestión de calidad para administrar documentos, auditorías y acciones correctivas en un solo lugar. Ideal para equipos que buscan claridad, cumplimiento y mejora continua."
     }
   },
   "landing": {
-    "metadata_title": "MyFlowCheck | Gestión de Calidad que fluye",
+    "metadata_title": "Collasco | Gestión de Calidad que fluye",
+    "comingSoon": {
+      "title": "Próximamente",
+      "description": "Estamos preparando una nueva experiencia. Vuelve pronto."
+    },
     "hero": {
       "title_01": "Calidad",
       "title_02": "que realmente",
@@ -64,7 +68,7 @@
       "subtitle": "Visualiza lo esencial y detecta cuellos de botella.",
       "description": "KPIs clave: acciones vencidas, tiempos de aprobación, no conformidades por área y más.",
       "benefits": {
-        "title": "Por qué los equipos eligen MyFlowCheck",
+        "title": "Por qué los equipos eligen Collasco",
         "0": "Claridad en auditorías e inspecciones",
         "1": "Responsabilidad y trazabilidad",
         "2": "Mejora continua visible para todos"
@@ -147,7 +151,7 @@
     }
   },
   "support": {
-    "metadata_title": "Soporte | MyFlowCheck",
+    "metadata_title": "Soporte | Collasco",
     "title": "Centro de Soporte",
     "description": "Envíanos tus comentarios, sugerencias o problemas. Tu opinión es importante para nosotros.",
     "subjectPlaceholder": "Asunto",
@@ -155,8 +159,8 @@
     "sendButton": "Enviar Mensaje"
   },
   "plans": {
-    "metadata_title": "Planes | MyFlowCheck",
-    "title": "Elige tu plan de MyFlowCheck",
+    "metadata_title": "Planes | Collasco",
+    "title": "Elige tu plan de Collasco",
     "description": "Selecciona el plan que mejor se adapte a tus necesidades. Empieza gratis y mejora a medida que creces.",
     "planPeriodMonth": "/mes",
     "planPeriodYear": "/año",
@@ -185,7 +189,7 @@
     "policies": [
       {
         "title": "1. Responsable del tratamiento de datos personales",
-        "description": "MyFlowCheck SRL\n* Dirección: Calle A. Quijarro 7, Cochabamba, Bolivia\n* Correo electrónico: MyFlowCheck@gmail.com"
+        "description": "Collasco SRL\n* Dirección: Calle A. Quijarro 7, Cochabamba, Bolivia\n* Correo electrónico: Collasco@gmail.com"
       },
       {
         "title": "2. Datos personales que recopilamos",
@@ -213,7 +217,7 @@
       },
       {
         "title": "8. Tus derechos",
-        "description": "De acuerdo con la legislación boliviana, tienes derecho a:\n* Acceso: Solicitar información sobre los datos que almacenamos sobre ti.\n* Rectificación: Corregir datos incorrectos o incompletos.\n* Cancelación: Solicitar la eliminación de tus datos, salvo cuando exista una obligación legal para conservarlos.\n* Oposición: Rechazar el tratamiento de tus datos para ciertas finalidades.\n* Puedes ejercer estos derechos contactándonos a MyFlowCheck@gmail.com, indicando tu nombre completo, documento de identidad y el derecho que deseas ejercer."
+        "description": "De acuerdo con la legislación boliviana, tienes derecho a:\n* Acceso: Solicitar información sobre los datos que almacenamos sobre ti.\n* Rectificación: Corregir datos incorrectos o incompletos.\n* Cancelación: Solicitar la eliminación de tus datos, salvo cuando exista una obligación legal para conservarlos.\n* Oposición: Rechazar el tratamiento de tus datos para ciertas finalidades.\n* Puedes ejercer estos derechos contactándonos a Collasco@gmail.com, indicando tu nombre completo, documento de identidad y el derecho que deseas ejercer."
       },
       {
         "title": "9. Retención de datos",
@@ -221,7 +225,7 @@
       },
       {
         "title": "10. Modificaciones a esta política",
-        "description": "Nos reservamos el derecho de actualizar esta política de privacidad en cualquier momento. Notificaremos cualquier cambio a través de nuestra plataforma o por correo electrónico.\nGracias por confiar en MyFlowCheck. Tu privacidad es esencial para nosotros."
+        "description": "Nos reservamos el derecho de actualizar esta política de privacidad en cualquier momento. Notificaremos cualquier cambio a través de nuestra plataforma o por correo electrónico.\nGracias por confiar en Collasco. Tu privacidad es esencial para nosotros."
       }
     ]
   },
@@ -230,21 +234,21 @@
     "conditions": [
       {
         "title": "Condiciones de uso",
-        "description": "Los siguientes contenidos no se pueden publicar en la plataforma web de MyFlowCheck.\n\n* No se permite la publicación de ningún material ilegal de acuerdo con las leyes vigentes en el Estado Plurinacional de Bolivia.\n* Está estrictamente prohibida la difusión de desnudos o material pornográfico en este sitio web.\n* Queda terminantemente prohibido el intercambio, promoción o venta de sustancias estupefacientes ilegales.\n* No se tolerará ningún contenido explícito ilegal, incluyendo pero no limitado a la incitación a la violencia, el odio, el acoso o la discriminación.\n* No está permitido ofrecer o solicitar cualquier tipo de armas de fuego o corto punzante a través de este servicio web.\n* Todos los usuarios deben respetar los derechos de autor y no subir, compartir o distribuir contenido digital que no esté autorizado por sus titulares de derechos.\n* Queda estrictamente prohibido utilizar este servicio web con intenciones fraudulentas, incluyendo, pero no limitado a, el phishing, el fraude de identidad o cualquier otro tipo de actividad engañosa.\n* Además de las restricciones mencionadas anteriormente, los usuarios deben cumplir con todas las leyes y regulaciones locales, nacionales e internacionales aplicables mientras utilizan este servicio web.\n* El incumplimiento de cualquiera de estas condiciones de uso puede resultar en la suspensión o eliminación de su cuenta y la toma de medidas legales según corresponda.\n* Nos reservamos el derecho de modificar estas condiciones de uso en cualquier momento y le recomendamos revisarlas periódicamente para estar al tanto de cualquier cambio."
+        "description": "Los siguientes contenidos no se pueden publicar en la plataforma web de Collasco.\n\n* No se permite la publicación de ningún material ilegal de acuerdo con las leyes vigentes en el Estado Plurinacional de Bolivia.\n* Está estrictamente prohibida la difusión de desnudos o material pornográfico en este sitio web.\n* Queda terminantemente prohibido el intercambio, promoción o venta de sustancias estupefacientes ilegales.\n* No se tolerará ningún contenido explícito ilegal, incluyendo pero no limitado a la incitación a la violencia, el odio, el acoso o la discriminación.\n* No está permitido ofrecer o solicitar cualquier tipo de armas de fuego o corto punzante a través de este servicio web.\n* Todos los usuarios deben respetar los derechos de autor y no subir, compartir o distribuir contenido digital que no esté autorizado por sus titulares de derechos.\n* Queda estrictamente prohibido utilizar este servicio web con intenciones fraudulentas, incluyendo, pero no limitado a, el phishing, el fraude de identidad o cualquier otro tipo de actividad engañosa.\n* Además de las restricciones mencionadas anteriormente, los usuarios deben cumplir con todas las leyes y regulaciones locales, nacionales e internacionales aplicables mientras utilizan este servicio web.\n* El incumplimiento de cualquiera de estas condiciones de uso puede resultar en la suspensión o eliminación de su cuenta y la toma de medidas legales según corresponda.\n* Nos reservamos el derecho de modificar estas condiciones de uso en cualquier momento y le recomendamos revisarlas periódicamente para estar al tanto de cualquier cambio."
       },
       {
         "title": "Prohibiciones",
-        "description": "Se aplican las siguientes prohibiciones para el uso de la plataforma en MyFlowCheck.\n\n* Prohibición de Fraude: Queda estrictamente prohibido el uso de las tiendas web de Mercagi para cualquier actividad fraudulenta en internet. Los afiliados deben operar sus tiendas con total transparencia y honestidad.\n* Responsabilidad del Afiliado: Los afiliados son totalmente responsables de cualquier daño o perjuicio causado por su tienda web. Mercagi se exime de cualquier responsabilidad derivada de las acciones o contenidos de las tiendas afiliadas.\n* Prohibición de Venta de Cursos con Derechos de Autor: No se permite el uso de las tiendas para revender cursos en línea protegidos por derechos de autor, a menos que se cuente con la autorización expresa para ello.\n* Venta de Productos Ilegales: Está prohibida la venta de artículos robados o de contrabando. Mercagi se reserva el derecho de tomar acciones legales contra cualquier afiliado que incurra en estas prácticas.\n* Consecuencias de Denuncias y Reclamos: En caso de recibir múltiples denuncias o reclamos verificados sobre fraudes o actividades ilegales en una tienda, Mercagi se reserva el derecho de eliminar la tienda del afiliado sin posibilidad de reactivación."
+        "description": "Se aplican las siguientes prohibiciones para el uso de la plataforma en Collasco.\n\n* Prohibición de Fraude: Queda estrictamente prohibido el uso de las tiendas web de Mercagi para cualquier actividad fraudulenta en internet. Los afiliados deben operar sus tiendas con total transparencia y honestidad.\n* Responsabilidad del Afiliado: Los afiliados son totalmente responsables de cualquier daño o perjuicio causado por su tienda web. Mercagi se exime de cualquier responsabilidad derivada de las acciones o contenidos de las tiendas afiliadas.\n* Prohibición de Venta de Cursos con Derechos de Autor: No se permite el uso de las tiendas para revender cursos en línea protegidos por derechos de autor, a menos que se cuente con la autorización expresa para ello.\n* Venta de Productos Ilegales: Está prohibida la venta de artículos robados o de contrabando. Mercagi se reserva el derecho de tomar acciones legales contra cualquier afiliado que incurra en estas prácticas.\n* Consecuencias de Denuncias y Reclamos: En caso de recibir múltiples denuncias o reclamos verificados sobre fraudes o actividades ilegales en una tienda, Mercagi se reserva el derecho de eliminar la tienda del afiliado sin posibilidad de reactivación."
       }
     ]
   },
   "who-we-are": {
-    "metadata_title": "¿Quiénes Somos? | MyFlowCheck",
+    "metadata_title": "¿Quiénes Somos? | Collasco",
     "history": {
       "title": "Nuestra Historia",
-      "paragraph1": "MyFlowCheck nació de la necesidad de contar con un sistema QMS (Quality Management System) accesible, sencillo y económico, que ayude a las empresas a mejorar sus procesos y a los emprendedores a digitalizar sus operaciones con facilidad.",
+      "paragraph1": "Collasco nació de la necesidad de contar con un sistema QMS (Quality Management System) accesible, sencillo y económico, que ayude a las empresas a mejorar sus procesos y a los emprendedores a digitalizar sus operaciones con facilidad.",
       "paragraph2": "Fue creado por dos jóvenes visionarios: un boliviano y un belga, quienes unieron fuerzas al observar lo difícil que resultaba para muchos negocios implementar sistemas de calidad efectivos y gestionar su crecimiento de manera digital.",
-      "paragraph3": "El nombre \"MyFlowCheck\" refleja la agilidad, accesibilidad y simplicidad con la que cualquier organización puede profesionalizar sus procesos y mantener el control en un solo lugar."
+      "paragraph3": "El nombre \"Collasco\" refleja la agilidad, accesibilidad y simplicidad con la que cualquier organización puede profesionalizar sus procesos y mantener el control en un solo lugar."
     },
     "misionTitle": "MISIÓN",
     "mision": "Brindar una plataforma QMS fácil de usar y asequible que ayude a las empresas a organizar sus procesos, garantizar el cumplimiento y escalar de manera sostenible, todo en un solo lugar.",
@@ -322,7 +326,7 @@
         "pageTitle": "General",
         "api": {
           "title": "Token API",
-          "subtitle": "Úsalo para integrar MyFlowCheck con otras herramientas.",
+          "subtitle": "Úsalo para integrar Collasco con otras herramientas.",
           "placeholder": "Genera tu token de API desde el backend."
         },
         "copy": "Copiar",
@@ -643,7 +647,7 @@
       "privacy": "Políticas de Privacidad",
       "terms": "Términos y Condiciones",
       "connect": "Conéctate con nosotros",
-      "rights": "© 2025 MyFlowCheck. Todos los derechos reservados."
+      "rights": "© 2025 Collasco. Todos los derechos reservados."
     },
     "pricing-card": {
       "planPeriod": "/mes",

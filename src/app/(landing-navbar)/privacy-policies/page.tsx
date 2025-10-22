@@ -57,7 +57,7 @@ export default function PrivacyPoliciesPage() {
         </div>
 
         <p className="mt-6 text-xs text-center text-[color:var(--color-muted-fg)]">
-          © {new Date().getFullYear()} MyFlowCheck. All rights reserved.
+          © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
       </div>
     </div>

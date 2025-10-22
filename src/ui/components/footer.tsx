@@ -4,12 +4,12 @@ import { useTranslations } from 'next-intl';
 
 const socialMedia = [
   {
-    href: 'https://www.linkedin.com/company/myflowcheck/',
+    href: 'https://www.linkedin.com/company/Collasco/',
     src: 'Icons/linkedin-svgrepo-com.svg',
     alt: 'LinkedIn'
   },
   {
-    href: 'mailto:contact@myflowcheck.com',
+    href: 'mailto:contact@Collasco.com',
     src: 'Icons/gmail-svgrepo-com.svg',
     alt: 'Email'
   }

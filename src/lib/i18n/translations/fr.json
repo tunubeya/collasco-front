@@ -1,12 +1,16 @@
 {
   "metadata": {
     "root": {
-      "title": "MyFlowCheck | Gestion de la qualité qui s’écoule",
-      "description": "MyFlowCheck est un QMS moderne pour gérer les documents, les audits et les actions correctives en un seul endroit. Idéal pour les équipes qui ont besoin de clarté, de conformité et d’amélioration continue."
+      "title": "Collasco | Gestion de la qualité qui s’écoule",
+      "description": "Collasco est un QMS moderne pour gérer les documents, les audits et les actions correctives en un seul endroit. Idéal pour les équipes qui ont besoin de clarté, de conformité et d’amélioration continue."
     }
   },
   "landing": {
-    "metadata_title": "MyFlowCheck | Gestion de la qualité qui s’écoule",
+    "metadata_title": "Collasco | Gestion de la qualité qui s’écoule",
+    "comingSoon": {
+      "title": "Bientôt disponible",
+      "description": "Nous préparons une nouvelle expérience. Revenez bientôt."
+    },
     "hero": {
       "title_01": "Qualité",
       "title_02": "qui vraiment",
@@ -64,7 +68,7 @@
       "subtitle": "Voyez la vue d’ensemble—et les blocages.",
       "description": "Les KPI qui comptent : actions en retard, temps d’approbation, non-conformités par zone, et plus encore.",
       "benefits": {
-        "title": "Pourquoi les équipes choisissent MyFlowCheck",
+        "title": "Pourquoi les équipes choisissent Collasco",
         "0": "Clarté pour les audits et inspections",
         "1": "Responsabilité et engagement",
         "2": "Amélioration continue visible par tous"
@@ -147,7 +151,7 @@
     }
   },
   "support": {
-    "metadata_title": "Centre de support | MyFlowCheck",
+    "metadata_title": "Centre de support | Collasco",
     "title": "Centre de support",
     "description": "Envoyez-nous vos commentaires, suggestions ou problèmes. Votre avis est important pour nous.",
     "subjectPlaceholder": "Sujet",
@@ -155,8 +159,8 @@
     "sendButton": "Envoyer le message"
   },
   "plans": {
-    "metadata_title": "Plans | MyFlowCheck",
-    "title": "Choisissez votre plan MyFlowCheck",
+    "metadata_title": "Plans | Collasco",
+    "title": "Choisissez votre plan Collasco",
     "description": "Sélectionnez le plan qui correspond le mieux à vos besoins. Commencez gratuitement et évoluez en fonction de votre croissance.",
     "planPeriodMonth": "/mois",
     "planPeriodYear": "/an",
@@ -185,12 +189,12 @@
     "title": "Conditions générales"
   },
   "who-we-are": {
-    "metadata_title": "Qui sommes-nous ? | MyFlowCheck",
+    "metadata_title": "Qui sommes-nous ? | Collasco",
     "history": {
       "title": "Notre histoire",
-      "paragraph1": "MyFlowCheck est né du besoin d’un QMS accessible, simple et abordable pour aider les entreprises à améliorer leurs processus et les entrepreneurs à digitaliser facilement leurs opérations.",
+      "paragraph1": "Collasco est né du besoin d’un QMS accessible, simple et abordable pour aider les entreprises à améliorer leurs processus et les entrepreneurs à digitaliser facilement leurs opérations.",
       "paragraph2": "Il a été créé par deux jeunes visionnaires : un Bolivien et un Belge, qui ont uni leurs forces après avoir constaté la difficulté pour de nombreuses entreprises de mettre en place des systèmes de qualité efficaces.",
-      "paragraph3": "Le nom « MyFlowCheck » reflète l’agilité, l’accessibilité et la simplicité avec lesquelles toute organisation peut professionnaliser ses processus et garder le contrôle en un seul endroit."
+      "paragraph3": "Le nom « Collasco » reflète l’agilité, l’accessibilité et la simplicité avec lesquelles toute organisation peut professionnaliser ses processus et garder le contrôle en un seul endroit."
     },
     "misionTitle": "MISSION",
     "mision": "Offrir une plateforme QMS facile à utiliser et abordable, qui aide les entreprises à organiser leurs processus, assurer la conformité et se développer durablement, tout en un seul endroit.",
@@ -268,7 +272,7 @@
         "pageTitle": "Général",
         "api": {
           "title": "Token API",
-          "subtitle": "Utilisez-le pour intégrer MyFlowCheck avec d’autres outils.",
+          "subtitle": "Utilisez-le pour intégrer Collasco avec d’autres outils.",
           "placeholder": "Générez votre token API depuis le backend."
         },
         "copy": "Copier",
@@ -589,7 +593,7 @@
       "privacy": "Politiques de confidentialité",
       "terms": "Conditions générales",
       "connect": "Restez connectés",
-      "rights": "© 2025 MyFlowCheck. Tous droits réservés."
+      "rights": "© 2025 Collasco. Tous droits réservés."
     },
     "pricing-card": {
       "planPeriod": "/mois",

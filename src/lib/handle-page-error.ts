@@ -1,5 +1,8 @@
 import { redirect, notFound } from "next/navigation";
-import { handleUnauthorized, UnauthorizedError } from "@/lib/server-auth-helpers";
+import {
+  handleUnauthorized,
+  UnauthorizedError,
+} from "@/lib/server-auth-helpers";
 import { RoutesEnum } from "@/lib/utils";
 
 async function readResponseMessage(res: Response) {
@@ -36,15 +39,14 @@ export async function handlePageError(error: unknown) {
     await handleUnauthorized(error);
   } catch (e) {
     if (e instanceof UnauthorizedError) {
-      redirect(`/api/auth/logout?next=${encodeURIComponent(RoutesEnum.LOGIN)}`);
+      redirect(RoutesEnum.LOGIN);
     }
     throw e;
   }
-    if (res) {
+  if (res) {
     const msg = await readResponseMessage(res);
     throw new Error(`Request failed (${res.status}): ${msg}`);
   }
-
 
   // 🔁 Otros errores → relanzar
   throw error;

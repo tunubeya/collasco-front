@@ -584,6 +584,180 @@
         }
       }
     },
+    "qa": {
+      "title": "Quality assurance",
+      "description": "Manage test cases, runs and overall health for this feature.",
+      "tabs": {
+        "ariaLabel": "QA sections",
+        "cases": "Test cases",
+        "runs": "Test runs",
+        "health": "Health"
+      },
+      "cases": {
+        "errors": {
+          "load": "We couldn't load test cases.",
+          "create": "We couldn't create the test cases.",
+          "update": "We couldn't update the test case.",
+          "validation": "Please fill in at least one test case with a title."
+        },
+        "alerts": {
+          "created": "Test cases created.",
+          "updated": "Test case updated.",
+          "archived": "Test case archived.",
+          "restored": "Test case restored."
+        },
+        "actions": {
+          "add": "Add test cases",
+          "showArchived": "Show archived"
+        },
+        "labels": {
+          "refreshing": "Refreshing..."
+        },
+        "table": {
+          "title": "Title",
+          "updated": "Last updated",
+          "status": "Status",
+          "actions": "Actions",
+          "edit": "Edit",
+          "archive": "Archive",
+          "unarchive": "Unarchive"
+        },
+        "status": {
+          "active": "Active",
+          "archived": "Archived"
+        },
+        "empty": {
+          "title": "No test cases yet",
+          "description": "Document the validation steps to keep coverage under control.",
+          "cta": "Add test cases"
+        },
+        "dialogs": {
+          "cancel": "Cancel",
+          "add": {
+            "title": "Add test cases",
+            "description": "Capture multiple scenarios at once. Each line in Steps becomes an ordered step.",
+            "caseLabel": "Test case #{index}",
+            "removeCase": "Remove",
+            "addCase": "Add another case",
+            "save": "Save test cases",
+            "saving": "Saving..."
+          },
+          "edit": {
+            "title": "Edit test case",
+            "description": "Update the scenario details or archive it when it is no longer needed.",
+            "archiveToggle": "Mark as archived",
+            "save": "Save changes",
+            "saving": "Saving..."
+          }
+        },
+        "fields": {
+          "title": "Title",
+          "steps": "Steps",
+          "expectedResult": "Expected result"
+        },
+        "placeholders": {
+          "title": "Login with invalid credentials",
+          "steps": "Open login page\nEnter invalid email\nSubmit the form",
+          "expectedResult": "User sees an error message with guidance."
+        },
+        "hints": {
+          "steps": "Write one step per line."
+        }
+      },
+      "runs": {
+        "errors": {
+          "load": "We couldn't load recent test runs.",
+          "create": "We couldn't create the test run.",
+          "loadRun": "We couldn't open that run.",
+          "validation": "Please review the information.",
+          "updateResults": "We couldn't save the run results."
+        },
+        "alerts": {
+          "created": "Test run created."
+        },
+        "title": "Test runs",
+        "subtitle": "Track execution history and capture evidence for this feature.",
+        "actions": {
+          "newRun": "New test run"
+        },
+        "empty": {
+          "title": "No runs recorded",
+          "description": "Create your first execution to start tracking pass rate.",
+          "cta": "Create a test run"
+        },
+        "list": {
+          "runFallback": "Run {id}",
+          "open": "Open"
+        },
+        "summary": {
+          "total": "{count} cases",
+          "passed": "{count} passed"
+        },
+        "panel": {
+          "untitled": "Untitled run",
+          "createdAt": "Created {date}",
+          "fields": {
+            "status": "Status",
+            "note": "Note"
+          },
+          "statusPlaceholder": "Select status",
+          "notePlaceholder": "Optional notes or evidence links...",
+          "summary": {
+            "total": "{count} cases",
+            "passed": "{count} passed",
+            "passRate": "{rate}% pass rate"
+          },
+          "saving": "Saving...",
+          "saved": "Saved",
+          "saveError": "Save failed"
+        },
+        "dialogs": {
+          "cancel": "Cancel",
+          "newRun": {
+            "title": "New test run",
+            "description": "Give context to this execution to align the team.",
+            "create": "Create run",
+            "creating": "Creating..."
+          }
+        },
+        "fields": {
+          "name": "Name",
+          "environment": "Environment",
+          "notes": "Notes"
+        },
+        "placeholders": {
+          "name": "Regression suite - sprint",
+          "environment": "e.g. Staging",
+          "notes": "Optional context or entry criteria."
+        },
+        "resultStatus": {
+          "PASS": "Pass",
+          "FAIL": "Fail",
+          "BLOCKED": "Blocked",
+          "SKIPPED": "Skipped"
+        }
+      },
+      "health": {
+        "errors": {
+          "load": "We couldn't load the feature health."
+        },
+        "empty": {
+          "title": "No health data yet",
+          "description": "Execute at least one run to calculate pass rate and trends."
+        },
+        "metrics": {
+          "passRate": "Pass rate",
+          "lastRun": "Last run",
+          "flaky": "Flaky cases",
+          "flakyValue": "{count} flaky cases",
+          "notAvailable": "N/A"
+        },
+        "trend": {
+          "title": "Pass-rate trend",
+          "subtitle": "Latest runs and their pass percentage."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Admin Menu",
       "home": "Home",

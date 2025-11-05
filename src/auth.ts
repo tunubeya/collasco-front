@@ -19,7 +19,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
               isRestoring: z.string().optional()
             })
             .safeParse(credentials);
-
           if (parsedCredentials.success) {
             const { email, password, isRestoring } = parsedCredentials.data;
             if (!isRestoring && email && password) {

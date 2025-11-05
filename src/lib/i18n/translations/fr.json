@@ -530,6 +530,180 @@
         }
       }
     },
+    "qa": {
+      "title": "Assurance qualité",
+      "description": "Gérez les cas de test, les campagnes et la santé de cette fonctionnalité.",
+      "tabs": {
+        "ariaLabel": "Sections QA",
+        "cases": "Cas de test",
+        "runs": "Campagnes",
+        "health": "Santé"
+      },
+      "cases": {
+        "errors": {
+          "load": "Impossible de charger les cas de test.",
+          "create": "Impossible de créer les cas.",
+          "update": "Impossible de mettre à jour le cas.",
+          "validation": "Ajoutez au moins un cas de test avec un titre."
+        },
+        "alerts": {
+          "created": "Cas de test créés.",
+          "updated": "Cas mis à jour.",
+          "archived": "Cas archivé.",
+          "restored": "Cas restauré."
+        },
+        "actions": {
+          "add": "Ajouter des cas de test",
+          "showArchived": "Afficher les archivés"
+        },
+        "labels": {
+          "refreshing": "Actualisation..."
+        },
+        "table": {
+          "title": "Titre",
+          "updated": "Dernière mise à jour",
+          "status": "Statut",
+          "actions": "Actions",
+          "edit": "Modifier",
+          "archive": "Archiver",
+          "unarchive": "Désarchiver"
+        },
+        "status": {
+          "active": "Actif",
+          "archived": "Archivé"
+        },
+        "empty": {
+          "title": "Aucun cas de test",
+          "description": "Documentez les étapes de validation pour garder la couverture sous contrôle.",
+          "cta": "Ajouter des cas de test"
+        },
+        "dialogs": {
+          "cancel": "Annuler",
+          "add": {
+            "title": "Ajouter des cas de test",
+            "description": "Capturez plusieurs scénarios d’un coup. Chaque ligne dans Étapes devient une étape ordonnée.",
+            "caseLabel": "Cas #{index}",
+            "removeCase": "Retirer",
+            "addCase": "Ajouter un cas",
+            "save": "Enregistrer les cas",
+            "saving": "Enregistrement..."
+          },
+          "edit": {
+            "title": "Modifier le cas de test",
+            "description": "Mettez à jour le scénario ou archivez-le quand il n’est plus requis.",
+            "archiveToggle": "Marquer comme archivé",
+            "save": "Enregistrer les modifications",
+            "saving": "Enregistrement..."
+          }
+        },
+        "fields": {
+          "title": "Titre",
+          "steps": "Étapes",
+          "expectedResult": "Résultat attendu"
+        },
+        "placeholders": {
+          "title": "Connexion avec identifiants invalides",
+          "steps": "Ouvrir la page de connexion\nSaisir un e-mail invalide\nSoumettre le formulaire",
+          "expectedResult": "L’utilisateur voit un message d’erreur avec des instructions."
+        },
+        "hints": {
+          "steps": "Saisissez une étape par ligne."
+        }
+      },
+      "runs": {
+        "errors": {
+          "load": "Impossible de charger les dernières campagnes.",
+          "create": "Impossible de créer la campagne.",
+          "loadRun": "Impossible d’ouvrir cette campagne.",
+          "validation": "Vérifiez les informations saisies.",
+          "updateResults": "Impossible d’enregistrer les résultats."
+        },
+        "alerts": {
+          "created": "Campagne créée."
+        },
+        "title": "Campagnes",
+        "subtitle": "Suivez l’historique d’exécution et collectez les preuves de cette fonctionnalité.",
+        "actions": {
+          "newRun": "Nouvelle campagne"
+        },
+        "empty": {
+          "title": "Aucune campagne enregistrée",
+          "description": "Créez une première exécution pour commencer à mesurer le taux de réussite.",
+          "cta": "Créer une campagne"
+        },
+        "list": {
+          "runFallback": "Campagne {id}",
+          "open": "Ouvrir"
+        },
+        "summary": {
+          "total": "{count} cas",
+          "passed": "{count} réussis"
+        },
+        "panel": {
+          "untitled": "Campagne sans titre",
+          "createdAt": "Créée le {date}",
+          "fields": {
+            "status": "Statut",
+            "note": "Note"
+          },
+          "statusPlaceholder": "Sélectionnez un statut",
+          "notePlaceholder": "Notes ou liens de preuve (optionnel)...",
+          "summary": {
+            "total": "{count} cas",
+            "passed": "{count} réussis",
+            "passRate": "{rate}% de réussite"
+          },
+          "saving": "Enregistrement...",
+          "saved": "Enregistré",
+          "saveError": "Échec de l’enregistrement"
+        },
+        "dialogs": {
+          "cancel": "Annuler",
+          "newRun": {
+            "title": "Nouvelle campagne",
+            "description": "Ajoutez du contexte pour aligner l’équipe sur cette exécution.",
+            "create": "Créer la campagne",
+            "creating": "Création..."
+          }
+        },
+        "fields": {
+          "name": "Nom",
+          "environment": "Environnement",
+          "notes": "Notes"
+        },
+        "placeholders": {
+          "name": "Suite de régression - sprint",
+          "environment": "Ex. Préproduction",
+          "notes": "Contexte optionnel ou critères d’entrée."
+        },
+        "resultStatus": {
+          "PASS": "Réussi",
+          "FAIL": "Échec",
+          "BLOCKED": "Bloqué",
+          "SKIPPED": "Ignoré"
+        }
+      },
+      "health": {
+        "errors": {
+          "load": "Impossible de charger la santé de la fonctionnalité."
+        },
+        "empty": {
+          "title": "Aucune donnée de santé",
+          "description": "Lancez au moins une campagne pour calculer le taux de réussite et les tendances."
+        },
+        "metrics": {
+          "passRate": "Taux de réussite",
+          "lastRun": "Dernière campagne",
+          "flaky": "Cas instables",
+          "flakyValue": "{count} cas instables",
+          "notAvailable": "N/D"
+        },
+        "trend": {
+          "title": "Tendance du taux de réussite",
+          "subtitle": "Dernières campagnes et leur pourcentage de réussite."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Menu Admin",
       "home": "Accueil",

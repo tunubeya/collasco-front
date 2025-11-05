@@ -584,6 +584,180 @@
         }
       }
     },
+    "qa": {
+      "title": "Aseguramiento de calidad",
+      "description": "Gestiona casos de prueba, ejecuciones y la salud del feature.",
+      "tabs": {
+        "ariaLabel": "Secciones de QA",
+        "cases": "Casos de prueba",
+        "runs": "Ejecuciones",
+        "health": "Salud"
+      },
+      "cases": {
+        "errors": {
+          "load": "No pudimos cargar los casos de prueba.",
+          "create": "No pudimos crear los casos.",
+          "update": "No pudimos actualizar el caso.",
+          "validation": "Completa al menos un caso de prueba con título."
+        },
+        "alerts": {
+          "created": "Casos de prueba creados.",
+          "updated": "Caso actualizado.",
+          "archived": "Caso archivado.",
+          "restored": "Caso restaurado."
+        },
+        "actions": {
+          "add": "Agregar casos de prueba",
+          "showArchived": "Mostrar archivados"
+        },
+        "labels": {
+          "refreshing": "Actualizando..."
+        },
+        "table": {
+          "title": "Título",
+          "updated": "Última actualización",
+          "status": "Estado",
+          "actions": "Acciones",
+          "edit": "Editar",
+          "archive": "Archivar",
+          "unarchive": "Desarchivar"
+        },
+        "status": {
+          "active": "Activo",
+          "archived": "Archivado"
+        },
+        "empty": {
+          "title": "Aún no hay casos",
+          "description": "Documenta los pasos de validación para mantener la cobertura controlada.",
+          "cta": "Agregar casos de prueba"
+        },
+        "dialogs": {
+          "cancel": "Cancelar",
+          "add": {
+            "title": "Agregar casos de prueba",
+            "description": "Captura varios escenarios a la vez. Cada línea en Pasos se transforma en un paso ordenado.",
+            "caseLabel": "Caso #{index}",
+            "removeCase": "Quitar",
+            "addCase": "Agregar otro caso",
+            "save": "Guardar casos",
+            "saving": "Guardando..."
+          },
+          "edit": {
+            "title": "Editar caso de prueba",
+            "description": "Actualiza el escenario o archívalo cuando ya no sea necesario.",
+            "archiveToggle": "Marcar como archivado",
+            "save": "Guardar cambios",
+            "saving": "Guardando..."
+          }
+        },
+        "fields": {
+          "title": "Título",
+          "steps": "Pasos",
+          "expectedResult": "Resultado esperado"
+        },
+        "placeholders": {
+          "title": "Ingreso con credenciales inválidas",
+          "steps": "Abrir pantalla de login\nIngresar correo inválido\nEnviar el formulario",
+          "expectedResult": "El usuario ve un mensaje de error con instrucciones."
+        },
+        "hints": {
+          "steps": "Escribe un paso por línea."
+        }
+      },
+      "runs": {
+        "errors": {
+          "load": "No pudimos cargar las ejecuciones recientes.",
+          "create": "No pudimos crear la ejecución.",
+          "loadRun": "No pudimos abrir esa ejecución.",
+          "validation": "Revisa la información ingresada.",
+          "updateResults": "No pudimos guardar los resultados."
+        },
+        "alerts": {
+          "created": "Ejecución creada."
+        },
+        "title": "Ejecuciones",
+        "subtitle": "Controla el historial de ejecución y registra evidencia del feature.",
+        "actions": {
+          "newRun": "Nueva ejecución"
+        },
+        "empty": {
+          "title": "Sin ejecuciones registradas",
+          "description": "Crea la primera ejecución para comenzar a medir la tasa de aprobación.",
+          "cta": "Crear ejecución"
+        },
+        "list": {
+          "runFallback": "Ejecución {id}",
+          "open": "Abrir"
+        },
+        "summary": {
+          "total": "{count} casos",
+          "passed": "{count} aprobados"
+        },
+        "panel": {
+          "untitled": "Ejecución sin título",
+          "createdAt": "Creada el {date}",
+          "fields": {
+            "status": "Estado",
+            "note": "Nota"
+          },
+          "statusPlaceholder": "Selecciona un estado",
+          "notePlaceholder": "Notas u enlaces de evidencia opcionales...",
+          "summary": {
+            "total": "{count} casos",
+            "passed": "{count} aprobados",
+            "passRate": "{rate}% tasa de aprobación"
+          },
+          "saving": "Guardando...",
+          "saved": "Guardado",
+          "saveError": "Error al guardar"
+        },
+        "dialogs": {
+          "cancel": "Cancelar",
+          "newRun": {
+            "title": "Nueva ejecución",
+            "description": "Da contexto a esta corrida para alinear al equipo.",
+            "create": "Crear ejecución",
+            "creating": "Creando..."
+          }
+        },
+        "fields": {
+          "name": "Nombre",
+          "environment": "Ambiente",
+          "notes": "Notas"
+        },
+        "placeholders": {
+          "name": "Suite de regresión - sprint",
+          "environment": "Ej. Staging",
+          "notes": "Contexto opcional o criterios de entrada."
+        },
+        "resultStatus": {
+          "PASS": "Aprobado",
+          "FAIL": "Falló",
+          "BLOCKED": "Bloqueado",
+          "SKIPPED": "Saltado"
+        }
+      },
+      "health": {
+        "errors": {
+          "load": "No pudimos cargar la salud del feature."
+        },
+        "empty": {
+          "title": "Sin datos de salud",
+          "description": "Realiza al menos una ejecución para calcular la tasa de aprobación y tendencias."
+        },
+        "metrics": {
+          "passRate": "Tasa de aprobación",
+          "lastRun": "Última ejecución",
+          "flaky": "Casos inestables",
+          "flakyValue": "{count} casos inestables",
+          "notAvailable": "N/D"
+        },
+        "trend": {
+          "title": "Tendencia de aprobación",
+          "subtitle": "Últimas ejecuciones y su porcentaje de aprobación."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Menú de administración",
       "home": "Inicio",

@@ -509,6 +509,180 @@
         }
       }
     },
+    "qa": {
+      "title": "Kwaliteitsborging",
+      "description": "Beheer testcases, test-runs en de gezondheid van deze feature.",
+      "tabs": {
+        "ariaLabel": "QA-secties",
+        "cases": "Testcases",
+        "runs": "Runs",
+        "health": "Health"
+      },
+      "cases": {
+        "errors": {
+          "load": "Testcases konden niet worden geladen.",
+          "create": "Testcases konden niet worden aangemaakt.",
+          "update": "De testcase kon niet worden bijgewerkt.",
+          "validation": "Vul minstens één testcase met een titel in."
+        },
+        "alerts": {
+          "created": "Testcases aangemaakt.",
+          "updated": "Testcase bijgewerkt.",
+          "archived": "Testcase gearchiveerd.",
+          "restored": "Testcase hersteld."
+        },
+        "actions": {
+          "add": "Testcases toevoegen",
+          "showArchived": "Gearchiveerde tonen"
+        },
+        "labels": {
+          "refreshing": "Vernieuwen..."
+        },
+        "table": {
+          "title": "Titel",
+          "updated": "Laatst bijgewerkt",
+          "status": "Status",
+          "actions": "Acties",
+          "edit": "Bewerken",
+          "archive": "Archiveren",
+          "unarchive": "Terugzetten"
+        },
+        "status": {
+          "active": "Actief",
+          "archived": "Gearchiveerd"
+        },
+        "empty": {
+          "title": "Nog geen testcases",
+          "description": "Documenteer de validatiestappen om de dekking onder controle te houden.",
+          "cta": "Testcases toevoegen"
+        },
+        "dialogs": {
+          "cancel": "Annuleren",
+          "add": {
+            "title": "Testcases toevoegen",
+            "description": "Leg meerdere scenario’s in één keer vast. Elke regel bij Stappen wordt een afzonderlijke stap.",
+            "caseLabel": "Testcase #{index}",
+            "removeCase": "Verwijderen",
+            "addCase": "Nog een testcase",
+            "save": "Testcases opslaan",
+            "saving": "Bezig met opslaan..."
+          },
+          "edit": {
+            "title": "Testcase bewerken",
+            "description": "Werk het scenario bij of archiveer het wanneer het niet meer nodig is.",
+            "archiveToggle": "Markeren als gearchiveerd",
+            "save": "Wijzigingen opslaan",
+            "saving": "Bezig met opslaan..."
+          }
+        },
+        "fields": {
+          "title": "Titel",
+          "steps": "Stappen",
+          "expectedResult": "Verwacht resultaat"
+        },
+        "placeholders": {
+          "title": "Inloggen met ongeldige gegevens",
+          "steps": "Open de loginpagina\nVul een ongeldig e-mailadres in\nVerzend het formulier",
+          "expectedResult": "De gebruiker ziet een foutmelding met uitleg."
+        },
+        "hints": {
+          "steps": "Schrijf één stap per regel."
+        }
+      },
+      "runs": {
+        "errors": {
+          "load": "Recente runs konden niet worden geladen.",
+          "create": "De run kon niet worden aangemaakt.",
+          "loadRun": "De run kon niet worden geopend.",
+          "validation": "Controleer de ingevoerde gegevens.",
+          "updateResults": "De resultaten konden niet worden opgeslagen."
+        },
+        "alerts": {
+          "created": "Run aangemaakt."
+        },
+        "title": "Test-runs",
+        "subtitle": "Volg de uitvoeringshistorie en verzamel bewijsmateriaal voor deze feature.",
+        "actions": {
+          "newRun": "Nieuwe run"
+        },
+        "empty": {
+          "title": "Nog geen runs geregistreerd",
+          "description": "Maak een eerste run aan om de slag te gaan met de slaagkans.",
+          "cta": "Run aanmaken"
+        },
+        "list": {
+          "runFallback": "Run {id}",
+          "open": "Openen"
+        },
+        "summary": {
+          "total": "{count} cases",
+          "passed": "{count} geslaagd"
+        },
+        "panel": {
+          "untitled": "Run zonder titel",
+          "createdAt": "Aangemaakt op {date}",
+          "fields": {
+            "status": "Status",
+            "note": "Notitie"
+          },
+          "statusPlaceholder": "Kies een status",
+          "notePlaceholder": "Optionele notities of bewijslinks...",
+          "summary": {
+            "total": "{count} cases",
+            "passed": "{count} geslaagd",
+            "passRate": "{rate}% slaagpercentage"
+          },
+          "saving": "Bezig met opslaan...",
+          "saved": "Opgeslagen",
+          "saveError": "Opslaan mislukt"
+        },
+        "dialogs": {
+          "cancel": "Annuleren",
+          "newRun": {
+            "title": "Nieuwe run",
+            "description": "Geef context aan deze uitvoering om het team op één lijn te brengen.",
+            "create": "Run aanmaken",
+            "creating": "Bezig..."
+          }
+        },
+        "fields": {
+          "name": "Naam",
+          "environment": "Omgeving",
+          "notes": "Notities"
+        },
+        "placeholders": {
+          "name": "Regressiesuite - sprint",
+          "environment": "Bijv. Staging",
+          "notes": "Optionele context of instapcriteria."
+        },
+        "resultStatus": {
+          "PASS": "Geslaagd",
+          "FAIL": "Mislukt",
+          "BLOCKED": "Geblokkeerd",
+          "SKIPPED": "Overgeslagen"
+        }
+      },
+      "health": {
+        "errors": {
+          "load": "De health-gegevens konden niet worden geladen."
+        },
+        "empty": {
+          "title": "Nog geen health-data",
+          "description": "Voer minstens één run uit om het slaagpercentage en trends te berekenen."
+        },
+        "metrics": {
+          "passRate": "Slaagpercentage",
+          "lastRun": "Laatste run",
+          "flaky": "Flaky cases",
+          "flakyValue": "{count} flaky cases",
+          "notAvailable": "N/B"
+        },
+        "trend": {
+          "title": "Trend van het slaagpercentage",
+          "subtitle": "Laatste runs en hun percentage."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Beheer Menu",
       "home": "Home",

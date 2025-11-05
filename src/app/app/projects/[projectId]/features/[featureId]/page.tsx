@@ -12,6 +12,7 @@ import { handlePageError } from "@/lib/handle-page-error";
 
 // 👇 importa la server action de delete
 import { deleteFeature } from "@/app/app/projects/[projectId]/features/[featureId]/edit/actions";
+import { FeatureQA } from "./feature-qa.client";
 
 type Params = { projectId: string; featureId: string };
 
@@ -156,6 +157,8 @@ export default async function FeatureDetailPage({
           <p className="text-sm text-muted-foreground">{t("versions.empty")}</p>
         )}
       </section>
+
+      <FeatureQA token={session.token} featureId={featureId} />
     </div>
   );
 }

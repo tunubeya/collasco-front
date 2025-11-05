@@ -4,9 +4,7 @@
       "http://localhost:3000",
       "http://*.localhost:3000",
       "http://localhost:3001",
-      "http://*.localhost:3001",
-      "https://myflowcheck.com",
-      "https://*.myflowcheck.com"
+      "http://*.localhost:3001"
     ],
     "method": ["GET"],
     "responseHeader": ["Content-Type"],

@@ -273,19 +273,3 @@ export async function fetchWithAuth(
 
   return response;
 }
-// --- Helper function to get the root domain ---
-export function getRootDomain(hostname: string): string {
-  const parts = hostname.split('.');
-  // Handles cases like 'tunubeya.com', 'www.tunubeya.com', 'tienda1.tunubeya.com'
-  // and also 'localhost' for development.
-  if (parts.length > 2) {
-    // e.g., tienda1.tunubeya.com -> .tunubeya.com
-    return `.${parts.slice(-2).join('.')}`;
-  }
-  if (parts.length === 2 && parts[1] !== 'localhost') {
-    // e.g., tunubeya.com -> .tunubeya.com
-    return `.${hostname}`;
-  }
-  // For 'localhost' or other single-part hostnames in development
-  return hostname;
-}

@@ -7,7 +7,7 @@ import {
   CollectedCookies,
 } from "@/lib/definitions";
 import { auth } from "@/auth";
-import { RoutesEnum, getRootDomain } from "@/lib/utils";
+import { RoutesEnum } from "@/lib/utils";
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
@@ -90,7 +90,7 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
   );
 
   // Check if refresh token is expired (expire 2 minutes before the expiration date)
-  const twoMinsInFuture = Date.now() + 120000;
+  const twoMinsInFuture = Date.now() + 60000;
   const refreshTokenExpired =
     refreshTokenExpirationDate.getTime() < twoMinsInFuture;
 
@@ -99,7 +99,6 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
     console.log("Refresh token expired, redirecting to login");
     return { redirect: NextResponse.redirect(unauthorizedUrl) };
   }
-
   // Check if we need to refresh the access token
   let needsRefresh = false;
 
@@ -113,7 +112,6 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
       accessTokenExpirationDate.getTime() < twoMinsInFuture;
     needsRefresh = accessTokenExpired;
   }
-
   if (needsRefresh) {
     try {
       const resp = await fetchRefreshToken(
@@ -176,10 +174,8 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
 async function applyCookiesAndRespond(
   response: NextResponse,
   collectedData: CollectedCookies,
-  rootDomain: string
 ): Promise<NextResponse> {
   const isProduction = process.env.NODE_ENV === "production";
-  const cookieDomain = isProduction ? rootDomain : undefined;
   if (collectedData.encryptedSessionData && collectedData.newSessionExpiresAt) {
     response.cookies.set({
       name: "session",
@@ -188,8 +184,7 @@ async function applyCookiesAndRespond(
       secure: isProduction,
       expires: collectedData.newSessionExpiresAt,
       sameSite: "lax",
-      path: "/",
-      domain: cookieDomain,
+      path: "/"
     });
   }
   if (
@@ -203,11 +198,9 @@ async function applyCookiesAndRespond(
       secure: isProduction,
       expires: collectedData.newRefreshInfoExpiresAt,
       sameSite: "lax",
-      path: "/",
-      domain: cookieDomain,
+      path: "/"
     });
   }
-
   const expiresAt = new Date(
     Date.now() + expirationTimeDays * 24 * 60 * 60 * 1000
   );
@@ -219,8 +212,7 @@ async function applyCookiesAndRespond(
       secure: isProduction,
       expires: expiresAt,
       sameSite: "lax",
-      path: "/",
-      domain: cookieDomain,
+      path: "/"
     });
   }
   return response;
@@ -229,19 +221,14 @@ async function applyCookiesAndRespond(
 export default auth(async (req) => {
   try {
     const collectedCookieData: CollectedCookies = {};
-    // Subdomain extraction logic
     const host = req.headers.get("host") ?? "";
-    const rootDomain = getRootDomain(host);
     const isLoggedIn = !!req.auth;
-    // Add redirection for subdomains when route is '/'
-
-    // ✅ Solo usuarios logueados saltan al /home
     if (req.nextUrl.pathname === "/") {
       if (isLoggedIn) {
         const newUrl = new URL(RoutesEnum.APP_ROOT, req.nextUrl.origin);
         return NextResponse.redirect(newUrl);
       }
-      return NextResponse.next(); // público ve la landing en "/"
+      return NextResponse.next(); 
     }
     const isResource =
       req.nextUrl.pathname.includes(".svg") ||
@@ -270,18 +257,14 @@ export default auth(async (req) => {
       const newUrl = new URL(RoutesEnum.LOGIN, req.nextUrl.origin);
       return Response.redirect(newUrl);
     }
-
     // If on an unauthorized route, allow access to display the page
     if (isUnauthorizedRoute) {
       return NextResponse.next();
     }
+    let response = NextResponse.next(); 
 
-    let response = NextResponse.next(); // Start with the default next response
-    // Always perform session refresh logic for authenticated routes
-    // This handles both logged-in users and users with expired session cookies
     if (isLoggedIn || req.cookies.get("refresh-info")) {
       const refreshResult = await refreshSession(req);
-      // If refreshSession returned a redirect, prioritize it
       if (refreshResult.redirect) {
         return refreshResult.redirect;
       }
@@ -306,8 +289,7 @@ export default auth(async (req) => {
     // Apply collected cookies to the response and return
     response = await applyCookiesAndRespond(
       response,
-      collectedCookieData,
-      rootDomain
+      collectedCookieData
     ); // MODIFIED: Pass root domain
 
     return response;

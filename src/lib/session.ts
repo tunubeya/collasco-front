@@ -1,9 +1,8 @@
-import 'server-only';
-import { SignJWT, jwtVerify } from 'jose';
-import { SessionPayload, Session, RefreshInfoPayload } from '@/lib/definitions';
-import { cookies, headers } from 'next/headers';
-import crypto from 'crypto';
-import { getRootDomain } from './utils';
+import "server-only";
+import { SignJWT, jwtVerify } from "jose";
+import { SessionPayload, Session, RefreshInfoPayload } from "@/lib/definitions";
+import { cookies, headers } from "next/headers";
+import crypto from "crypto";
 
 const secretKey = process.env.AUTH_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -13,25 +12,23 @@ const expirationTimeDays = 7;
 const secret = process.env.CRYPTO_SECRET!;
 const iv = process.env.CRYPTO_IV!;
 
-export async function encrypt(
-  payload: SessionPayload | RefreshInfoPayload
-) {
+export async function encrypt(payload: SessionPayload | RefreshInfoPayload) {
   return new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${expirationTimeDays}d`)
     .sign(encodedKey);
 }
 export function encryptWithCrypto(payload: SessionPayload): string {
-  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(secret), iv);
-  let encrypted = cipher.update(JSON.stringify(payload), 'utf-8', 'base64');
-  encrypted += cipher.final('base64');
+  const cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(secret), iv);
+  let encrypted = cipher.update(JSON.stringify(payload), "utf-8", "base64");
+  encrypted += cipher.final("base64");
   return encrypted;
 }
-export async function decrypt(session: string | undefined = '') {
+export async function decrypt(session: string | undefined = "") {
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
-      algorithms: ['HS256']
+      algorithms: ["HS256"],
     });
     return payload;
   } catch (error) {
@@ -42,34 +39,23 @@ export async function createSession(sessionPayload: SessionPayload) {
   const expiresAt = new Date(sessionPayload.expiresAt);
   const session = await encrypt(sessionPayload);
   const cookieStore = await cookies();
-  const headersList = await headers();
-  const host = headersList.get('host') ?? '';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieDomain = isProduction ? getRootDomain(host) : undefined;
-  console.log("cookie domain > ", cookieDomain);
-
-  cookieStore.set('session', session, {
+  cookieStore.set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: 'lax',
-    path: '/',
-    domain: cookieDomain
+    sameSite: "lax",
+    path: "/",
   });
 }
 export async function updateSession({
   token,
-  role
+  role,
 }: {
   token?: string;
-  role?: string
+  role?: string;
 }) {
-  const session = (await cookies()).get('session')?.value;
+  const session = (await cookies()).get("session")?.value;
   const payload = (await decrypt(session)) as SessionPayload | undefined;
-  const headersList = await headers();
-  const host = headersList.get('host') ?? '';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieDomain = isProduction ? getRootDomain(host) : undefined;
   if (!session || !payload) {
     return null;
   }
@@ -78,40 +64,33 @@ export async function updateSession({
     ...payload,
     token: token ?? payload.token,
     expiresAt: payload.expiresAt,
-    role: role ?? payload.role
+    role: role ?? payload.role,
   });
 
   const cookieStore = await cookies();
-  cookieStore.set('session', newSession, {
+  cookieStore.set("session", newSession, {
     httpOnly: true,
     secure: true,
     expires: new Date(payload.expiresAt),
-    sameSite: 'lax',
-    path: '/',
-    domain: cookieDomain
+    sameSite: "lax",
+    path: "/",
   });
 }
 export async function deleteSession() {
   const cookieStore = await cookies();
-  const headersList = await headers();
-  const host = headersList.get('host') ?? '';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieDomain = isProduction ? getRootDomain(host) : undefined;
-
   const expiredCookieOptions = {
     httpOnly: true,
     secure: true,
     expires: new Date(0),
     sameSite: "lax" as const,
-    path: '/',
-    domain: cookieDomain
+    path: "/",
   };
-  cookieStore.set('session', ``, expiredCookieOptions);
-  cookieStore.set('store-data', '', expiredCookieOptions);
-  cookieStore.set('refresh-info', '', expiredCookieOptions);
+  cookieStore.set("session", ``, expiredCookieOptions);
+  cookieStore.set("store-data", "", expiredCookieOptions);
+  cookieStore.set("refresh-info", "", expiredCookieOptions);
 }
 export async function getSession() {
-  const session = (await cookies()).get('session')?.value;
+  const session = (await cookies()).get("session")?.value;
   if (!session) {
     return null;
   }
@@ -120,21 +99,16 @@ export async function getSession() {
 export async function saveRefreshInfo(infoPayload: RefreshInfoPayload) {
   const refreshInfo = await encrypt(infoPayload);
   const cookieStore = await cookies();
-  const headersList = await headers();
-  const host = headersList.get('host') ?? '';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieDomain = isProduction ? getRootDomain(host) : undefined;
-  cookieStore.set('refresh-info', refreshInfo, {
+  cookieStore.set("refresh-info", refreshInfo, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
     expires: new Date(infoPayload.refreshTokenExpirationDate),
-    sameSite: 'lax',
-    path: '/',
-    domain: cookieDomain
+    sameSite: "lax",
+    path: "/",
   });
 }
 export async function getRefreshInfo() {
-  const refreshInfo = (await cookies()).get('refresh-info')?.value;
+  const refreshInfo = (await cookies()).get("refresh-info")?.value;
   if (!refreshInfo) {
     return null;
   }
@@ -142,17 +116,15 @@ export async function getRefreshInfo() {
 }
 export async function updateRefreshInfo({
   refreshToken,
-  refreshTokenExpirationDate
+  refreshTokenExpirationDate,
 }: {
   refreshToken?: string;
   refreshTokenExpirationDate?: string;
 }) {
-  const refreshInfo = (await cookies()).get('refresh-info')?.value;
-  const payload = (await decrypt(refreshInfo)) as RefreshInfoPayload | undefined;
-  const headersList = await headers();
-  const host = headersList.get('host') ?? '';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieDomain = isProduction ? getRootDomain(host) : undefined;
+  const refreshInfo = (await cookies()).get("refresh-info")?.value;
+  const payload = (await decrypt(refreshInfo)) as
+    | RefreshInfoPayload
+    | undefined;
   if (!refreshInfo || !payload) {
     return null;
   }
@@ -160,17 +132,17 @@ export async function updateRefreshInfo({
   const updatedPayload = {
     ...payload,
     refreshToken: refreshToken ?? payload.refreshToken,
-    refreshTokenExpirationDate: refreshTokenExpirationDate ?? payload.refreshTokenExpirationDate
+    refreshTokenExpirationDate:
+      refreshTokenExpirationDate ?? payload.refreshTokenExpirationDate,
   };
 
   const newRefreshInfo = await encrypt(updatedPayload);
   const cookieStore = await cookies();
-  cookieStore.set('refresh-info', newRefreshInfo, {
+  cookieStore.set("refresh-info", newRefreshInfo, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
     expires: new Date(updatedPayload.refreshTokenExpirationDate),
-    sameSite: 'lax',
-    path: '/',
-    domain: cookieDomain
+    sameSite: "lax",
+    path: "/",
   });
 }

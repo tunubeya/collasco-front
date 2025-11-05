@@ -8,8 +8,10 @@ import type { Project } from "@/lib/model-definitions/project";
 import type { Feature } from "@/lib/model-definitions/feature";
 import { StructureFeatureItem, StructureModuleNode } from "@/lib/definitions";
 
-type ExpandedMap = Record<string, boolean>;
+// 👇 NUEVO: íconos
+import { ChevronRight, Folder, FolderOpen, FileText } from "lucide-react";
 
+type ExpandedMap = Record<string, boolean>;
 
 export default function ProjectDetailClient({
   project,
@@ -20,9 +22,7 @@ export default function ProjectDetailClient({
 }) {
   const t = useTranslations("app.projects.detail");
   const [expanded, setExpanded] = useState<ExpandedMap>({});
-  // Construimos un índice de TODOS los módulos para "expandir/colapsar todo"
 
-  // índice de módulos para expandir/colapsar todo
   const allModuleIds = useMemo(() => {
     const ids: string[] = [];
     const walk = (mods: StructureModuleNode[] | undefined) => {
@@ -106,33 +106,39 @@ function ModuleNode({
   const toggle = (open: boolean) =>
     setExpanded((prev) => ({ ...prev, [node.id]: open }));
 
-  const paddingLeft = Math.min(level, 6) * 12;
-
-  // conteos solo de referencia (no afectan el orden)
-  const childrenCount = node.items.filter((i) => i.type === "module").length;
-  const featuresCount = node.items.filter((i) => i.type === "feature").length;
+  const paddingLeft = Math.min(level, 6) * 12; // 🔸 un poco más de sangría
 
   return (
     <details
-      className="group rounded-lg border border-transparent px-2 py-1 transition-colors hover:border-muted"
+       className="group rounded-md px-1 py-0.5 transition-colors hover:bg-muted/30"
       open={isOpen}
       onToggle={(e) => toggle((e.target as HTMLDetailsElement).open)}
     >
       <summary
-        className="flex cursor-pointer items-center justify-between gap-3"
+        className="flex cursor-pointer select-none items-center gap-2 pr-2"
         style={{ paddingLeft }}
       >
-        <div className="flex items-center gap-2">
-          <Caret isOpen={isOpen} />
-          <Link
-            href={`/app/projects/${projectId}/modules/${node.id}`}
-            className="text-sm font-medium hover:underline"
-          >
-            {node.name}
-          </Link>
-        </div>
+        {/* Caret estilo chevron */}
+        <ChevronRight
+          className={`h-4 w-4 shrink-0 transition-transform ${isOpen ? "rotate-90" : ""}`}
+          aria-hidden
+        />
+
+        {/* Carpeta abierta/cerrada como en la imagen */}
+        {isOpen ? (
+          <FolderOpen className="h-4 w-4 text-slate-700" aria-hidden />
+        ) : (
+          <Folder className="h-4 w-4 text-slate-700" aria-hidden />
+        )}
+
+        <Link
+          href={`/app/projects/${projectId}/modules/${node.id}`}
+          className="text-sm font-medium hover:underline"
+        >
+          {node.name}
+        </Link>
       </summary>
-      {/* Render ordenado tal cual items */}
+
       {node.items.length > 0 && (
         <ul className="mt-2 space-y-2">
           {node.items.map((item) =>
@@ -147,8 +153,8 @@ function ModuleNode({
                 />
               </li>
             ) : (
-              <li key={item.id} className="ml-8">
-                <FeatureRow feature={item} projectId={projectId} />
+              <li key={item.id}>
+                <FeatureRow feature={item} projectId={projectId} level={level + 1} />
               </li>
             )
           )}
@@ -157,20 +163,26 @@ function ModuleNode({
     </details>
   );
 }
+
 function FeatureRow({
   feature,
   projectId,
+  level
 }: {
   feature: StructureFeatureItem;
   projectId: string;
+  level: number;
 }) {
- return (
+  const paddingLeft = Math.min(level, 6) * 16 + 24; // +24 para alinear con iconos del summary
+  return (
     <Link
       href={`/app/projects/${projectId}/features/${feature.id}`}
-      className="flex items-center justify-between rounded-md border px-2 py-1 text-sm transition-colors hover:border-muted hover:bg-muted/40"
+      className="flex items-center justify-between rounded-md px-2 py-1 text-sm transition-colors hover:bg-muted/30"
+      style={{ paddingLeft }}
     >
       <div className="flex items-center gap-2">
-        <span aria-hidden>⚙️</span>
+        {/* Documento como en la imagen */}
+        <FileText className="h-4 w-4 text-slate-700" aria-hidden />
         <span>{feature.name}</span>
       </div>
       <div className="flex items-center gap-2">
@@ -185,18 +197,6 @@ function FeatureRow({
 
 /** ---------- Badges / helpers ---------- */
 
-function CountBadge({ label, value }: { label: string; value: number }) {
-  return (
-    <span
-      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs"
-      title={label}
-      aria-label={`${label}: ${value}`}
-    >
-      {value}
-    </span>
-  );
-}
-
 function StatusBadge({ status }: { status: Feature["status"] }) {
   const tone =
     status === "DONE"
@@ -207,7 +207,7 @@ function StatusBadge({ status }: { status: Feature["status"] }) {
 
   return (
     <span className={`rounded-full border px-2 py-0.5 text-2xs ${tone}`}>
-      {status}
+      {status.toLowerCase()}
     </span>
   );
 }
@@ -221,19 +221,7 @@ function PriorityBadge({ priority }: { priority: Feature["priority"] }) {
       : "border-slate-200 bg-slate-100 text-slate-800";
   return (
     <span className={`rounded-full border px-2 py-0.5 text-2xs ${tone}`}>
-      {priority}
-    </span>
-  );
-}
-
-function Caret({ isOpen }: { isOpen: boolean }) {
-  return (
-    <span
-      className="inline-block transition-transform"
-      style={{ transform: `rotate(${isOpen ? 90 : 0}deg)` }}
-      aria-hidden
-    >
-      ▶
+      {priority!.toLowerCase()}
     </span>
   );
 }

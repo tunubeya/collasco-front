@@ -9,7 +9,7 @@ const checkboxVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-background checked:bg-primary-orange border-gray-300 hover:border-gray-400 focus:ring-primary-orange',
+          'bg-background checked:bg-black border-gray-300 hover:border-gray-400 focus:ring-primary-orange',
         error: 'bg-red-50 text-red-600 border-red-300 focus:ring-red-500'
       }
     },

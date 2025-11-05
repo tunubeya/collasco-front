@@ -42,7 +42,7 @@ export default function ProjectDetailClient({
   const hasAny = (structureModules?.length ?? 0) > 0;
 
   return (
-    <section className="rounded-xl border bg-background p-4">
+    <section className="rounded-xl border bg-white p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="font-semibold">{t("modules.title")}</h2>
 
@@ -79,10 +79,6 @@ export default function ProjectDetailClient({
                 node={m}
                 expanded={expanded}
                 setExpanded={setExpanded}
-                tText={{
-                  noDescription: t("modules.noDescription"),
-                  sortOrder: (order: number) => t("modules.sortOrder", { order }),
-                }}
                 level={0}
               />
             </li>
@@ -98,17 +94,12 @@ function ModuleNode({
   node,
   expanded,
   setExpanded,
-  tText,
-  level,
+  level
 }: {
   projectId: string;
   node: StructureModuleNode;
   expanded: ExpandedMap;
   setExpanded: React.Dispatch<React.SetStateAction<ExpandedMap>>;
-  tText: {
-    noDescription: string;
-    sortOrder: (order: number) => string;
-  };
   level: number;
 }) {
   const isOpen = !!expanded[node.id];
@@ -140,21 +131,7 @@ function ModuleNode({
             {node.name}
           </Link>
         </div>
-
-        <div className="flex items-center gap-2">
-          <CountBadge label="Submódulos" value={childrenCount} />
-          <CountBadge label="Features" value={featuresCount} />
-          <span className="text-xs text-muted-foreground">
-            {tText.sortOrder(node.sortOrder ?? 0)}
-          </span>
-        </div>
       </summary>
-
-      {/* descripción (tu endpoint no la trae; mostramos placeholder) */}
-      <div className="ml-5 mt-2 text-sm text-muted-foreground">
-        {tText.noDescription}
-      </div>
-
       {/* Render ordenado tal cual items */}
       {node.items.length > 0 && (
         <ul className="mt-2 space-y-2">
@@ -166,7 +143,6 @@ function ModuleNode({
                   node={item}
                   expanded={expanded}
                   setExpanded={setExpanded}
-                  tText={tText}
                   level={level + 1}
                 />
               </li>

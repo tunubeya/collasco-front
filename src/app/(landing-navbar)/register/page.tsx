@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RegisterPage() {
   return (
     <div className="min-h-[calc(100vh-64px)] w-full
-                    bg-gradient-to-br from-surface to-primary/10
+                    bg-white from-surface to-primary/10
                     flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
         <RegisterAccount />

@@ -72,7 +72,7 @@ export default function ProjectsList({ items, pagination }: Props) {
   }
 
   return (
-    <div className="rounded-xl border bg-background">
+    <div className="rounded-xl border bg-white">
       <ul className="divide-y">
         {items.map((project) => {
           const formattedUpdatedAt = format.dateTime(

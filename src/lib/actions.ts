@@ -18,15 +18,11 @@ import {
   fetchForgotPassword,
   fetchResetPassword,
   fetchChangePassword,
-  fetchRefreshToken,
   fetchDeleteUser,
 }from '@/lib/data';
 import {
   getSession,
-  updateSession,
   deleteSession,
-  updateRefreshInfo,
-  getRefreshInfo
 } from '@/lib/session';
 import { RoutesEnum } from '@/lib/utils';
 
@@ -224,38 +220,6 @@ export async function logoutClient() {
     await fetchLogout(token);
   } catch (error) {
     console.error('Error during logout:', error);
-  }
-}
-export async function refreshTokenAfterConfirmation() {
-  try {
-    const refreshInfo = await getRefreshInfo();
-
-    if (!refreshInfo?.email || !refreshInfo?.refreshToken) {
-      return { success: false, error: 'No session or refresh token found' };
-    }
-    const response = await fetchRefreshToken(
-      refreshInfo.refreshToken,
-      refreshInfo.email
-    );
-    if (!response) {
-      return { success: false, error: 'Failed to refresh token' };
-    }
-
-    // Update session with new token
-    await updateSession({
-      token: response.accessToken
-    });
-
-    // Update refresh token info
-    await updateRefreshInfo({
-      refreshToken: response.refreshToken,
-      refreshTokenExpirationDate: response.refreshTokenExpirationDate
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error('Error refreshing token:', error);
-    return { success: false, error: 'Failed to refresh token' };
   }
 }
 export async function deleteUserById(

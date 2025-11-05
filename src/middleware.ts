@@ -40,10 +40,9 @@ type SessionResult = {
   newSessionExpiresAt?: Date;
   encryptedRefreshInfo?: string;
   newRefreshInfoExpiresAt?: Date;
-};
-
-// Refactored refreshSession: Only validates and collects new token data
-async function refreshSession(request: NextRequest): Promise<SessionResult> {
+};async function refreshSession(request: NextRequest): Promise<SessionResult> {
+  console.log(">>> [refreshSession] INICIO");
+  const start = Date.now();
   const unauthorizedUrl = new URL(
     RoutesEnum.ERROR_UNAUTHORIZED,
     request.nextUrl.origin
@@ -51,9 +50,8 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
   const sessionCookie = request.cookies.get("session")?.value;
   const refreshInfoCookie = request.cookies.get("refresh-info")?.value;
 
-  // If no refresh info cookie, user needs to log in again
   if (!refreshInfoCookie) {
-    console.log("err >> no refresh-info cookie");
+    console.log("❌ No existe refresh-info cookie");
     return { redirect: NextResponse.redirect(unauthorizedUrl) };
   }
 
@@ -62,70 +60,57 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
 
   try {
     refreshInfo = (await decrypt(refreshInfoCookie)) as RefreshInfoPayload;
-  } catch (decryptError) {
-    console.error("Failed to decrypt refresh-info cookie:", decryptError);
+  } catch (e) {
+    console.log("❌ Error decrypt refresh-info:", e);
     return { redirect: NextResponse.redirect(unauthorizedUrl) };
   }
 
-  // Try to decrypt session cookie if it exists
   if (sessionCookie) {
     try {
       session = (await decrypt(sessionCookie)) as Session;
-    } catch (decryptError) {
-      console.log(
-        "Session cookie exists but failed to decrypt, will refresh token"
-      );
-      console.error(decryptError);
-      // Continue with refresh logic even if session cookie is corrupted/expired
+    } catch (e) {
+      console.log("⚠ session decrypt falló, se forzará refresh:", e);
     }
   }
 
   if (!refreshInfo) {
-    console.log("err >> no refresh info after decrypt");
+    console.log("❌ No hay refreshInfo después del decrypt");
     return { redirect: NextResponse.redirect(unauthorizedUrl) };
   }
-
   const refreshTokenExpirationDate = new Date(
     refreshInfo.refreshTokenExpirationDate
   );
 
-  // Check if refresh token is expired (expire 2 minutes before the expiration date)
-  const twoMinsInFuture = Date.now() + 60000;
+  const twoMinsInFuture = Date.now() + 2 * 60 * 1000; // 2 minutos
   const refreshTokenExpired =
     refreshTokenExpirationDate.getTime() < twoMinsInFuture;
-
-  // If refresh token is expired, redirect to login
   if (refreshTokenExpired) {
-    console.log("Refresh token expired, redirecting to login");
+    console.log("❌ Refresh token expirado → redirigir a login");
     return { redirect: NextResponse.redirect(unauthorizedUrl) };
   }
-  // Check if we need to refresh the access token
   let needsRefresh = false;
-
   if (!session) {
-    // No valid session cookie, definitely need to refresh
+    console.log("No existe session cookie → se necesita refresh");
     needsRefresh = true;
   } else {
-    // Check if access token is expired or about to expire
-    const accessTokenExpirationDate = new Date(session.expiresAt);
-    const accessTokenExpired =
-      accessTokenExpirationDate.getTime() < twoMinsInFuture;
+    const accessExp = new Date(session.expiresAt);
+    const accessTokenExpired = accessExp.getTime() < twoMinsInFuture;
+    console.log("Estado access token:", {
+      expira: accessExp.toISOString(),
+      expired: accessTokenExpired,
+    });
     needsRefresh = accessTokenExpired;
   }
+
   if (needsRefresh) {
+    console.log("⚙ Ejecutando fetchRefreshToken...");
     try {
-      const resp = await fetchRefreshToken(
-        refreshInfo.refreshToken,
-        refreshInfo.email
-      );
+      const resp = await fetchRefreshToken(refreshInfo.refreshToken);
       if (resp && resp.accessToken) {
-        // Create new session object
+        console.log("✅ Refresh exitoso, nuevos tokens generados.");
         const newSession: Session = {
           token: resp.accessToken,
-          storeId: resp.storeId,
-          confirmed: resp.confirmed,
           expiresAt: resp.accessTokenExpirationDate,
-          role: resp.role,
         } as Session;
 
         const newRefreshInfo: RefreshInfoPayload = {
@@ -137,38 +122,33 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
         const encryptedNewSession = await encrypt(newSession);
         const encryptedNewRefreshInfo = await encrypt(newRefreshInfo);
 
-        // Set session cookie to expire much later than the token to allow for refresh
-        // const sessionCookieExpiresAt = new Date(
-        //   Date.now() + sessionCookieExpirationDays * 24 * 60 * 60 * 1000
-        // );
-        console.log(
-          "new session expiration date >>",
-          resp.accessTokenExpirationDate
-        );
-        console.log(
-          "new refresh expiration date >>",
-          resp.refreshTokenExpirationDate
-        );
+        console.log("Nuevas fechas:", {
+          accessExp: resp.accessTokenExpirationDate,
+          refreshExp: resp.refreshTokenExpirationDate,
+        });
+
+        console.log(">>> [refreshSession] FIN OK. Duración:", Date.now() - start, "ms");
         return {
           encryptedSessionData: encryptedNewSession,
-          newSessionExpiresAt: new Date(resp.accessTokenExpirationDate), // Cookie expires later than token
+          newSessionExpiresAt: new Date(resp.accessTokenExpirationDate),
           encryptedRefreshInfo: encryptedNewRefreshInfo,
           newRefreshInfoExpiresAt: new Date(resp.refreshTokenExpirationDate),
           newToken: resp.accessToken,
         };
       } else {
-        console.log("err >> fetch refresh failed, no access token in response");
+        console.log("❌ fetchRefreshToken sin accessToken en respuesta");
         return { redirect: NextResponse.redirect(unauthorizedUrl) };
       }
     } catch (error) {
-      console.error("refreshSession error:", error);
+      console.log("❌ Error en refreshSession:", error);
       return { redirect: NextResponse.redirect(unauthorizedUrl) };
     }
   }
 
-  // Tokens are valid, nothing to refresh/collect
+  console.log("✅ No se requiere refresh (token válido). Duración:", Date.now() - start, "ms");
   return {};
 }
+
 
 // New function to set cookies and return the response
 async function applyCookiesAndRespond(
@@ -201,27 +181,12 @@ async function applyCookiesAndRespond(
       path: "/"
     });
   }
-  const expiresAt = new Date(
-    Date.now() + expirationTimeDays * 24 * 60 * 60 * 1000
-  );
-  if (collectedData.encryptedStoreData) {
-    response.cookies.set({
-      name: "store-data",
-      value: collectedData.encryptedStoreData,
-      httpOnly: true,
-      secure: isProduction,
-      expires: expiresAt,
-      sameSite: "lax",
-      path: "/"
-    });
-  }
   return response;
 }
 
 export default auth(async (req) => {
   try {
     const collectedCookieData: CollectedCookies = {};
-    const host = req.headers.get("host") ?? "";
     const isLoggedIn = !!req.auth;
     if (req.nextUrl.pathname === "/") {
       if (isLoggedIn) {
@@ -285,13 +250,10 @@ export default auth(async (req) => {
         collectedCookieData.newToken = refreshResult.newToken;
       }
     }
-
-    // Apply collected cookies to the response and return
     response = await applyCookiesAndRespond(
       response,
       collectedCookieData
-    ); // MODIFIED: Pass root domain
-
+    );
     return response;
   } catch (error) {
     console.error("Middleware error:", error);

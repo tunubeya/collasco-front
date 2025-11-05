@@ -31,7 +31,6 @@ export async function handlePageError(error: unknown) {
   if (res?.status === 404) {
     notFound();
   }
-
   // 🔒 Unauthorized or expired token
   try {
     await handleUnauthorized(error);

@@ -112,12 +112,25 @@ export async function fetchLogin(
       body: raw,
     };
 
-    return await fetch(`${apiUrl}/auth/login`, requestOptions).then((res) => {
+    const rawResponse = await fetch(`${apiUrl}/auth/login`, requestOptions).then((res) => {
       if (!res.ok) {
         throw res;
       }
       return res.json();
     });
+
+    const accessTokenExpirationDate =
+      rawResponse.accessTokenExpirationDate;
+    const refreshTokenExpirationDate =
+      rawResponse.refreshTokenExpirationDate;
+
+    return {
+      ...rawResponse,
+      email: rawResponse.email ?? rawResponse.user?.email ?? email,
+      role: rawResponse.role ?? rawResponse.user?.role,
+      accessTokenExpirationDate,
+      refreshTokenExpirationDate,
+    };
   } catch (error) {
     console.error("Database Error:", error);
     throw error;
@@ -128,7 +141,7 @@ export async function fetchLoginGoogle(data: {
   name: string;
   key: string;
   provider?: string;
-}): Promise<ResponseLogin | void> {
+}): Promise<ResponseLogin> {
   data.provider = "google";
   try {
     const myHeaders = new Headers();
@@ -138,7 +151,7 @@ export async function fetchLoginGoogle(data: {
       headers: myHeaders,
       body: JSON.stringify(data),
     };
-    return await fetch(`${apiUrl}/auth/login-google`, requestOptions).then(
+    const rawResponse = await fetch(`${apiUrl}/auth/login-google`, requestOptions).then(
       (res) => {
         if (!res.ok) {
           throw res;
@@ -146,6 +159,18 @@ export async function fetchLoginGoogle(data: {
         return res.json();
       }
     );
+    const accessTokenExpirationDate =
+      rawResponse.accessTokenExpirationDate;
+    const refreshTokenExpirationDate =
+      rawResponse.refreshTokenExpirationDate ;
+
+    return {
+      ...rawResponse,
+      email: rawResponse.email ?? rawResponse.user?.email ?? data.email,
+      role: rawResponse.role ?? rawResponse.user?.role,
+      accessTokenExpirationDate,
+      refreshTokenExpirationDate,
+    };
   } catch (error) {
     console.error("Database Error:", error);
     throw error;
@@ -160,17 +185,14 @@ export async function fetchSignup(
     const cleanName = rawName.replace(/\d+/g, "");
     const formattedName =
       cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
-
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const raw = JSON.stringify({ email, password, name: formattedName });
-
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
     };
-
     const res = await fetch(`${apiUrl}/auth/register`, requestOptions).then(
       (res) => {
         if (!res.ok) {
@@ -186,26 +208,31 @@ export async function fetchSignup(
   }
 }
 export async function fetchRefreshToken(
-  refreshToken: string,
-  email: string
-): Promise<ResponseRefresh | void> {
+  refreshToken: string
+): Promise<ResponseRefresh> {
   try {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    const raw = JSON.stringify({ email, refreshToken });
-
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${refreshToken}`);
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
-      body: raw,
+      headers,
     };
-
-    return await fetch(`${apiUrl}/auth/refresh`, requestOptions).then((res) => {
+    const rawResponse = await fetch(`${apiUrl}/auth/refresh`, requestOptions).then((res) => {
       if (!res.ok) {
         throw res;
       }
       return res.json();
     });
+    const accessTokenExpirationDate =
+      rawResponse.accessTokenExpirationDate;
+    const refreshTokenExpirationDate =
+      rawResponse.refreshTokenExpirationDate;
+    return {
+      ...rawResponse,
+      role: rawResponse.role ?? rawResponse.user?.role,
+      accessTokenExpirationDate,
+      refreshTokenExpirationDate,
+    };
   } catch (error) {
     if (error instanceof Response) {
       const errorBody = await error.json();

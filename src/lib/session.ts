@@ -1,7 +1,7 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { SessionPayload, Session, RefreshInfoPayload } from "@/lib/definitions";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import crypto from "crypto";
 
 const secretKey = process.env.AUTH_SECRET;
@@ -50,20 +50,22 @@ export async function createSession(sessionPayload: SessionPayload) {
 export async function updateSession({
   token,
   role,
+  expiresAt,
 }: {
   token?: string;
   role?: string;
+  expiresAt?: string;
 }) {
   const session = (await cookies()).get("session")?.value;
   const payload = (await decrypt(session)) as SessionPayload | undefined;
   if (!session || !payload) {
     return null;
   }
-  let newSession = session;
-  newSession = await encrypt({
+  const nextExpiresAt = expiresAt ?? payload.expiresAt;
+  const newSession = await encrypt({
     ...payload,
     token: token ?? payload.token,
-    expiresAt: payload.expiresAt,
+    expiresAt: nextExpiresAt,
     role: role ?? payload.role,
   });
 
@@ -71,7 +73,7 @@ export async function updateSession({
   cookieStore.set("session", newSession, {
     httpOnly: true,
     secure: true,
-    expires: new Date(payload.expiresAt),
+    expires: new Date(nextExpiresAt),
     sameSite: "lax",
     path: "/",
   });

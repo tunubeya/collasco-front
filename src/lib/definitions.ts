@@ -5,15 +5,20 @@ export type ISODateString = string;
 export type ResponseLogin = {
   accessToken: string;
   refreshToken: string;
-  email: string;
-  storeId: string | null;
+  user?: {
+    id: string;
+    email: string;
+    role?: string;
+  };
   accessTokenExpirationDate: string;
   refreshTokenExpirationDate: string;
-  role: string;
 };
-// ResponseRefresh is similar to ResponseLogin but replaces 'email' with 'confirmed'
-export type ResponseRefresh = Omit<ResponseLogin, "email"> & {
-  confirmed: boolean;
+
+export type ResponseRefresh = {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpirationDate: string;
+  refreshTokenExpirationDate: string;
 };
 
 export type ResponseForgotPass = {
@@ -32,7 +37,6 @@ export type RefreshInfoPayload = {
 };
 export type Session = {
   token: string;
-  confirmed: boolean;
   expiresAt: string;
   role?: string;
 };
@@ -41,9 +45,7 @@ export type CollectedCookies = {
       newSessionExpiresAt?: Date;
       encryptedRefreshInfo?: string;
       newRefreshInfoExpiresAt?: Date;
-      encryptedStoreData?: string;
       newToken?: string;
-      subdomain?: string;
     }
 // Form State Types
 export type SignUpErrorState = {

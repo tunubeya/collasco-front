@@ -29,25 +29,26 @@ export const authConfig = {
             email: profile?.email ?? "",
             name: profile?.name ?? "",
           });
-          if (typeof res === "object" && "accessToken" in res) {
-            const { accessToken: token, accessTokenExpirationDate, role } = res;
-            const user = await fetchGetUserProfile(token);
-            await createSession({
-              token,
-              expiresAt: accessTokenExpirationDate,
-              role,
-            });
-            await saveRefreshInfo({
-              email: user.email,
-              refreshToken: res.refreshToken,
-              refreshTokenExpirationDate: res.refreshTokenExpirationDate,
-            });
-            //return !!profile?.email_verified;
-            return true;
-          } else {
-            console.error("Invalid response structure from loginGoogle:", res);
-            return false;
-          }
+          const {
+            accessToken: token,
+            accessTokenExpirationDate,
+            refreshToken,
+            refreshTokenExpirationDate,
+          } = res;
+          const user = await fetchGetUserProfile(token);
+          const role = res.user?.role ?? user.role;
+          await createSession({
+            token,
+            expiresAt: accessTokenExpirationDate,
+            role,
+          });
+          await saveRefreshInfo({
+            email: user.email,
+            refreshToken,
+            refreshTokenExpirationDate,
+          });
+          //return !!profile?.email_verified;
+          return true;
         } catch (error) {
           console.error("signIn error:", error);
           return false;

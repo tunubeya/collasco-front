@@ -115,7 +115,6 @@ export default async function ModuleDetailPage({
       {/* Árbol expandible (módulos + features intercalados en orden) */}
       <section className="rounded-xl border bg-background p-4">
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="font-semibold">{t("children.title")}</h2>
           <div className="flex gap-3">
             <Link
               href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}

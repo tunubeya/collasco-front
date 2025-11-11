@@ -20,10 +20,12 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   CreateTestCasesDto,
   CreateTestRunDto,
+  QaFeatureRunListItem,
   QaHealth,
-  QaResultStatus,
+  QaEvaluation,
+  QaRunCoverage,
   QaTestCase,
-  QaTestRun,
+  QaTestRunDetail,
   UpsertResultsDto,
   createTestCases,
   createTestRun,
@@ -51,65 +53,71 @@ type FeatureQAProps = {
   token: string;
   featureId: string;
   runsLimit?: number;
+  currentUserId?: string;
 };
 
 type QaTabValue = "cases" | "runs" | "health";
 
 type DraftTestCase = {
-  title: string;
+  name: string;
   stepsText: string;
-  expectedResult: string;
+  expected: string;
 };
 
 type RunResultState = {
-  status?: QaResultStatus;
-  note?: string;
+  evaluation?: QaEvaluation;
+  comment?: string;
 };
 
-const RESULT_STATUSES: QaResultStatus[] = [
-  "PASS",
-  "FAIL",
-  "BLOCKED",
-  "SKIPPED",
+type RunCaseRow = {
+  testCaseId: string;
+  name: string;
+  expected?: string | null;
+  featureName?: string | null;
+};
+
+export const RESULT_STATUSES: QaEvaluation[] = [
+  "NOT_WORKING",
+  "MINOR_ISSUE",
+  "PASSED",
 ];
 
 const TAB_VALUES: QaTabValue[] = ["cases", "runs", "health"];
 
 const EMPTY_TEST_CASE: DraftTestCase = {
-  title: "",
+  name: "",
   stepsText: "",
-  expectedResult: "",
+  expected: "",
 };
 
 const CREATE_TEST_CASES_SCHEMA = z.object({
   cases: z
     .array(
       z.object({
-        title: z.string().trim().min(1),
+        name: z.string().trim().min(1),
         stepsText: z.string().optional(),
-        expectedResult: z.string().optional(),
+        expected: z.string().optional(),
       }),
     )
     .min(1),
 });
 
 const UPDATE_TEST_CASE_SCHEMA = z.object({
-  title: z.string().trim().min(1),
+  name: z.string().trim().min(1),
   stepsText: z.string().optional(),
-  expectedResult: z.string().optional(),
-  archived: z.boolean().optional(),
+  expected: z.string().optional(),
+  isArchived: z.boolean().optional(),
 });
 
 const NEW_TEST_RUN_SCHEMA = z.object({
-  name: z.string().trim().optional(),
   notes: z.string().trim().optional(),
-  environment: z.string().trim().optional(),
 });
 
 export function FeatureQA({
   token,
   featureId,
   runsLimit = 10,
+  currentUserId,
 }: FeatureQAProps) {
   const t = useTranslations("app.qa");
   const router = useRouter();
@@ -192,6 +200,7 @@ export function FeatureQA({
             token={token}
             featureId={featureId}
             runsLimit={runsLimit}
+            currentUserId={currentUserId}
           />
         )}
         {activeTab === "health" && (
@@ -300,7 +309,15 @@ function TestCasesTab({
   );
 
   const handleEditCase = useCallback(
-    async (testCaseId: string, dto: Partial<QaTestCase>) => {
+    async (
+      testCaseId: string,
+      dto: {
+        name?: string;
+        steps?: string;
+        expected?: string;
+        isArchived?: boolean;
+      },
+    ) => {
       const previous = [...testCases];
       setTestCases((current) =>
         current.map((item) =>
@@ -308,12 +325,7 @@ function TestCasesTab({
         ),
       );
       try {
-        const updated = await updateTestCase(token, testCaseId, {
-          title: dto.title,
-          expectedResult: dto.expectedResult,
-          steps: dto.steps,
-          archived: dto.archived,
-        });
+        const updated = await updateTestCase(token, testCaseId, dto);
         setTestCases((current) =>
           current.map((item) =>
             item.id === testCaseId ? updated : item,
@@ -333,26 +345,24 @@ function TestCasesTab({
   );
 
   const toggleArchive = useCallback(
-    async (testCase: QaTestCase, archived: boolean) => {
+    async (testCase: QaTestCase, isArchived: boolean) => {
       const previous = [...testCases];
       setTestCases((current) =>
         current.map((item) =>
-          item.id === testCase.id ? { ...item, archived } : item,
+          item.id === testCase.id ? { ...item, isArchived } : item,
         ),
       );
       try {
-        const updated = await updateTestCase(
-          token,
-          testCase.id,
-          { archived },
-        );
+        const updated = await updateTestCase(token, testCase.id, {
+          isArchived,
+        });
         setTestCases((current) =>
           current.map((item) =>
             item.id === testCase.id ? updated : item,
           ),
         );
         toast.success(
-          archived ? t("alerts.archived") : t("alerts.restored"),
+          isArchived ? t("alerts.archived") : t("alerts.restored"),
         );
       } catch (error) {
         setTestCases(previous);
@@ -432,10 +442,10 @@ function TestCasesTab({
               return (
                 <tr key={testCase.id} className="align-top">
                   <td className="px-4 py-3">
-                    <p className="font-medium">{testCase.title}</p>
-                    {testCase.expectedResult && (
+                    <p className="font-medium">{testCase.name}</p>
+                    {testCase.expected && (
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {testCase.expectedResult}
+                        {testCase.expected}
                       </p>
                     )}
                   </td>
@@ -443,7 +453,7 @@ function TestCasesTab({
                     {formattedDate}
                   </td>
                   <td className="px-4 py-3">
-                    <StatusBadge archived={Boolean(testCase.archived)} />
+                    <StatusBadge archived={Boolean(testCase.isArchived)} />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
@@ -458,10 +468,10 @@ function TestCasesTab({
                         variant="ghost"
                         size="sm"
                         onClick={() =>
-                          toggleArchive(testCase, !testCase.archived)
+                          toggleArchive(testCase, !testCase.isArchived)
                         }
                       >
-                        {testCase.archived
+                        {testCase.isArchived
                           ? t("table.unarchive")
                           : t("table.archive")}
                       </Button>
@@ -556,12 +566,14 @@ function transformCreateDraft(
 ): CreateTestCasesDto {
   return {
     cases: draft.map((item) => ({
-      title: item.title.trim(),
-      expectedResult: item.expectedResult.trim() || undefined,
-      steps: item.stepsText
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean),
+      name: item.name.trim(),
+      expected: item.expected.trim() || undefined,
+      steps:
+        item.stepsText
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .join("\n") || undefined,
     })),
   };
 }
@@ -641,9 +653,9 @@ function AddTestCasesDialog({
     setErrors(null);
     const parsed = CREATE_TEST_CASES_SCHEMA.safeParse({
       cases: draftCases.map((item) => ({
-        title: item.title,
+        name: item.name,
         stepsText: item.stepsText,
-        expectedResult: item.expectedResult,
+        expected: item.expected,
       })),
     });
 
@@ -654,10 +666,10 @@ function AddTestCasesDialog({
 
     const payload = draftCases.map((item) => ({
       ...item,
-      title: item.title.trim(),
+      name: item.name.trim(),
     }));
 
-    if (!payload.some((item) => item.title.length > 0)) {
+    if (!payload.some((item) => item.name.length > 0)) {
       setErrors(t("errors.validation"));
       return;
     }
@@ -730,9 +742,9 @@ function AddTestCasesDialog({
                   <input
                     ref={index === 0 ? firstInputRef : undefined}
                     type="text"
-                    value={testCase.title}
+                    value={testCase.name}
                     onChange={(event) =>
-                      handleChange(index, "title", event.target.value)
+                      handleChange(index, "name", event.target.value)
                     }
                     className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder={t("placeholders.title")}
@@ -761,9 +773,9 @@ function AddTestCasesDialog({
                   </label>
                   <textarea
                     rows={2}
-                    value={testCase.expectedResult}
+                    value={testCase.expected}
                     onChange={(event) =>
-                      handleChange(index, "expectedResult", event.target.value)
+                      handleChange(index, "expected", event.target.value)
                     }
                     className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder={t("placeholders.expectedResult")}
@@ -818,24 +830,24 @@ function EditTestCaseDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: {
-    title: string;
+    name: string;
     stepsText?: string;
-    expectedResult?: string;
-    archived?: boolean;
+    expected?: string;
+    isArchived?: boolean;
   }) => Promise<void>;
   testCase: QaTestCase | null;
 }) {
   const t = useTranslations("app.qa.cases");
   const [formValues, setFormValues] = useState<{
-    title: string;
+    name: string;
     stepsText?: string;
-    expectedResult?: string;
-    archived: boolean;
+    expected?: string;
+    isArchived: boolean;
   }>({
-    title: "",
+    name: "",
     stepsText: "",
-    expectedResult: "",
-    archived: false,
+    expected: "",
+    isArchived: false,
   });
   const [errors, setErrors] = useState<string | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
@@ -844,10 +856,10 @@ function EditTestCaseDialog({
   useEffect(() => {
     if (open && testCase) {
       setFormValues({
-        title: testCase.title ?? "",
-        stepsText: (testCase.steps ?? []).join("\n"),
-        expectedResult: testCase.expectedResult ?? "",
-        archived: Boolean(testCase.archived),
+        name: testCase.name ?? "",
+        stepsText: testCase.steps ?? "",
+        expected: testCase.expected ?? "",
+        isArchived: Boolean(testCase.isArchived),
       });
       setErrors(null);
       setTimeout(() => firstFieldRef.current?.focus(), 10);
@@ -855,7 +867,7 @@ function EditTestCaseDialog({
   }, [open, testCase]);
 
   const handleChange = useCallback(
-    (field: "title" | "stepsText" | "expectedResult" | "archived", value: string | boolean) => {
+    (field: "name" | "stepsText" | "expected" | "isArchived", value: string | boolean) => {
       setFormValues((prev) => ({
         ...prev,
         [field]: value,
@@ -867,10 +879,10 @@ function EditTestCaseDialog({
   const handleSubmit = useCallback(async () => {
     if (!testCase) return;
     const parsed = UPDATE_TEST_CASE_SCHEMA.safeParse({
-      title: formValues.title,
+      name: formValues.name,
       stepsText: formValues.stepsText,
-      expectedResult: formValues.expectedResult,
-      archived: formValues.archived,
+      expected: formValues.expected,
+      isArchived: formValues.isArchived,
     });
     if (!parsed.success) {
       setErrors(t("errors.validation"));
@@ -879,10 +891,10 @@ function EditTestCaseDialog({
     setIsSubmitting(true);
     try {
       await onSubmit({
-        title: formValues.title,
+        name: formValues.name,
         stepsText: formValues.stepsText,
-        expectedResult: formValues.expectedResult,
-        archived: formValues.archived,
+        expected: formValues.expected,
+        isArchived: formValues.isArchived,
       });
     } finally {
       setIsSubmitting(false);
@@ -929,9 +941,9 @@ function EditTestCaseDialog({
             <input
               ref={firstFieldRef}
               type="text"
-              value={formValues.title}
+              value={formValues.name}
               onChange={(event) =>
-                handleChange("title", event.target.value)
+                handleChange("name", event.target.value)
               }
               className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
@@ -957,9 +969,9 @@ function EditTestCaseDialog({
             </label>
             <textarea
               rows={2}
-              value={formValues.expectedResult}
+              value={formValues.expected}
               onChange={(event) =>
-                handleChange("expectedResult", event.target.value)
+                handleChange("expected", event.target.value)
               }
               className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
@@ -968,9 +980,9 @@ function EditTestCaseDialog({
           <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
             <input
               type="checkbox"
-              checked={formValues.archived}
+              checked={formValues.isArchived}
               onChange={(event) =>
-                handleChange("archived", event.target.checked)
+                handleChange("isArchived", event.target.checked)
               }
               className="rounded border-muted-foreground text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
             />
@@ -1000,28 +1012,41 @@ function EditTestCaseDialog({
   );
 }
 
+
 function TestRunsTab({
   token,
   featureId,
   runsLimit,
+  currentUserId,
 }: {
   token: string;
   featureId: string;
   runsLimit: number;
+  currentUserId?: string;
 }) {
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
 
-  const [runs, setRuns] = useState<QaTestRun[]>([]);
+  const [runs, setRuns] = useState<QaFeatureRunListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedRunId, setSelectedRunId] = useState<string | null>(
-    null,
-  );
-  const [selectedRun, setSelectedRun] = useState<QaTestRun | null>(
-    null,
-  );
+  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
+  const [selectedRun, setSelectedRun] = useState<QaTestRunDetail | null>(null);
   const [isRunLoading, setIsRunLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const summarizeResults = useCallback((results: QaTestRunDetail["results"]) => {
+    return RESULT_STATUSES.reduce<Record<QaEvaluation, number>>(
+      (acc, evaluation) => {
+        acc[evaluation] = results.filter((result) => result.evaluation === evaluation).length;
+        return acc;
+      },
+      {
+        NOT_WORKING: 0,
+        MINOR_ISSUE: 0,
+        PASSED: 0,
+      },
+    );
+  }, []);
 
   const loadRuns = useCallback(async () => {
     setIsLoading(true);
@@ -1030,8 +1055,7 @@ function TestRunsTab({
       setRuns(data);
     } catch (error) {
       toast.error(t("errors.load"), {
-        description:
-          error instanceof Error ? error.message : undefined,
+        description: error instanceof Error ? error.message : undefined,
       });
     } finally {
       setIsLoading(false);
@@ -1045,20 +1069,32 @@ function TestRunsTab({
   const handleCreateRun = useCallback(
     async (dto: CreateTestRunDto) => {
       try {
-        const created = await createTestRun(token, featureId, dto);
-        setRuns((prev) => [created, ...prev]);
+        const payload: CreateTestRunDto = {
+          ...dto,
+          runById: currentUserId ?? dto.runById,
+        };
+        const created = await createTestRun(token, featureId, payload);
+        const summary = summarizeResults(created.results);
+        setRuns((prev) => [
+          {
+            id: created.id,
+            runDate: created.runDate,
+            by: created.runBy?.name ?? null,
+            summary,
+          },
+          ...prev,
+        ]);
         setSelectedRunId(created.id);
         setSelectedRun(created);
         toast.success(t("alerts.created"));
       } catch (error) {
         toast.error(t("errors.create"), {
-          description:
-            error instanceof Error ? error.message : undefined,
+          description: error instanceof Error ? error.message : undefined,
         });
         throw error;
       }
     },
-    [featureId, t, token],
+    [currentUserId, featureId, summarizeResults, t, token],
   );
 
   const openRun = useCallback(
@@ -1070,8 +1106,7 @@ function TestRunsTab({
         setSelectedRun(run);
       } catch (error) {
         toast.error(t("errors.loadRun"), {
-          description:
-            error instanceof Error ? error.message : undefined,
+          description: error instanceof Error ? error.message : undefined,
         });
       } finally {
         setIsRunLoading(false);
@@ -1081,13 +1116,14 @@ function TestRunsTab({
   );
 
   const handleRunUpdated = useCallback(
-    (run: QaTestRun) => {
+    (run: QaTestRunDetail) => {
+      const summary = summarizeResults(run.results);
       setRuns((prev) =>
-        prev.map((item) => (item.id === run.id ? { ...item, summary: run.summary } : item)),
+        prev.map((item) => (item.id === run.id ? { ...item, summary, by: run.runBy?.name ?? item.by } : item)),
       );
       setSelectedRun(run);
     },
-    [],
+    [summarizeResults],
   );
 
   const runListContent = useMemo(() => {
@@ -1115,10 +1151,9 @@ function TestRunsTab({
     return (
       <ul className="space-y-3">
         {runs.map((run) => {
-          const summary = run.summary;
-          const total = summary?.total ?? summaryTotalFromRun(run);
-          const passed = summary?.passed ?? summaryCountFromRun(run, "PASS");
-          const createdAt = formatter.dateTime(new Date(run.createdAt), {
+          const total = Object.values(run.summary ?? {}).reduce((acc, value) => acc + value, 0);
+          const passed = run.summary?.PASSED ?? 0;
+          const runDate = formatter.dateTime(new Date(run.runDate), {
             dateStyle: "medium",
             timeStyle: "short",
           });
@@ -1133,25 +1168,21 @@ function TestRunsTab({
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h3 className="text-sm font-semibold">
-                    {run.name || t("list.runFallback", { id: run.id })}
+                    {t("list.runFallback", { id: run.id })}
                   </h3>
-                  <p className="text-xs text-muted-foreground">
-                    {createdAt}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{runDate}</p>
+                  {run.by && (
+                    <p className="text-xs text-muted-foreground">
+                      {t("list.runBy", { name: run.by })}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <SummaryBadge
-                    label={t("summary.total", { count: total })}
-                  />
-                  <SummaryBadge
-                    label={t("summary.passed", { count: passed })}
-                    tone="success"
-                  />
+                  <SummaryBadge label={t("summary.total", { count: total })} />
+                  <SummaryBadge label={t("summary.passed", { count: passed })} tone="success" />
                   <Button
                     size="sm"
-                    variant={
-                      selectedRunId === run.id ? "default" : "outline"
-                    }
+                    variant={selectedRunId === run.id ? "default" : "outline"}
                     onClick={() => openRun(run.id)}
                   >
                     {t("list.open")}
@@ -1170,13 +1201,9 @@ function TestRunsTab({
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 className="text-base font-semibold">{t("title")}</h3>
-          <p className="text-sm text-muted-foreground">
-            {t("subtitle")}
-          </p>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button onClick={() => setDialogOpen(true)}>
-          {t("actions.newRun")}
-        </Button>
+        <Button onClick={() => setDialogOpen(true)}>{t("actions.newRun")}</Button>
       </div>
 
       {runListContent}
@@ -1199,51 +1226,14 @@ function TestRunsTab({
           </div>
         )}
         {!isRunLoading && selectedRun && (
-          <TestRunPanel
-            token={token}
-            run={selectedRun}
-            onRunUpdated={handleRunUpdated}
-          />
+          <TestRunPanel token={token} run={selectedRun} onRunUpdated={handleRunUpdated} />
+        )}
+
+        {!isRunLoading && !selectedRun && runs.length > 0 && (
+          <p className="mt-4 text-sm text-muted-foreground">{t("list.open")}</p>
         )}
       </div>
     </div>
-  );
-}
-
-function summaryCountFromRun(
-  run: QaTestRun,
-  status: QaResultStatus,
-): number {
-  return run.results.filter(
-    (result) => result.status === status,
-  ).length;
-}
-
-function summaryTotalFromRun(run: QaTestRun): number {
-  if (run.summary?.total) return run.summary.total;
-  if (run.testCases) return run.testCases.length;
-  const uniqueCases = new Set(run.results.map((item) => item.testCaseId));
-  return uniqueCases.size;
-}
-
-function SummaryBadge({
-  label,
-  tone = "neutral",
-}: {
-  label: string;
-  tone?: "neutral" | "success";
-}) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium",
-        tone === "success"
-          ? "border-emerald-200 bg-emerald-100 text-emerald-900"
-          : "border-border bg-muted",
-      )}
-    >
-      {label}
-    </span>
   );
 }
 
@@ -1258,43 +1248,29 @@ function NewTestRunDialog({
 }) {
   const t = useTranslations("app.qa.runs");
   const [formValues, setFormValues] = useState<CreateTestRunDto>({
-    name: "",
     notes: "",
-    environment: "",
   });
   const [errors, setErrors] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const firstInputRef = useRef<HTMLInputElement | null>(null);
+  const firstInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (open) {
       setErrors(null);
       setTimeout(() => firstInputRef.current?.focus(), 10);
     } else {
-      setFormValues({
-        name: "",
-        notes: "",
-        environment: "",
-      });
+      setFormValues({ notes: "" });
       setIsSubmitting(false);
     }
   }, [open]);
 
-  const handleChange = useCallback(
-    (field: keyof CreateTestRunDto, value: string) => {
-      setFormValues((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    },
-    [],
-  );
+  const handleChange = useCallback((value: string) => {
+    setFormValues({ notes: value });
+  }, []);
 
   const handleSubmit = useCallback(async () => {
     const parsed = NEW_TEST_RUN_SCHEMA.safeParse({
-      name: formValues.name,
       notes: formValues.notes,
-      environment: formValues.environment,
     });
     if (!parsed.success) {
       setErrors(t("errors.validation"));
@@ -1343,45 +1319,13 @@ function NewTestRunDialog({
         >
           <div className="space-y-1.5">
             <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {t("fields.name")}
-            </label>
-            <input
-              ref={firstInputRef}
-              type="text"
-              value={formValues.name ?? ""}
-              onChange={(event) =>
-                handleChange("name", event.target.value)
-              }
-              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder={t("placeholders.name")}
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {t("fields.environment")}
-            </label>
-            <input
-              type="text"
-              value={formValues.environment ?? ""}
-              onChange={(event) =>
-                handleChange("environment", event.target.value)
-              }
-              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder={t("placeholders.environment")}
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {t("fields.notes")}
             </label>
             <textarea
+              ref={firstInputRef}
               rows={3}
               value={formValues.notes ?? ""}
-              onChange={(event) =>
-                handleChange("notes", event.target.value)
-              }
+              onChange={(event) => handleChange(event.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder={t("placeholders.notes")}
             />
@@ -1410,24 +1354,23 @@ function NewTestRunDialog({
   );
 }
 
-function TestRunPanel({
+
+export function TestRunPanel({
   token,
   run,
   onRunUpdated,
 }: {
   token: string;
-  run: QaTestRun;
-  onRunUpdated: (run: QaTestRun) => void;
+  run: QaTestRunDetail;
+  onRunUpdated: (run: QaTestRunDetail) => void;
 }) {
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
-  const [runState, setRunState] = useState<QaTestRun>(run);
-  const [resultState, setResultState] = useState<
-    Record<string, RunResultState>
-  >(resultsToState(run));
-  const stableResultsRef = useRef<Record<string, RunResultState>>(
-    resultsToState(run),
-  );
+  const statusLabels = useTranslations("app.qa.runs.resultStatus");
+  const [runState, setRunState] = useState<QaTestRunDetail>(run);
+  const [caseRows, setCaseRows] = useState<RunCaseRow[]>(() => buildCaseRows(run));
+  const [resultState, setResultState] = useState<Record<string, RunResultState>>(resultsToState(run));
+  const stableResultsRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const pendingRef = useRef<Record<string, RunResultState>>({});
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
 
@@ -1436,16 +1379,18 @@ function TestRunPanel({
     const state = resultsToState(run);
     setResultState(state);
     stableResultsRef.current = state;
+    pendingRef.current = {};
+    setCaseRows(buildCaseRows(run));
   }, [run]);
 
   const persistUpdates = useCallback(async () => {
     const pendingEntries = Object.entries(pendingRef.current);
     const payloadResults = pendingEntries
-      .filter(([, value]) => Boolean(value.status))
+      .filter(([, value]) => Boolean(value.evaluation))
       .map(([testCaseId, value]) => ({
         testCaseId,
-        status: value.status as QaResultStatus,
-        note: value.note?.trim() || undefined,
+        evaluation: value.evaluation as QaEvaluation,
+        comment: value.comment?.trim() || undefined,
       }));
 
     if (!payloadResults.length) {
@@ -1464,6 +1409,7 @@ function TestRunPanel({
       stableResultsRef.current = nextState;
       pendingRef.current = {};
       setRunState(updatedRun);
+      setCaseRows(buildCaseRows(updatedRun));
       onRunUpdated(updatedRun);
       setSaveStatus("saved");
       window.setTimeout(() => setSaveStatus("idle"), 1200);
@@ -1472,8 +1418,7 @@ function TestRunPanel({
       pendingRef.current = {};
       setSaveStatus("error");
       toast.error(t("errors.updateResults"), {
-        description:
-          error instanceof Error ? error.message : undefined,
+        description: error instanceof Error ? error.message : undefined,
       });
     }
   }, [onRunUpdated, run.id, t, token]);
@@ -1488,7 +1433,7 @@ function TestRunPanel({
         const next = { ...prev };
         const current = next[testCaseId] ?? {};
         const merged = { ...current, ...changes };
-        if (!merged.status && !merged.note) {
+        if (!merged.evaluation && !merged.comment) {
           delete next[testCaseId];
           delete pendingRef.current[testCaseId];
         } else {
@@ -1507,91 +1452,124 @@ function TestRunPanel({
   );
 
   const summary = useMemo(() => {
-    const total =
-      runState.testCases?.length ??
-      runState.summary?.total ??
-      Object.keys(resultState).length;
-    const counts = RESULT_STATUSES.reduce<Record<QaResultStatus, number>>(
-      (acc, status) => {
-        acc[status] = Object.values(resultState).filter(
-          (value) => value.status === status,
-        ).length;
+    const total = runState.coverage?.totalCases ?? runState.results.length;
+    const counts = RESULT_STATUSES.reduce<Record<QaEvaluation, number>>(
+      (acc, evaluation) => {
+        acc[evaluation] = Object.values(resultState).filter((value) => value.evaluation === evaluation).length;
         return acc;
       },
       {
-        PASS: 0,
-        FAIL: 0,
-        BLOCKED: 0,
-        SKIPPED: 0,
+        NOT_WORKING: 0,
+        MINOR_ISSUE: 0,
+        PASSED: 0,
       },
     );
-    const passRate = total > 0 ? Math.round((counts.PASS / total) * 100) : 0;
+    const passRate = total > 0 ? Math.round(((counts.PASSED ?? 0) / total) * 100) : 0;
     return {
       total,
       counts,
       passRate,
     };
-  }, [resultState, runState.testCases, runState.summary]);
+  }, [resultState, runState.coverage, runState.results]);
 
   const runMeta = useMemo(() => {
     return {
-      name: runState.name || t("panel.untitled"),
-      createdAt: formatter.dateTime(new Date(runState.createdAt), {
+      createdAt: formatter.dateTime(new Date(runState.runDate), {
         dateStyle: "medium",
         timeStyle: "short",
       }),
+      runner: runState.runBy?.name ?? null,
+      featureName: runState.feature?.name ?? null,
+      scope: runState.coverage?.scope ?? "FEATURE",
+      notes: runState.notes?.trim() ?? "",
     };
-  }, [formatter, runState.createdAt, runState.name, t]);
+  }, [formatter, runState.coverage?.scope, runState.feature?.name, runState.notes, runState.runBy?.name, runState.runDate]);
 
-  const statusLabels = useTranslations("app.qa.runs.resultStatus");
+  const rows = useMemo(() => {
+    const seen = new Set<string>();
+    return caseRows.filter((row) => {
+      if (seen.has(row.testCaseId)) return false;
+      seen.add(row.testCaseId);
+      return true;
+    });
+  }, [caseRows]);
+
+  const handleAddMissingCase = useCallback(
+    (testCaseId: string) => {
+      if (caseRows.some((row) => row.testCaseId === testCaseId)) {
+        return;
+      }
+      const missing = runState.coverage?.missingTestCases.find((item) => item.id === testCaseId);
+      if (!missing) {
+        return;
+      }
+      const newRow: RunCaseRow = {
+        testCaseId: missing.id,
+        name: missing.name,
+        featureName: missing.featureName,
+      };
+      setCaseRows((prev) => [...prev, newRow]);
+      setResultState((prev) => ({
+        ...prev,
+        [missing.id]: prev[missing.id] ?? {},
+      }));
+    },
+    [caseRows, runState.coverage?.missingTestCases],
+  );
 
   return (
-    <div className="mt-8 rounded-2xl border bg-muted/40 p-6">
+    <div className="mt-8 space-y-6 rounded-2xl border bg-muted/40 p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <h3 className="text-lg font-semibold">{runMeta.name}</h3>
+          <h3 className="text-lg font-semibold">
+            {runMeta.featureName ?? t("panel.untitled")}
+          </h3>
           <p className="text-xs text-muted-foreground">
             {t("panel.createdAt", { date: runMeta.createdAt })}
           </p>
+          {runMeta.runner && (
+            <p className="text-xs text-muted-foreground">
+              {t("panel.runBy", { name: runMeta.runner })}
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            {t("panel.scope", { scope: runMeta.scope })}
+          </p>
+          {runMeta.notes && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              {runMeta.notes}
+            </p>
+          )}
         </div>
-        <div className="flex items-center gap-3 text-sm">
-          <SummaryBadge
-            label={t("panel.summary.total", {
-              count: summary.total,
-            })}
-          />
-          <SummaryBadge
-            label={t("panel.summary.passed", {
-              count: summary.counts.PASS,
-            })}
-            tone="success"
-          />
-          <SummaryBadge
-            label={t("panel.summary.passRate", {
-              rate: summary.passRate,
-            })}
-          />
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <SummaryBadge label={t("panel.summary.total", { count: summary.total })} />
+          <SummaryBadge label={t("panel.summary.passed", { count: summary.counts.PASSED })} tone="success" />
+          <SummaryBadge label={t("panel.summary.passRate", { rate: summary.passRate })} />
           <SavingIndicator status={saveStatus} />
         </div>
       </div>
 
-      <div className="mt-6 space-y-3">
-        {(runState.testCases ?? []).map((testCase) => {
-          const state = resultState[testCase.id] ?? {};
+      <div className="space-y-3">
+        {rows.length === 0 && (
+          <EmptyState
+            title={t("panel.empty.title")}
+            description={t("panel.empty.description")}
+          />
+        )}
+        {rows.map((testCase) => {
+          const state = resultState[testCase.testCaseId] ?? {};
           return (
-            <div
-              key={testCase.id}
-              className="rounded-xl border border-border bg-background p-4"
-            >
+            <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <div>
-                  <h4 className="text-sm font-semibold">
-                    {testCase.title}
-                  </h4>
-                  {testCase.expectedResult && (
-                    <p className="text-xs text-muted-foreground">
-                      {testCase.expectedResult}
+                  <h4 className="text-sm font-semibold">{testCase.name}</h4>
+                  {testCase.featureName && (
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      {testCase.featureName}
                     </p>
+                  )}
+                  {testCase.expected && (
+                    <p className="text-xs text-muted-foreground">{testCase.expected}</p>
                   )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3 md:justify-end">
@@ -1599,19 +1577,17 @@ function TestRunPanel({
                     {t("panel.fields.status")}
                   </label>
                   <select
-                    value={state.status ?? ""}
+                    value={state.evaluation ?? ""}
                     onChange={(event) =>
-                      handleResultChange(testCase.id, {
-                        status: event.target.value
-                          ? (event.target.value as QaResultStatus)
+                      handleResultChange(testCase.testCaseId, {
+                        evaluation: event.target.value
+                          ? (event.target.value as QaEvaluation)
                           : undefined,
                       })
                     }
                     className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="">
-                      {t("panel.statusPlaceholder")}
-                    </option>
+                    <option value="">{t("panel.statusPlaceholder")}</option>
                     {RESULT_STATUSES.map((status) => (
                       <option key={status} value={status}>
                         {statusLabels(status)}
@@ -1626,13 +1602,13 @@ function TestRunPanel({
                   {t("panel.fields.note")}
                 </label>
                 <textarea
-                  value={state.note ?? ""}
+                  rows={2}
+                  value={state.comment ?? ""}
                   onChange={(event) =>
-                    handleResultChange(testCase.id, {
-                      note: event.target.value,
+                    handleResultChange(testCase.testCaseId, {
+                      comment: event.target.value,
                     })
                   }
-                  rows={2}
                   className="mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder={t("panel.notePlaceholder")}
                 />
@@ -1641,20 +1617,11 @@ function TestRunPanel({
           );
         })}
       </div>
-    </div>
-  );
-}
 
-function resultsToState(run: QaTestRun): Record<string, RunResultState> {
-  return run.results.reduce<Record<string, RunResultState>>(
-    (acc, item) => {
-      acc[item.testCaseId] = {
-        status: item.status,
-        note: item.note,
-      };
-      return acc;
-    },
-    {},
+      {runState.coverage && (
+        <CoverageSummary coverage={runState.coverage} onAddCase={handleAddMissingCase} />
+      )}
+    </div>
   );
 }
 
@@ -1683,6 +1650,79 @@ function SavingIndicator({
       {text}
     </span>
   );
+}
+
+function CoverageSummary({
+  coverage,
+  onAddCase,
+}: {
+  coverage: QaRunCoverage;
+  onAddCase?: (testCaseId: string) => void;
+}) {
+  const t = useTranslations("app.qa.runs");
+  const hasMissing = coverage.missingCases > 0;
+
+  return (
+    <div className="rounded-2xl border border-dashed border-border bg-background/60 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold">
+            {t("panel.coverage.title", {
+              executed: coverage.executedCases,
+              total: coverage.totalCases,
+            })}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {hasMissing
+              ? t("panel.coverage.pending", { count: coverage.missingCases })
+              : t("panel.coverage.complete")}
+          </p>
+        </div>
+      </div>
+      {hasMissing && (
+        <ul className="mt-3 space-y-2">
+          {coverage.missingTestCases.map((testCase) => (
+            <li
+              key={testCase.id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-sm"
+            >
+              <div>
+                <p className="font-medium">{testCase.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {testCase.featureName}
+                </p>
+              </div>
+              {onAddCase && (
+                <Button size="sm" variant="outline" onClick={() => onAddCase(testCase.id)}>
+                  {t("panel.coverage.addResult")}
+                </Button>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function resultsToState(run: QaTestRunDetail): Record<string, RunResultState> {
+  const next: Record<string, RunResultState> = {};
+  for (const result of run.results) {
+    next[result.testCaseId] = {
+      evaluation: result.evaluation,
+      comment: result.comment ?? "",
+    };
+  }
+  return next;
+}
+
+function buildCaseRows(run: QaTestRunDetail): RunCaseRow[] {
+  return run.results.map((result) => ({
+    testCaseId: result.testCaseId,
+    name: result.testCase?.name ?? result.testCaseId,
+    expected: result.testCase?.expected ?? null,
+    featureName: result.testCase?.feature?.name ?? null,
+  }));
 }
 
 function HealthTab({
@@ -1744,11 +1784,11 @@ function HealthTab({
   }
 
   const normalizedPassRate =
-    health.passRate !== undefined
+    health.passRate !== undefined && health.passRate !== null
       ? normalizePassRate(health.passRate)
       : null;
-  const lastRun = health.lastRunAt
-    ? formatter.dateTime(new Date(health.lastRunAt), {
+  const lastRun = health.lastRun
+    ? formatter.dateTime(new Date(health.lastRun.runDate), {
         dateStyle: "medium",
         timeStyle: "short",
       })
@@ -1756,7 +1796,7 @@ function HealthTab({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <MetricCard
           label={t("metrics.passRate")}
           value={
@@ -1769,27 +1809,7 @@ function HealthTab({
           label={t("metrics.lastRun")}
           value={lastRun ?? t("metrics.notAvailable")}
         />
-        <MetricCard
-          label={t("metrics.flaky")}
-          value={
-            health.flakyCount !== undefined
-              ? t("metrics.flakyValue", { count: health.flakyCount })
-              : t("metrics.notAvailable")
-          }
-        />
       </div>
-
-      {health.trend && health.trend.length > 0 && (
-        <div className="rounded-2xl border bg-muted/40 p-6">
-          <h3 className="text-sm font-semibold">
-            {t("trend.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("trend.subtitle")}
-          </p>
-          <TrendChart data={health.trend} />
-        </div>
-      )}
     </div>
   );
 }
@@ -1820,37 +1840,21 @@ function MetricCard({
   );
 }
 
-function TrendChart({
-  data,
+function SummaryBadge({
+  label,
+  tone = "default",
 }: {
-  data: NonNullable<QaHealth["trend"]>;
+  label: string;
+  tone?: "default" | "success";
 }) {
-  const passRates = data.map((point) => normalizePassRate(point.passRate));
-  const maxRate = Math.max(...passRates, 100);
+  const colors =
+    tone === "success"
+      ? "border-emerald-200 bg-emerald-100 text-emerald-800"
+      : "border-muted bg-muted/60 text-foreground";
   return (
-    <div className="mt-6 grid gap-3 md:grid-cols-6">
-      {data.map((point, index) => {
-        const rate = passRates[index];
-        const height = Math.max(8, Math.round((rate / maxRate) * 100));
-        return (
-          <div key={point.runId} className="flex flex-col items-center gap-2 text-xs">
-            <div className="flex h-32 w-full items-end justify-center rounded-lg bg-muted">
-              <div
-                style={{ height: `${height}%` }}
-                className={cn(
-                  "w-full max-w-[28px] rounded-lg bg-primary transition-all",
-                )}
-                aria-label={`${rate}%`}
-              />
-            </div>
-            <div className="text-[10px] text-muted-foreground">
-              {new Date(point.date).toLocaleDateString()}
-            </div>
-            <div className="text-[10px] font-semibold">{rate}%</div>
-          </div>
-        );
-      })}
-    </div>
+    <span className={cn("rounded-full border px-2 py-0.5 text-xs font-medium", colors)}>
+      {label}
+    </span>
   );
 }
 

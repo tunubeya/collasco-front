@@ -610,9 +610,11 @@
           "description": "Maak een eerste run aan om de slag te gaan met de slaagkans.",
           "cta": "Run aanmaken"
         },
+        "noFeatures": "Voeg een feature met testcases toe voordat je een project-run maakt.",
         "list": {
           "runFallback": "Run {id}",
-          "open": "Openen"
+          "open": "Openen",
+          "runBy": "Uitgevoerd door {name}"
         },
         "summary": {
           "total": "{count} cases",
@@ -621,12 +623,24 @@
         "panel": {
           "untitled": "Run zonder titel",
           "createdAt": "Aangemaakt op {date}",
+          "runBy": "Uitgevoerd door {name}",
+          "scope": "{scope, select, FEATURE {Feature-run} PROJECT {Project-run} other {Run {scope}}}",
           "fields": {
             "status": "Status",
             "note": "Notitie"
           },
           "statusPlaceholder": "Kies een status",
           "notePlaceholder": "Optionele notities of bewijslinks...",
+          "empty": {
+            "title": "Nog geen resultaten",
+            "description": "Voeg openstaande cases toe vanuit de dekking of werk een bestaand resultaat bij."
+          },
+          "coverage": {
+            "title": "{executed} van {total} cases uitgevoerd",
+            "pending": "{count} cases openstaand",
+            "complete": "Volledige dekking",
+            "addResult": "Resultaat toevoegen"
+          },
           "summary": {
             "total": "{count} cases",
             "passed": "{count} geslaagd",
@@ -656,10 +670,9 @@
           "notes": "Optionele context of instapcriteria."
         },
         "resultStatus": {
-          "PASS": "Geslaagd",
-          "FAIL": "Mislukt",
-          "BLOCKED": "Geblokkeerd",
-          "SKIPPED": "Overgeslagen"
+          "NOT_WORKING": "Werkt niet",
+          "MINOR_ISSUE": "Klein probleem",
+          "PASSED": "Geslaagd"
         }
       },
       "health": {

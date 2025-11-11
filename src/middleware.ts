@@ -30,7 +30,6 @@ const publicRoutes = [
   "/500",
 ];
 
-const expirationTimeDays = 7;
 // Set session cookie to expire later than the token to allow refresh
 // Define a type for the results returned by the helper functions
 type SessionResult = {

@@ -2,17 +2,19 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { ProjectStatus, ProjectStructureResponse} from "@/lib/definitions";
-import { fetchProjectById, fetchProjectStructure } from "@/lib/data";
+import { ProjectStatus, ProjectStructureResponse, StructureModuleNode } from "@/lib/definitions";
+import { fetchGetUserProfile, fetchProjectById, fetchProjectStructure } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
+import { ProjectQA } from "./project-qa.client";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 import { deleteProject } from "@/app/app/projects/actions";
 
 
 type Params = { projectId: string };
+type FeatureOption = { id: string; name: string };
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -48,6 +50,16 @@ export default async function ProjectDetailPage({
   await handlePageError(error);
 }
   if (!structureResult) notFound();
+
+  let currentUserId: string | null = null;
+  try {
+    const profile = await fetchGetUserProfile(session.token);
+    currentUserId = profile.id;
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  const featureOptions = extractFeatureOptions(structureResult.modules);
 
   const formattedUpdatedAt = formatter.dateTime(new Date(project.updatedAt), {
     dateStyle: "medium",
@@ -105,6 +117,13 @@ export default async function ProjectDetailPage({
           {t("actions.addModule")}
         </Link>
       </div>
+
+      <ProjectQA
+        token={session.token}
+        projectId={projectId}
+        featureOptions={featureOptions}
+        currentUserId={currentUserId ?? undefined}
+      />
     </div>
   );
 }
@@ -128,4 +147,21 @@ function ProjectStatusBadge({
       {label}
     </span>
   );
+}
+
+function extractFeatureOptions(modules: StructureModuleNode[]): FeatureOption[] {
+  const features: FeatureOption[] = [];
+  const visit = (nodes: StructureModuleNode[]) => {
+    nodes.forEach((node) => {
+      node.items.forEach((item) => {
+        if (item.type === "feature") {
+          features.push({ id: item.id, name: item.name });
+        } else {
+          visit([item]);
+        }
+      });
+    });
+  };
+  visit(modules);
+  return features;
 }

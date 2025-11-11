@@ -4,7 +4,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
 import { FeaturePriority, FeatureStatus } from "@/lib/definitions";
-import { fetchFeatureById } from "@/lib/data";
+import { fetchFeatureById, fetchGetUserProfile } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Feature } from "@/lib/model-definitions/feature";
 import { RoutesEnum } from "@/lib/utils";
@@ -40,6 +40,14 @@ export default async function FeatureDetailPage({
     await handlePageError(error);
   }
   if (!feature) notFound();
+
+  let currentUserId: string | null = null;
+  try {
+    const profile = await fetchGetUserProfile(session.token);
+    currentUserId = profile.id;
+  } catch (error) {
+    await handlePageError(error);
+  }
 
   const formattedUpdatedAt = formatter.dateTime(new Date(feature.updatedAt), {
     dateStyle: "medium",
@@ -158,7 +166,7 @@ export default async function FeatureDetailPage({
         )}
       </section>
 
-      <FeatureQA token={session.token} featureId={featureId} />
+      <FeatureQA token={session.token} featureId={featureId} currentUserId={currentUserId ?? undefined} />
     </div>
   );
 }

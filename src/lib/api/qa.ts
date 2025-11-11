@@ -3,79 +3,141 @@ import { handleUnauthorized } from "@/lib/server-auth-helpers";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
-export type QaResultStatus = "PASS" | "FAIL" | "BLOCKED" | "SKIPPED";
+export type QaEvaluation = "NOT_WORKING" | "MINOR_ISSUE" | "PASSED";
 
 export type QaTestCase = {
   id: string;
-  title: string;
-  steps?: string[];
-  expectedResult?: string;
-  archived?: boolean;
+  featureId: string;
+  name: string;
+  steps?: string | null;
+  expected?: string | null;
+  createdAt: string;
   updatedAt: string;
+  isArchived: boolean;
 };
 
 export type CreateTestCasesDto = {
   cases: Array<{
-    title: string;
-    steps?: string[];
-    expectedResult?: string;
+    name: string;
+    steps?: string;
+    expected?: string;
   }>;
 };
 
 export type UpdateTestCaseDto = Partial<{
-  title: string;
-  steps: string[];
-  expectedResult: string;
-  archived: boolean;
+  name: string;
+  steps: string;
+  expected: string;
+  isArchived: boolean;
 }>;
 
-export type QaTestRunResult = {
+export type QaResultInput = {
   testCaseId: string;
-  status: QaResultStatus;
-  note?: string;
+  evaluation: QaEvaluation;
+  comment?: string;
 };
 
-export type QaTestRunSummary = {
-  total: number;
-  passed: number;
-  failed: number;
-  blocked: number;
-  skipped: number;
-};
-
-export type QaTestRun = {
+export type QaTestRunResult = {
   id: string;
-  featureId: string;
+  testCaseId: string;
+  evaluation: QaEvaluation;
+  comment?: string | null;
   createdAt: string;
-  name?: string;
-  notes?: string;
-  environment?: string;
-  testCases?: QaTestCase[];
+  testCase?: {
+    id: string;
+    name: string;
+    steps?: string | null;
+    expected?: string | null;
+    featureId: string;
+    feature?: {
+      id: string;
+      name: string;
+    } | null;
+  } | null;
+};
+
+export type QaRunCoverage = {
+  scope: "FEATURE" | "PROJECT";
+  totalCases: number;
+  executedCases: number;
+  missingCases: number;
+  missingTestCases: Array<{
+    id: string;
+    name: string;
+    featureId: string;
+    featureName: string;
+  }>;
+};
+
+export type QaTestRunDetail = {
+  id: string;
+  projectId: string;
+  featureId: string | null;
+  runDate: string;
+  runById: string | null;
+  notes?: string | null;
+  createdAt: string;
+  project?: {
+    id: string;
+    name: string;
+  } | null;
+  feature?: {
+    id: string;
+    name: string;
+    module?: {
+      id: string;
+      name: string;
+      projectId: string;
+    } | null;
+  } | null;
+  runBy?: {
+    id: string;
+    name: string | null;
+    email?: string | null;
+  } | null;
   results: QaTestRunResult[];
-  summary?: QaTestRunSummary;
+  coverage: QaRunCoverage;
+};
+
+export type QaEvaluationSummary = Record<QaEvaluation, number>;
+
+export type QaFeatureRunListItem = {
+  id: string;
+  runDate: string;
+  by: string | null;
+  summary: QaEvaluationSummary;
+};
+
+export type QaProjectRunListItem = QaFeatureRunListItem & {
+  feature: {
+    id: string;
+    name: string;
+  } | null;
 };
 
 export type CreateTestRunDto = {
-  name?: string;
+  runById?: string;
   notes?: string;
-  environment?: string;
+  results?: QaResultInput[];
+};
+
+export type CreateProjectTestRunDto = {
+  runById?: string;
+  notes?: string;
+  results: QaResultInput[];
 };
 
 export type UpsertResultsDto = {
-  results: QaTestRunResult[];
-};
-
-export type QaHealthTrendPoint = {
-  runId: string;
-  date: string;
-  passRate: number;
+  results: QaResultInput[];
 };
 
 export type QaHealth = {
-  passRate?: number;
-  lastRunAt?: string;
-  trend?: QaHealthTrendPoint[];
-  flakyCount?: number;
+  featureId: string;
+  passRate: number | null;
+  lastRun: {
+    id: string;
+    runDate: string;
+  } | null;
 };
 
 async function parseJsonResponse<T>(res: Response): Promise<T> {
@@ -173,7 +235,7 @@ export async function createTestRun(
   token: string,
   featureId: string,
   dto: CreateTestRunDto
-): Promise<QaTestRun> {
+): Promise<QaTestRunDetail> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/features/${featureId}/test-runs`,
@@ -185,7 +247,30 @@ export async function createTestRun(
       token
     );
     if (!res.ok) throw res;
-    return await parseJsonResponse<QaTestRun>(res);
+    return await parseJsonResponse<QaTestRunDetail>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function createProjectTestRun(
+  token: string,
+  projectId: string,
+  dto: CreateProjectTestRunDto
+): Promise<QaTestRunDetail> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/test-runs`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaTestRunDetail>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -195,7 +280,7 @@ export async function createTestRun(
 export async function getTestRun(
   token: string,
   runId: string
-): Promise<QaTestRun> {
+): Promise<QaTestRunDetail> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/test-runs/${runId}`,
@@ -203,7 +288,7 @@ export async function getTestRun(
       token
     );
     if (!res.ok) throw res;
-    return await parseJsonResponse<QaTestRun>(res);
+    return await parseJsonResponse<QaTestRunDetail>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -214,7 +299,7 @@ export async function upsertResults(
   token: string,
   runId: string,
   dto: UpsertResultsDto
-): Promise<QaTestRun> {
+): Promise<QaTestRunDetail> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/test-runs/${runId}/results`,
@@ -226,7 +311,7 @@ export async function upsertResults(
       token
     );
     if (!res.ok) throw res;
-    return await parseJsonResponse<QaTestRun>(res);
+    return await parseJsonResponse<QaTestRunDetail>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -237,7 +322,7 @@ export async function listTestRuns(
   token: string,
   featureId: string,
   limit = 10
-): Promise<QaTestRun[]> {
+): Promise<QaFeatureRunListItem[]> {
   try {
     const url = new URL(`${apiUrl}/qa/features/${featureId}/test-runs`);
     if (limit) {
@@ -249,7 +334,37 @@ export async function listTestRuns(
       token
     );
     if (!res.ok) throw res;
-    const payload = await parseJsonResponse<QaTestRun[] | { items?: QaTestRun[] }>(res);
+    const payload = await parseJsonResponse<QaFeatureRunListItem[] | { items?: QaFeatureRunListItem[] }>(res);
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+    if (payload && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listProjectTestRuns(
+  token: string,
+  projectId: string,
+  limit = 10
+): Promise<QaProjectRunListItem[]> {
+  try {
+    const url = new URL(`${apiUrl}/qa/projects/${projectId}/test-runs`);
+    if (limit) {
+      url.searchParams.set("limit", String(limit));
+    }
+    const res = await fetchWithAuth(
+      url.toString(),
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<QaProjectRunListItem[] | { items?: QaProjectRunListItem[] }>(res);
     if (Array.isArray(payload)) {
       return payload;
     }

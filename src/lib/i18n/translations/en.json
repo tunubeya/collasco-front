@@ -685,9 +685,11 @@
           "description": "Create your first execution to start tracking pass rate.",
           "cta": "Create a test run"
         },
+        "noFeatures": "Add a feature with test cases before creating a project run.",
         "list": {
           "runFallback": "Run {id}",
-          "open": "Open"
+          "open": "Open",
+          "runBy": "Run by {name}"
         },
         "summary": {
           "total": "{count} cases",
@@ -696,12 +698,24 @@
         "panel": {
           "untitled": "Untitled run",
           "createdAt": "Created {date}",
+          "runBy": "Ran by {name}",
+          "scope": "{scope, select, FEATURE {Feature run} PROJECT {Project run} other {{scope} run}}",
           "fields": {
             "status": "Status",
             "note": "Note"
           },
           "statusPlaceholder": "Select status",
           "notePlaceholder": "Optional notes or evidence links...",
+          "empty": {
+            "title": "No results yet",
+            "description": "Add pending cases from coverage or update an existing one."
+          },
+          "coverage": {
+            "title": "{executed} of {total} cases executed",
+            "pending": "{count} pending cases",
+            "complete": "Full coverage achieved",
+            "addResult": "Add result"
+          },
           "summary": {
             "total": "{count} cases",
             "passed": "{count} passed",
@@ -731,10 +745,9 @@
           "notes": "Optional context or entry criteria."
         },
         "resultStatus": {
-          "PASS": "Pass",
-          "FAIL": "Fail",
-          "BLOCKED": "Blocked",
-          "SKIPPED": "Skipped"
+          "NOT_WORKING": "Not working",
+          "MINOR_ISSUE": "Minor issue",
+          "PASSED": "Passed"
         }
       },
       "health": {

@@ -685,9 +685,11 @@
           "description": "Crie a primeira execução para começar a medir a taxa de aprovação.",
           "cta": "Criar execução"
         },
+        "noFeatures": "Adicione uma feature com casos antes de criar uma execução de projeto.",
         "list": {
           "runFallback": "Execução {id}",
-          "open": "Abrir"
+          "open": "Abrir",
+          "runBy": "Executado por {name}"
         },
         "summary": {
           "total": "{count} casos",
@@ -696,12 +698,24 @@
         "panel": {
           "untitled": "Execução sem título",
           "createdAt": "Criada em {date}",
+          "runBy": "Executada por {name}",
+          "scope": "{scope, select, FEATURE {Execução por feature} PROJECT {Execução do projeto} other {Execução {scope}}}",
           "fields": {
             "status": "Status",
             "note": "Nota"
           },
           "statusPlaceholder": "Selecione um status",
           "notePlaceholder": "Notas ou links de evidência opcionais...",
+          "empty": {
+            "title": "Sem resultados ainda",
+            "description": "Adicione os casos pendentes na cobertura ou atualize um existente."
+          },
+          "coverage": {
+            "title": "{executed} de {total} casos executados",
+            "pending": "{count} casos pendentes",
+            "complete": "Cobertura completa",
+            "addResult": "Adicionar resultado"
+          },
           "summary": {
             "total": "{count} casos",
             "passed": "{count} aprovados",
@@ -731,10 +745,9 @@
           "notes": "Contexto opcional ou critérios de entrada."
         },
         "resultStatus": {
-          "PASS": "Aprovado",
-          "FAIL": "Reprovado",
-          "BLOCKED": "Bloqueado",
-          "SKIPPED": "Pulado"
+          "NOT_WORKING": "Não funciona",
+          "MINOR_ISSUE": "Com problema menor",
+          "PASSED": "Aprovado"
         }
       },
       "health": {

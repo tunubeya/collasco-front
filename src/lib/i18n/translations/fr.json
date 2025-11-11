@@ -631,9 +631,11 @@
           "description": "Créez une première exécution pour commencer à mesurer le taux de réussite.",
           "cta": "Créer une campagne"
         },
+        "noFeatures": "Ajoutez une fonctionnalité avec des cas avant de créer une campagne projet.",
         "list": {
           "runFallback": "Campagne {id}",
-          "open": "Ouvrir"
+          "open": "Ouvrir",
+          "runBy": "Exécuté par {name}"
         },
         "summary": {
           "total": "{count} cas",
@@ -642,12 +644,24 @@
         "panel": {
           "untitled": "Campagne sans titre",
           "createdAt": "Créée le {date}",
+          "runBy": "Exécuté par {name}",
+          "scope": "{scope, select, FEATURE {Exécution par fonctionnalité} PROJECT {Exécution projet} other {Exécution {scope}}}",
           "fields": {
             "status": "Statut",
             "note": "Note"
           },
           "statusPlaceholder": "Sélectionnez un statut",
           "notePlaceholder": "Notes ou liens de preuve (optionnel)...",
+          "empty": {
+            "title": "Aucun résultat",
+            "description": "Ajoutez les cas en attente depuis la couverture ou mettez à jour un résultat existant."
+          },
+          "coverage": {
+            "title": "{executed} sur {total} cas exécutés",
+            "pending": "{count} cas en attente",
+            "complete": "Couverture complète",
+            "addResult": "Ajouter un résultat"
+          },
           "summary": {
             "total": "{count} cas",
             "passed": "{count} réussis",
@@ -677,10 +691,9 @@
           "notes": "Contexte optionnel ou critères d’entrée."
         },
         "resultStatus": {
-          "PASS": "Réussi",
-          "FAIL": "Échec",
-          "BLOCKED": "Bloqué",
-          "SKIPPED": "Ignoré"
+          "NOT_WORKING": "Ne fonctionne pas",
+          "MINOR_ISSUE": "Problème mineur",
+          "PASSED": "Réussi"
         }
       },
       "health": {

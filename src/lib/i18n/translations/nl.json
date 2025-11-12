@@ -528,18 +528,18 @@
       "cases": {
         "errors": {
           "load": "Testcases konden niet worden geladen.",
-          "create": "Testcases konden niet worden aangemaakt.",
+          "create": "De testcase kon niet worden aangemaakt.",
           "update": "De testcase kon niet worden bijgewerkt.",
-          "validation": "Vul minstens één testcase met een titel in."
+          "validation": "Voer een titel in voor de testcase."
         },
         "alerts": {
-          "created": "Testcases aangemaakt.",
+          "created": "Testcase aangemaakt.",
           "updated": "Testcase bijgewerkt.",
           "archived": "Testcase gearchiveerd.",
           "restored": "Testcase hersteld."
         },
         "actions": {
-          "add": "Testcases toevoegen",
+          "add": "Testcase toevoegen",
           "showArchived": "Gearchiveerde tonen"
         },
         "labels": {
@@ -561,17 +561,14 @@
         "empty": {
           "title": "Nog geen testcases",
           "description": "Documenteer de validatiestappen om de dekking onder controle te houden.",
-          "cta": "Testcases toevoegen"
+          "cta": "Testcase toevoegen"
         },
         "dialogs": {
           "cancel": "Annuleren",
           "add": {
-            "title": "Testcases toevoegen",
-            "description": "Leg meerdere scenario’s in één keer vast. Elke regel bij Stappen wordt een afzonderlijke stap.",
-            "caseLabel": "Testcase #{index}",
-            "removeCase": "Verwijderen",
-            "addCase": "Nog een testcase",
-            "save": "Testcases opslaan",
+            "title": "Testcase toevoegen",
+            "description": "Leg de details van het scenario vast. Elke regel bij Stappen wordt een afzonderlijke stap.",
+            "save": "Testcase opslaan",
             "saving": "Bezig met opslaan..."
           },
           "edit": {

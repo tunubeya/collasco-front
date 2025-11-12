@@ -549,18 +549,18 @@
       "cases": {
         "errors": {
           "load": "Impossible de charger les cas de test.",
-          "create": "Impossible de créer les cas.",
+          "create": "Impossible de créer le cas de test.",
           "update": "Impossible de mettre à jour le cas.",
-          "validation": "Ajoutez au moins un cas de test avec un titre."
+          "validation": "Ajoutez un titre au cas de test."
         },
         "alerts": {
-          "created": "Cas de test créés.",
+          "created": "Cas de test créé.",
           "updated": "Cas mis à jour.",
           "archived": "Cas archivé.",
           "restored": "Cas restauré."
         },
         "actions": {
-          "add": "Ajouter des cas de test",
+          "add": "Ajouter un cas de test",
           "showArchived": "Afficher les archivés"
         },
         "labels": {
@@ -582,17 +582,14 @@
         "empty": {
           "title": "Aucun cas de test",
           "description": "Documentez les étapes de validation pour garder la couverture sous contrôle.",
-          "cta": "Ajouter des cas de test"
+          "cta": "Ajouter un cas de test"
         },
         "dialogs": {
           "cancel": "Annuler",
           "add": {
-            "title": "Ajouter des cas de test",
-            "description": "Capturez plusieurs scénarios d’un coup. Chaque ligne dans Étapes devient une étape ordonnée.",
-            "caseLabel": "Cas #{index}",
-            "removeCase": "Retirer",
-            "addCase": "Ajouter un cas",
-            "save": "Enregistrer les cas",
+            "title": "Ajouter un cas de test",
+            "description": "Décrivez le scénario. Chaque ligne dans Étapes devient une étape ordonnée.",
+            "save": "Enregistrer le cas",
             "saving": "Enregistrement..."
           },
           "edit": {

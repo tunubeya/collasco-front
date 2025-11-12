@@ -93,6 +93,8 @@ export function ProjectQA({
           {
             id: created.id,
             runDate: created.runDate,
+            name: created.name ?? null,
+            environment: created.environment ?? null,
             by: created.runBy?.name ?? null,
             feature: created.feature ?? null,
             summary,
@@ -140,6 +142,8 @@ export function ProjectQA({
                 ...item,
                 summary,
                 by: run.runBy?.name ?? item.by,
+                name: run.name ?? item.name,
+                environment: run.environment ?? item.environment,
                 feature: run.feature ?? item.feature,
               }
             : item
@@ -184,6 +188,8 @@ export function ProjectQA({
             dateStyle: "medium",
             timeStyle: "short",
           });
+          const title =
+            run.name?.trim() || t("list.runFallback", { id: run.id });
           return (
             <li
               key={run.id}
@@ -194,12 +200,18 @@ export function ProjectQA({
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h3 className="text-sm font-semibold">
-                    {run.feature
-                      ? `${run.feature.name}`
-                      : t("list.runFallback", { id: run.id })}
-                  </h3>
+                  <h3 className="text-sm font-semibold">{title}</h3>
                   <p className="text-xs text-muted-foreground">{runDate}</p>
+                  {run.environment && (
+                    <p className="text-xs text-muted-foreground">
+                      {run.environment}
+                    </p>
+                  )}
+                  {run.feature?.name && (
+                    <p className="text-xs text-muted-foreground">
+                      {run.feature.name}
+                    </p>
+                  )}
                   {run.by && (
                     <p className="text-xs text-muted-foreground">
                       {t("list.runBy", { name: run.by })}

@@ -41,8 +41,6 @@ import { Button } from "@/ui/components/button";
 import {
   Dialog,
   DialogActions,
-  DialogClose,
-  DialogConfirm,
   DialogContent,
   DialogDescription,
   DialogHeading,
@@ -110,6 +108,8 @@ const UPDATE_TEST_CASE_SCHEMA = z.object({
 });
 
 const NEW_TEST_RUN_SCHEMA = z.object({
+  name: z.string().trim().min(1),
+  environment: z.string().trim().min(1),
   notes: z.string().trim().optional(),
 });
 
@@ -497,7 +497,7 @@ function TestCasesTab({
     <div className="space-y-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
-          <Button onClick={() => setAddDialogOpen(true)}>
+          <Button variant="outline" onClick={() => setAddDialogOpen(true)}>
             {t("actions.add")}
           </Button>
           <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -542,16 +542,17 @@ function TestCasesTab({
         }}
         onSubmit={async (values) => {
           if (!editingCase) return;
-          const steps =
+          const stepsArray =
             values.stepsText
               ?.split("\n")
               .map((line) => line.trim())
-              .filter(Boolean) ?? editingCase.steps ?? [];
+              .filter(Boolean) ?? (Array.isArray(editingCase.steps) ? editingCase.steps : (editingCase.steps ? [editingCase.steps] : []));
+          const steps = stepsArray.length ? stepsArray.join("\n") : undefined;
           await handleEditCase(editingCase.id, {
-            title: values.title,
-            expectedResult: values.expectedResult ?? "",
+            name: values.name,
+            expected: values.expected ?? "",
             steps,
-            archived: values.archived ?? editingCase.archived,
+            isArchived: values.isArchived ?? editingCase.isArchived,
           });
           handleCloseEdit();
           void loadCases();
@@ -604,47 +605,28 @@ function AddTestCasesDialog({
   onSubmit: (draft: DraftTestCase[]) => Promise<void>;
 }) {
   const t = useTranslations("app.qa.cases");
-  const [draftCases, setDraftCases] = useState<DraftTestCase[]>([
-    EMPTY_TEST_CASE,
-  ]);
+  const [formValues, setFormValues] = useState<DraftTestCase>(EMPTY_TEST_CASE);
   const [errors, setErrors] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const firstInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (open) {
+      setErrors(null);
       setTimeout(() => firstInputRef.current?.focus(), 10);
     } else {
-      setDraftCases([EMPTY_TEST_CASE]);
+      setFormValues(EMPTY_TEST_CASE);
       setErrors(null);
       setIsSubmitting(false);
     }
   }, [open]);
 
-  const handleAddCase = useCallback(() => {
-    setDraftCases((prev) => [...prev, EMPTY_TEST_CASE]);
-  }, []);
-
-  const handleRemoveCase = useCallback((index: number) => {
-    setDraftCases((prev) => {
-      if (prev.length === 1) {
-        return prev;
-      }
-      return prev.filter((_, idx) => idx !== index);
-    });
-  }, []);
-
   const handleChange = useCallback(
-    (
-      index: number,
-      field: keyof DraftTestCase,
-      value: string,
-    ) => {
-      setDraftCases((prev) =>
-        prev.map((item, idx) =>
-          idx === index ? { ...item, [field]: value } : item,
-        ),
-      );
+    (field: keyof DraftTestCase, value: string) => {
+      setFormValues((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
     },
     [],
   );
@@ -652,35 +634,27 @@ function AddTestCasesDialog({
   const handleSubmit = useCallback(async () => {
     setErrors(null);
     const parsed = CREATE_TEST_CASES_SCHEMA.safeParse({
-      cases: draftCases.map((item) => ({
-        name: item.name,
-        stepsText: item.stepsText,
-        expected: item.expected,
-      })),
+      cases: [
+        {
+          name: formValues.name,
+          stepsText: formValues.stepsText,
+          expected: formValues.expected,
+        },
+      ],
     });
 
-    if (!parsed.success) {
-      setErrors(t("errors.validation"));
-      return;
-    }
-
-    const payload = draftCases.map((item) => ({
-      ...item,
-      name: item.name.trim(),
-    }));
-
-    if (!payload.some((item) => item.name.length > 0)) {
+    if (!parsed.success || !formValues.name.trim()) {
       setErrors(t("errors.validation"));
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await onSubmit(payload);
+      await onSubmit([{ ...formValues }]);
     } finally {
       setIsSubmitting(false);
     }
-  }, [draftCases, onSubmit, t]);
+  }, [formValues, onSubmit, t]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLFormElement>) => {
@@ -709,112 +683,67 @@ function AddTestCasesDialog({
         </DialogDescription>
 
         <form
-          className="mt-4 space-y-6"
+          className="mt-4 space-y-4"
           onKeyDown={handleKeyDown}
           onSubmit={(event) => {
             event.preventDefault();
             void handleSubmit();
           }}
         >
-          {draftCases.map((testCase, index) => (
-            <div
-              key={`draft-${index}`}
-              className="rounded-xl border border-dashed border-border bg-muted/40 p-4 transition hover:border-primary"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold">
-                  {t("dialogs.add.caseLabel", { index: index + 1 })}
-                </h3>
-                <button
-                  type="button"
-                  className="text-xs text-muted-foreground hover:text-foreground"
-                  onClick={() => handleRemoveCase(index)}
-                  disabled={draftCases.length === 1}
-                >
-                  {t("dialogs.add.removeCase")}
-                </button>
-              </div>
-              <div className="mt-3 space-y-3">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("fields.title")}
-                  </label>
-                  <input
-                    ref={index === 0 ? firstInputRef : undefined}
-                    type="text"
-                    value={testCase.name}
-                    onChange={(event) =>
-                      handleChange(index, "name", event.target.value)
-                    }
-                    className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t("placeholders.title")}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("fields.steps")}
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={testCase.stepsText}
-                    onChange={(event) =>
-                      handleChange(index, "stepsText", event.target.value)
-                    }
-                    className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t("placeholders.steps")}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    {t("hints.steps")}
-                  </p>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("fields.expectedResult")}
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={testCase.expected}
-                    onChange={(event) =>
-                      handleChange(index, "expected", event.target.value)
-                    }
-                    className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t("placeholders.expectedResult")}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-
-          <div className="flex justify-between">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleAddCase}
-            >
-              {t("dialogs.add.addCase")}
-            </Button>
-            <div className="flex gap-2">
-                <DialogClose>
-                  {t("dialogs.cancel")}
-                </DialogClose>
-                <DialogConfirm
-                  onConfirm={async () => {
-                    try {
-                      await handleSubmit();
-                      return true;
-                    } catch {
-                      return false;
-                    }
-                  }}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? t("dialogs.add.saving") : t("dialogs.add.save")}
-                </DialogConfirm>
-              </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("fields.title")}
+            </label>
+            <input
+              ref={firstInputRef}
+              type="text"
+              value={formValues.name}
+              onChange={(event) => handleChange("name", event.target.value)}
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("placeholders.title")}
+            />
           </div>
-          {errors && (
-            <p className="text-sm text-red-600">{errors}</p>
-          )}
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("fields.steps")}
+            </label>
+            <textarea
+              rows={3}
+              value={formValues.stepsText}
+              onChange={(event) => handleChange("stepsText", event.target.value)}
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("placeholders.steps")}
+            />
+            <p className="text-xs text-muted-foreground">{t("hints.steps")}</p>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("fields.expectedResult")}
+            </label>
+            <textarea
+              rows={2}
+              value={formValues.expected}
+              onChange={(event) => handleChange("expected", event.target.value)}
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("placeholders.expectedResult")}
+            />
+          </div>
+
+          {errors && <p className="text-sm text-red-600">{errors}</p>}
+
+          <DialogActions
+            closeLabel={t("dialogs.cancel")}
+            confirmLabel={
+              isSubmitting ? t("dialogs.add.saving") : t("dialogs.add.save")
+            }
+            onConfirm={() => {
+              if (!isSubmitting) {
+                void handleSubmit();
+              }
+            }}
+          />
         </form>
       </DialogContent>
     </Dialog>
@@ -1079,6 +1008,8 @@ function TestRunsTab({
           {
             id: created.id,
             runDate: created.runDate,
+            name: created.name ?? null,
+            environment: created.environment ?? null,
             by: created.runBy?.name ?? null,
             summary,
           },
@@ -1119,7 +1050,17 @@ function TestRunsTab({
     (run: QaTestRunDetail) => {
       const summary = summarizeResults(run.results);
       setRuns((prev) =>
-        prev.map((item) => (item.id === run.id ? { ...item, summary, by: run.runBy?.name ?? item.by } : item)),
+        prev.map((item) =>
+          item.id === run.id
+            ? {
+                ...item,
+                summary,
+                by: run.runBy?.name ?? item.by,
+                name: run.name ?? item.name,
+                environment: run.environment ?? item.environment,
+              }
+            : item,
+        ),
       );
       setSelectedRun(run);
     },
@@ -1157,6 +1098,7 @@ function TestRunsTab({
             dateStyle: "medium",
             timeStyle: "short",
           });
+          const title = run.name?.trim() || t("list.runFallback", { id: run.id });
           return (
             <li
               key={run.id}
@@ -1167,10 +1109,13 @@ function TestRunsTab({
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h3 className="text-sm font-semibold">
-                    {t("list.runFallback", { id: run.id })}
-                  </h3>
+                  <h3 className="text-sm font-semibold">{title}</h3>
                   <p className="text-xs text-muted-foreground">{runDate}</p>
+                  {run.environment && (
+                    <p className="text-xs text-muted-foreground">
+                      {run.environment}
+                    </p>
+                  )}
                   {run.by && (
                     <p className="text-xs text-muted-foreground">
                       {t("list.runBy", { name: run.by })}
@@ -1248,28 +1193,42 @@ function NewTestRunDialog({
 }) {
   const t = useTranslations("app.qa.runs");
   const [formValues, setFormValues] = useState<CreateTestRunDto>({
+    name: "",
+    environment: "",
     notes: "",
   });
   const [errors, setErrors] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const firstInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const firstInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (open) {
       setErrors(null);
       setTimeout(() => firstInputRef.current?.focus(), 10);
     } else {
-      setFormValues({ notes: "" });
+      setFormValues({
+        name: "",
+        environment: "",
+        notes: "",
+      });
       setIsSubmitting(false);
     }
   }, [open]);
 
-  const handleChange = useCallback((value: string) => {
-    setFormValues({ notes: value });
-  }, []);
+  const handleChange = useCallback(
+    (field: keyof CreateTestRunDto, value: string) => {
+      setFormValues((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    },
+    [],
+  );
 
   const handleSubmit = useCallback(async () => {
     const parsed = NEW_TEST_RUN_SCHEMA.safeParse({
+      name: formValues.name,
+      environment: formValues.environment,
       notes: formValues.notes,
     });
     if (!parsed.success) {
@@ -1319,13 +1278,39 @@ function NewTestRunDialog({
         >
           <div className="space-y-1.5">
             <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("fields.name")}
+            </label>
+            <input
+              ref={firstInputRef}
+              type="text"
+              value={formValues.name}
+              onChange={(event) => handleChange("name", event.target.value)}
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("placeholders.name")}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("fields.environment")}
+            </label>
+            <input
+              type="text"
+              value={formValues.environment}
+              onChange={(event) => handleChange("environment", event.target.value)}
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("placeholders.environment")}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {t("fields.notes")}
             </label>
             <textarea
-              ref={firstInputRef}
               rows={3}
               value={formValues.notes ?? ""}
-              onChange={(event) => handleChange(event.target.value)}
+              onChange={(event) => handleChange("notes", event.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder={t("placeholders.notes")}
             />
@@ -1474,6 +1459,8 @@ export function TestRunPanel({
 
   const runMeta = useMemo(() => {
     return {
+      title: runState.name?.trim() || t("panel.untitled"),
+      environment: runState.environment ?? null,
       createdAt: formatter.dateTime(new Date(runState.runDate), {
         dateStyle: "medium",
         timeStyle: "short",
@@ -1483,7 +1470,7 @@ export function TestRunPanel({
       scope: runState.coverage?.scope ?? "FEATURE",
       notes: runState.notes?.trim() ?? "",
     };
-  }, [formatter, runState.coverage?.scope, runState.feature?.name, runState.notes, runState.runBy?.name, runState.runDate]);
+  }, [formatter, runState.coverage?.scope, runState.environment, runState.feature?.name, runState.name, runState.notes, runState.runBy?.name, runState.runDate, t]);
 
   const rows = useMemo(() => {
     const seen = new Set<string>();
@@ -1521,15 +1508,23 @@ export function TestRunPanel({
     <div className="mt-8 space-y-6 rounded-2xl border bg-muted/40 p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <h3 className="text-lg font-semibold">
-            {runMeta.featureName ?? t("panel.untitled")}
-          </h3>
+          <h3 className="text-lg font-semibold">{runMeta.title}</h3>
           <p className="text-xs text-muted-foreground">
             {t("panel.createdAt", { date: runMeta.createdAt })}
           </p>
+          {runMeta.environment && (
+            <p className="text-xs text-muted-foreground">
+              {runMeta.environment}
+            </p>
+          )}
           {runMeta.runner && (
             <p className="text-xs text-muted-foreground">
               {t("panel.runBy", { name: runMeta.runner })}
+            </p>
+          )}
+          {runMeta.featureName && (
+            <p className="text-xs text-muted-foreground">
+              {runMeta.featureName}
             </p>
           )}
           <p className="text-xs text-muted-foreground">

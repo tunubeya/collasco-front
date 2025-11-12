@@ -603,18 +603,18 @@
       "cases": {
         "errors": {
           "load": "No pudimos cargar los casos de prueba.",
-          "create": "No pudimos crear los casos.",
+          "create": "No pudimos crear el caso.",
           "update": "No pudimos actualizar el caso.",
-          "validation": "Completa al menos un caso de prueba con título."
+          "validation": "Completa el título del caso de prueba."
         },
         "alerts": {
-          "created": "Casos de prueba creados.",
+          "created": "Caso de prueba creado.",
           "updated": "Caso actualizado.",
           "archived": "Caso archivado.",
           "restored": "Caso restaurado."
         },
         "actions": {
-          "add": "Agregar casos de prueba",
+          "add": "Agregar caso de prueba",
           "showArchived": "Mostrar archivados"
         },
         "labels": {
@@ -636,17 +636,14 @@
         "empty": {
           "title": "Aún no hay casos",
           "description": "Documenta los pasos de validación para mantener la cobertura controlada.",
-          "cta": "Agregar casos de prueba"
+          "cta": "Agregar caso de prueba"
         },
         "dialogs": {
           "cancel": "Cancelar",
           "add": {
-            "title": "Agregar casos de prueba",
-            "description": "Captura varios escenarios a la vez. Cada línea en Pasos se transforma en un paso ordenado.",
-            "caseLabel": "Caso #{index}",
-            "removeCase": "Quitar",
-            "addCase": "Agregar otro caso",
-            "save": "Guardar casos",
+            "title": "Agregar caso de prueba",
+            "description": "Captura los detalles del escenario. Cada línea en Pasos se transforma en un paso ordenado.",
+            "save": "Guardar caso",
             "saving": "Guardando..."
           },
           "edit": {

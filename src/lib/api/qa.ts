@@ -74,6 +74,8 @@ export type QaTestRunDetail = {
   projectId: string;
   featureId: string | null;
   runDate: string;
+  name?: string | null;
+  environment?: string | null;
   runById: string | null;
   notes?: string | null;
   createdAt: string;
@@ -104,6 +106,8 @@ export type QaEvaluationSummary = Record<QaEvaluation, number>;
 export type QaFeatureRunListItem = {
   id: string;
   runDate: string;
+  name?: string | null;
+  environment?: string | null;
   by: string | null;
   summary: QaEvaluationSummary;
 };
@@ -116,12 +120,16 @@ export type QaProjectRunListItem = QaFeatureRunListItem & {
 };
 
 export type CreateTestRunDto = {
+  name: string;
+  environment: string;
   runById?: string;
   notes?: string;
   results?: QaResultInput[];
 };
 
 export type CreateProjectTestRunDto = {
+  name: string;
+  environment: string;
   runById?: string;
   notes?: string;
   results: QaResultInput[];

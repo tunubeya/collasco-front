@@ -603,18 +603,18 @@
       "cases": {
         "errors": {
           "load": "Não foi possível carregar os casos de teste.",
-          "create": "Não foi possível criar os casos.",
+          "create": "Não foi possível criar o caso.",
           "update": "Não foi possível atualizar o caso.",
-          "validation": "Preencha pelo menos um caso de teste com título."
+          "validation": "Informe o título do caso de teste."
         },
         "alerts": {
-          "created": "Casos de teste criados.",
+          "created": "Caso de teste criado.",
           "updated": "Caso atualizado.",
           "archived": "Caso arquivado.",
           "restored": "Caso restaurado."
         },
         "actions": {
-          "add": "Adicionar casos de teste",
+          "add": "Adicionar caso de teste",
           "showArchived": "Mostrar arquivados"
         },
         "labels": {
@@ -636,17 +636,14 @@
         "empty": {
           "title": "Ainda não há casos",
           "description": "Documente os passos de validação para manter a cobertura sob controle.",
-          "cta": "Adicionar casos de teste"
+          "cta": "Adicionar caso de teste"
         },
         "dialogs": {
           "cancel": "Cancelar",
           "add": {
-            "title": "Adicionar casos de teste",
-            "description": "Registre vários cenários de uma vez. Cada linha em Passos vira uma etapa ordenada.",
-            "caseLabel": "Caso #{index}",
-            "removeCase": "Remover",
-            "addCase": "Adicionar outro caso",
-            "save": "Salvar casos",
+            "title": "Adicionar caso de teste",
+            "description": "Registre os detalhes do cenário. Cada linha em Passos vira uma etapa ordenada.",
+            "save": "Salvar caso",
             "saving": "Salvando..."
           },
           "edit": {

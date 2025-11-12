@@ -38,6 +38,8 @@ export function NewProjectRunDialog({
   const t = useTranslations("app.qa.runs");
   const statusLabels = useTranslations("app.qa.runs.resultStatus");
 
+  const [runName, setRunName] = useState("");
+  const [environment, setEnvironment] = useState("");
   const [notes, setNotes] = useState("");
   const [entries, setEntries] = useState<DraftResult[]>([]);
   const [caseCache, setCaseCache] = useState<Record<string, QaTestCase[]>>({});
@@ -78,6 +80,8 @@ export function NewProjectRunDialog({
       setSelectedCase("");
       setSelectedEvaluation("");
       setComment("");
+      setRunName("");
+      setEnvironment("");
       setNotes("");
       setError(null);
     }
@@ -122,12 +126,14 @@ export function NewProjectRunDialog({
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (!entries.length) {
+    if (!runName.trim() || !environment.trim() || !entries.length) {
       setError(t("errors.validation"));
       return;
     }
     setError(null);
     await onSubmit({
+      name: runName.trim(),
+      environment: environment.trim(),
       notes: notes.trim() || undefined,
       results: entries.map((entry) => ({
         testCaseId: entry.testCaseId,
@@ -135,12 +141,14 @@ export function NewProjectRunDialog({
         comment: entry.comment,
       })),
     });
+    setRunName("");
+    setEnvironment("");
     setEntries([]);
     setNotes("");
     setSelectedCase("");
     setSelectedEvaluation("");
     setComment("");
-  }, [entries, notes, onSubmit, t]);
+  }, [environment, entries, notes, onSubmit, runName, t]);
 
   const hasFeatures = featureOptions.length > 0;
 
@@ -156,6 +164,33 @@ export function NewProjectRunDialog({
         </DialogDescription>
 
         <div className="mt-4 space-y-4">
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("fields.name")}
+              </label>
+              <input
+                type="text"
+                value={runName}
+                onChange={(event) => setRunName(event.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder={t("placeholders.name")}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("fields.environment")}
+              </label>
+              <input
+                type="text"
+                value={environment}
+                onChange={(event) => setEnvironment(event.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder={t("placeholders.environment")}
+              />
+            </div>
+          </div>
+
           {!hasFeatures && (
             <p className="text-sm text-muted-foreground">{t("noFeatures")}</p>
           )}
@@ -240,7 +275,12 @@ export function NewProjectRunDialog({
               </div>
 
               <div className="flex justify-end">
-                <Button onClick={handleAddEntry}>{t("actions.newRun")}</Button>
+                <Button
+                  onClick={handleAddEntry}
+                  disabled={!selectedCase || !selectedEvaluation}
+                >
+                  {t("panel.coverage.addResult")}
+                </Button>
               </div>
 
               {entries.length > 0 && (

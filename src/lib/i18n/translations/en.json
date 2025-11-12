@@ -603,18 +603,18 @@
       "cases": {
         "errors": {
           "load": "We couldn't load test cases.",
-          "create": "We couldn't create the test cases.",
+          "create": "We couldn't create the test case.",
           "update": "We couldn't update the test case.",
-          "validation": "Please fill in at least one test case with a title."
+          "validation": "Please provide a title for the test case."
         },
         "alerts": {
-          "created": "Test cases created.",
+          "created": "Test case created.",
           "updated": "Test case updated.",
           "archived": "Test case archived.",
           "restored": "Test case restored."
         },
         "actions": {
-          "add": "Add test cases",
+          "add": "Add test case",
           "showArchived": "Show archived"
         },
         "labels": {
@@ -636,17 +636,14 @@
         "empty": {
           "title": "No test cases yet",
           "description": "Document the validation steps to keep coverage under control.",
-          "cta": "Add test cases"
+          "cta": "Add test case"
         },
         "dialogs": {
           "cancel": "Cancel",
           "add": {
-            "title": "Add test cases",
-            "description": "Capture multiple scenarios at once. Each line in Steps becomes an ordered step.",
-            "caseLabel": "Test case #{index}",
-            "removeCase": "Remove",
-            "addCase": "Add another case",
-            "save": "Save test cases",
+            "title": "Add test case",
+            "description": "Capture the scenario details. Each line in Steps becomes an ordered step.",
+            "save": "Save test case",
             "saving": "Saving..."
           },
           "edit": {

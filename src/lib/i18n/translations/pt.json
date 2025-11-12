@@ -389,6 +389,10 @@
       },
       "detail": {
         "updated": "Última atualização: {date}",
+        "tabs": {
+          "structure": "Estrutura",
+          "qa": "Execuções QA"
+        },
         "actions": {
           "edit": "Editar",
           "delete": "Excluir",
@@ -502,6 +506,9 @@
             "description": "Excluir um módulo também remove seus submódulos e features.",
             "delete": "Excluir módulo"
           }
+        },
+                "description": {
+          "empty": "Nenhuma descrição informada."
         },
         "errors": {
           "title": "Falha ao carregar o módulo",

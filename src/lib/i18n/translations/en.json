@@ -389,6 +389,10 @@
       },
       "detail": {
         "updated": "Last update: {date}",
+        "tabs": {
+          "structure": "Structure",
+          "qa": "Test runs"
+        },
         "actions": {
           "edit": "Edit",
           "delete": "Delete",
@@ -502,6 +506,9 @@
             "description": "Deleting a module also removes its submodules and features.",
             "delete": "Delete module"
           }
+        },
+        "description": {
+          "empty": "No description provided."
         },
         "errors": {
           "title": "Module failed to load",

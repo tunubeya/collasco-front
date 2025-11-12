@@ -17,7 +17,10 @@ import {
 } from "@/lib/api/qa";
 import { Button } from "@/ui/components/button";
 import { cn } from "@/lib/utils";
-import { TestRunPanel, RESULT_STATUSES } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
+import {
+  TestRunPanel,
+  RESULT_STATUSES,
+} from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
 import {
   Dialog,
   DialogContent,
@@ -40,7 +43,16 @@ type ProjectQAProps = {
   currentUserId?: string;
 };
 
-export function ProjectQA({ token, projectId, featureOptions, currentUserId }: ProjectQAProps) {
+export function ProjectQA({
+  token,
+  projectId,
+  featureOptions,
+  currentUserId,
+}: ProjectQAProps) {
+  console.log("Project ID: ", projectId);
+  console.log("Token: ", token);
+  console.log("Features options: ", featureOptions);
+  console.log("Curren user Id: ", currentUserId);
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
   const hasFeatures = featureOptions.length > 0;
@@ -73,14 +85,16 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
   const summarizeResults = useCallback((run: QaTestRunDetail) => {
     return RESULT_STATUSES.reduce<Record<QaEvaluation, number>>(
       (acc, evaluation) => {
-        acc[evaluation] = run.results.filter((result) => result.evaluation === evaluation).length;
+        acc[evaluation] = run.results.filter(
+          (result) => result.evaluation === evaluation
+        ).length;
         return acc;
       },
       {
         NOT_WORKING: 0,
         MINOR_ISSUE: 0,
         PASSED: 0,
-      },
+      }
     );
   }, []);
 
@@ -98,7 +112,7 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
             id: created.id,
             runDate: created.runDate,
             by: created.runBy?.name ?? null,
-            feature: created.feature,
+            feature: created.feature ?? null,
             summary,
           },
           ...prev,
@@ -113,7 +127,7 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
         throw error;
       }
     },
-    [currentUserId, projectId, summarizeResults, t, token],
+    [currentUserId, projectId, summarizeResults, t, token]
   );
 
   const openRun = useCallback(
@@ -131,7 +145,7 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
         setIsRunLoading(false);
       }
     },
-    [t, token],
+    [t, token]
   );
 
   const handleRunUpdated = useCallback(
@@ -140,13 +154,18 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
       setRuns((prev) =>
         prev.map((item) =>
           item.id === run.id
-            ? { ...item, summary, by: run.runBy?.name ?? item.by, feature: run.feature ?? item.feature }
-            : item,
-        ),
+            ? {
+                ...item,
+                summary,
+                by: run.runBy?.name ?? item.by,
+                feature: run.feature ?? item.feature,
+              }
+            : item
+        )
       );
       setSelectedRun(run);
     },
-    [summarizeResults],
+    [summarizeResults]
   );
 
   const runListContent = useMemo(() => {
@@ -174,7 +193,10 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
     return (
       <ul className="space-y-3">
         {runs.map((run) => {
-          const total = Object.values(run.summary ?? {}).reduce((acc, value) => acc + value, 0);
+          const total = Object.values(run.summary ?? {}).reduce(
+            (acc, value) => acc + value,
+            0
+          );
           const passed = run.summary?.PASSED ?? 0;
           const runDate = formatter.dateTime(new Date(run.runDate), {
             dateStyle: "medium",
@@ -185,13 +207,15 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
               key={run.id}
               className={cn(
                 "rounded-xl border p-4 transition hover:border-primary",
-                selectedRunId === run.id && "border-primary",
+                selectedRunId === run.id && "border-primary"
               )}
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h3 className="text-sm font-semibold">
-                    {run.feature ? `${run.feature.name}` : t("list.runFallback", { id: run.id })}
+                    {run.feature
+                      ? `${run.feature.name}`
+                      : t("list.runFallback", { id: run.id })}
                   </h3>
                   <p className="text-xs text-muted-foreground">{runDate}</p>
                   {run.by && (
@@ -202,8 +226,15 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                   <SummaryBadge label={t("summary.total", { count: total })} />
-                  <SummaryBadge label={t("summary.passed", { count: passed })} tone="success" />
-                  <Button size="sm" variant={selectedRunId === run.id ? "default" : "outline"} onClick={() => openRun(run.id)}>
+                  <SummaryBadge
+                    label={t("summary.passed", { count: passed })}
+                    tone="success"
+                  />
+                  <Button
+                    size="sm"
+                    variant={selectedRunId === run.id ? "default" : "outline"}
+                    onClick={() => openRun(run.id)}
+                  >
                     {t("list.open")}
                   </Button>
                 </div>
@@ -223,7 +254,10 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
       </header>
       <div className="space-y-6 px-4 py-6 md:px-6">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <Button onClick={() => hasFeatures && setDialogOpen(true)} disabled={!hasFeatures}>
+          <Button
+            onClick={() => hasFeatures && setDialogOpen(true)}
+            disabled={!hasFeatures}
+          >
             {t("actions.newRun")}
           </Button>
           {!hasFeatures && (
@@ -253,10 +287,16 @@ export function ProjectQA({ token, projectId, featureOptions, currentUserId }: P
             </div>
           )}
           {!isRunLoading && selectedRun && (
-            <TestRunPanel token={token} run={selectedRun} onRunUpdated={handleRunUpdated} />
+            <TestRunPanel
+              token={token}
+              run={selectedRun}
+              onRunUpdated={handleRunUpdated}
+            />
           )}
           {!isRunLoading && !selectedRun && runs.length > 0 && (
-            <p className="mt-4 text-sm text-muted-foreground">{t("list.open")}</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {t("list.open")}
+            </p>
           )}
         </div>
       </div>
@@ -281,15 +321,25 @@ type DraftResult = {
   comment?: string;
 };
 
-function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubmit }: NewProjectRunDialogProps) {
+function NewProjectRunDialog({
+  token,
+  featureOptions,
+  open,
+  onOpenChange,
+  onSubmit,
+}: NewProjectRunDialogProps) {
   const t = useTranslations("app.qa.runs");
   const statusLabels = useTranslations("app.qa.runs.resultStatus");
   const [notes, setNotes] = useState("");
   const [entries, setEntries] = useState<DraftResult[]>([]);
   const [caseCache, setCaseCache] = useState<Record<string, QaTestCase[]>>({});
-  const [selectedFeature, setSelectedFeature] = useState<string>(featureOptions[0]?.id ?? "");
+  const [selectedFeature, setSelectedFeature] = useState<string>(
+    featureOptions[0]?.id ?? ""
+  );
   const [selectedCase, setSelectedCase] = useState<string>("");
-  const [selectedEvaluation, setSelectedEvaluation] = useState<QaEvaluation | "">("");
+  const [selectedEvaluation, setSelectedEvaluation] = useState<
+    QaEvaluation | ""
+  >("");
   const [comment, setComment] = useState("");
   const [isLoadingCases, setIsLoadingCases] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -309,7 +359,7 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
         setIsLoadingCases(false);
       }
     },
-    [caseCache, t, token],
+    [caseCache, t, token]
   );
 
   useEffect(() => {
@@ -320,7 +370,7 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
 
   const availableCases = useMemo(
     () => caseCache[selectedFeature] ?? [],
-    [caseCache, selectedFeature],
+    [caseCache, selectedFeature]
   );
 
   const handleAddEntry = useCallback(() => {
@@ -328,8 +378,12 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
       setError(t("errors.validation"));
       return;
     }
-    const featureName = featureOptions.find((option) => option.id === selectedFeature)?.name ?? "";
-    const testCaseName = availableCases.find((testCase) => testCase.id === selectedCase)?.name ?? selectedCase;
+    const featureName =
+      featureOptions.find((option) => option.id === selectedFeature)?.name ??
+      "";
+    const testCaseName =
+      availableCases.find((testCase) => testCase.id === selectedCase)?.name ??
+      selectedCase;
     setEntries((prev) => {
       if (prev.some((entry) => entry.testCaseId === selectedCase)) {
         return prev;
@@ -350,10 +404,20 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
     setSelectedEvaluation("");
     setComment("");
     setError(null);
-  }, [availableCases, comment, featureOptions, selectedCase, selectedEvaluation, selectedFeature, t]);
+  }, [
+    availableCases,
+    comment,
+    featureOptions,
+    selectedCase,
+    selectedEvaluation,
+    selectedFeature,
+    t,
+  ]);
 
   const handleRemoveEntry = useCallback((testCaseId: string) => {
-    setEntries((prev) => prev.filter((entry) => entry.testCaseId !== testCaseId));
+    setEntries((prev) =>
+      prev.filter((entry) => entry.testCaseId !== testCaseId)
+    );
   }, []);
 
   const handleSubmit = useCallback(async () => {
@@ -394,7 +458,9 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
         <span />
       </DialogTrigger>
       <DialogContent className="m-4 max-w-3xl rounded-2xl bg-background p-6 shadow-xl">
-        <DialogHeading className="text-lg font-semibold">{t("dialogs.newRun.title")}</DialogHeading>
+        <DialogHeading className="text-lg font-semibold">
+          {t("dialogs.newRun.title")}
+        </DialogHeading>
         <DialogDescription className="text-sm text-muted-foreground">
           {t("dialogs.newRun.description")}
         </DialogDescription>
@@ -437,7 +503,9 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
                 disabled={!availableCases.length || isLoadingCases}
               >
                 <option value="">
-                  {isLoadingCases ? t("labels.refreshing") : t("panel.statusPlaceholder")}
+                  {isLoadingCases
+                    ? t("labels.refreshing")
+                    : t("panel.statusPlaceholder")}
                 </option>
                 {availableCases.map((testCase) => (
                   <option key={testCase.id} value={testCase.id}>
@@ -455,7 +523,9 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
               </label>
               <select
                 value={selectedEvaluation}
-                onChange={(event) => setSelectedEvaluation(event.target.value as QaEvaluation)}
+                onChange={(event) =>
+                  setSelectedEvaluation(event.target.value as QaEvaluation)
+                }
                 className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="">{t("panel.statusPlaceholder")}</option>
@@ -483,7 +553,7 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
 
           <div className="flex justify-end">
             <Button onClick={handleAddEntry} disabled={!featureOptions.length}>
-              {t("actions.add")}
+              {t("actions.newRun")}
             </Button>
           </div>
 
@@ -495,14 +565,22 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
                   className="flex flex-wrap items-center justify-between gap-3 rounded-lg border px-3 py-2"
                 >
                   <div>
-                    <p className="text-sm font-semibold">{entry.testCaseName}</p>
-                    <p className="text-xs text-muted-foreground">{entry.featureName}</p>
+                    <p className="text-sm font-semibold">
+                      {entry.testCaseName}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {entry.featureName}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs uppercase tracking-wide text-muted-foreground">
                       {statusLabels(entry.evaluation)}
                     </span>
-                    <Button variant="ghost" size="sm" onClick={() => handleRemoveEntry(entry.testCaseId)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveEntry(entry.testCaseId)}
+                    >
                       ×
                     </Button>
                   </div>
@@ -530,7 +608,10 @@ function NewProjectRunDialog({ token, featureOptions, open, onOpenChange, onSubm
             <Button variant="ghost" onClick={() => onOpenChange(false)}>
               {t("dialogs.cancel")}
             </Button>
-            <Button onClick={() => void handleSubmit()} disabled={!entries.length}>
+            <Button
+              onClick={() => void handleSubmit()}
+              disabled={!entries.length}
+            >
               {t("dialogs.newRun.create")}
             </Button>
           </div>
@@ -552,7 +633,12 @@ function SummaryBadge({
       ? "border-emerald-200 bg-emerald-100 text-emerald-800"
       : "border-muted bg-muted/60 text-foreground";
   return (
-    <span className={cn("rounded-full border px-2 py-0.5 text-xs font-medium", colors)}>
+    <span
+      className={cn(
+        "rounded-full border px-2 py-0.5 text-xs font-medium",
+        colors
+      )}
+    >
       {label}
     </span>
   );

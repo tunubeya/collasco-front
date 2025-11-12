@@ -6,8 +6,7 @@ import { ProjectStatus, ProjectStructureResponse, StructureModuleNode } from "@/
 import { fetchGetUserProfile, fetchProjectById, fetchProjectStructure } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
-import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
-import { ProjectQA } from "./project-qa.client";
+import { ProjectTabs } from "./project-tabs.client";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 import { deleteProject } from "@/app/app/projects/actions";
@@ -106,21 +105,11 @@ export default async function ProjectDetailPage({
         </div>
       </header>
 
-      {/* Tu cliente ahora recibe toda la jerarquía desde root */}
-      <ProjectDetailClient project={project} structureModules={structureResult.modules} />
-
-      <div>
-        <Link
-          href={`/app/projects/${project.id}/modules/new`}
-          className="inline-flex items-center rounded-lg border px-3 py-2 text-sm transition-colors hover:bg-muted"
-        >
-          {t("actions.addModule")}
-        </Link>
-      </div>
-
-      <ProjectQA
-        token={session.token}
+      <ProjectTabs
+        project={project}
         projectId={projectId}
+        structureModules={structureResult.modules}
+        token={session.token}
         featureOptions={featureOptions}
         currentUserId={currentUserId ?? undefined}
       />

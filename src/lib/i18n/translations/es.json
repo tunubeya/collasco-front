@@ -389,6 +389,10 @@
       },
       "detail": {
         "updated": "Última actualización: {date}",
+        "tabs": {
+          "structure": "Estructura",
+          "qa": "Ejecuciones QA"
+        },
         "actions": {
           "edit": "Editar",
           "delete": "Eliminar",
@@ -502,6 +506,9 @@
             "description": "Eliminar un módulo también borra sus submódulos y features.",
             "delete": "Eliminar módulo"
           }
+        },
+        "description": {
+          "empty": "Sin descripción proporcionada."
         },
         "errors": {
           "title": "No se pudo cargar el módulo",

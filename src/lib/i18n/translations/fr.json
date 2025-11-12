@@ -335,6 +335,10 @@
       },
       "detail": {
         "updated": "Dernière mise à jour : {date}",
+        "tabs": {
+          "structure": "Structure",
+          "qa": "Campagnes QA"
+        },
         "actions": {
           "edit": "Modifier",
           "delete": "Supprimer",
@@ -448,6 +452,9 @@
             "description": "Supprimer un module efface aussi ses sous-modules et fonctionnalités.",
             "delete": "Supprimer le module"
           }
+        },
+                "description": {
+          "empty": "Aucune description fournie."
         },
         "errors": {
           "title": "Échec du chargement du module",

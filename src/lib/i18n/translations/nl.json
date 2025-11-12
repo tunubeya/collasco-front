@@ -314,6 +314,10 @@
       },
       "detail": {
         "updated": "Laatste update: {date}",
+        "tabs": {
+          "structure": "Structuur",
+          "qa": "QA-runs"
+        },
         "actions": {
           "edit": "Bewerken",
           "delete": "Verwijderen",
@@ -427,6 +431,9 @@
             "description": "Het verwijderen van een module verwijdert ook submodules en features.",
             "delete": "Module verwijderen"
           }
+        },
+                "description": {
+          "empty": "Geen beschrijving beschikbaar."
         },
         "errors": {
           "title": "Module laden mislukt",

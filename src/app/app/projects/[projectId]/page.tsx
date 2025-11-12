@@ -7,13 +7,13 @@ import { fetchGetUserProfile, fetchProjectById, fetchProjectStructure } from "@/
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
 import { ProjectTabs } from "./project-tabs.client";
+import type { FeatureOption } from "./project-qa.types";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 import { deleteProject } from "@/app/app/projects/actions";
 
 
 type Params = { projectId: string };
-type FeatureOption = { id: string; name: string };
 export default async function ProjectDetailPage({
   params,
 }: {

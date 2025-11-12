@@ -608,7 +608,7 @@
           "created": "Run aangemaakt."
         },
         "title": "Test-runs",
-        "subtitle": "Volg de uitvoeringshistorie en verzamel bewijsmateriaal voor deze feature.",
+        "subtitle": "Volg de uitvoeringshistorie en verzamel bewijsmateriaal.",
         "actions": {
           "newRun": "Nieuwe run"
         },

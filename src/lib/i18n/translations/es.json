@@ -683,7 +683,7 @@
           "created": "Ejecución creada."
         },
         "title": "Ejecuciones",
-        "subtitle": "Controla el historial de ejecución y registra evidencia del feature.",
+        "subtitle": "Controla el historial de ejecución y registra evidencia.",
         "actions": {
           "newRun": "Nueva ejecución"
         },

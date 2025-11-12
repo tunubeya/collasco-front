@@ -9,11 +9,7 @@ import type { StructureModuleNode } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
 import { ProjectQA } from "./project-qa.client";
-
-type FeatureOption = {
-  id: string;
-  name: string;
-};
+import type { FeatureOption } from "./project-qa.types";
 
 type ProjectTabsProps = {
   project: Project;

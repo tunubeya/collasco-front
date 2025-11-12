@@ -629,7 +629,7 @@
           "created": "Campagne créée."
         },
         "title": "Campagnes",
-        "subtitle": "Suivez l’historique d’exécution et collectez les preuves de cette fonctionnalité.",
+        "subtitle": "Suivez l’historique d’exécution et collectez les preuves.",
         "actions": {
           "newRun": "Nouvelle campagne"
         },

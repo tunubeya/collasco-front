@@ -683,7 +683,7 @@
           "created": "Execução criada."
         },
         "title": "Execuções",
-        "subtitle": "Acompanhe o histórico de execução e registre evidências desta feature.",
+        "subtitle": "Acompanhe o histórico de execução e registre evidências.",
         "actions": {
           "newRun": "Nova execução"
         },

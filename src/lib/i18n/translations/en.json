@@ -683,7 +683,7 @@
           "created": "Test run created."
         },
         "title": "Test runs",
-        "subtitle": "Track execution history and capture evidence for this feature.",
+        "subtitle": "Track execution history and capture evidence.",
         "actions": {
           "newRun": "New test run"
         },

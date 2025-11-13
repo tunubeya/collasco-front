@@ -135,6 +135,7 @@ export function NewProjectRunDialog({
       name: runName.trim(),
       environment: environment.trim(),
       notes: notes.trim() || undefined,
+      targetTestCaseIds: entries.map((entry) => entry.testCaseId),
       results: entries.map((entry) => ({
         testCaseId: entry.testCaseId,
         evaluation: entry.evaluation,

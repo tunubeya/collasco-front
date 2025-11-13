@@ -124,6 +124,7 @@ export type CreateTestRunDto = {
   environment: string;
   runById?: string;
   notes?: string;
+  targetTestCaseIds?: string[];
   results?: QaResultInput[];
 };
 
@@ -132,6 +133,7 @@ export type CreateProjectTestRunDto = {
   environment: string;
   runById?: string;
   notes?: string;
+  targetTestCaseIds?: string[];
   results: QaResultInput[];
 };
 

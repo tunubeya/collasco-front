@@ -684,6 +684,12 @@
         "actions": {
           "newRun": "New test run"
         },
+        "filters": {
+          "label": "Scope",
+          "all": "All runs",
+          "project": "Project runs",
+          "feature": "Feature runs"
+        },
         "empty": {
           "title": "No runs recorded",
           "description": "Create your first execution to start tracking pass rate.",
@@ -718,7 +724,9 @@
             "title": "{executed} of {total} cases executed",
             "pending": "{count} pending cases",
             "complete": "Full coverage achieved",
-            "addResult": "Add result"
+            "addResult": "Add result",
+            "showPending": "Show pending cases",
+            "hidePending": "Hide pending cases"
           },
           "summary": {
             "total": "{count} cases",

@@ -8,6 +8,7 @@ import {
   CreateProjectTestRunDto,
   QaEvaluation,
   QaProjectRunListItem,
+  QaRunScope,
   QaTestRunDetail,
   createProjectTestRun,
   getTestRun,
@@ -18,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { TestRunPanel, RESULT_STATUSES } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
 import { FeatureOption } from "./project-qa.types";
 import { NewProjectRunDialog } from "./project-qa-dialog.client";
-import { SummaryBadge, EmptyState, Skeleton } from "./project-qa-shared";
+import { SummaryBadge, EmptyState, Skeleton, ScopeBadge } from "./project-qa-shared";
 
 const RUNS_LIMIT = 10;
 
@@ -45,11 +46,12 @@ export function ProjectQA({
   const [selectedRun, setSelectedRun] = useState<QaTestRunDetail | null>(null);
   const [isRunLoading, setIsRunLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [scopeFilter, setScopeFilter] = useState<QaRunScope>("ALL");
 
   const loadRuns = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await listProjectTestRuns(token, projectId, RUNS_LIMIT);
+      const data = await listProjectTestRuns(token, projectId, RUNS_LIMIT, scopeFilter);
       setRuns(data);
     } catch (error) {
       toast.error(t("errors.load"), {
@@ -58,7 +60,7 @@ export function ProjectQA({
     } finally {
       setIsLoading(false);
     }
-  }, [projectId, t, token]);
+  }, [projectId, scopeFilter, t, token]);
 
   useEffect(() => {
     void loadRuns();
@@ -190,6 +192,7 @@ export function ProjectQA({
           });
           const title =
             run.name?.trim() || t("list.runFallback", { id: run.id });
+          const scope: QaRunScope = run.feature ? "FEATURE" : "PROJECT";
           return (
             <li
               key={run.id}
@@ -200,6 +203,7 @@ export function ProjectQA({
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
+                  <ScopeBadge scope={scope} />
                   <h3 className="text-sm font-semibold">{title}</h3>
                   <p className="text-xs text-muted-foreground">{runDate}</p>
                   {run.environment && (
@@ -247,16 +251,32 @@ export function ProjectQA({
         <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </header>
       <div className="space-y-6 px-4 py-6 md:px-6">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <Button
-            onClick={() => hasFeatures && setDialogOpen(true)}
-            disabled={!hasFeatures}
-          >
-            {t("actions.newRun")}
-          </Button>
-          {!hasFeatures && (
-            <p className="text-xs text-muted-foreground">{t("noFeatures")}</p>
-          )}
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("filters.label")}
+            </span>
+            <select
+              value={scopeFilter}
+              onChange={(event) => setScopeFilter(event.target.value as QaRunScope)}
+              className="rounded-lg border px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="ALL">{t("filters.all")}</option>
+              <option value="PROJECT">{t("filters.project")}</option>
+              <option value="FEATURE">{t("filters.feature")}</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => hasFeatures && setDialogOpen(true)}
+              disabled={!hasFeatures}
+            >
+              {t("actions.newRun")}
+            </Button>
+            {!hasFeatures && (
+              <p className="text-xs text-muted-foreground">{t("noFeatures")}</p>
+            )}
+          </div>
         </div>
 
         {runListContent}

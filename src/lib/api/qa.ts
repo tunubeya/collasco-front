@@ -139,6 +139,14 @@ export type UpsertResultsDto = {
   results: QaResultInput[];
 };
 
+export type UpdateTestRunDto = {
+  name?: string;
+  environment?: string;
+  notes?: string;
+  addTestCaseIds?: string[];
+  removeTestCaseIds?: string[];
+};
+
 export type QaHealth = {
   featureId: string;
   passRate: number | null;
@@ -326,6 +334,29 @@ export async function upsertResults(
   }
 }
 
+export async function updateTestRun(
+  token: string,
+  runId: string,
+  dto: UpdateTestRunDto
+): Promise<QaTestRunDetail> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/test-runs/${runId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaTestRunDetail>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function listTestRuns(
   token: string,
   featureId: string,
@@ -356,15 +387,21 @@ export async function listTestRuns(
   }
 }
 
+export type QaRunScope = "ALL" | "PROJECT" | "FEATURE";
+
 export async function listProjectTestRuns(
   token: string,
   projectId: string,
-  limit = 10
+  limit = 10,
+  scope: QaRunScope = "ALL"
 ): Promise<QaProjectRunListItem[]> {
   try {
     const url = new URL(`${apiUrl}/qa/projects/${projectId}/test-runs`);
     if (limit) {
       url.searchParams.set("limit", String(limit));
+    }
+    if (scope && scope !== "ALL") {
+      url.searchParams.set("scope", scope);
     }
     const res = await fetchWithAuth(
       url.toString(),

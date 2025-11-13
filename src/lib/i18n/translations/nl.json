@@ -609,6 +609,12 @@
         "actions": {
           "newRun": "Nieuwe run"
         },
+        "filters": {
+          "label": "Type",
+          "all": "Alle runs",
+          "project": "Project-runs",
+          "feature": "Feature-runs"
+        },
         "empty": {
           "title": "Nog geen runs geregistreerd",
           "description": "Maak een eerste run aan om de slag te gaan met de slaagkans.",
@@ -643,7 +649,9 @@
             "title": "{executed} van {total} cases uitgevoerd",
             "pending": "{count} cases openstaand",
             "complete": "Volledige dekking",
-            "addResult": "Resultaat toevoegen"
+            "addResult": "Resultaat toevoegen",
+            "showPending": "Openstaande cases tonen",
+            "hidePending": "Openstaande cases verbergen"
           },
           "summary": {
             "total": "{count} cases",

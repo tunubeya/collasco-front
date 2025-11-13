@@ -34,6 +34,7 @@ import {
   listTestCases,
   listTestRuns,
   updateTestCase,
+  updateTestRun,
   upsertResults,
 } from "@/lib/api/qa";
 import { cn } from "@/lib/utils";
@@ -1482,7 +1483,7 @@ export function TestRunPanel({
   }, [caseRows]);
 
   const handleAddMissingCase = useCallback(
-    (testCaseId: string) => {
+    async (testCaseId: string) => {
       if (caseRows.some((row) => row.testCaseId === testCaseId)) {
         return;
       }
@@ -1490,18 +1491,24 @@ export function TestRunPanel({
       if (!missing) {
         return;
       }
-      const newRow: RunCaseRow = {
-        testCaseId: missing.id,
-        name: missing.name,
-        featureName: missing.featureName,
-      };
-      setCaseRows((prev) => [...prev, newRow]);
-      setResultState((prev) => ({
-        ...prev,
-        [missing.id]: prev[missing.id] ?? {},
-      }));
+      try {
+        const updatedRun = await updateTestRun(token, runState.id, {
+          addTestCaseIds: [testCaseId],
+        });
+        const nextState = resultsToState(updatedRun);
+        setRunState(updatedRun);
+        setCaseRows(buildCaseRows(updatedRun));
+        setResultState(nextState);
+        stableResultsRef.current = nextState;
+        pendingRef.current = {};
+        onRunUpdated(updatedRun);
+      } catch (error) {
+        toast.error(t("errors.updateResults"), {
+          description: error instanceof Error ? error.message : undefined,
+        });
+      }
     },
-    [caseRows, runState.coverage?.missingTestCases],
+    [caseRows, onRunUpdated, runState.coverage?.missingTestCases, runState.id, t, token],
   );
 
   return (
@@ -1656,6 +1663,7 @@ function CoverageSummary({
 }) {
   const t = useTranslations("app.qa.runs");
   const hasMissing = coverage.missingCases > 0;
+  const [showPending, setShowPending] = useState(false);
 
   return (
     <div className="rounded-2xl border border-dashed border-border bg-background/60 p-4">
@@ -1673,8 +1681,17 @@ function CoverageSummary({
               : t("panel.coverage.complete")}
           </p>
         </div>
+        {hasMissing && (
+          <button
+            type="button"
+            className="text-xs font-medium text-primary hover:underline"
+            onClick={() => setShowPending((prev) => !prev)}
+          >
+            {showPending ? t("panel.coverage.hidePending") : t("panel.coverage.showPending")}
+          </button>
+        )}
       </div>
-      {hasMissing && (
+      {hasMissing && showPending && (
         <ul className="mt-3 space-y-2">
           {coverage.missingTestCases.map((testCase) => (
             <li

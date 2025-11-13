@@ -630,6 +630,12 @@
         "actions": {
           "newRun": "Nouvelle campagne"
         },
+        "filters": {
+          "label": "Type",
+          "all": "Toutes",
+          "project": "Campagnes projet",
+          "feature": "Campagnes feature"
+        },
         "empty": {
           "title": "Aucune campagne enregistrée",
           "description": "Créez une première exécution pour commencer à mesurer le taux de réussite.",
@@ -664,7 +670,9 @@
             "title": "{executed} sur {total} cas exécutés",
             "pending": "{count} cas en attente",
             "complete": "Couverture complète",
-            "addResult": "Ajouter un résultat"
+            "addResult": "Ajouter un résultat",
+            "showPending": "Afficher les cas en attente",
+            "hidePending": "Masquer les cas en attente"
           },
           "summary": {
             "total": "{count} cas",

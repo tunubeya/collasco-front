@@ -684,6 +684,12 @@
         "actions": {
           "newRun": "Nueva ejecución"
         },
+        "filters": {
+          "label": "Tipo",
+          "all": "Todas",
+          "project": "Ejecuciones de proyecto",
+          "feature": "Ejecuciones por feature"
+        },
         "empty": {
           "title": "Sin ejecuciones registradas",
           "description": "Crea la primera ejecución para comenzar a medir la tasa de aprobación.",
@@ -718,7 +724,9 @@
             "title": "{executed} de {total} casos ejecutados",
             "pending": "{count} casos pendientes",
             "complete": "Cobertura completa",
-            "addResult": "Agregar resultado"
+            "addResult": "Agregar resultado",
+            "showPending": "Mostrar pendientes",
+            "hidePending": "Ocultar pendientes"
           },
           "summary": {
             "total": "{count} casos",

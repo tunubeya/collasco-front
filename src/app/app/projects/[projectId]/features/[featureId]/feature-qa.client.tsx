@@ -1493,7 +1493,12 @@ export function TestRunPanel({
       }
       try {
         const updatedRun = await updateTestRun(token, runState.id, {
-          addTestCaseIds: [testCaseId],
+          results: [
+            {
+              testCaseId,
+              evaluation: "NOT_WORKING",
+            },
+          ],
         });
         const nextState = resultsToState(updatedRun);
         setRunState(updatedRun);

@@ -676,6 +676,10 @@
           "validation": "Revise as informações.",
           "updateResults": "Não foi possível salvar os resultados."
         },
+        "hints": {
+          "name": "Nome curto para identificar a execução.",
+          "environment": "Ambiente onde foi executada (ex.: Staging)."
+        },
         "alerts": {
           "created": "Execução criada."
         },
@@ -710,12 +714,14 @@
           "createdAt": "Criada em {date}",
           "runBy": "Executada por {name}",
           "scope": "{scope, select, FEATURE {Execução por feature} PROJECT {Execução do projeto} other {Execução {scope}}}",
+          "entries": "Casos selecionados",
           "removeCase": "Remover caso",
           "fields": {
             "status": "Status",
             "note": "Nota"
           },
           "statusPlaceholder": "Selecione um status",
+          "testCasePlaceholder": "Selecione um caso de teste",
           "notePlaceholder": "Notas ou links de evidência opcionais...",
           "empty": {
             "title": "Sem resultados ainda",

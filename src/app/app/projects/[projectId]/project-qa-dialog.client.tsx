@@ -250,7 +250,7 @@ export function NewProjectRunDialog({
                       disabled={!availableCases.length || isLoadingCases}
                     >
                       <option value="">
-                        {isLoadingCases ? t("labels.refreshing") : t("panel.statusPlaceholder")}
+                        {isLoadingCases ? t("labels.refreshing") : t("panel.testCasePlaceholder")}
                       </option>
                       {availableCases.map((testCase) => (
                         <option key={testCase.id} value={testCase.id}>
@@ -269,7 +269,7 @@ export function NewProjectRunDialog({
                     <select
                       value={selectedEvaluation}
                       onChange={(event) => setSelectedEvaluation(event.target.value as QaEvaluation)}
-                      className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     >
                       <option value="">{t("panel.statusPlaceholder")}</option>
                       {RESULT_STATUSES.map((status) => (
@@ -284,8 +284,8 @@ export function NewProjectRunDialog({
                     <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       {t("panel.fields.note")}
                     </label>
-                    <input
-                      type="text"
+                    <textarea
+                      rows={2}
                       value={comment}
                       onChange={(event) => setComment(event.target.value)}
                       className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"

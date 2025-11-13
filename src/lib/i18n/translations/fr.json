@@ -622,6 +622,10 @@
           "validation": "Vérifiez les informations saisies.",
           "updateResults": "Impossible d’enregistrer les résultats."
         },
+        "hints": {
+          "name": "Nom court pour identifier la campagne.",
+          "environment": "Environnement utilisé (ex : Préproduction)."
+        },
         "alerts": {
           "created": "Campagne créée."
         },
@@ -656,12 +660,14 @@
           "createdAt": "Créée le {date}",
           "runBy": "Exécuté par {name}",
           "scope": "{scope, select, FEATURE {Exécution par fonctionnalité} PROJECT {Exécution projet} other {Exécution {scope}}}",
+          "entries": "Cas sélectionnés",
           "removeCase": "Retirer le cas",
           "fields": {
             "status": "Statut",
             "note": "Note"
           },
           "statusPlaceholder": "Sélectionnez un statut",
+          "testCasePlaceholder": "Sélectionnez un cas de test",
           "notePlaceholder": "Notes ou liens de preuve (optionnel)...",
           "empty": {
             "title": "Aucun résultat",

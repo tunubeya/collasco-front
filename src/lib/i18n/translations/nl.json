@@ -601,6 +601,10 @@
           "validation": "Controleer de ingevoerde gegevens.",
           "updateResults": "De resultaten konden niet worden opgeslagen."
         },
+        "hints": {
+          "name": "Korte naam om de run te herkennen.",
+          "environment": "In welke omgeving uitgevoerd (bijv. Staging)."
+        },
         "alerts": {
           "created": "Run aangemaakt."
         },
@@ -635,12 +639,14 @@
           "createdAt": "Aangemaakt op {date}",
           "runBy": "Uitgevoerd door {name}",
           "scope": "{scope, select, FEATURE {Feature-run} PROJECT {Project-run} other {Run {scope}}}",
+          "entries": "Geselecteerde cases",
           "removeCase": "Testcase verwijderen",
           "fields": {
             "status": "Status",
             "note": "Notitie"
           },
           "statusPlaceholder": "Kies een status",
+          "testCasePlaceholder": "Selecteer een testcase...",
           "notePlaceholder": "Optionele notities of bewijslinks...",
           "empty": {
             "title": "Nog geen resultaten",

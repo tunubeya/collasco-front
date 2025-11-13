@@ -676,6 +676,10 @@
           "validation": "Please review the information.",
           "updateResults": "We couldn't save the run results."
         },
+        "hints": {
+          "name": "Short label for this execution.",
+          "environment": "Where the run was executed (e.g. Staging)."
+        },
         "alerts": {
           "created": "Test run created."
         },
@@ -710,12 +714,14 @@
           "createdAt": "Created {date}",
           "runBy": "Ran by {name}",
           "scope": "{scope, select, FEATURE {Feature run} PROJECT {Project run} other {{scope} run}}",
+          "entries": "Selected cases",
           "removeCase": "Remove case",
           "fields": {
             "status": "Status",
             "note": "Note"
           },
           "statusPlaceholder": "Select status",
+          "testCasePlaceholder": "Select test case",
           "notePlaceholder": "Optional notes or evidence links...",
           "empty": {
             "title": "No results yet",

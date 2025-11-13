@@ -676,6 +676,10 @@
           "validation": "Revisa la información ingresada.",
           "updateResults": "No pudimos guardar los resultados."
         },
+        "hints": {
+          "name": "Breve nombre para identificar la corrida.",
+          "environment": "Dónde se ejecutó (ej. Staging)."
+        },
         "alerts": {
           "created": "Ejecución creada."
         },
@@ -710,12 +714,14 @@
           "createdAt": "Creada el {date}",
           "runBy": "Ejecutada por {name}",
           "scope": "{scope, select, FEATURE {Ejecución por feature} PROJECT {Ejecución de proyecto} other {Ejecución {scope}}}",
+          "entries": "Casos seleccionados",
           "removeCase": "Quitar caso",
           "fields": {
             "status": "Estado",
             "note": "Nota"
           },
           "statusPlaceholder": "Selecciona un estado",
+          "testCasePlaceholder": "Selecciona un caso de prueba",
           "notePlaceholder": "Notas u enlaces de evidencia opcionales...",
           "empty": {
             "title": "Sin resultados aún",

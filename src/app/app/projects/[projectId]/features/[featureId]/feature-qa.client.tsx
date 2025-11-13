@@ -1763,12 +1763,24 @@ function resultsToState(run: QaTestRunDetail): Record<string, RunResultState> {
 }
 
 function buildCaseRows(run: QaTestRunDetail): RunCaseRow[] {
-  return run.results.map((result) => ({
+  const rows: RunCaseRow[] = run.results.map((result) => ({
     testCaseId: result.testCaseId,
     name: result.testCase?.name ?? result.testCaseId,
     expected: result.testCase?.expected ?? null,
     featureName: result.testCase?.feature?.name ?? null,
   }));
+  const existingIds = new Set(rows.map((row) => row.testCaseId));
+  const missing = run.coverage?.missingTestCases ?? [];
+  for (const testCase of missing) {
+    if (existingIds.has(testCase.id)) continue;
+    rows.push({
+      testCaseId: testCase.id,
+      name: testCase.name,
+      expected: null,
+      featureName: testCase.featureName,
+    });
+  }
+  return rows;
 }
 
 function HealthTab({

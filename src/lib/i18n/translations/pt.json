@@ -507,7 +507,7 @@
             "delete": "Excluir módulo"
           }
         },
-                "description": {
+        "description": {
           "empty": "Nenhuma descrição informada."
         },
         "errors": {
@@ -761,6 +761,9 @@
           "NOT_WORKING": "Não funciona",
           "MINOR_ISSUE": "Com problema menor",
           "PASSED": "Aprovado"
+        },
+        "labels": {
+          "refreshing": "Atualizando..."
         }
       },
       "health": {

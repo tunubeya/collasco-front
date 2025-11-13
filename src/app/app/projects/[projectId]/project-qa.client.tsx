@@ -267,7 +267,7 @@ export function ProjectQA({
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <Button
+            <Button variant={"outline"}
               onClick={() => hasFeatures && setDialogOpen(true)}
               disabled={!hasFeatures}
             >

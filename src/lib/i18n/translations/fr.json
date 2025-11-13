@@ -453,7 +453,7 @@
             "delete": "Supprimer le module"
           }
         },
-                "description": {
+        "description": {
           "empty": "Aucune description fournie."
         },
         "errors": {
@@ -707,6 +707,9 @@
           "NOT_WORKING": "Ne fonctionne pas",
           "MINOR_ISSUE": "Problème mineur",
           "PASSED": "Réussi"
+        },
+        "labels": {
+          "refreshing": "Actualisation..."
         }
       },
       "health": {

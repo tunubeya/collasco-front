@@ -761,6 +761,9 @@
           "NOT_WORKING": "Not working",
           "MINOR_ISSUE": "Minor issue",
           "PASSED": "Passed"
+        },
+        "labels":{
+          "refreshing":"Refreshing..."
         }
       },
       "health": {

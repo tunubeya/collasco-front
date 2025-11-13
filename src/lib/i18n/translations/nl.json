@@ -432,7 +432,7 @@
             "delete": "Module verwijderen"
           }
         },
-                "description": {
+        "description": {
           "empty": "Geen beschrijving beschikbaar."
         },
         "errors": {
@@ -686,6 +686,9 @@
           "NOT_WORKING": "Werkt niet",
           "MINOR_ISSUE": "Klein probleem",
           "PASSED": "Geslaagd"
+        },
+        "labels": {
+          "refreshing": "Vernieuwen..."
         }
       },
       "health": {

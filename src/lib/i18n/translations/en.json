@@ -710,6 +710,7 @@
           "createdAt": "Created {date}",
           "runBy": "Ran by {name}",
           "scope": "{scope, select, FEATURE {Feature run} PROJECT {Project run} other {{scope} run}}",
+          "removeCase": "Remove case",
           "fields": {
             "status": "Status",
             "note": "Note"

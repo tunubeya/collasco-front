@@ -710,6 +710,7 @@
           "createdAt": "Criada em {date}",
           "runBy": "Executada por {name}",
           "scope": "{scope, select, FEATURE {Execução por feature} PROJECT {Execução do projeto} other {Execução {scope}}}",
+          "removeCase": "Remover caso",
           "fields": {
             "status": "Status",
             "note": "Nota"

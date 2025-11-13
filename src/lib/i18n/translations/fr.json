@@ -656,6 +656,7 @@
           "createdAt": "Créée le {date}",
           "runBy": "Exécuté par {name}",
           "scope": "{scope, select, FEATURE {Exécution par fonctionnalité} PROJECT {Exécution projet} other {Exécution {scope}}}",
+          "removeCase": "Retirer le cas",
           "fields": {
             "status": "Statut",
             "note": "Note"

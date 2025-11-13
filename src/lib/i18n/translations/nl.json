@@ -635,6 +635,7 @@
           "createdAt": "Aangemaakt op {date}",
           "runBy": "Uitgevoerd door {name}",
           "scope": "{scope, select, FEATURE {Feature-run} PROJECT {Project-run} other {Run {scope}}}",
+          "removeCase": "Testcase verwijderen",
           "fields": {
             "status": "Status",
             "note": "Notitie"

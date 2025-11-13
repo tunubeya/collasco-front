@@ -1516,6 +1516,28 @@ export function TestRunPanel({
     [caseRows, onRunUpdated, runState.coverage?.missingTestCases, runState.id, t, token],
   );
 
+  const handleRemoveCase = useCallback(
+    async (testCaseId: string) => {
+      try {
+        const updatedRun = await updateTestRun(token, runState.id, {
+          removeTestCaseIds: [testCaseId],
+        });
+        const nextState = resultsToState(updatedRun);
+        setRunState(updatedRun);
+        setCaseRows(buildCaseRows(updatedRun));
+        setResultState(nextState);
+        stableResultsRef.current = nextState;
+        pendingRef.current = {};
+        onRunUpdated(updatedRun);
+      } catch (error) {
+        toast.error(t("errors.updateResults"), {
+          description: error instanceof Error ? error.message : undefined,
+        });
+      }
+    },
+    [onRunUpdated, runState.id, t, token],
+  );
+
   return (
     <div className="mt-8 space-y-6 rounded-2xl border bg-muted/40 p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -1601,6 +1623,13 @@ export function TestRunPanel({
                       </option>
                     ))}
                   </select>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleRemoveCase(testCase.testCaseId)}
+                  >
+                    {t("panel.removeCase")}
+                  </Button>
                 </div>
               </div>
 

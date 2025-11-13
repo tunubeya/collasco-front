@@ -163,163 +163,185 @@ export function NewProjectRunDialog({
           {t("dialogs.newRun.description")}
         </DialogDescription>
 
-        <div className="mt-4 space-y-4">
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {t("fields.name")}
-              </label>
-              <input
-                type="text"
-                value={runName}
-                onChange={(event) => setRunName(event.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder={t("placeholders.name")}
-              />
+        <div className="mt-4 space-y-5">
+          <section className="rounded-2xl border bg-muted/20 p-4 space-y-3">
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {t("fields.name")}
+                </label>
+                <input
+                  type="text"
+                  value={runName}
+                  onChange={(event) => setRunName(event.target.value)}
+                  className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder={t("placeholders.name")}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  {t("hints.name", { default: "Short label for the execution." })}
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {t("fields.environment")}
+                </label>
+                <input
+                  type="text"
+                  value={environment}
+                  onChange={(event) => setEnvironment(event.target.value)}
+                  className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder={t("placeholders.environment")}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  {t("hints.environment", { default: "e.g. Staging, Production." })}
+                </p>
+              </div>
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {t("fields.environment")}
+                {t("fields.notes")}
               </label>
-              <input
-                type="text"
-                value={environment}
-                onChange={(event) => setEnvironment(event.target.value)}
+              <textarea
+                rows={3}
+                value={notes}
+                onChange={(event) => setNotes(event.target.value)}
                 className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder={t("placeholders.environment")}
+                placeholder={t("placeholders.notes")}
               />
             </div>
-          </div>
+          </section>
 
           {!hasFeatures && (
             <p className="text-sm text-muted-foreground">{t("noFeatures")}</p>
           )}
 
           {hasFeatures && (
-            <>
-              <div className="grid gap-3 md:grid-cols-2">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Feature
-                  </label>
-                  <select
-                    value={selectedFeature}
-                    onChange={(event) => {
-                      setSelectedFeature(event.target.value);
-                      setSelectedCase("");
-                      void loadCasesForFeature(event.target.value);
-                    }}
-                    className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    {featureOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Test case
-                  </label>
-                  <select
-                    value={selectedCase}
-                    onChange={(event) => setSelectedCase(event.target.value)}
-                    className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    disabled={!availableCases.length || isLoadingCases}
-                  >
-                    <option value="">
-                      {isLoadingCases ? t("labels.refreshing") : t("panel.statusPlaceholder")}
-                    </option>
-                    {availableCases.map((testCase) => (
-                      <option key={testCase.id} value={testCase.id}>
-                        {testCase.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid gap-3 md:grid-cols-2">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("panel.fields.status")}
-                  </label>
-                  <select
-                    value={selectedEvaluation}
-                    onChange={(event) => setSelectedEvaluation(event.target.value as QaEvaluation)}
-                    className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    <option value="">{t("panel.statusPlaceholder")}</option>
-                    {RESULT_STATUSES.map((status) => (
-                      <option key={status} value={status}>
-                        {statusLabels(status)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("panel.fields.note")}
-                  </label>
-                  <input
-                    type="text"
-                    value={comment}
-                    onChange={(event) => setComment(event.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t("panel.notePlaceholder")}
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <Button
-                  onClick={handleAddEntry}
-                  disabled={!selectedCase || !selectedEvaluation}
-                >
-                  {t("panel.coverage.addResult")}
-                </Button>
-              </div>
-
-              {entries.length > 0 && (
-                <ul className="space-y-2">
-                  {entries.map((entry) => (
-                    <li
-                      key={entry.testCaseId}
-                      className="flex flex-wrap items-center justify-between gap-3 rounded-lg border px-3 py-2"
+            <div className="space-y-4">
+              <div className="rounded-2xl border bg-background p-4 space-y-4">
+                <div className="flex flex-col gap-4 md:flex-row md:items-end">
+                  <div className="flex-1 space-y-1.5">
+                    <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Feature
+                    </label>
+                    <select
+                      value={selectedFeature}
+                      onChange={(event) => {
+                        setSelectedFeature(event.target.value);
+                        setSelectedCase("");
+                        void loadCasesForFeature(event.target.value);
+                      }}
+                      className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     >
-                      <div>
-                        <p className="text-sm font-semibold">{entry.testCaseName}</p>
-                        <p className="text-xs text-muted-foreground">{entry.featureName}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                          {statusLabels(entry.evaluation)}
-                        </span>
-                        <Button variant="ghost" size="sm" onClick={() => handleRemoveEntry(entry.testCaseId)}>
-                          ×
-                        </Button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
+                      {featureOptions.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex-1 space-y-1.5">
+                    <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Test case
+                    </label>
+                    <select
+                      value={selectedCase}
+                      onChange={(event) => setSelectedCase(event.target.value)}
+                      className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      disabled={!availableCases.length || isLoadingCases}
+                    >
+                      <option value="">
+                        {isLoadingCases ? t("labels.refreshing") : t("panel.statusPlaceholder")}
+                      </option>
+                      {availableCases.map((testCase) => (
+                        <option key={testCase.id} value={testCase.id}>
+                          {testCase.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  {t("fields.notes")}
-                </label>
-                <textarea
-                  rows={3}
-                  value={notes}
-                  onChange={(event) => setNotes(event.target.value)}
-                  className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder={t("placeholders.notes")}
-                />
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      {t("panel.fields.status")}
+                    </label>
+                    <select
+                      value={selectedEvaluation}
+                      onChange={(event) => setSelectedEvaluation(event.target.value as QaEvaluation)}
+                      className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                      <option value="">{t("panel.statusPlaceholder")}</option>
+                      {RESULT_STATUSES.map((status) => (
+                        <option key={status} value={status}>
+                          {statusLabels(status)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      {t("panel.fields.note")}
+                    </label>
+                    <input
+                      type="text"
+                      value={comment}
+                      onChange={(event) => setComment(event.target.value)}
+                      className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder={t("panel.notePlaceholder")}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end">
+                  <Button
+                    onClick={handleAddEntry}
+                    disabled={!selectedCase || !selectedEvaluation}
+                    variant="secondary"
+                  >
+                    {t("panel.coverage.addResult")}
+                  </Button>
+                </div>
               </div>
-            </>
+
+              <div className="rounded-2xl border bg-muted/10 p-4">
+                <div className="flex items-center justify-between text-sm font-semibold">
+                  <span>{t("panel.entries", { default: "Selected cases" })}</span>
+                  <span className="text-xs text-muted-foreground">{entries.length}</span>
+                </div>
+                {entries.length === 0 ? (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    {t("panel.empty.description")}
+                  </p>
+                ) : (
+                  <ul className="mt-3 space-y-2">
+                    {entries.map((entry) => (
+                      <li
+                        key={entry.testCaseId}
+                        className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-background px-3 py-2"
+                      >
+                        <div>
+                          <p className="text-sm font-semibold">{entry.testCaseName}</p>
+                          <p className="text-xs text-muted-foreground">{entry.featureName}</p>
+                          {entry.comment && (
+                            <p className="text-xs text-muted-foreground">{entry.comment}</p>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                            {statusLabels(entry.evaluation)}
+                          </span>
+                          <Button variant="ghost" size="sm" onClick={() => handleRemoveEntry(entry.testCaseId)}>
+                            ×
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           )}
 
           {error && <p className="text-sm text-red-600">{error}</p>}

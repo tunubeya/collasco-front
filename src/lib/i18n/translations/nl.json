@@ -316,7 +316,8 @@
         "updated": "Laatste update: {date}",
         "tabs": {
           "structure": "Structuur",
-          "qa": "QA-runs"
+          "qa": "QA-runs",
+          "members": "Leden"
         },
         "actions": {
           "edit": "Bewerken",
@@ -330,6 +331,65 @@
           "noDescription": "Geen beschrijving beschikbaar",
           "expandAll": "Alles uitvouwen",
           "collapseAll": "Alles samenvouwen"
+        }
+      },
+      "members": {
+        "title": "Projectleden",
+        "subtitle": "Nodig collega’s uit en beheer hun rollen en rechten.",
+        "actions": {
+          "add": "Lid toevoegen",
+          "remove": "Verwijderen",
+          "cancel": "Annuleren",
+          "save": "Opslaan",
+          "saving": "Bezig..."
+        },
+        "badges": {
+          "you": "Jij"
+        },
+        "table": {
+          "member": "Lid",
+          "role": "Rol",
+          "joined": "Toegetreden",
+          "actions": "Acties",
+          "unknown": "Onbekende gebruiker"
+        },
+        "empty": {
+          "title": "Nog geen leden",
+          "description": "Nodig je team uit om samen te werken aan dit project."
+        },
+        "fields": {
+          "userId": "Gebruikers-ID",
+          "role": "Rol"
+        },
+        "placeholders": {
+          "userId": "usr_123456789"
+        },
+        "hints": {
+          "userId": "Vul het ID in van een gebruiker die al toegang heeft tot het platform."
+        },
+        "roles": {
+          "owner": "Eigenaar",
+          "maintainer": "Maintainer",
+          "developer": "Developer",
+          "viewer": "Lezer"
+        },
+        "messages": {
+          "loadError": "Leden konden niet worden geladen.",
+          "addError": "Het lid kon niet worden toegevoegd.",
+          "added": "Lid toegevoegd.",
+          "roleUpdated": "Rol bijgewerkt.",
+          "updateError": "De rol kon niet worden bijgewerkt.",
+          "removed": "Lid verwijderd.",
+          "removeError": "Het lid kon niet worden verwijderd.",
+          "removeConfirm": "{name} uit het project verwijderen?",
+          "ownerOnly": "Alleen de eigenaar kan leden beheren."
+        },
+        "addDialog": {
+          "title": "Lid uitnodigen",
+          "description": "Geef het gebruikers-ID en de gewenste rol op."
+        },
+        "validation": {
+          "userId": "Vul het gebruikers-ID in."
         }
       },
       "detailErrors": {

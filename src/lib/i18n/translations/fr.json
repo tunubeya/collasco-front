@@ -337,7 +337,8 @@
         "updated": "Dernière mise à jour : {date}",
         "tabs": {
           "structure": "Structure",
-          "qa": "Campagnes QA"
+          "qa": "Campagnes QA",
+          "members": "Membres"
         },
         "actions": {
           "edit": "Modifier",
@@ -351,6 +352,65 @@
           "noDescription": "Aucune description disponible",
           "expandAll": "Tout développer",
           "collapseAll": "Tout réduire"
+        }
+      },
+      "members": {
+        "title": "Membres du projet",
+        "subtitle": "Invitez des collaborateurs et attribuez les rôles appropriés.",
+        "actions": {
+          "add": "Ajouter un membre",
+          "remove": "Retirer",
+          "cancel": "Annuler",
+          "save": "Enregistrer",
+          "saving": "Enregistrement..."
+        },
+        "badges": {
+          "you": "Vous"
+        },
+        "table": {
+          "member": "Membre",
+          "role": "Rôle",
+          "joined": "Rejoint",
+          "actions": "Actions",
+          "unknown": "Utilisateur inconnu"
+        },
+        "empty": {
+          "title": "Aucun membre pour l’instant",
+          "description": "Invitez votre équipe pour collaborer sur ce projet."
+        },
+        "fields": {
+          "userId": "ID utilisateur",
+          "role": "Rôle"
+        },
+        "placeholders": {
+          "userId": "usr_123456789"
+        },
+        "hints": {
+          "userId": "Renseignez l’ID d’un utilisateur déjà présent dans la plateforme."
+        },
+        "roles": {
+          "owner": "Propriétaire",
+          "maintainer": "Maintainer",
+          "developer": "Développeur",
+          "viewer": "Lecteur"
+        },
+        "messages": {
+          "loadError": "Impossible de charger les membres.",
+          "addError": "Impossible d’ajouter ce membre.",
+          "added": "Membre ajouté.",
+          "roleUpdated": "Rôle mis à jour.",
+          "updateError": "Impossible de mettre à jour le rôle.",
+          "removed": "Membre retiré.",
+          "removeError": "Impossible de retirer ce membre.",
+          "removeConfirm": "Retirer {name} du projet ?",
+          "ownerOnly": "Seul le propriétaire du projet peut gérer les membres."
+        },
+        "addDialog": {
+          "title": "Inviter un membre",
+          "description": "Spécifiez l’ID de l’utilisateur et le rôle attribué."
+        },
+        "validation": {
+          "userId": "Veuillez renseigner l’ID utilisateur."
         }
       },
       "detailErrors": {

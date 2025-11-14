@@ -391,7 +391,8 @@
         "updated": "Última actualización: {date}",
         "tabs": {
           "structure": "Estructura",
-          "qa": "Ejecuciones QA"
+          "qa": "Ejecuciones QA",
+          "members": "Miembros"
         },
         "actions": {
           "edit": "Editar",
@@ -405,6 +406,65 @@
           "noDescription": "Sin descripción disponible",
           "expandAll": "Expandir todo",
           "collapseAll": "Colapsar todo"
+        }
+      },
+      "members": {
+        "title": "Miembros del proyecto",
+        "subtitle": "Gestiona quién tiene acceso al proyecto y qué rol cumple.",
+        "actions": {
+          "add": "Agregar miembro",
+          "remove": "Quitar",
+          "cancel": "Cancelar",
+          "save": "Guardar",
+          "saving": "Guardando..."
+        },
+        "badges": {
+          "you": "Tú"
+        },
+        "table": {
+          "member": "Miembro",
+          "role": "Rol",
+          "joined": "Se unió",
+          "actions": "Acciones",
+          "unknown": "Usuario desconocido"
+        },
+        "empty": {
+          "title": "Aún no hay miembros",
+          "description": "Invita a tu equipo para colaborar en este proyecto."
+        },
+        "fields": {
+          "userId": "ID de usuario",
+          "role": "Rol"
+        },
+        "placeholders": {
+          "userId": "usr_123456789"
+        },
+        "hints": {
+          "userId": "Pega el ID del usuario. Debe existir previamente en la plataforma."
+        },
+        "roles": {
+          "owner": "Propietario",
+          "maintainer": "Maintainer",
+          "developer": "Desarrollador",
+          "viewer": "Lector"
+        },
+        "messages": {
+          "loadError": "No pudimos cargar los miembros.",
+          "addError": "No pudimos agregar a esa persona.",
+          "added": "Miembro agregado.",
+          "roleUpdated": "Rol actualizado.",
+          "updateError": "No pudimos actualizar el rol.",
+          "removed": "Miembro eliminado.",
+          "removeError": "No pudimos quitar a ese miembro.",
+          "removeConfirm": "¿Quitar a {name} del proyecto?",
+          "ownerOnly": "Solo el propietario puede gestionar los miembros."
+        },
+        "addDialog": {
+          "title": "Invitar miembro",
+          "description": "Especifica el ID del usuario y el rol que tendrá."
+        },
+        "validation": {
+          "userId": "Ingresa el ID del usuario."
         }
       },
       "detailErrors": {

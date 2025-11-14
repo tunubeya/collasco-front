@@ -9,6 +9,7 @@ import type { StructureModuleNode } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
 import { ProjectQA } from "./project-qa.client";
+import { ProjectMembersTab } from "./project-members-tab.client";
 import type { FeatureOption } from "./project-qa.types";
 
 type ProjectTabsProps = {
@@ -20,7 +21,7 @@ type ProjectTabsProps = {
   currentUserId?: string;
 };
 
-type ProjectTab = "structure" | "qa";
+type ProjectTab = "structure" | "qa" | "members";
 
 export function ProjectTabs({
   project,
@@ -48,9 +49,14 @@ export function ProjectTabs({
           isActive={activeTab === "qa"}
           onClick={() => setActiveTab("qa")}
         />
+        <TabButton
+          label={tTabs("members")}
+          isActive={activeTab === "members"}
+          onClick={() => setActiveTab("members")}
+        />
       </div>
 
-      {activeTab === "structure" ? (
+      {activeTab === "structure" && (
         <>
           <ProjectDetailClient project={project} structureModules={structureModules} />
           <div>
@@ -62,11 +68,23 @@ export function ProjectTabs({
             </Link>
           </div>
         </>
-      ) : (
+      )}
+
+      {activeTab === "qa" && (
         <ProjectQA
           token={token}
           projectId={projectId}
           featureOptions={featureOptions}
+          currentUserId={currentUserId}
+        />
+      )}
+
+      {activeTab === "members" && (
+        <ProjectMembersTab
+          token={token}
+          projectId={projectId}
+          initialMembers={project.members ?? []}
+          isOwner={project.ownerId === currentUserId}
           currentUserId={currentUserId}
         />
       )}

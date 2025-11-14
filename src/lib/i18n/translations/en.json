@@ -391,7 +391,8 @@
         "updated": "Last update: {date}",
         "tabs": {
           "structure": "Structure",
-          "qa": "Test runs"
+          "qa": "Test runs",
+          "members": "Members"
         },
         "actions": {
           "edit": "Edit",
@@ -405,6 +406,65 @@
           "noDescription": "No description available",
           "expandAll": "Expand all",
           "collapseAll": "Collapse all"
+        }
+      },
+      "members": {
+        "title": "Project members",
+        "subtitle": "Invite collaborators, adjust roles, and manage access.",
+        "actions": {
+          "add": "Add member",
+          "remove": "Remove",
+          "cancel": "Cancel",
+          "save": "Save",
+          "saving": "Saving..."
+        },
+        "badges": {
+          "you": "You"
+        },
+        "table": {
+          "member": "Member",
+          "role": "Role",
+          "joined": "Joined",
+          "actions": "Actions",
+          "unknown": "Unknown user"
+        },
+        "empty": {
+          "title": "No members yet",
+          "description": "Invite teammates to collaborate on this project."
+        },
+        "fields": {
+          "userId": "User ID",
+          "role": "Role"
+        },
+        "placeholders": {
+          "userId": "usr_123456789"
+        },
+        "hints": {
+          "userId": "Paste the user's ID. They must already exist in the workspace."
+        },
+        "roles": {
+          "owner": "Owner",
+          "maintainer": "Maintainer",
+          "developer": "Developer",
+          "viewer": "Viewer"
+        },
+        "messages": {
+          "loadError": "We couldn't load the members.",
+          "addError": "We couldn't add that member.",
+          "added": "Member added.",
+          "roleUpdated": "Role updated.",
+          "updateError": "We couldn't update the role.",
+          "removed": "Member removed.",
+          "removeError": "We couldn't remove that member.",
+          "removeConfirm": "Remove {name} from this project?",
+          "ownerOnly": "Only the project owner can manage members."
+        },
+        "addDialog": {
+          "title": "Invite member",
+          "description": "Grant access by specifying the user ID and role."
+        },
+        "validation": {
+          "userId": "Please provide the user's ID."
         }
       },
       "detailErrors": {

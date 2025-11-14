@@ -391,7 +391,8 @@
         "updated": "Última atualização: {date}",
         "tabs": {
           "structure": "Estrutura",
-          "qa": "Execuções QA"
+          "qa": "Execuções QA",
+          "members": "Membros"
         },
         "actions": {
           "edit": "Editar",
@@ -405,6 +406,65 @@
           "noDescription": "Sem descrição disponível",
           "expandAll": "Expandir tudo",
           "collapseAll": "Colapsar tudo"
+        }
+      },
+      "members": {
+        "title": "Membros do projeto",
+        "subtitle": "Convide colaboradores, ajuste papéis e controle o acesso.",
+        "actions": {
+          "add": "Adicionar membro",
+          "remove": "Remover",
+          "cancel": "Cancelar",
+          "save": "Salvar",
+          "saving": "Salvando..."
+        },
+        "badges": {
+          "you": "Você"
+        },
+        "table": {
+          "member": "Membro",
+          "role": "Papel",
+          "joined": "Entrou em",
+          "actions": "Ações",
+          "unknown": "Usuário desconhecido"
+        },
+        "empty": {
+          "title": "Nenhum membro ainda",
+          "description": "Convide sua equipe para colaborar neste projeto."
+        },
+        "fields": {
+          "userId": "ID do usuário",
+          "role": "Papel"
+        },
+        "placeholders": {
+          "userId": "usr_123456789"
+        },
+        "hints": {
+          "userId": "Informe o ID do usuário já existente na plataforma."
+        },
+        "roles": {
+          "owner": "Proprietário",
+          "maintainer": "Maintainer",
+          "developer": "Desenvolvedor",
+          "viewer": "Leitor"
+        },
+        "messages": {
+          "loadError": "Não foi possível carregar os membros.",
+          "addError": "Não foi possível adicionar esse membro.",
+          "added": "Membro adicionado.",
+          "roleUpdated": "Papel atualizado.",
+          "updateError": "Não foi possível atualizar o papel.",
+          "removed": "Membro removido.",
+          "removeError": "Não foi possível remover o membro.",
+          "removeConfirm": "Deseja remover {name} do projeto?",
+          "ownerOnly": "Somente o proprietário pode gerenciar os membros."
+        },
+        "addDialog": {
+          "title": "Convidar membro",
+          "description": "Informe o ID do usuário e o papel que ele terá."
+        },
+        "validation": {
+          "userId": "Informe o ID do usuário."
         }
       },
       "detailErrors": {

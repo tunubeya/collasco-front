@@ -10,7 +10,7 @@ GET /auth/me — Perfil mínimo del token. · JWT requerido
 # POST /auth/refresh — Rota refresh y devuelve access+refresh. · JWT refresh requerido · Header: Authorization: Bearer <refresh>
 
 POST /auth/logout — Revoca todos los refresh del usuario. · JWT requerido 
-
+ 
 POST /auth/register-client — (si lo mantienes) Crea user cliente + tokens. · Public · Body: RegisterClientDto
 
 ## USERS

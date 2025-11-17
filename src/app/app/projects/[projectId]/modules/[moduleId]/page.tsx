@@ -7,7 +7,7 @@ import { fetchModuleById, fetchModuleStructure } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Module } from "@/lib/model-definitions/module";
 import { RoutesEnum } from "@/lib/utils";
-import ModuleItemsTree from "@/ui/components/projects/ModuleItemsTree";
+import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 import { handlePageError } from "@/lib/handle-page-error";
 
 // 👇 importa la acción de borrado (ya la usas en /edit)
@@ -28,7 +28,8 @@ export default async function ModuleDetailPage({
   const session = await getSession();
   if (!session?.token) redirect(RoutesEnum.LOGIN);
 
-  const t = await getTranslations("app.projects.module");
+  const tModule = await getTranslations("app.projects.module");
+  const tProjectDetail = await getTranslations("app.projects.detail");
   const formatter = await getFormatter();
 
   // 1) Metadata del módulo
@@ -62,10 +63,10 @@ export default async function ModuleDetailPage({
           <div>
             <h1 className="text-2xl font-bold">{currentModule.name}</h1>
             <p className="text-sm text-muted-foreground">
-              {t("header.project", { id: projectId })}
+              {tModule("header.project", { id: projectId })}
             </p>
             <p className="text-xs text-muted-foreground">
-              {t("header.updated", { date: formattedUpdatedAt })}
+              {tModule("header.updated", { date: formattedUpdatedAt })}
             </p>
           </div>
 
@@ -77,11 +78,11 @@ export default async function ModuleDetailPage({
                   href={`/app/projects/${projectId}/modules/${currentModule.parentModuleId}`}
                   className="inline-flex items-center rounded border px-2 py-1 transition-colors hover:bg-muted"
                 >
-                  {t("actions.backToParent")}
+                  {tModule("actions.backToParent")}
                 </Link>
               ) : (
                 <span className="rounded border px-2 py-1">
-                  {t("badges.root")}
+                  {tModule("badges.root")}
                 </span>
               )}
             </div>
@@ -92,7 +93,7 @@ export default async function ModuleDetailPage({
                 href={`/app/projects/${projectId}/modules/${moduleId}/edit`}
                 className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
               >
-                {t("actions.edit", { default: "Editar" })}
+                {tModule("actions.edit", { default: "Editar" })}
               </Link>
 
               <form action={deleteModule.bind(null, projectId, moduleId)}>
@@ -100,7 +101,7 @@ export default async function ModuleDetailPage({
                   type="submit"
                   className="inline-flex items-center rounded-lg border border-destructive bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground transition-colors"
                 >
-                  {t("actions.delete", { default: "Eliminar" })}
+                  {tModule("actions.delete", { default: "Eliminar" })}
                 </button>
               </form>
             </div>
@@ -108,35 +109,33 @@ export default async function ModuleDetailPage({
         </div>
 
         <div className="mt-4 text-sm text-muted-foreground">
-          {currentModule.description ?? t("description.empty")}
+          {currentModule.description ?? tModule("description.empty")}
         </div>
       </header>
 
-      {/* Árbol expandible (módulos + features intercalados en orden) */}
-      <section className="rounded-xl border bg-background p-4">
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex gap-3">
-            <Link
-              href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}
-              className="text-xs text-primary hover:underline"
-            >
-              {t("actions.addChild")}
-            </Link>
-            <Link
-              href={`/app/projects/${projectId}/features/new?moduleId=${currentModule.id}`}
-              className="text-xs text-primary hover:underline"
-            >
-              {t("actions.addFeature")}
-            </Link>
-          </div>
-        </div>
+      <StructureTree
+        projectId={projectId}
+        roots={[structureNode!]}
+        title={tModule("children.title")}
+        emptyLabel={tModule("children.empty")}
+        expandLabel={tProjectDetail("modules.expandAll", { default: "Expand all" })}
+        collapseLabel={tProjectDetail("modules.collapseAll", { default: "Collapse all" })}
+      />
 
-        {structureNode!.items.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t("children.empty")}</p>
-        ) : (
-          <ModuleItemsTree projectId={projectId} root={structureNode!} />
-        )}
-      </section>
+      <div className="flex flex-wrap gap-2">
+        <Link
+          href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}
+          className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+        >
+          {tModule("actions.addChild")}
+        </Link>
+        <Link
+          href={`/app/projects/${projectId}/features/new?moduleId=${currentModule.id}`}
+          className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+        >
+          {tModule("actions.addFeature")}
+        </Link>
+      </div>
     </div>
   );
 }

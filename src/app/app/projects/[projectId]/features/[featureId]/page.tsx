@@ -107,7 +107,7 @@ export default async function FeatureDetailPage({
 
       <section className="rounded-xl border bg-background p-4">
         <h2 className="mb-2 font-semibold">{t("description.title")}</h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground whitespace-pre-line">
           {feature.description ?? t("description.empty")}
         </p>
       </section>

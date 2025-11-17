@@ -20,8 +20,8 @@ export type Feature = {
 export type CreateFeatureDto = {
   name: string;
   description?: string | null;
-  priority?: FeaturePriority; // default MEDIUM en back
-  status?: FeatureStatus;     // default PENDING en back
+  priority?: FeaturePriority | null; // default MEDIUM en back
+  status?: FeatureStatus; // default PENDING en back
 };
 
 export type UpdateFeatureDto = Partial<CreateFeatureDto> & {

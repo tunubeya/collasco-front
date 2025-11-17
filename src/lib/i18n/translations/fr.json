@@ -579,7 +579,8 @@
               "label": "Statut"
             },
             "priority": {
-              "label": "Priorité"
+              "label": "Priorité",
+              "placeholder": "Sans priorité (facultatif)"
             }
           },
           "errors": {

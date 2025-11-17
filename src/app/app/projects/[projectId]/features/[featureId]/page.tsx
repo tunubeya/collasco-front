@@ -70,10 +70,12 @@ export default async function FeatureDetailPage({
           <div className="flex flex-col items-end gap-2">
             {/* Badges */}
             <FeatureStatusBadge status={feature.status} label={tStatus(feature.status)} />
-            <FeaturePriorityBadge
-              priority={feature.priority ?? FeaturePriority.MEDIUM}
-              label={tPriority(feature.priority ?? FeaturePriority.MEDIUM)}
-            />
+            {feature.priority ? (
+              <FeaturePriorityBadge
+                priority={feature.priority}
+                label={tPriority(feature.priority)}
+              />
+            ) :(null)}
 
             {/* Navegar al módulo */}
             <Link

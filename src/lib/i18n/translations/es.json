@@ -633,7 +633,8 @@
               "label": "Estado"
             },
             "priority": {
-              "label": "Prioridad"
+              "label": "Prioridad",
+              "placeholder": "Sin prioridad (opcional)"
             }
           },
           "errors": {

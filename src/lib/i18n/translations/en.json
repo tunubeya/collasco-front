@@ -633,7 +633,8 @@
               "label": "Status"
             },
             "priority": {
-              "label": "Priority"
+              "label": "Priority",
+              "placeholder": "No priority (optional)"
             }
           },
           "errors": {

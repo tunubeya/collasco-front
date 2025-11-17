@@ -558,7 +558,8 @@
               "label": "Status"
             },
             "priority": {
-              "label": "Prioriteit"
+              "label": "Prioriteit",
+              "placeholder": "Geen prioriteit (optioneel)"
             }
           },
           "errors": {

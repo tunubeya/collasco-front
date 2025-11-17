@@ -164,7 +164,7 @@ export function FeatureForm({
           <select
             id="feature-status"
             name="status"
-            defaultValue={defaultValues?.status ?? FeatureStatus.PENDING}
+            defaultValue={defaultValues?.status ?? FeatureStatus.DONE}
             className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {statusOptions.map((status) => (
@@ -185,9 +185,10 @@ export function FeatureForm({
           <select
             id="feature-priority"
             name="priority"
-            defaultValue={defaultValues?.priority ?? FeaturePriority.MEDIUM}
+            defaultValue={defaultValues?.priority ?? ""}
             className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
+            <option value="">{t("fields.priority.placeholder")}</option>
             {priorityOptions.map((priority) => (
               <option key={priority} value={priority}>
                 {tPriority(priority)}

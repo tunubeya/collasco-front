@@ -26,8 +26,9 @@ function coerceStatus(value: FormDataEntryValue | null): FeatureStatus | undefin
     : undefined;
 }
 
-function coercePriority(value: FormDataEntryValue | null): FeaturePriority | undefined {
+function coercePriority(value: FormDataEntryValue | null): FeaturePriority | null | undefined {
   if (typeof value !== 'string') return undefined;
+  if (value === '') return null;
   return (Object.values(FeaturePriority) as string[]).includes(value)
     ? (value as FeaturePriority)
     : undefined;

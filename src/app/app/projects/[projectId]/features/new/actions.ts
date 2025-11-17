@@ -20,17 +20,17 @@ export type FeatureFormState = {
 };
 
 function coerceStatus(value: FormDataEntryValue | null): FeatureStatus {
-  if (typeof value !== 'string') return FeatureStatus.PENDING;
+  if (typeof value !== 'string') return FeatureStatus.DONE;
   return (Object.values(FeatureStatus) as string[]).includes(value)
     ? (value as FeatureStatus)
-    : FeatureStatus.PENDING;
+    : FeatureStatus.DONE;
 }
 
-function coercePriority(value: FormDataEntryValue | null): FeaturePriority {
-  if (typeof value !== 'string') return FeaturePriority.MEDIUM;
+function coercePriority(value: FormDataEntryValue | null): FeaturePriority | null {
+  if (typeof value !== 'string' || value === '') return null;
   return (Object.values(FeaturePriority) as string[]).includes(value)
     ? (value as FeaturePriority)
-    : FeaturePriority.MEDIUM;
+    : null;
 }
 
 export async function createFeature(
@@ -57,11 +57,14 @@ export async function createFeature(
     };
   }
 
+  const priority = coercePriority(formData.get('priority'));
+  const status = coerceStatus(formData.get('status'));
+
   const dto: CreateFeatureDto = {
     name,
     description: ((formData.get('description') ?? '') as string).trim() || null,
-    priority: coercePriority(formData.get('priority')),
-    status: coerceStatus(formData.get('status')),
+    status,
+    ...(priority !== null ? { priority } : {}),
   };
 
   try {

@@ -118,7 +118,11 @@ export async function deleteFeature(
     if (moduleId) {
       revalidatePath(`/app/projects/${projectId}/modules/${moduleId}`);
     }
-    redirect(`/app/projects/${projectId}`);
+    redirect(
+      moduleId
+        ? `/app/projects/${projectId}/modules/${moduleId}`
+        : `/app/projects/${projectId}`
+    );
   } catch (error) {
     if (error instanceof Response && error.status === 403) {
       redirect(RoutesEnum.ERROR_UNAUTHORIZED);

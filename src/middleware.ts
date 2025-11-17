@@ -39,7 +39,8 @@ type SessionResult = {
   newSessionExpiresAt?: Date;
   encryptedRefreshInfo?: string;
   newRefreshInfoExpiresAt?: Date;
-};async function refreshSession(request: NextRequest): Promise<SessionResult> {
+};
+async function refreshSession(request: NextRequest): Promise<SessionResult> {
   console.log(">>> [refreshSession] INICIO");
   const start = Date.now();
   const unauthorizedUrl = new URL(
@@ -126,7 +127,11 @@ type SessionResult = {
           refreshExp: resp.refreshTokenExpirationDate,
         });
 
-        console.log(">>> [refreshSession] FIN OK. Duración:", Date.now() - start, "ms");
+        console.log(
+          ">>> [refreshSession] FIN OK. Duración:",
+          Date.now() - start,
+          "ms"
+        );
         return {
           encryptedSessionData: encryptedNewSession,
           newSessionExpiresAt: new Date(resp.accessTokenExpirationDate),
@@ -144,15 +149,18 @@ type SessionResult = {
     }
   }
 
-  console.log("✅ No se requiere refresh (token válido). Duración:", Date.now() - start, "ms");
+  console.log(
+    "✅ No se requiere refresh (token válido). Duración:",
+    Date.now() - start,
+    "ms"
+  );
   return {};
 }
-
 
 // New function to set cookies and return the response
 async function applyCookiesAndRespond(
   response: NextResponse,
-  collectedData: CollectedCookies,
+  collectedData: CollectedCookies
 ): Promise<NextResponse> {
   const isProduction = process.env.NODE_ENV === "production";
   if (collectedData.encryptedSessionData && collectedData.newSessionExpiresAt) {
@@ -163,7 +171,7 @@ async function applyCookiesAndRespond(
       secure: isProduction,
       expires: collectedData.newSessionExpiresAt,
       sameSite: "lax",
-      path: "/"
+      path: "/",
     });
   }
   if (
@@ -177,7 +185,7 @@ async function applyCookiesAndRespond(
       secure: isProduction,
       expires: collectedData.newRefreshInfoExpiresAt,
       sameSite: "lax",
-      path: "/"
+      path: "/",
     });
   }
   return response;
@@ -192,7 +200,7 @@ export default auth(async (req) => {
         const newUrl = new URL(RoutesEnum.APP_ROOT, req.nextUrl.origin);
         return NextResponse.redirect(newUrl);
       }
-      return NextResponse.next(); 
+      return NextResponse.next();
     }
     const isResource =
       req.nextUrl.pathname.includes(".svg") ||
@@ -225,7 +233,7 @@ export default auth(async (req) => {
     if (isUnauthorizedRoute) {
       return NextResponse.next();
     }
-    let response = NextResponse.next(); 
+    let response = NextResponse.next();
 
     if (isLoggedIn || req.cookies.get("refresh-info")) {
       const refreshResult = await refreshSession(req);
@@ -249,10 +257,10 @@ export default auth(async (req) => {
         collectedCookieData.newToken = refreshResult.newToken;
       }
     }
-    response = await applyCookiesAndRespond(
-      response,
-      collectedCookieData
-    );
+    console.log("after settings the collected cookies");
+    response = await applyCookiesAndRespond(response, collectedCookieData);
+    console.log("after apply and respond the collected cookies");
+    console.log(response);
     return response;
   } catch (error) {
     console.error("Middleware error:", error);

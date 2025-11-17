@@ -67,6 +67,11 @@ export default function ProjectDetailClient({
           </div>
         )}
       </div>
+      {project.description && (
+        <p className="mb-4 text-sm text-muted-foreground">
+          {project.description}
+        </p>
+      )}
 
       {!hasAny ? (
         <p className="text-sm text-muted-foreground">{t("modules.empty")}</p>
@@ -110,12 +115,12 @@ function ModuleNode({
 
   return (
     <details
-       className="group rounded-md px-1 py-0.5 transition-colors hover:bg-muted/30"
+       className="group rounded-md px-1 py-0.5"
       open={isOpen}
       onToggle={(e) => toggle((e.target as HTMLDetailsElement).open)}
     >
       <summary
-        className="flex cursor-pointer select-none items-center gap-2 pr-2"
+        className="flex cursor-pointer select-none items-center gap-2 rounded-md pr-2 transition-colors hover:bg-muted/30"
         style={{ paddingLeft }}
       >
         {/* Caret estilo chevron */}

@@ -223,6 +223,11 @@
         "LOW": "Laag",
         "MEDIUM": "Gemiddeld",
         "HIGH": "Hoog"
+      },
+      "breadcrumbs": {
+        "projects": "Projecten",
+        "modules": "Modules",
+        "features": "Features"
       }
     },
     "settings": {

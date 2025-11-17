@@ -4,15 +4,24 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
 import { FeaturePriority, FeatureStatus } from "@/lib/definitions";
-import { fetchFeatureById, fetchGetUserProfile } from "@/lib/data";
+import {
+  fetchFeatureById,
+  fetchGetUserProfile,
+  fetchModuleById,
+  fetchProjectById,
+  fetchProjectStructure,
+} from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Feature } from "@/lib/model-definitions/feature";
+import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 
 // 👇 importa la server action de delete
 import { deleteFeature } from "@/app/app/projects/[projectId]/features/[featureId]/edit/actions";
 import { FeatureQA } from "./feature-qa.client";
+import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
+import { findModulePath } from "@/lib/structure-helpers";
 
 type Params = { projectId: string; featureId: string };
 
@@ -28,10 +37,19 @@ export default async function FeatureDetailPage({
   const t = await getTranslations("app.projects.feature");
   const tStatus = await getTranslations("app.common.featureStatus");
   const tPriority = await getTranslations("app.common.featurePriority");
+  const tBreadcrumbs = await getTranslations("app.common.breadcrumbs");
   const formatter = await getFormatter();
 
   // 👇 await params
   const { projectId, featureId } = await params;
+
+  let project: Project | null = null;
+  try {
+    project = await fetchProjectById(session.token, projectId);
+  } catch (error) {
+    await handlePageError(error);
+  }
+  if (!project) notFound();
 
   let feature: Feature | null = null;
   try {
@@ -49,12 +67,45 @@ export default async function FeatureDetailPage({
     await handlePageError(error);
   }
 
+  let moduleCrumbs: { id: string; name: string }[] = [];
+  try {
+    const structure = await fetchProjectStructure(session.token, projectId, {
+      limit: 1000,
+      sort: "sortOrder",
+    });
+    const chain = findModulePath(structure.modules, feature.moduleId);
+    if (chain) {
+      moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
+    }
+  } catch (error) {
+    await handlePageError(error);
+  }
+  if (moduleCrumbs.length === 0 && feature.moduleId) {
+    try {
+      const moduleInfo = await fetchModuleById(session.token, feature.moduleId);
+      moduleCrumbs = [{ id: moduleInfo.id, name: moduleInfo.name }];
+    } catch (error) {
+      await handlePageError(error);
+    }
+  }
+
   const formattedUpdatedAt = formatter.dateTime(new Date(feature.updatedAt), {
     dateStyle: "medium",
   });
 
+  const breadcrumbItems = [
+    { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
+    { label: project.name, href: `/app/projects/${projectId}` },
+    ...moduleCrumbs.map((crumb) => ({
+      label: crumb.name,
+      href: `/app/projects/${projectId}/modules/${crumb.id}`,
+    })),
+    { label: feature.name },
+  ];
+
   return (
     <div className="grid gap-6">
+      <Breadcrumb items={breadcrumbItems} className="mb-2" />
       <header className="rounded-xl border bg-background p-4">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>

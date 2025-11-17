@@ -11,6 +11,7 @@ import type { FeatureOption } from "./project-qa.types";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 import { deleteProject } from "@/app/app/projects/actions";
+import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 
 
 type Params = { projectId: string };
@@ -27,6 +28,7 @@ export default async function ProjectDetailPage({
 
   const t = await getTranslations("app.projects.detail");
   const tStatus = await getTranslations("app.common.projectStatus");
+  const tBreadcrumbs = await getTranslations("app.common.breadcrumbs");
   const formatter = await getFormatter();
 
   // 1) Proyecto
@@ -64,8 +66,14 @@ export default async function ProjectDetailPage({
     dateStyle: "medium",
   });
 
+  const breadcrumbItems = [
+    { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
+    { label: project.name },
+  ];
+
   return (
     <div className="grid gap-6">
+      <Breadcrumb items={breadcrumbItems} className="mb-2" />
       <header className="flex items-center justify-between">
                <div>
           <h1 className="text-2xl font-bold">{project.name}</h1>

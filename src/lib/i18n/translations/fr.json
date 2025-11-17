@@ -223,6 +223,11 @@
         "LOW": "Faible",
         "MEDIUM": "Moyenne",
         "HIGH": "Élevée"
+      },
+      "breadcrumbs": {
+        "projects": "Projets",
+        "modules": "Modules",
+        "features": "Features"
       }
     },
     "settings": {

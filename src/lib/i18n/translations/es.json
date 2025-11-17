@@ -277,6 +277,11 @@
         "LOW": "Baja",
         "MEDIUM": "Media",
         "HIGH": "Alta"
+      },
+      "breadcrumbs": {
+        "projects": "Proyectos",
+        "modules": "Módulos",
+        "features": "Features"
       }
     },
     "settings": {

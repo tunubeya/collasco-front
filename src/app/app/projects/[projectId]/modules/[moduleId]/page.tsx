@@ -3,12 +3,20 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
 import { StructureModuleNode } from "@/lib/definitions";
-import { fetchModuleById, fetchModuleStructure } from "@/lib/data";
+import {
+  fetchModuleById,
+  fetchModuleStructure,
+  fetchProjectById,
+  fetchProjectStructure,
+} from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Module } from "@/lib/model-definitions/module";
+import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
 import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 import { handlePageError } from "@/lib/handle-page-error";
+import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
+import { findModulePath } from "@/lib/structure-helpers";
 
 // 👇 importa la acción de borrado (ya la usas en /edit)
 import { deleteModule } from "@/app/app/projects/[projectId]/modules/[moduleId]/edit/actions";
@@ -29,10 +37,20 @@ export default async function ModuleDetailPage({
   if (!session?.token) redirect(RoutesEnum.LOGIN);
 
   const tModule = await getTranslations("app.projects.module");
+  const tBreadcrumbs = await getTranslations("app.common.breadcrumbs");
   const tProjectDetail = await getTranslations("app.projects.detail");
   const formatter = await getFormatter();
 
-  // 1) Metadata del módulo
+  // 1) Metadata del proyecto
+  let project: Project | null = null;
+  try {
+    project = await fetchProjectById(session.token, projectId);
+  } catch (error) {
+    await handlePageError(error);
+  }
+  if (!project) notFound();
+
+  // 2) Metadata del módulo
   let currentModule: Module | null = null;
   try {
     currentModule = await fetchModuleById(session.token, moduleId);
@@ -41,7 +59,7 @@ export default async function ModuleDetailPage({
   }
   if (!currentModule) notFound();
 
-  // 2) Árbol completo del módulo (intercalado y ordenado)
+  // 3) Árbol completo del módulo (intercalado y ordenado)
   let structureNode: StructureModuleNode;
   try {
     const { node } = await fetchModuleStructure(session.token, moduleId);
@@ -50,13 +68,44 @@ export default async function ModuleDetailPage({
     await handlePageError(error);
   }
 
+  // 4) Path del módulo dentro de la estructura del proyecto
+  let moduleCrumbs: { id: string; name: string }[] = [];
+  try {
+    const structure = await fetchProjectStructure(session.token, projectId, {
+      limit: 1000,
+      sort: "sortOrder",
+    });
+    const chain = findModulePath(structure.modules, currentModule.id);
+    if (chain) {
+      moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
+    }
+  } catch (error) {
+    await handlePageError(error);
+  }
+  if (moduleCrumbs.length === 0) {
+    moduleCrumbs = [{ id: currentModule.id, name: currentModule.name }];
+  }
+
   const formattedUpdatedAt = formatter.dateTime(
     new Date(currentModule.updatedAt),
     { dateStyle: "medium" }
   );
 
+  const breadcrumbItems = [
+    { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
+    { label: project.name, href: `/app/projects/${projectId}` },
+    ...moduleCrumbs.map((crumb, index) => ({
+      label: crumb.name,
+      href:
+        index === moduleCrumbs.length - 1
+          ? undefined
+          : `/app/projects/${projectId}/modules/${crumb.id}`,
+    })),
+  ];
+
   return (
     <div className="grid gap-6">
+      <Breadcrumb items={breadcrumbItems} className="mb-2" />
       {/* Header */}
       <header className="rounded-xl border bg-background p-4">
         <div className="flex items-start justify-between gap-4">

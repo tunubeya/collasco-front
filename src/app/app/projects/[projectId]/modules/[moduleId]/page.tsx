@@ -157,7 +157,7 @@ export default async function ModuleDetailPage({
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-muted-foreground">
+        <div className="mt-4 whitespace-pre-line text-sm text-muted-foreground">
           {currentModule.description ?? tModule("description.empty")}
         </div>
       </header>

@@ -78,7 +78,9 @@ export default async function ProjectDetailPage({
                <div>
           <h1 className="text-2xl font-bold">{project.name}</h1>
           {project.description && (
-            <p className="text-sm mt-1">{project.description}</p>
+            <p className="text-sm mt-1 whitespace-pre-line">
+              {project.description}
+            </p>
           )}
           <p className="text-xs text-muted-foreground mt-1">
             {t("updated", { date: formattedUpdatedAt })}

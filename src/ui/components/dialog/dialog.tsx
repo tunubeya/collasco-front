@@ -13,8 +13,8 @@ import {
   FloatingOverlay,
   useId
 } from '@floating-ui/react';
-import { Button } from '@/ui/components/button';
 import { motion } from 'motion/react';
+import { actionButtonClass } from '@/ui/styles/action-button';
 
 interface DialogOptions {
   initialOpen?: boolean;
@@ -247,26 +247,42 @@ export const DialogClose = React.forwardRef<
 >(function DialogClose({ children, asChild = false, ...props }, ref) {
   const { setOpen, getReferenceProps } = useDialogContext();
 
+  const handleClick = (event: React.MouseEvent<any>) => {
+    props.onClick?.(event);
+    if (!event.defaultPrevented) {
+      setOpen(false);
+    }
+  };
+
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(
       children,
       getReferenceProps({
         ref,
         ...props,
-        ...children.props
+        ...children.props,
+        onClick: (event: React.MouseEvent<any>) => {
+          if (typeof children.props.onClick === 'function') {
+            children.props.onClick(event);
+          }
+          handleClick(event);
+        }
       })
     );
   }
+
+  const { className, ...restProps } = props;
+
   return (
-    <Button
+    <button
       type="button"
-      variant="secondary"
-      {...props}
+      {...restProps}
       ref={ref}
-      onClick={() => setOpen(false)}
+      className={actionButtonClass({ variant: 'neutral', className })}
+      onClick={handleClick}
     >
       {children}
-    </Button>
+    </button>
   );
 });
 
@@ -274,12 +290,17 @@ export const DialogConfirm = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     onConfirm?: () => void | Promise<boolean>;
+    variant?: 'primary' | 'destructive';
   }
->(function DialogConfirm({ onConfirm, ...props }, ref) {
+>(function DialogConfirm({ onConfirm, variant = 'primary', className, onClick, ...props }, ref) {
   const { setOpen } = useDialogContext();
 
   const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    onClick?.(e);
+    if (e.defaultPrevented) {
+      return;
+    }
     const result = onConfirm?.();
     if (result instanceof Promise) {
       result.then((ret) => {
@@ -293,11 +314,14 @@ export const DialogConfirm = React.forwardRef<
   };
 
   return (
-    <Button
+    <button
       type="button"
-      variant="default"
       {...props}
       ref={ref}
+      className={actionButtonClass({
+        variant: variant === 'destructive' ? 'destructive' : 'primary',
+        className
+      })}
       onClick={handleConfirm}
     />
   );
@@ -306,16 +330,20 @@ export const DialogConfirm = React.forwardRef<
 export const DialogActions = ({
   closeLabel,
   confirmLabel,
-  onConfirm
+  onConfirm,
+  confirmVariant = 'primary'
 }: Readonly<{
   closeLabel: string;
   confirmLabel: string;
   onConfirm?: () => void;
+  confirmVariant?: 'primary' | 'destructive';
 }>) => {
   return (
     <div className="flex justify-end gap-2">
       <DialogClose>{closeLabel}</DialogClose>
-      <DialogConfirm onConfirm={onConfirm}>{confirmLabel}</DialogConfirm>
+      <DialogConfirm variant={confirmVariant} onConfirm={onConfirm}>
+        {confirmLabel}
+      </DialogConfirm>
     </div>
   );
 };

@@ -8,6 +8,8 @@ import { RoutesEnum } from "@/lib/utils";
 import { getSession } from "@/lib/session";
 import ProjectsList from "@/ui/components/projects/projects-list.client";
 import { handlePageError } from "@/lib/handle-page-error";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Plus } from "lucide-react";
 
 type SearchParams = {
   page?: string;
@@ -56,8 +58,9 @@ export default async function ProjectsPage({ searchParams }: Props) {
         </div>
         <Link
           href="/app/projects/new"
-          className="rounded-lg border bg-background px-3 py-2 text-sm transition-colors hover:bg-background"
+          className={actionButtonClass()}
         >
+          <Plus className="mr-2 h-4 w-4" aria-hidden />
           {t("create")}
         </Link>
       </div>

@@ -55,10 +55,8 @@ export default function DeleteDialog({
         </DialogDescription>
         <div className="flex justify-end gap-2">
           <DialogClose>{closeLabel ?? t('cancel')}</DialogClose>
-          <DialogConfirm
-            className="bg-red-600 hover:bg-red-600/80"
-            onConfirm={onConfirm}
-          >
+          <DialogConfirm variant="destructive" onConfirm={onConfirm}>
+            <Trash className="mr-2 h-4 w-4" />
             {confirmLabel ?? t('delete')}
           </DialogConfirm>
         </div>

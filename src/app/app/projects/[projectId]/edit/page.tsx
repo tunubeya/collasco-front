@@ -12,6 +12,8 @@ import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
 import { ProjectForm } from "@/ui/components/projects/ProjectForm.client";
 import { handlePageError } from "@/lib/handle-page-error";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Trash2 } from "lucide-react";
 
 type Params = { projectId: string };
 type Props = { params: Promise<Params> };
@@ -83,8 +85,9 @@ function DeleteButton({ label }: { label: string }) {
   return (
     <button
       type="submit"
-      className="inline-flex items-center rounded-lg border border-destructive bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors"
+      className={actionButtonClass({ variant: "destructive" })}
     >
+      <Trash2 className="mr-2 h-4 w-4" aria-hidden />
       {label}
     </button>
   );

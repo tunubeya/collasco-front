@@ -12,6 +12,8 @@ import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 import { deleteProject } from "@/app/app/projects/actions";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Pencil, Trash2 } from "lucide-react";
 
 
 type Params = { projectId: string };
@@ -97,8 +99,9 @@ export default async function ProjectDetailPage({
           <div className="flex gap-2">
             <Link
               href={`/app/projects/${project.id}/edit`}
-              className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+              className={actionButtonClass()}
             >
+              <Pencil className="mr-2 h-4 w-4" aria-hidden />
               {t("actions.edit", { default: "Editar" })}
             </Link>
 
@@ -106,8 +109,9 @@ export default async function ProjectDetailPage({
             <form action={deleteProject.bind(null, project.id)}>
               <button
                 type="submit"
-                className="inline-flex items-center rounded-lg border border-destructive bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground transition-colors"
+                className={actionButtonClass({ variant: "destructive" })}
               >
+                <Trash2 className="mr-2 h-4 w-4" aria-hidden />
                 {t("actions.delete", { default: "Eliminar" })}
               </button>
             </form>

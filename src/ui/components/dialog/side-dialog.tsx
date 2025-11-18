@@ -14,12 +14,14 @@ export default function SideDialog({
   closeTrigger,
   content,
   confirmLabel = 'Eliminar',
+  confirmVariant = 'destructive',
   onConfirm
 }: Readonly<{
   trigger: React.ReactNode;
   content: React.ReactNode;
   closeTrigger?: React.ReactNode;
   confirmLabel?: string;
+  confirmVariant?: 'primary' | 'destructive';
   onConfirm?: () => void | Promise<boolean>;
 }>) {
   return (
@@ -35,7 +37,9 @@ export default function SideDialog({
           {content}
         </div>
         <div className="flex justify-end">
-          <DialogConfirm onConfirm={onConfirm}>{confirmLabel}</DialogConfirm>
+          <DialogConfirm variant={confirmVariant} onConfirm={onConfirm}>
+            {confirmLabel}
+          </DialogConfirm>
         </div>
       </DialogContent>
     </Dialog>

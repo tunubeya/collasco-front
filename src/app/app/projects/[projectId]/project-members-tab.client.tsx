@@ -22,6 +22,8 @@ import {
   DialogTrigger,
 } from "@/ui/components/dialog/dialog";
 import { cn } from "@/lib/utils";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Plus } from "lucide-react";
 
 type ProjectMembersTabProps = {
   token: string;
@@ -139,7 +141,14 @@ export function ProjectMembersTab({
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
         {isOwner && (
-          <Button onClick={() => setAddDialogOpen(true)}>{t("actions.add")}</Button>
+          <button
+            type="button"
+            className={actionButtonClass()}
+            onClick={() => setAddDialogOpen(true)}
+          >
+            <Plus className="mr-2 h-4 w-4" aria-hidden />
+            {t("actions.add")}
+          </button>
         )}
       </header>
 

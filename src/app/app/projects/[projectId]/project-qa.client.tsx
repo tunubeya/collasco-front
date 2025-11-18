@@ -20,6 +20,8 @@ import { TestRunPanel, RESULT_STATUSES } from "@/app/app/projects/[projectId]/fe
 import { FeatureOption } from "./project-qa.types";
 import { NewProjectRunDialog } from "./project-qa-dialog.client";
 import { SummaryBadge, EmptyState, Skeleton, ScopeBadge } from "./project-qa-shared";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Plus } from "lucide-react";
 
 const RUNS_LIMIT = 10;
 
@@ -267,12 +269,15 @@ export function ProjectQA({
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant={"outline"}
+            <button
+              type="button"
+              className={actionButtonClass()}
               onClick={() => hasFeatures && setDialogOpen(true)}
               disabled={!hasFeatures}
             >
+              <Plus className="mr-2 h-4 w-4" aria-hidden />
               {t("actions.newRun")}
-            </Button>
+            </button>
             {!hasFeatures && (
               <p className="text-xs text-muted-foreground">{t("noFeatures")}</p>
             )}

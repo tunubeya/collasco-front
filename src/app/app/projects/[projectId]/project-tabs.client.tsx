@@ -11,6 +11,8 @@ import ProjectDetailClient from "@/ui/components/projects/project-detail.client"
 import { ProjectQA } from "./project-qa.client";
 import { ProjectMembersTab } from "./project-members-tab.client";
 import type { FeatureOption } from "./project-qa.types";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Plus } from "lucide-react";
 
 type ProjectTabsProps = {
   project: Project;
@@ -62,8 +64,9 @@ export function ProjectTabs({
           <div>
             <Link
               href={`/app/projects/${project.id}/modules/new`}
-              className="inline-flex items-center rounded-lg border px-3 py-2 text-sm transition-colors hover:bg-muted"
+              className={actionButtonClass()}
             >
+              <Plus className="mr-2 h-4 w-4" aria-hidden />
               {tActions("addModule")}
             </Link>
           </div>

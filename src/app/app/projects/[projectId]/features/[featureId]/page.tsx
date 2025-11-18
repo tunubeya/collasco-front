@@ -22,6 +22,8 @@ import { deleteFeature } from "@/app/app/projects/[projectId]/features/[featureI
 import { FeatureQA } from "./feature-qa.client";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 import { findModulePath } from "@/lib/structure-helpers";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Pencil, Trash2 } from "lucide-react";
 
 type Params = { projectId: string; featureId: string };
 
@@ -140,16 +142,21 @@ export default async function FeatureDetailPage({
             <div className="mt-2 flex gap-2">
               <Link
                 href={`/app/projects/${projectId}/features/${featureId}/edit`}
-                className="inline-flex items-center rounded-lg border px-3 py-1.5 text-xs transition-colors hover:bg-muted"
+                className={actionButtonClass({ size: "xs" })}
               >
+                <Pencil className="mr-2 h-4 w-4" aria-hidden />
                 {t("actions.edit", { default: "Editar" })}
               </Link>
 
               <form action={deleteFeature.bind(null, projectId, featureId, feature.moduleId)}>
                 <button
                   type="submit"
-                  className="inline-flex items-center rounded-lg border border-destructive bg-destructive px-3 py-1.5 text-xs font-medium text-destructive-foreground transition-colors"
+                  className={actionButtonClass({
+                    variant: "destructive",
+                    size: "xs",
+                  })}
                 >
+                  <Trash2 className="mr-2 h-4 w-4" aria-hidden />
                   {t("actions.delete", { default: "Eliminar" })}
                 </button>
               </form>

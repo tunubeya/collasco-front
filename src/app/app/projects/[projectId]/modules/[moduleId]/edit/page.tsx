@@ -17,6 +17,8 @@ import { RoutesEnum } from "@/lib/utils";
 import { ModuleForm } from "@/ui/components/projects/ModuleForm.client";
 import { handlePageError } from "@/lib/handle-page-error";
 import type { StructureModuleNode } from "@/lib/definitions";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Trash2 } from "lucide-react";
 
 type Params = { projectId: string; moduleId: string };
 
@@ -126,8 +128,9 @@ export default async function EditModulePage({
           </div>
           <button
             type="submit"
-            className="inline-flex items-center rounded-lg border border-destructive bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors"
+            className={actionButtonClass({ variant: "destructive" })}
           >
+            <Trash2 className="mr-2 h-4 w-4" aria-hidden />
             {t("dangerZone.delete")}
           </button>
         </div>

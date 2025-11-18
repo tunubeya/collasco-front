@@ -47,6 +47,8 @@ import {
   DialogHeading,
   DialogTrigger,
 } from "@/ui/components/dialog/dialog";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Plus } from "lucide-react";
 
 type FeatureQAProps = {
   token: string;
@@ -1149,7 +1151,14 @@ function TestRunsTab({
           <h3 className="text-base font-semibold">{t("title")}</h3>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button onClick={() => setDialogOpen(true)}>{t("actions.newRun")}</Button>
+        <button
+          type="button"
+          className={actionButtonClass()}
+          onClick={() => setDialogOpen(true)}
+        >
+          <Plus className="mr-2 h-4 w-4" aria-hidden />
+          {t("actions.newRun")}
+        </button>
       </div>
 
       {runListContent}

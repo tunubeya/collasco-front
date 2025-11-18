@@ -17,6 +17,8 @@ import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 import { handlePageError } from "@/lib/handle-page-error";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 import { findModulePath } from "@/lib/structure-helpers";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 
 // 👇 importa la acción de borrado (ya la usas en /edit)
 import { deleteModule } from "@/app/app/projects/[projectId]/modules/[moduleId]/edit/actions";
@@ -125,7 +127,7 @@ export default async function ModuleDetailPage({
               {currentModule.parentModuleId ? (
                 <Link
                   href={`/app/projects/${projectId}/modules/${currentModule.parentModuleId}`}
-                  className="inline-flex items-center rounded border px-2 py-1 transition-colors hover:bg-muted"
+                  className={actionButtonClass({ variant: "neutral", size: "xs" })}
                 >
                   {tModule("actions.backToParent")}
                 </Link>
@@ -140,16 +142,18 @@ export default async function ModuleDetailPage({
             <div className="flex gap-2">
               <Link
                 href={`/app/projects/${projectId}/modules/${moduleId}/edit`}
-                className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+                className={actionButtonClass()}
               >
+                <Pencil className="mr-2 h-4 w-4" aria-hidden />
                 {tModule("actions.edit", { default: "Editar" })}
               </Link>
 
               <form action={deleteModule.bind(null, projectId, moduleId)}>
                 <button
                   type="submit"
-                  className="inline-flex items-center rounded-lg border border-destructive bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground transition-colors"
+                  className={actionButtonClass({ variant: "destructive" })}
                 >
+                  <Trash2 className="mr-2 h-4 w-4" aria-hidden />
                   {tModule("actions.delete", { default: "Eliminar" })}
                 </button>
               </form>
@@ -174,14 +178,16 @@ export default async function ModuleDetailPage({
       <div className="flex flex-wrap gap-2">
         <Link
           href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}
-          className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+          className={actionButtonClass()}
         >
+          <Plus className="mr-2 h-4 w-4" aria-hidden />
           {tModule("actions.addChild")}
         </Link>
         <Link
           href={`/app/projects/${projectId}/features/new?moduleId=${currentModule.id}`}
-          className="inline-flex items-center rounded-lg border px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+          className={actionButtonClass()}
         >
+          <Plus className="mr-2 h-4 w-4" aria-hidden />
           {tModule("actions.addFeature")}
         </Link>
       </div>

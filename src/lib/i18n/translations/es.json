@@ -592,6 +592,12 @@
           "edit": "Editar",
           "delete": "Eliminar"
         },
+        "tabs": {
+          "info": "Información",
+          "issues": "Issues y PR",
+          "versions": "Versiones",
+          "qa": "Pruebas"
+        },
         "description": {
           "title": "Descripción",
           "empty": "Sin descripción."

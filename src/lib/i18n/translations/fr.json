@@ -538,6 +538,12 @@
           "edit": "Modifier",
           "delete": "Supprimer"
         },
+        "tabs": {
+          "info": "Informations",
+          "issues": "Issues liées",
+          "versions": "Versions",
+          "qa": "Tests"
+        },
         "description": {
           "title": "Description",
           "empty": "Aucune description fournie."

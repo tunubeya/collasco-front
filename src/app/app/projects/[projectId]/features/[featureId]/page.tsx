@@ -19,10 +19,10 @@ import { handlePageError } from "@/lib/handle-page-error";
 
 // 👇 importa la server action de delete
 import { deleteFeature } from "@/app/app/projects/[projectId]/features/[featureId]/edit/actions";
-import { FeatureQA } from "./feature-qa.client";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 import { findModulePath } from "@/lib/structure-helpers";
 import { actionButtonClass } from "@/ui/styles/action-button";
+import { FeatureTabs } from "./feature-tabs.client";
 import { Pencil, Trash2 } from "lucide-react";
 
 type Params = { projectId: string; featureId: string };
@@ -165,68 +165,12 @@ export default async function FeatureDetailPage({
         </div>
       </header>
 
-      <section className="rounded-xl border bg-background p-4">
-        <h2 className="mb-2 font-semibold">{t("description.title")}</h2>
-        <p className="text-sm text-muted-foreground whitespace-pre-line">
-          {feature.description ?? t("description.empty")}
-        </p>
-      </section>
-
-      {/* Issues */}
-      <section className="rounded-xl border bg-background p-4">
-        <h2 className="mb-2 font-semibold">{t("issues.title")}</h2>
-        {feature.issueElements?.length ? (
-          <ul className="space-y-2 text-sm">
-            {feature.issueElements.map((issue) => (
-              <li key={issue.id} className="flex flex-wrap items-center gap-2">
-                {issue.githubIssueUrl && (
-                  <a href={issue.githubIssueUrl} target="_blank" rel="noreferrer" className="text-primary underline">
-                    {t("issues.issueLink")}
-                  </a>
-                )}
-                {issue.pullRequestUrl && (
-                  <a href={issue.pullRequestUrl} target="_blank" rel="noreferrer" className="text-primary underline">
-                    {t("issues.pullRequestLink")}
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">{t("issues.empty")}</p>
-        )}
-      </section>
-
-      {/* Versiones */}
-      <section className="rounded-xl border bg-background p-4">
-        <h2 className="mb-2 font-semibold">{t("versions.title")}</h2>
-        {feature.versions?.length ? (
-          <ul className="space-y-2 text-sm">
-            {feature.versions.map((version) => (
-              <li
-                key={version.id}
-                className="flex items-center justify-between rounded-lg border border-transparent px-3 py-2 transition-colors hover:border-muted"
-              >
-                <div>
-                  <span className="font-medium">
-                    {t("versions.label", { version: version.versionNumber })}
-                  </span>
-                  {version.isRollback && (
-                    <span className="ml-2 text-xs text-amber-600">{t("versions.rollback")}</span>
-                  )}
-                </div>
-                <span className="text-xs text-muted-foreground">
-                  {formatter.dateTime(new Date(version.createdAt), { dateStyle: "medium" })}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">{t("versions.empty")}</p>
-        )}
-      </section>
-
-      <FeatureQA token={session.token} featureId={featureId} currentUserId={currentUserId ?? undefined} />
+      <FeatureTabs
+        feature={feature}
+        featureId={featureId}
+        token={session.token}
+        currentUserId={currentUserId ?? undefined}
+      />
     </div>
   );
 }

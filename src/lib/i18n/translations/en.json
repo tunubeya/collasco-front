@@ -592,6 +592,12 @@
           "edit": "Edit",
           "delete": "Delete"
         },
+        "tabs": {
+          "info": "Details",
+          "issues": "Linked issues",
+          "versions": "Versions",
+          "qa": "Tests"
+        },
         "description": {
           "title": "Description",
           "empty": "No description provided."

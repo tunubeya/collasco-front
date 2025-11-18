@@ -113,7 +113,7 @@ export default async function FeatureDetailPage({
           <div>
             <h1 className="text-2xl font-bold">{feature.name}</h1>
             <p className="text-sm text-muted-foreground">
-              {t("header.project", { id: projectId })}
+              {t("header.project", { name: project.name })}
             </p>
             <p className="text-xs text-muted-foreground">
               {t("header.updated", { date: formattedUpdatedAt })}

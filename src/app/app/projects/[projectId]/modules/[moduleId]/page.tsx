@@ -114,7 +114,7 @@ export default async function ModuleDetailPage({
           <div>
             <h1 className="text-2xl font-bold">{currentModule.name}</h1>
             <p className="text-sm text-muted-foreground">
-              {tModule("header.project", { id: projectId })}
+              {tModule("header.project", { name: project.name })}
             </p>
             <p className="text-xs text-muted-foreground">
               {tModule("header.updated", { date: formattedUpdatedAt })}

@@ -514,7 +514,7 @@
       "new": { "title": "Crear proyecto" },
       "module": {
         "header": {
-          "project": "Proyecto: {id}",
+          "project": "Proyecto: {name}",
           "updated": "Última actualización: {date}"
         },
         "badges": {
@@ -584,7 +584,7 @@
       },
       "feature": {
         "header": {
-          "project": "Proyecto: {id}",
+          "project": "Proyecto: {name}",
           "updated": "Última actualización: {date}",
           "viewModule": "Ver módulo"
         },

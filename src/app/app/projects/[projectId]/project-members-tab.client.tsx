@@ -29,7 +29,7 @@ type ProjectMembersTabProps = {
   token: string;
   projectId: string;
   initialMembers: ProjectMember[];
-  isOwner: boolean;
+  canManageMembers: boolean;
   currentUserId?: string;
 };
 
@@ -44,7 +44,7 @@ export function ProjectMembersTab({
   token,
   projectId,
   initialMembers,
-  isOwner,
+  canManageMembers,
   currentUserId,
 }: ProjectMembersTabProps) {
   const t = useTranslations("app.projects.members");
@@ -140,7 +140,7 @@ export function ProjectMembersTab({
           <h3 className="text-lg font-semibold">{t("title")}</h3>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        {isOwner && (
+        {canManageMembers && (
           <button
             type="button"
             className={actionButtonClass()}
@@ -152,7 +152,7 @@ export function ProjectMembersTab({
         )}
       </header>
 
-      {!isOwner && (
+      {!canManageMembers && (
         <p className="text-xs text-muted-foreground">{t("messages.ownerOnly")}</p>
       )}
 
@@ -179,7 +179,7 @@ export function ProjectMembersTab({
                 });
                 const isCurrentUser = user?.id === currentUserId;
                 const disableRoleChange =
-                  !isOwner || member.role === ProjectMemberRole.OWNER;
+                  !canManageMembers || member.role === ProjectMemberRole.OWNER;
                 return (
                   <tr key={member.userId} className="align-top">
                     <td className="px-3 py-3">
@@ -222,7 +222,10 @@ export function ProjectMembersTab({
                       <Button
                         variant="ghost"
                         size="sm"
-                        disabled={member.role === ProjectMemberRole.OWNER || !isOwner}
+                        disabled={
+                          member.role === ProjectMemberRole.OWNER ||
+                          !canManageMembers
+                        }
                         onClick={() => {
                           if (
                             window.confirm(
@@ -246,7 +249,7 @@ export function ProjectMembersTab({
         </div>
       )}
 
-      {isOwner && (
+      {canManageMembers && (
         <AddMemberDialog
           open={addDialogOpen}
           onOpenChange={setAddDialogOpen}

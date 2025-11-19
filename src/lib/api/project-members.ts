@@ -70,6 +70,7 @@ export async function updateProjectMemberRole(
   dto: UpdateProjectMemberDto
 ): Promise<ProjectMember[]> {
   try {
+    
     const res = await fetchWithAuth(
       `${apiUrl}/projects/${projectId}/members/${userId}`,
       {

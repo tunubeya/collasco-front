@@ -95,7 +95,7 @@ export function ProjectTabs({
           token={token}
           projectId={projectId}
           initialMembers={project.members ?? []}
-          isOwner={project.ownerId === currentUserId}
+          canManageMembers={membershipRole === ProjectMemberRole.OWNER}
           currentUserId={currentUserId}
         />
       )}

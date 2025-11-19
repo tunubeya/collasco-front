@@ -30,6 +30,7 @@ type ProjectQAProps = {
   projectId: string;
   featureOptions: FeatureOption[];
   currentUserId?: string;
+  canManageQa?: boolean;
 };
 
 export function ProjectQA({
@@ -37,6 +38,7 @@ export function ProjectQA({
   projectId,
   featureOptions,
   currentUserId,
+  canManageQa = false,
 }: ProjectQAProps) {
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
@@ -174,8 +176,12 @@ export function ProjectQA({
         <EmptyState
           title={t("empty.title")}
           description={t("empty.description")}
-          actionLabel={t("empty.cta")}
-          onAction={() => setDialogOpen(true)}
+          actionLabel={
+            canManageQa && hasFeatures ? t("empty.cta") : undefined
+          }
+          onAction={
+            canManageQa && hasFeatures ? () => setDialogOpen(true) : undefined
+          }
         />
       );
     }
@@ -269,15 +275,17 @@ export function ProjectQA({
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className={actionButtonClass()}
-              onClick={() => hasFeatures && setDialogOpen(true)}
-              disabled={!hasFeatures}
-            >
-              <Plus className="mr-2 h-4 w-4" aria-hidden />
-              {t("actions.newRun")}
-            </button>
+            {canManageQa && (
+              <button
+                type="button"
+                className={actionButtonClass()}
+                onClick={() => hasFeatures && setDialogOpen(true)}
+                disabled={!hasFeatures}
+              >
+                <Plus className="mr-2 h-4 w-4" aria-hidden />
+                {t("actions.newRun")}
+              </button>
+            )}
             {!hasFeatures && (
               <p className="text-xs text-muted-foreground">{t("noFeatures")}</p>
             )}

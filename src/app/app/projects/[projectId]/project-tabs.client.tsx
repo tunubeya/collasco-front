@@ -43,6 +43,10 @@ export function ProjectTabs({
   const canManageStructure =
     membershipRole === ProjectMemberRole.OWNER ||
     membershipRole === ProjectMemberRole.MAINTAINER;
+  const canManageQa =
+    membershipRole === ProjectMemberRole.OWNER ||
+    membershipRole === ProjectMemberRole.MAINTAINER ||
+    membershipRole === ProjectMemberRole.DEVELOPER;
 
   return (
     <section className="space-y-4">
@@ -87,6 +91,7 @@ export function ProjectTabs({
           projectId={projectId}
           featureOptions={featureOptions}
           currentUserId={currentUserId}
+          canManageQa={canManageQa}
         />
       )}
 

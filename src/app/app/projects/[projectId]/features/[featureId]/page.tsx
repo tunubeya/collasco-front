@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { FeaturePriority, FeatureStatus } from "@/lib/definitions";
+import { FeaturePriority, FeatureStatus, ProjectMemberRole } from "@/lib/definitions";
 import {
   fetchFeatureById,
   fetchGetUserProfile,
@@ -105,6 +105,18 @@ export default async function FeatureDetailPage({
     { label: feature.name },
   ];
 
+  const inferredRole =
+    project.members?.find((member) => member.userId === currentUserId)?.role ??
+    (project.ownerId === currentUserId ? ProjectMemberRole.OWNER : null);
+  const membershipRole = project.membershipRole ?? inferredRole ?? null;
+  const canManageFeature =
+    membershipRole === ProjectMemberRole.OWNER ||
+    membershipRole === ProjectMemberRole.MAINTAINER;
+  const canManageQa =
+    membershipRole === ProjectMemberRole.OWNER ||
+    membershipRole === ProjectMemberRole.MAINTAINER ||
+    membershipRole === ProjectMemberRole.DEVELOPER;
+
   return (
     <div className="grid gap-6">
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
@@ -139,28 +151,30 @@ export default async function FeatureDetailPage({
             </Link>
 
             {/* Acciones: Editar / Eliminar */}
-            <div className="mt-2 flex gap-2">
-              <Link
-                href={`/app/projects/${projectId}/features/${featureId}/edit`}
-                className={actionButtonClass({ size: "xs" })}
-              >
-                <Pencil className="mr-2 h-4 w-4" aria-hidden />
-                {t("actions.edit", { default: "Editar" })}
-              </Link>
-
-              <form action={deleteFeature.bind(null, projectId, featureId, feature.moduleId)}>
-                <button
-                  type="submit"
-                  className={actionButtonClass({
-                    variant: "destructive",
-                    size: "xs",
-                  })}
+            {canManageFeature && (
+              <div className="mt-2 flex gap-2">
+                <Link
+                  href={`/app/projects/${projectId}/features/${featureId}/edit`}
+                  className={actionButtonClass({ size: "xs" })}
                 >
-                  <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-                  {t("actions.delete", { default: "Eliminar" })}
-                </button>
-              </form>
-            </div>
+                  <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                  {t("actions.edit", { default: "Editar" })}
+                </Link>
+
+                <form action={deleteFeature.bind(null, projectId, featureId, feature.moduleId)}>
+                  <button
+                    type="submit"
+                    className={actionButtonClass({
+                      variant: "destructive",
+                      size: "xs",
+                    })}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                    {t("actions.delete", { default: "Eliminar" })}
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -170,6 +184,7 @@ export default async function FeatureDetailPage({
         featureId={featureId}
         token={session.token}
         currentUserId={currentUserId ?? undefined}
+        canManageQa={canManageQa}
       />
     </div>
   );

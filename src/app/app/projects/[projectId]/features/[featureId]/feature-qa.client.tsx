@@ -55,6 +55,7 @@ type FeatureQAProps = {
   featureId: string;
   runsLimit?: number;
   currentUserId?: string;
+  canManageQa?: boolean;
 };
 
 type QaTabValue = "cases" | "runs" | "health";
@@ -121,6 +122,7 @@ export function FeatureQA({
   featureId,
   runsLimit = 10,
   currentUserId,
+  canManageQa = false,
 }: FeatureQAProps) {
   const t = useTranslations("app.qa");
   const router = useRouter();
@@ -196,7 +198,11 @@ export function FeatureQA({
       </header>
       <div className="px-4 py-6 md:px-6">
         {activeTab === "cases" && (
-          <TestCasesTab token={token} featureId={featureId} />
+          <TestCasesTab
+            token={token}
+            featureId={featureId}
+            canManageQa={canManageQa}
+          />
         )}
         {activeTab === "runs" && (
           <TestRunsTab
@@ -204,6 +210,7 @@ export function FeatureQA({
             featureId={featureId}
             runsLimit={runsLimit}
             currentUserId={currentUserId}
+            canManageQa={canManageQa}
           />
         )}
         {activeTab === "health" && (
@@ -244,9 +251,11 @@ function TabButton({
 function TestCasesTab({
   token,
   featureId,
+  canManageQa = false,
 }: {
   token: string;
   featureId: string;
+  canManageQa?: boolean;
 }) {
   const t = useTranslations("app.qa.cases");
   const formatter = useFormatter();
@@ -411,8 +420,8 @@ function TestCasesTab({
         <EmptyState
           title={t("empty.title")}
           description={t("empty.description")}
-          actionLabel={t("empty.cta")}
-          onAction={() => setAddDialogOpen(true)}
+          actionLabel={canManageQa ? t("empty.cta") : undefined}
+          onAction={canManageQa ? () => setAddDialogOpen(true) : undefined}
         />
       );
     }
@@ -459,26 +468,30 @@ function TestCasesTab({
                     <StatusBadge archived={Boolean(testCase.isArchived)} />
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditClick(testCase)}
-                      >
-                        {t("table.edit")}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          toggleArchive(testCase, !testCase.isArchived)
-                        }
-                      >
-                        {testCase.isArchived
-                          ? t("table.unarchive")
-                          : t("table.archive")}
-                      </Button>
-                    </div>
+                    {canManageQa ? (
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditClick(testCase)}
+                        >
+                          {t("table.edit")}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() =>
+                            toggleArchive(testCase, !testCase.isArchived)
+                          }
+                        >
+                          {testCase.isArchived
+                            ? t("table.unarchive")
+                            : t("table.archive")}
+                        </Button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
                   </td>
                 </tr>
               );
@@ -494,15 +507,18 @@ function TestCasesTab({
     t,
     testCases,
     toggleArchive,
+    canManageQa,
   ]);
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => setAddDialogOpen(true)}>
-            {t("actions.add")}
-          </Button>
+          {canManageQa && (
+            <Button variant="outline" onClick={() => setAddDialogOpen(true)}>
+              {t("actions.add")}
+            </Button>
+          )}
           <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
             <input
               type="checkbox"
@@ -522,45 +538,49 @@ function TestCasesTab({
 
       {tableContent}
 
-      <AddTestCasesDialog
-        open={addDialogOpen}
-        onOpenChange={setAddDialogOpen}
-        onSubmit={async (draft) => {
-          const payload = transformCreateDraft(draft);
-          await handleCreateCases(payload);
-          setAddDialogOpen(false);
-          void loadCases();
-        }}
-      />
+      {canManageQa && (
+        <>
+          <AddTestCasesDialog
+            open={addDialogOpen}
+            onOpenChange={setAddDialogOpen}
+            onSubmit={async (draft) => {
+              const payload = transformCreateDraft(draft);
+              await handleCreateCases(payload);
+              setAddDialogOpen(false);
+              void loadCases();
+            }}
+          />
 
-      <EditTestCaseDialog
-        open={editDialogOpen}
-        testCase={editingCase}
-        onOpenChange={(open) => {
-          if (!open) {
-            handleCloseEdit();
-          } else {
-            setEditDialogOpen(true);
-          }
-        }}
-        onSubmit={async (values) => {
-          if (!editingCase) return;
-          const stepsArray =
-            values.stepsText
-              ?.split("\n")
-              .map((line) => line.trim())
-              .filter(Boolean) ?? (Array.isArray(editingCase.steps) ? editingCase.steps : (editingCase.steps ? [editingCase.steps] : []));
-          const steps = stepsArray.length ? stepsArray.join("\n") : undefined;
-          await handleEditCase(editingCase.id, {
-            name: values.name,
-            expected: values.expected ?? "",
-            steps,
-            isArchived: values.isArchived ?? editingCase.isArchived,
-          });
-          handleCloseEdit();
-          void loadCases();
-        }}
-      />
+          <EditTestCaseDialog
+            open={editDialogOpen}
+            testCase={editingCase}
+            onOpenChange={(open) => {
+              if (!open) {
+                handleCloseEdit();
+              } else {
+                setEditDialogOpen(true);
+              }
+            }}
+            onSubmit={async (values) => {
+              if (!editingCase) return;
+              const stepsArray =
+                values.stepsText
+                  ?.split("\n")
+                  .map((line) => line.trim())
+                  .filter(Boolean) ?? (Array.isArray(editingCase.steps) ? editingCase.steps : (editingCase.steps ? [editingCase.steps] : []));
+              const steps = stepsArray.length ? stepsArray.join("\n") : undefined;
+              await handleEditCase(editingCase.id, {
+                name: values.name,
+                expected: values.expected ?? "",
+                steps,
+                isArchived: values.isArchived ?? editingCase.isArchived,
+              });
+              handleCloseEdit();
+              void loadCases();
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }
@@ -950,11 +970,13 @@ function TestRunsTab({
   featureId,
   runsLimit,
   currentUserId,
+  canManageQa = false,
 }: {
   token: string;
   featureId: string;
   runsLimit: number;
   currentUserId?: string;
+  canManageQa?: boolean;
 }) {
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
@@ -1086,8 +1108,8 @@ function TestRunsTab({
         <EmptyState
           title={t("empty.title")}
           description={t("empty.description")}
-          actionLabel={t("empty.cta")}
-          onAction={() => setDialogOpen(true)}
+          actionLabel={canManageQa ? t("empty.cta") : undefined}
+          onAction={canManageQa ? () => setDialogOpen(true) : undefined}
         />
       );
     }
@@ -1142,7 +1164,7 @@ function TestRunsTab({
         })}
       </ul>
     );
-  }, [formatter, isLoading, openRun, runs, selectedRunId, t]);
+  }, [formatter, isLoading, openRun, runs, selectedRunId, t, canManageQa]);
 
   return (
     <div className="space-y-6">
@@ -1151,27 +1173,31 @@ function TestRunsTab({
           <h3 className="text-base font-semibold">{t("title")}</h3>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <button
-          type="button"
-          className={actionButtonClass()}
-          onClick={() => setDialogOpen(true)}
-        >
-          <Plus className="mr-2 h-4 w-4" aria-hidden />
-          {t("actions.newRun")}
-        </button>
+        {canManageQa && (
+          <button
+            type="button"
+            className={actionButtonClass()}
+            onClick={() => setDialogOpen(true)}
+          >
+            <Plus className="mr-2 h-4 w-4" aria-hidden />
+            {t("actions.newRun")}
+          </button>
+        )}
       </div>
 
-      {runListContent}
+        {runListContent}
 
-      <NewTestRunDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={async (values) => {
-          await handleCreateRun(values);
-          setDialogOpen(false);
-          void loadRuns();
-        }}
-      />
+        {canManageQa && (
+          <NewTestRunDialog
+            open={dialogOpen}
+            onOpenChange={setDialogOpen}
+            onSubmit={async (values) => {
+              await handleCreateRun(values);
+              setDialogOpen(false);
+              void loadRuns();
+            }}
+          />
+        )}
 
       <div>
         {isRunLoading && (

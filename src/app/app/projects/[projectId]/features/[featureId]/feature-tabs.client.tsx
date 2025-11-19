@@ -12,6 +12,7 @@ type FeatureTabsProps = {
   featureId: string;
   token: string;
   currentUserId?: string;
+  canManageQa?: boolean;
 };
 
 type FeatureTab = "info" | "issues" | "versions" | "qa";
@@ -21,6 +22,7 @@ export function FeatureTabs({
   featureId,
   token,
   currentUserId,
+  canManageQa = false,
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
@@ -140,6 +142,7 @@ export function FeatureTabs({
           token={token}
           featureId={featureId}
           currentUserId={currentUserId}
+          canManageQa={canManageQa}
         />
       )}
     </section>

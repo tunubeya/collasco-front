@@ -2,12 +2,13 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { StructureModuleNode } from "@/lib/definitions";
+import { ProjectMemberRole, StructureModuleNode } from "@/lib/definitions";
 import {
   fetchModuleById,
   fetchModuleStructure,
   fetchProjectById,
   fetchProjectStructure,
+  fetchGetUserProfile,
 } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Module } from "@/lib/model-definitions/module";
@@ -105,6 +106,22 @@ export default async function ModuleDetailPage({
     })),
   ];
 
+  let currentUserId: string | null = null;
+  try {
+    const profile = await fetchGetUserProfile(session.token);
+    currentUserId = profile.id;
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  const membershipRole =
+    project.membershipRole ??
+    project.members?.find((member) => member.userId === currentUserId)?.role ??
+    (project.ownerId === currentUserId ? ProjectMemberRole.OWNER : null);
+  const canManageStructure =
+    membershipRole === ProjectMemberRole.OWNER ||
+    membershipRole === ProjectMemberRole.MAINTAINER;
+
   return (
     <div className="grid gap-6">
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
@@ -139,25 +156,27 @@ export default async function ModuleDetailPage({
             </div>
 
             {/* Acciones del módulo: Editar / Eliminar */}
-            <div className="flex gap-2">
-              <Link
-                href={`/app/projects/${projectId}/modules/${moduleId}/edit`}
-                className={actionButtonClass()}
-              >
-                <Pencil className="mr-2 h-4 w-4" aria-hidden />
-                {tModule("actions.edit", { default: "Editar" })}
-              </Link>
-
-              <form action={deleteModule.bind(null, projectId, moduleId)}>
-                <button
-                  type="submit"
-                  className={actionButtonClass({ variant: "destructive" })}
+            {canManageStructure && (
+              <div className="flex gap-2">
+                <Link
+                  href={`/app/projects/${projectId}/modules/${moduleId}/edit`}
+                  className={actionButtonClass()}
                 >
-                  <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-                  {tModule("actions.delete", { default: "Eliminar" })}
-                </button>
-              </form>
-            </div>
+                  <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                  {tModule("actions.edit", { default: "Editar" })}
+                </Link>
+
+                <form action={deleteModule.bind(null, projectId, moduleId)}>
+                  <button
+                    type="submit"
+                    className={actionButtonClass({ variant: "destructive" })}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                    {tModule("actions.delete", { default: "Eliminar" })}
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         </div>
 
@@ -175,22 +194,24 @@ export default async function ModuleDetailPage({
         collapseLabel={tProjectDetail("modules.collapseAll", { default: "Collapse all" })}
       />
 
-      <div className="flex flex-wrap gap-2">
-        <Link
-          href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}
-          className={actionButtonClass()}
-        >
-          <Plus className="mr-2 h-4 w-4" aria-hidden />
-          {tModule("actions.addChild")}
-        </Link>
-        <Link
-          href={`/app/projects/${projectId}/features/new?moduleId=${currentModule.id}`}
-          className={actionButtonClass()}
-        >
-          <Plus className="mr-2 h-4 w-4" aria-hidden />
-          {tModule("actions.addFeature")}
-        </Link>
-      </div>
+      {canManageStructure && (
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}
+            className={actionButtonClass()}
+          >
+            <Plus className="mr-2 h-4 w-4" aria-hidden />
+            {tModule("actions.addChild")}
+          </Link>
+          <Link
+            href={`/app/projects/${projectId}/features/new?moduleId=${currentModule.id}`}
+            className={actionButtonClass()}
+          >
+            <Plus className="mr-2 h-4 w-4" aria-hidden />
+            {tModule("actions.addFeature")}
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

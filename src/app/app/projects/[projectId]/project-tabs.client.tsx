@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
+import { ProjectMemberRole } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
 import { ProjectQA } from "./project-qa.client";
@@ -21,6 +22,7 @@ type ProjectTabsProps = {
   token: string;
   featureOptions: FeatureOption[];
   currentUserId?: string;
+  membershipRole?: ProjectMemberRole | null;
 };
 
 type ProjectTab = "structure" | "qa" | "members";
@@ -32,11 +34,15 @@ export function ProjectTabs({
   token,
   featureOptions,
   currentUserId,
+  membershipRole,
 }: ProjectTabsProps) {
   
   const tTabs = useTranslations("app.projects.detail.tabs");
   const tActions = useTranslations("app.projects.detail.actions");
   const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
+  const canManageStructure =
+    membershipRole === ProjectMemberRole.OWNER ||
+    membershipRole === ProjectMemberRole.MAINTAINER;
 
   return (
     <section className="space-y-4">
@@ -61,15 +67,17 @@ export function ProjectTabs({
       {activeTab === "structure" && (
         <>
           <ProjectDetailClient project={project} structureModules={structureModules} />
-          <div>
-            <Link
-              href={`/app/projects/${project.id}/modules/new`}
-              className={actionButtonClass()}
-            >
-              <Plus className="mr-2 h-4 w-4" aria-hidden />
-              {tActions("addModule")}
-            </Link>
-          </div>
+          {canManageStructure && (
+            <div>
+              <Link
+                href={`/app/projects/${project.id}/modules/new`}
+                className={actionButtonClass()}
+              >
+                <Plus className="mr-2 h-4 w-4" aria-hidden />
+                {tActions("addModule")}
+              </Link>
+            </div>
+          )}
         </>
       )}
 

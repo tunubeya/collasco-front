@@ -15,6 +15,7 @@ export type Project = {
   ownerId: string;
   modules: Module[];
   members?: ProjectMember[];
+  membershipRole?: ProjectMemberRole | null;
 };
 
 export type ProjectMember = {

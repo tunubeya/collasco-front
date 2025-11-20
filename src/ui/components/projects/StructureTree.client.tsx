@@ -136,7 +136,10 @@ function ModuleNode({
     <details
       className="group rounded-md px-1 py-0.5"
       open={isOpen}
-      onToggle={(e) => toggle((e.target as HTMLDetailsElement).open)}
+      onToggle={(e) => {
+        if (e.target !== e.currentTarget) return;
+        toggle((e.currentTarget as HTMLDetailsElement).open);
+      }}
     >
       <summary
         className="flex cursor-pointer select-none items-center gap-2 rounded-md pr-2 transition-colors hover:bg-muted/30"

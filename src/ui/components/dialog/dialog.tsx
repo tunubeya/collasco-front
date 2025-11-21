@@ -247,7 +247,7 @@ export const DialogClose = React.forwardRef<
 >(function DialogClose({ children, asChild = false, ...props }, ref) {
   const { setOpen, getReferenceProps } = useDialogContext();
 
-  const handleClick = (event: React.MouseEvent<any>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     props.onClick?.(event);
     if (!event.defaultPrevented) {
       setOpen(false);
@@ -261,11 +261,11 @@ export const DialogClose = React.forwardRef<
         ref,
         ...props,
         ...children.props,
-        onClick: (event: React.MouseEvent<any>) => {
+        onClick: (event: React.MouseEvent<HTMLElement>) => {
           if (typeof children.props.onClick === 'function') {
             children.props.onClick(event);
           }
-          handleClick(event);
+          handleClick(event as React.MouseEvent<HTMLButtonElement>);
         }
       })
     );

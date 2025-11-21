@@ -212,13 +212,16 @@ export async function fetchWithAuth(
   options: RequestInit = {},
   accessToken: string
 ) {
-  let response = await fetch(url, {
+  const baseRequestInit: RequestInit = {
     ...options,
+    cache: options.cache ?? 'no-store',
     headers: {
       ...(options.headers || {}),
       Authorization: `Bearer ${accessToken}`
     }
-  });
+  };
+
+  let response = await fetch(url, baseRequestInit);
 
   if (response.status === 401) {
     if (typeof window === 'undefined') {
@@ -254,9 +257,9 @@ export async function fetchWithAuth(
     if (newAccessToken) {
       // Reintenta el request con el nuevo token
       response = await fetch(url, {
-        ...options,
+        ...baseRequestInit,
         headers: {
-          ...(options.headers || {}),
+          ...(baseRequestInit.headers || {}),
           Authorization: `Bearer ${newAccessToken}`
         }
       });

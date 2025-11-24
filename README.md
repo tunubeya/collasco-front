@@ -3,7 +3,7 @@
 
 POST /auth/register — Crea usuario developer + devuelve tokens. · Public · Body: RegisterDto { email, password, name? }
 
-POST /auth/login — Login (estrategia local) + tokens. · Public · Body: { email, password }
+POST /auth/login — Login (estrategia local) + tokens. · Public · Body: { email, password } 
   
 GET /auth/me — Perfil mínimo del token. · JWT requerido 
  

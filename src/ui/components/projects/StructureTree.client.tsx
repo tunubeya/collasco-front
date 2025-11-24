@@ -50,7 +50,6 @@ export function StructureTree({
   emptyLabel,
   expandLabel,
   collapseLabel,
-  description,
   headerActions,
   className,
   canManageStructure = false,

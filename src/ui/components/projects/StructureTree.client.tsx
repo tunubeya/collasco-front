@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
@@ -54,7 +54,32 @@ export function StructureTree({
   className,
   canManageStructure = false,
 }: StructureTreeProps) {
-  const [expanded, setExpanded] = useState<ExpandedMap>({});
+  const hasAny = (roots?.length ?? 0) > 0;
+  const allModuleIds = useMemo(() => {
+    const moduleIds: string[] = [];
+    const walk = (node: StructureModuleNode) => {
+      moduleIds.push(node.id);
+      node.items.forEach((item) => {
+        if (item.type === "module") {
+          walk(item);
+        }
+      });
+    };
+    roots.forEach((node) => walk(node));
+    return moduleIds;
+  }, [roots]);
+  const rootModuleIds = useMemo(
+    () => roots.map((node) => node.id),
+    [roots]
+  );
+  const defaultExpanded = useMemo<ExpandedMap>(() => {
+    if (!hasAny) return {};
+    return Object.fromEntries(rootModuleIds.map((id) => [id, true]));
+  }, [rootModuleIds, hasAny]);
+  const [expanded, setExpanded] = useState<ExpandedMap>(defaultExpanded);
+  useEffect(() => {
+    setExpanded(defaultExpanded);
+  }, [defaultExpanded]);
   const [pendingKey, setPendingKey] = useState<string | null>(null);
   const [isTransitionPending, startTransition] = useTransition();
   const tReorder = useTranslations("app.projects.module.reorder");
@@ -65,24 +90,6 @@ export function StructureTree({
   const moveErrorLabel = tReorder("error");
   const reorderEnabled = canManageStructure;
   const disableMoves = pendingKey !== null || isTransitionPending;
-
-  const allModuleIds = useMemo(() => {
-    const ids: string[] = [];
-    const walk = (mods: StructureModuleNode[] | undefined) => {
-      if (!mods) return;
-      for (const m of mods) {
-        ids.push(m.id);
-        const children = m.items.filter(
-          (i): i is StructureModuleNode => i.type === "module"
-        );
-        walk(children);
-      }
-    };
-    walk(roots);
-    return ids;
-  }, [roots]);
-
-  const hasAny = (roots?.length ?? 0) > 0;
 
   const handleExpandAll = () =>
     setExpanded(Object.fromEntries(allModuleIds.map((id) => [id, true])));

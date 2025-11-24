@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
-  ArrowDown,
-  ArrowUp,
+  ChevronDown,
   ChevronRight,
+  ChevronUp,
   FileText,
   Folder,
   FolderOpen,
@@ -38,6 +38,7 @@ type StructureTreeProps = {
   headerActions?: React.ReactNode;
   className?: string;
   canManageStructure?: boolean;
+  hideRootModule?: boolean;
 };
 
 type ExpandedMap = Record<string, boolean>;
@@ -53,8 +54,36 @@ export function StructureTree({
   headerActions,
   className,
   canManageStructure = false,
+  hideRootModule = false,
 }: StructureTreeProps) {
-  const [expanded, setExpanded] = useState<ExpandedMap>({});
+  const shouldHideRoot = hideRootModule && roots.length === 1;
+  const displayItems: TreeItem[] = shouldHideRoot ? roots[0]?.items ?? [] : roots;
+  const hasAny = displayItems.length > 0;
+  const allModuleIds = useMemo(() => {
+    const moduleIds: string[] = [];
+    const walk = (node: StructureModuleNode) => {
+      moduleIds.push(node.id);
+      node.items.forEach((item) => {
+        if (item.type === "module") {
+          walk(item);
+        }
+      });
+    };
+    roots.forEach((node) => walk(node));
+    return moduleIds;
+  }, [roots]);
+  const rootModuleIds = useMemo(
+    () => roots.map((node) => node.id),
+    [roots]
+  );
+  const defaultExpanded = useMemo<ExpandedMap>(() => {
+    if (!hasAny) return {};
+    return Object.fromEntries(rootModuleIds.map((id) => [id, true]));
+  }, [rootModuleIds, hasAny]);
+  const [expanded, setExpanded] = useState<ExpandedMap>(defaultExpanded);
+  useEffect(() => {
+    setExpanded(defaultExpanded);
+  }, [defaultExpanded]);
   const [pendingKey, setPendingKey] = useState<string | null>(null);
   const [isTransitionPending, startTransition] = useTransition();
   const tReorder = useTranslations("app.projects.module.reorder");
@@ -65,24 +94,6 @@ export function StructureTree({
   const moveErrorLabel = tReorder("error");
   const reorderEnabled = canManageStructure;
   const disableMoves = pendingKey !== null || isTransitionPending;
-
-  const allModuleIds = useMemo(() => {
-    const ids: string[] = [];
-    const walk = (mods: StructureModuleNode[] | undefined) => {
-      if (!mods) return;
-      for (const m of mods) {
-        ids.push(m.id);
-        const children = m.items.filter(
-          (i): i is StructureModuleNode => i.type === "module"
-        );
-        walk(children);
-      }
-    };
-    walk(roots);
-    return ids;
-  }, [roots]);
-
-  const hasAny = (roots?.length ?? 0) > 0;
 
   const handleExpandAll = () =>
     setExpanded(Object.fromEntries(allModuleIds.map((id) => [id, true])));
@@ -160,8 +171,6 @@ export function StructureTree({
     ]
   );
 
-  const rootItems: StructureModuleNode[] = roots;
-
   return (
     <section
       className={cn("rounded-xl border bg-background p-4", className)}
@@ -190,32 +199,42 @@ export function StructureTree({
           )}
         </div>
       </div>
-
-      {description && (
-        <p className="mb-4 text-sm text-muted-foreground">{description}</p>
-      )}
-
       {!hasAny ? (
         <p className="text-sm text-muted-foreground">{emptyLabel}</p>
       ) : (
         <ul className="space-y-2">
-          {rootItems.map((node, index) => (
-            <li key={node.id}>
-              <ModuleNode
-                projectId={projectId}
-                node={node}
-                siblings={rootItems}
-                index={index}
-                expanded={expanded}
-                setExpanded={setExpanded}
-                level={0}
-                canManageStructure={reorderEnabled}
-                disableMoves={disableMoves}
-                moveUpLabel={moveUpLabel}
-                moveDownLabel={moveDownLabel}
-                onMoveModule={handleModuleMove}
-                onMoveFeature={handleFeatureMove}
-              />
+          {displayItems.map((item, index) => (
+            <li key={item.id}>
+              {item.type === "module" ? (
+                <ModuleNode
+                  projectId={projectId}
+                  node={item}
+                  siblings={displayItems}
+                  index={index}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
+                  level={0}
+                  canManageStructure={reorderEnabled}
+                  disableMoves={disableMoves}
+                  moveUpLabel={moveUpLabel}
+                  moveDownLabel={moveDownLabel}
+                  onMoveModule={handleModuleMove}
+                  onMoveFeature={handleFeatureMove}
+                />
+              ) : (
+                <FeatureRow
+                  feature={item}
+                  projectId={projectId}
+                  level={0}
+                  siblings={displayItems}
+                  index={index}
+                  canManageStructure={reorderEnabled}
+                  disableMoves={disableMoves}
+                  moveUpLabel={moveUpLabel}
+                  moveDownLabel={moveDownLabel}
+                  onMoveFeature={handleFeatureMove}
+                />
+              )}
             </li>
           ))}
         </ul>
@@ -296,7 +315,7 @@ function ModuleNode({
         </Link>
 
         {showReorderButtons && (
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex flex-col items-center text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}
@@ -414,7 +433,7 @@ function FeatureRow({
           )}
         </div>
         {showReorderButtons && (
-          <div className="flex items-center gap-1">
+          <div className="flex flex-col items-center text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}
@@ -468,13 +487,14 @@ function MoveActionButton({
   disabled: boolean;
   onActivate: () => void;
 }) {
-  const Icon = direction === MoveDirection.UP ? ArrowUp : ArrowDown;
+  const Icon = direction === MoveDirection.UP ? ChevronUp : ChevronDown;
   return (
     <button
       type="button"
       aria-label={label}
+      title={label}
       disabled={disabled}
-      className="rounded border border-border bg-background/80 p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+      className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground disabled:opacity-50"
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();

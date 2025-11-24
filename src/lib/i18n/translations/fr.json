@@ -481,7 +481,7 @@
           "error": "Impossible de réorganiser l’ordre."
         },
         "children": {
-          "title": "Sous-modules",
+          "title": "Sous-modules & Fonctionnalités",
           "empty": "Aucun sous-module pour le moment.",
           "sortOrder": "Ordre #{order}"
         },

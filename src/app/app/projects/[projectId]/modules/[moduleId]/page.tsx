@@ -14,14 +14,12 @@ import { getSession } from "@/lib/session";
 import type { Module } from "@/lib/model-definitions/module";
 import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
-import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 import { handlePageError } from "@/lib/handle-page-error";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 import { findModulePath } from "@/lib/structure-helpers";
+import { ModuleTabs } from "@/ui/components/modules/module-tabs.client";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Pencil, Plus, Trash2 } from "lucide-react";
-
-// 👇 importa la acción de borrado (ya la usas en /edit)
+import { Pencil, Trash2 } from "lucide-react";
 import { deleteModule } from "@/app/app/projects/[projectId]/modules/[moduleId]/edit/actions";
 
 type Params = {
@@ -39,9 +37,8 @@ export default async function ModuleDetailPage({
   const session = await getSession();
   if (!session?.token) redirect(RoutesEnum.LOGIN);
 
-  const tModule = await getTranslations("app.projects.module");
   const tBreadcrumbs = await getTranslations("app.common.breadcrumbs");
-  const tProjectDetail = await getTranslations("app.projects.detail");
+  const tModule = await getTranslations("app.projects.module");
   const formatter = await getFormatter();
 
   // 1) Metadata del proyecto
@@ -89,11 +86,6 @@ export default async function ModuleDetailPage({
     moduleCrumbs = [{ id: currentModule.id, name: currentModule.name }];
   }
 
-  const formattedUpdatedAt = formatter.dateTime(
-    new Date(currentModule.updatedAt),
-    { dateStyle: "medium" }
-  );
-
   const breadcrumbItems = [
     { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
     { label: project.name, href: `/app/projects/${projectId}` },
@@ -125,7 +117,6 @@ export default async function ModuleDetailPage({
   return (
     <div className="grid gap-6">
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
-      {/* Header */}
       <header className="rounded-xl border bg-background p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -134,12 +125,15 @@ export default async function ModuleDetailPage({
               {tModule("header.project", { name: project.name })}
             </p>
             <p className="text-xs text-muted-foreground">
-              {tModule("header.updated", { date: formattedUpdatedAt })}
+              {tModule("header.updated", {
+                date: formatter.dateTime(new Date(currentModule.updatedAt), {
+                  dateStyle: "medium",
+                }),
+              })}
             </p>
           </div>
 
           <div className="flex flex-col items-end gap-2 text-right text-xs text-muted-foreground">
-            {/* Botones de navegación */}
             <div className="flex gap-2">
               {currentModule.parentModuleId ? (
                 <Link
@@ -155,7 +149,6 @@ export default async function ModuleDetailPage({
               )}
             </div>
 
-            {/* Acciones del módulo: Editar / Eliminar */}
             {canManageStructure && (
               <div className="flex gap-2">
                 <Link
@@ -163,7 +156,7 @@ export default async function ModuleDetailPage({
                   className={actionButtonClass()}
                 >
                   <Pencil className="mr-2 h-4 w-4" aria-hidden />
-                  {tModule("actions.edit", { default: "Editar" })}
+                  {tModule("actions.edit", { default: "Edit" })}
                 </Link>
 
                 <form action={deleteModule.bind(null, projectId, moduleId)}>
@@ -172,7 +165,7 @@ export default async function ModuleDetailPage({
                     className={actionButtonClass({ variant: "destructive" })}
                   >
                     <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-                    {tModule("actions.delete", { default: "Eliminar" })}
+                    {tModule("actions.delete", { default: "Delete" })}
                   </button>
                 </form>
               </div>
@@ -185,34 +178,12 @@ export default async function ModuleDetailPage({
         </div>
       </header>
 
-      <StructureTree
-        projectId={projectId}
-        roots={[structureNode!]}
-        title={tModule("children.title")}
-        emptyLabel={tModule("children.empty")}
-        expandLabel={tProjectDetail("modules.expandAll", { default: "Expand all" })}
-        collapseLabel={tProjectDetail("modules.collapseAll", { default: "Collapse all" })}
+      <ModuleTabs
+        project={project}
+        module={currentModule}
+        structureNode={structureNode!}
         canManageStructure={canManageStructure}
       />
-
-      {canManageStructure && (
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href={`/app/projects/${projectId}/modules/new?parent=${currentModule.id}`}
-            className={actionButtonClass()}
-          >
-            <Plus className="mr-2 h-4 w-4" aria-hidden />
-            {tModule("actions.addChild")}
-          </Link>
-          <Link
-            href={`/app/projects/${projectId}/features/new?moduleId=${currentModule.id}`}
-            className={actionButtonClass()}
-          >
-            <Plus className="mr-2 h-4 w-4" aria-hidden />
-            {tModule("actions.addFeature")}
-          </Link>
-        </div>
-      )}
     </div>
   );
 }

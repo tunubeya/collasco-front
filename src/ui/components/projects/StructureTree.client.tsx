@@ -5,9 +5,9 @@ import { useCallback, useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
-  ArrowDown,
-  ArrowUp,
+  ChevronDown,
   ChevronRight,
+  ChevronUp,
   FileText,
   Folder,
   FolderOpen,
@@ -296,7 +296,7 @@ function ModuleNode({
         </Link>
 
         {showReorderButtons && (
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex flex-col items-center text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}
@@ -414,7 +414,7 @@ function FeatureRow({
           )}
         </div>
         {showReorderButtons && (
-          <div className="flex items-center gap-1">
+          <div className="flex flex-col items-center text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}
@@ -468,13 +468,14 @@ function MoveActionButton({
   disabled: boolean;
   onActivate: () => void;
 }) {
-  const Icon = direction === MoveDirection.UP ? ArrowUp : ArrowDown;
+  const Icon = direction === MoveDirection.UP ? ChevronUp : ChevronDown;
   return (
     <button
       type="button"
       aria-label={label}
+      title={label}
       disabled={disabled}
-      className="rounded border border-border bg-background/80 p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+      className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground disabled:opacity-50"
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();

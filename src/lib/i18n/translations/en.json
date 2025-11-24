@@ -535,7 +535,7 @@
           "error": "We couldn't change the order."
         },
         "children": {
-          "title": "Submodules",
+          "title": "Submodules & Features",
           "empty": "No submodules yet.",
           "sortOrder": "Order #{order}"
         },

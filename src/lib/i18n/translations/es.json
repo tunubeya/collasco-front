@@ -535,7 +535,7 @@
           "error": "No pudimos reordenar."
         },
         "children": {
-          "title": "Submódulos",
+          "title": "Submódulos & Features",
           "empty": "Aún no hay submódulos.",
           "sortOrder": "Orden #{order}"
         },

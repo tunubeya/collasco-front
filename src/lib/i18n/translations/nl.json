@@ -460,7 +460,7 @@
           "error": "Ordening wijzigen is mislukt."
         },
         "children": {
-          "title": "Submodules",
+          "title": "Submodules & Features",
           "empty": "Nog geen submodules.",
           "sortOrder": "Volgorde #{order}"
         },

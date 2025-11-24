@@ -199,11 +199,6 @@ export function StructureTree({
           )}
         </div>
       </div>
-
-      {description && (
-        <p className="mb-4 text-sm text-muted-foreground">{description}</p>
-      )}
-
       {!hasAny ? (
         <p className="text-sm text-muted-foreground">{emptyLabel}</p>
       ) : (

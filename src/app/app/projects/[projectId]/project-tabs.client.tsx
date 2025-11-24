@@ -70,7 +70,11 @@ export function ProjectTabs({
 
       {activeTab === "structure" && (
         <>
-          <ProjectDetailClient project={project} structureModules={structureModules} />
+          <ProjectDetailClient
+            project={project}
+            structureModules={structureModules}
+            canManageStructure={canManageStructure}
+          />
           {canManageStructure && (
             <div>
               <Link

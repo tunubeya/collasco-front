@@ -10,9 +10,11 @@ import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 export default function ProjectDetailClient({
   project,
   structureModules,
+  canManageStructure = false,
 }: {
   project: Project;
   structureModules: StructureModuleNode[];
+  canManageStructure?: boolean;
 }) {
   const t = useTranslations("app.projects.detail");
 
@@ -26,6 +28,7 @@ export default function ProjectDetailClient({
       collapseLabel={t("modules.collapseAll", { default: "Collapse all" })}
       description={project.description}
       className="bg-white"
+      canManageStructure={canManageStructure}
     />
   );
 }

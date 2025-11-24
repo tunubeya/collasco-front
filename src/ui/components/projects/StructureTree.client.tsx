@@ -38,6 +38,7 @@ type StructureTreeProps = {
   headerActions?: React.ReactNode;
   className?: string;
   canManageStructure?: boolean;
+  hideRootModule?: boolean;
 };
 
 type ExpandedMap = Record<string, boolean>;
@@ -53,8 +54,11 @@ export function StructureTree({
   headerActions,
   className,
   canManageStructure = false,
+  hideRootModule = false,
 }: StructureTreeProps) {
-  const hasAny = (roots?.length ?? 0) > 0;
+  const shouldHideRoot = hideRootModule && roots.length === 1;
+  const displayItems: TreeItem[] = shouldHideRoot ? roots[0]?.items ?? [] : roots;
+  const hasAny = displayItems.length > 0;
   const allModuleIds = useMemo(() => {
     const moduleIds: string[] = [];
     const walk = (node: StructureModuleNode) => {
@@ -167,8 +171,6 @@ export function StructureTree({
     ]
   );
 
-  const rootItems: StructureModuleNode[] = roots;
-
   return (
     <section
       className={cn("rounded-xl border bg-background p-4", className)}
@@ -206,23 +208,38 @@ export function StructureTree({
         <p className="text-sm text-muted-foreground">{emptyLabel}</p>
       ) : (
         <ul className="space-y-2">
-          {rootItems.map((node, index) => (
-            <li key={node.id}>
-              <ModuleNode
-                projectId={projectId}
-                node={node}
-                siblings={rootItems}
-                index={index}
-                expanded={expanded}
-                setExpanded={setExpanded}
-                level={0}
-                canManageStructure={reorderEnabled}
-                disableMoves={disableMoves}
-                moveUpLabel={moveUpLabel}
-                moveDownLabel={moveDownLabel}
-                onMoveModule={handleModuleMove}
-                onMoveFeature={handleFeatureMove}
-              />
+          {displayItems.map((item, index) => (
+            <li key={item.id}>
+              {item.type === "module" ? (
+                <ModuleNode
+                  projectId={projectId}
+                  node={item}
+                  siblings={displayItems}
+                  index={index}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
+                  level={0}
+                  canManageStructure={reorderEnabled}
+                  disableMoves={disableMoves}
+                  moveUpLabel={moveUpLabel}
+                  moveDownLabel={moveDownLabel}
+                  onMoveModule={handleModuleMove}
+                  onMoveFeature={handleFeatureMove}
+                />
+              ) : (
+                <FeatureRow
+                  feature={item}
+                  projectId={projectId}
+                  level={0}
+                  siblings={displayItems}
+                  index={index}
+                  canManageStructure={reorderEnabled}
+                  disableMoves={disableMoves}
+                  moveUpLabel={moveUpLabel}
+                  moveDownLabel={moveDownLabel}
+                  onMoveFeature={handleFeatureMove}
+                />
+              )}
             </li>
           ))}
         </ul>

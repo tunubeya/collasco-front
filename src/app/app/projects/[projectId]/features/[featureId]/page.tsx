@@ -3,7 +3,11 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { FeaturePriority, FeatureStatus, ProjectMemberRole } from "@/lib/definitions";
+import {
+  FeaturePriority,
+  FeatureStatus,
+  ProjectMemberRole,
+} from "@/lib/definitions";
 import {
   fetchFeatureById,
   fetchGetUserProfile,
@@ -134,13 +138,16 @@ export default async function FeatureDetailPage({
 
           <div className="flex flex-col items-end gap-2">
             {/* Badges */}
-            <FeatureStatusBadge status={feature.status} label={tStatus(feature.status)} />
+            <FeatureStatusBadge
+              status={feature.status}
+              label={tStatus(feature.status)}
+            />
             {feature.priority ? (
               <FeaturePriorityBadge
                 priority={feature.priority}
                 label={tPriority(feature.priority)}
               />
-            ) :(null)}
+            ) : null}
 
             {/* Navegar al módulo */}
             <Link
@@ -161,7 +168,14 @@ export default async function FeatureDetailPage({
                   {t("actions.edit", { default: "Editar" })}
                 </Link>
 
-                <form action={deleteFeature.bind(null, projectId, featureId, feature.moduleId)}>
+                <form
+                  action={deleteFeature.bind(
+                    null,
+                    projectId,
+                    featureId,
+                    feature.moduleId
+                  )}
+                >
                   <button
                     type="submit"
                     className={actionButtonClass({
@@ -176,6 +190,9 @@ export default async function FeatureDetailPage({
               </div>
             )}
           </div>
+        </div>
+        <div className="mt-4 whitespace-pre-line text-sm text-muted-foreground">
+          {feature.description ?? t("description.empty")}
         </div>
       </header>
 

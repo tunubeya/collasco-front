@@ -452,6 +452,13 @@
           "addChild": "Submodule toevoegen",
           "addFeature": "Feature toevoegen"
         },
+        "reorder": {
+          "moveUp": "Omhoog verplaatsen",
+          "moveDown": "Omlaag verplaatsen",
+          "featureMoved": "Feature opnieuw geordend.",
+          "moduleMoved": "Module opnieuw geordend.",
+          "error": "Ordening wijzigen is mislukt."
+        },
         "children": {
           "title": "Submodules",
           "empty": "Nog geen submodules.",

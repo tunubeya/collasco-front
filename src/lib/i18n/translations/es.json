@@ -527,6 +527,13 @@
           "addChild": "Agregar submódulo",
           "addFeature": "Agregar feature"
         },
+        "reorder": {
+          "moveUp": "Mover arriba",
+          "moveDown": "Mover abajo",
+          "featureMoved": "Feature reordenada.",
+          "moduleMoved": "Módulo reordenado.",
+          "error": "No pudimos reordenar."
+        },
         "children": {
           "title": "Submódulos",
           "empty": "Aún no hay submódulos.",

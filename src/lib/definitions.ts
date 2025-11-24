@@ -118,7 +118,21 @@ export enum ReviewStatus {
   CHANGES_REQUESTED = 'CHANGES_REQUESTED',
 }
 
+export enum MoveDirection {
+  UP = 'UP',
+  DOWN = 'DOWN',
+}
 
+export type MoveOrderDto = {
+  direction: MoveDirection;
+};
+
+export type MoveOrderResponse = {
+  ok: boolean;
+  featureId?: string;
+  moduleId?: string;
+  sortOrder: number;
+};
 
 export type StructureFeatureItem = {
   type: "feature";

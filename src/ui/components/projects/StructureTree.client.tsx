@@ -1,15 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { ChevronRight, FileText, Folder, FolderOpen } from "lucide-react";
+import { useCallback, useMemo, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronRight,
+  FileText,
+  Folder,
+  FolderOpen,
+} from "lucide-react";
 
 import type {
   StructureFeatureItem,
   StructureModuleNode,
 } from "@/lib/definitions";
+import { MoveDirection } from "@/lib/definitions";
 import type { Feature } from "@/lib/model-definitions/feature";
 import { cn } from "@/lib/utils";
+import {
+  moveFeatureOrderAction,
+  moveModuleOrderAction,
+} from "@/app/app/projects/[projectId]/structure/actions";
+
+type TreeItem = StructureModuleNode | StructureFeatureItem;
 
 type StructureTreeProps = {
   projectId: string;
@@ -21,6 +37,7 @@ type StructureTreeProps = {
   description?: string | null;
   headerActions?: React.ReactNode;
   className?: string;
+  canManageStructure?: boolean;
 };
 
 type ExpandedMap = Record<string, boolean>;
@@ -35,8 +52,19 @@ export function StructureTree({
   description,
   headerActions,
   className,
+  canManageStructure = false,
 }: StructureTreeProps) {
   const [expanded, setExpanded] = useState<ExpandedMap>({});
+  const [pendingKey, setPendingKey] = useState<string | null>(null);
+  const [isTransitionPending, startTransition] = useTransition();
+  const tReorder = useTranslations("app.projects.module.reorder");
+  const moveUpLabel = tReorder("moveUp");
+  const moveDownLabel = tReorder("moveDown");
+  const moduleMovedLabel = tReorder("moduleMoved");
+  const featureMovedLabel = tReorder("featureMoved");
+  const moveErrorLabel = tReorder("error");
+  const reorderEnabled = canManageStructure;
+  const disableMoves = pendingKey !== null || isTransitionPending;
 
   const allModuleIds = useMemo(() => {
     const ids: string[] = [];
@@ -59,6 +87,80 @@ export function StructureTree({
   const handleExpandAll = () =>
     setExpanded(Object.fromEntries(allModuleIds.map((id) => [id, true])));
   const handleCollapseAll = () => setExpanded({});
+
+  const handleModuleMove = useCallback(
+    (moduleId: string, parentModuleId: string | null, direction: MoveDirection) => {
+      if (!reorderEnabled) return;
+      const key = `module-${moduleId}`;
+      setPendingKey(key);
+      startTransition(() => {
+        moveModuleOrderAction({
+          projectId,
+          moduleId,
+          parentModuleId,
+          direction,
+        })
+          .then((result) => {
+            if (!result.success) {
+              toast.error(result.message ?? moveErrorLabel);
+              return;
+            }
+            toast.success(moduleMovedLabel);
+          })
+          .catch(() => {
+            toast.error(moveErrorLabel);
+          })
+          .finally(() => {
+            setPendingKey(null);
+          });
+      });
+    },
+    [
+      projectId,
+      reorderEnabled,
+      moveErrorLabel,
+      moduleMovedLabel,
+      startTransition,
+    ]
+  );
+
+  const handleFeatureMove = useCallback(
+    (featureId: string, moduleId: string, direction: MoveDirection) => {
+      if (!reorderEnabled) return;
+      const key = `feature-${featureId}`;
+      setPendingKey(key);
+      startTransition(() => {
+        moveFeatureOrderAction({
+          projectId,
+          featureId,
+          moduleId,
+          direction,
+        })
+          .then((result) => {
+            if (!result.success) {
+              toast.error(result.message ?? moveErrorLabel);
+              return;
+            }
+            toast.success(featureMovedLabel);
+          })
+          .catch(() => {
+            toast.error(moveErrorLabel);
+          })
+          .finally(() => {
+            setPendingKey(null);
+          });
+      });
+    },
+    [
+      projectId,
+      reorderEnabled,
+      moveErrorLabel,
+      featureMovedLabel,
+      startTransition,
+    ]
+  );
+
+  const rootItems: StructureModuleNode[] = roots;
 
   return (
     <section
@@ -97,14 +199,22 @@ export function StructureTree({
         <p className="text-sm text-muted-foreground">{emptyLabel}</p>
       ) : (
         <ul className="space-y-2">
-          {roots.map((node) => (
+          {rootItems.map((node, index) => (
             <li key={node.id}>
               <ModuleNode
                 projectId={projectId}
                 node={node}
+                siblings={rootItems}
+                index={index}
                 expanded={expanded}
                 setExpanded={setExpanded}
                 level={0}
+                canManageStructure={reorderEnabled}
+                disableMoves={disableMoves}
+                moveUpLabel={moveUpLabel}
+                moveDownLabel={moveDownLabel}
+                onMoveModule={handleModuleMove}
+                onMoveFeature={handleFeatureMove}
               />
             </li>
           ))}
@@ -117,20 +227,40 @@ export function StructureTree({
 function ModuleNode({
   projectId,
   node,
+  siblings,
+  index,
   expanded,
   setExpanded,
   level,
+  canManageStructure,
+  disableMoves,
+  moveUpLabel,
+  moveDownLabel,
+  onMoveModule,
+  onMoveFeature,
 }: {
   projectId: string;
   node: StructureModuleNode;
+  siblings: TreeItem[];
+  index: number;
   expanded: ExpandedMap;
   setExpanded: React.Dispatch<React.SetStateAction<ExpandedMap>>;
   level: number;
+  canManageStructure: boolean;
+  disableMoves: boolean;
+  moveUpLabel: string;
+  moveDownLabel: string;
+  onMoveModule: (moduleId: string, parentModuleId: string | null, direction: MoveDirection) => void;
+  onMoveFeature: (featureId: string, moduleId: string, direction: MoveDirection) => void;
 }) {
   const isOpen = !!expanded[node.id];
   const toggle = (open: boolean) =>
     setExpanded((prev) => ({ ...prev, [node.id]: open }));
   const paddingLeft = Math.min(level, 6) * 12;
+  const canMoveUp = index > 0;
+  const canMoveDown = index < siblings.length - 1;
+  const showReorderButtons =
+    canManageStructure && (canMoveUp || canMoveDown);
 
   return (
     <details
@@ -160,23 +290,56 @@ function ModuleNode({
 
         <Link
           href={`/app/projects/${projectId}/modules/${node.id}`}
-          className="text-sm font-medium hover:underline"
+          className="flex-1 text-sm font-medium hover:underline"
         >
           {node.name}
         </Link>
+
+        {showReorderButtons && (
+          <div className="ml-auto flex items-center gap-1">
+            {canMoveUp && (
+              <MoveActionButton
+                direction={MoveDirection.UP}
+                label={moveUpLabel}
+                disabled={disableMoves}
+                onActivate={() =>
+                  onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.UP)
+                }
+              />
+            )}
+            {canMoveDown && (
+              <MoveActionButton
+                direction={MoveDirection.DOWN}
+                label={moveDownLabel}
+                disabled={disableMoves}
+                onActivate={() =>
+                  onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.DOWN)
+                }
+              />
+            )}
+          </div>
+        )}
       </summary>
 
       {node.items.length > 0 && (
         <ul className="mt-2 space-y-2">
-          {node.items.map((item) =>
+          {node.items.map((item, childIndex) =>
             item.type === "module" ? (
               <li key={item.id}>
                 <ModuleNode
                   projectId={projectId}
                   node={item}
+                  siblings={node.items}
+                  index={childIndex}
                   expanded={expanded}
                   setExpanded={setExpanded}
                   level={level + 1}
+                  canManageStructure={canManageStructure}
+                  disableMoves={disableMoves}
+                  moveUpLabel={moveUpLabel}
+                  moveDownLabel={moveDownLabel}
+                  onMoveModule={onMoveModule}
+                  onMoveFeature={onMoveFeature}
                 />
               </li>
             ) : (
@@ -185,6 +348,13 @@ function ModuleNode({
                   feature={item}
                   projectId={projectId}
                   level={level + 1}
+                  siblings={node.items}
+                  index={childIndex}
+                  canManageStructure={canManageStructure}
+                  disableMoves={disableMoves}
+                  moveUpLabel={moveUpLabel}
+                  moveDownLabel={moveDownLabel}
+                  onMoveFeature={onMoveFeature}
                 />
               </li>
             )
@@ -199,30 +369,76 @@ function FeatureRow({
   feature,
   projectId,
   level,
+  siblings,
+  index,
+  canManageStructure,
+  disableMoves,
+  moveUpLabel,
+  moveDownLabel,
+  onMoveFeature,
 }: {
   feature: StructureFeatureItem;
   projectId: string;
   level: number;
+  siblings: TreeItem[];
+  index: number;
+  canManageStructure: boolean;
+  disableMoves: boolean;
+  moveUpLabel: string;
+  moveDownLabel: string;
+  onMoveFeature: (featureId: string, moduleId: string, direction: MoveDirection) => void;
 }) {
   const paddingLeft = Math.min(level, 6) * 16 + 24;
+  const canMoveUp = index > 0;
+  const canMoveDown = index < siblings.length - 1;
+  const showReorderButtons =
+    canManageStructure && (canMoveUp || canMoveDown);
 
   return (
-    <Link
-      href={`/app/projects/${projectId}/features/${feature.id}`}
+    <div
       className="flex items-center justify-between rounded-md px-2 py-1 text-sm transition-colors hover:bg-muted/30"
       style={{ paddingLeft }}
     >
-      <div className="flex items-center gap-2">
+      <Link
+        href={`/app/projects/${projectId}/features/${feature.id}`}
+        className="flex flex-1 items-center gap-2"
+      >
         <FileText className="h-4 w-4 text-slate-700" aria-hidden />
         <span>{feature.name}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <StatusBadge status={feature.status as Feature["status"]} />
-        {feature.priority && (
-          <PriorityBadge priority={feature.priority as Feature["priority"]} />
+      </Link>
+      <div className="ml-2 flex items-center gap-2">
+        <div className="flex items-center gap-2">
+          <StatusBadge status={feature.status as Feature["status"]} />
+          {feature.priority && (
+            <PriorityBadge priority={feature.priority as Feature["priority"]} />
+          )}
+        </div>
+        {showReorderButtons && (
+          <div className="flex items-center gap-1">
+            {canMoveUp && (
+              <MoveActionButton
+                direction={MoveDirection.UP}
+                label={moveUpLabel}
+                disabled={disableMoves}
+                onActivate={() =>
+                  onMoveFeature(feature.id, feature.moduleId, MoveDirection.UP)
+                }
+              />
+            )}
+            {canMoveDown && (
+              <MoveActionButton
+                direction={MoveDirection.DOWN}
+                label={moveDownLabel}
+                disabled={disableMoves}
+                onActivate={() =>
+                  onMoveFeature(feature.id, feature.moduleId, MoveDirection.DOWN)
+                }
+              />
+            )}
+          </div>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -238,6 +454,35 @@ function StatusBadge({ status }: { status: Feature["status"] }) {
     <span className={`rounded-full border px-2 py-0.5 text-2xs ${tone}`}>
       {status.toLowerCase()}
     </span>
+  );
+}
+
+function MoveActionButton({
+  direction,
+  label,
+  disabled,
+  onActivate,
+}: {
+  direction: MoveDirection;
+  label: string;
+  disabled: boolean;
+  onActivate: () => void;
+}) {
+  const Icon = direction === MoveDirection.UP ? ArrowUp : ArrowDown;
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      className="rounded border border-border bg-background/80 p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onActivate();
+      }}
+    >
+      <Icon className="h-4 w-4" aria-hidden />
+    </button>
   );
 }
 

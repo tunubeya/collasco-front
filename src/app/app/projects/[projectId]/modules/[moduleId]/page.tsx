@@ -192,6 +192,7 @@ export default async function ModuleDetailPage({
         emptyLabel={tModule("children.empty")}
         expandLabel={tProjectDetail("modules.expandAll", { default: "Expand all" })}
         collapseLabel={tProjectDetail("modules.collapseAll", { default: "Collapse all" })}
+        canManageStructure={canManageStructure}
       />
 
       {canManageStructure && (

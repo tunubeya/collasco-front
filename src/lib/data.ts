@@ -4,6 +4,8 @@ import {
   ResponseRefresh,
   ProjectStructureResponse,
   StructureModuleNode,
+  MoveOrderDto,
+  MoveOrderResponse,
 } from "@/lib/definitions";
 import { fetchWithAuth } from "./utils";
 import { handleUnauthorized } from "@/lib/server-auth-helpers";
@@ -687,6 +689,29 @@ export async function fetchDeleteModule(
     throw error;
   }
 }
+
+export async function fetchMoveModuleOrder(
+  token: string,
+  moduleId: string,
+  dto: MoveOrderDto
+): Promise<MoveOrderResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/modules/${moduleId}/order`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return (await res.json()) as MoveOrderResponse;
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
 export async function fetchModuleStructure(
   token: string,
   moduleId: string
@@ -790,6 +815,29 @@ export async function fetchDeleteFeature(
     );
     if (!res.ok) throw res;
     return await res.json();
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function fetchMoveFeatureOrder(
+  token: string,
+  featureId: string,
+  dto: MoveOrderDto
+): Promise<MoveOrderResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/features/${featureId}/order`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return (await res.json()) as MoveOrderResponse;
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

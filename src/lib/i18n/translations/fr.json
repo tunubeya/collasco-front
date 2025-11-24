@@ -473,6 +473,13 @@
           "addChild": "Ajouter un sous-module",
           "addFeature": "Ajouter une fonctionnalité"
         },
+        "reorder": {
+          "moveUp": "Monter",
+          "moveDown": "Descendre",
+          "featureMoved": "Fonctionnalité réorganisée.",
+          "moduleMoved": "Module réorganisé.",
+          "error": "Impossible de réorganiser l’ordre."
+        },
         "children": {
           "title": "Sous-modules",
           "empty": "Aucun sous-module pour le moment.",

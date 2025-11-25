@@ -515,9 +515,13 @@ function TestCasesTab({
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-2">
           {canManageQa && (
-            <Button variant="outline" onClick={() => setAddDialogOpen(true)}>
+            <button
+              type="button"
+              className={actionButtonClass()}
+              onClick={() => setAddDialogOpen(true)}
+            >
               {t("actions.add")}
-            </Button>
+            </button>
           )}
           <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
             <input
@@ -1969,7 +1973,13 @@ function EmptyState({
         {description}
       </p>
       {actionLabel && onAction && (
-        <Button onClick={onAction}>{actionLabel}</Button>
+        <button
+          type="button"
+          className={actionButtonClass()}
+          onClick={onAction}
+        >
+          {actionLabel}
+        </button>
       )}
     </div>
   );

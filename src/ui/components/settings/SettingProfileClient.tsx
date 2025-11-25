@@ -1,9 +1,9 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { Input } from "@/ui/components/form/input";
-import { Button } from "@/ui/components/button";
 import { useTranslations } from "next-intl";
+import { Input } from "@/ui/components/form/input";
+import { actionButtonClass } from "@/ui/styles/action-button";
 
 import {
   type PasswordFormState,
@@ -105,9 +105,9 @@ export default function SettingsProfileClient({ defaultName, defaultEmail }: Pro
         )}
 
         <div className="mt-6 flex items-center gap-3">
-          <Button type="submit">
+          <button type="submit" className={actionButtonClass()}>
             {t("save")}
-          </Button>
+          </button>
           <span className="text-xs text-[color:var(--color-muted-fg)]">
             {t("hint")}
           </span>
@@ -183,9 +183,9 @@ export default function SettingsProfileClient({ defaultName, defaultEmail }: Pro
         )}
 
         <div className="mt-6 flex items-center gap-3">
-          <Button type="submit">
+          <button type="submit" className={actionButtonClass()}>
             {t("password.save")}
-          </Button>
+          </button>
           <span className="text-xs text-[color:var(--color-muted-fg)]">
             {t("password.hint")}
           </span>

@@ -191,9 +191,6 @@ export default async function FeatureDetailPage({
             )}
           </div>
         </div>
-        <div className="mt-4 whitespace-pre-line text-sm text-muted-foreground">
-          {feature.description ?? t("description.empty")}
-        </div>
       </header>
 
       <FeatureTabs

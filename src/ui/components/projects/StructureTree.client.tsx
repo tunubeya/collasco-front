@@ -278,7 +278,7 @@ function ModuleNode({
   const canMoveUp = index > 0;
   const canMoveDown = index < siblings.length - 1;
   const showReorderButtons =
-    canManageStructure && (canMoveUp || canMoveDown);
+    canManageStructure && level === 0 && (canMoveUp || canMoveDown);
 
   return (
     <details
@@ -410,7 +410,7 @@ function FeatureRow({
   const canMoveUp = index > 0;
   const canMoveDown = index < siblings.length - 1;
   const showReorderButtons =
-    canManageStructure && (canMoveUp || canMoveDown);
+    canManageStructure && level === 0 && (canMoveUp || canMoveDown);
 
   return (
     <div

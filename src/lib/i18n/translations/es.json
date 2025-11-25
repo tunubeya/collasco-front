@@ -397,7 +397,8 @@
         "tabs": {
           "structure": "Estructura",
           "qa": "Ejecuciones QA",
-          "members": "Miembros"
+          "members": "Miembros",
+          "manual": "Manual"
         },
         "actions": {
           "edit": "Editar",
@@ -412,6 +413,9 @@
           "expandAll": "Expandir todo",
           "collapseAll": "Colapsar todo"
         }
+      },
+      "manual": {
+        "noDescription": "Sin descripción disponible."
       },
       "members": {
         "title": "Miembros del proyecto",
@@ -603,7 +607,8 @@
           "info": "Información",
           "issues": "Issues y PR",
           "versions": "Versiones",
-          "qa": "Pruebas"
+          "qa": "Pruebas",
+          "manual": "Manual"
         },
         "description": {
           "title": "Descripción",

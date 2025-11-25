@@ -397,7 +397,8 @@
         "tabs": {
           "structure": "Structure",
           "qa": "Test runs",
-          "members": "Members"
+          "members": "Members",
+          "manual": "Manual"
         },
         "actions": {
           "edit": "Edit",
@@ -410,8 +411,11 @@
           "sortOrder": "Order #{order}",
           "noDescription": "No description available",
           "expandAll": "Expand all",
-          "collapseAll": "Collapse all"
+        "collapseAll": "Collapse all"
         }
+      },
+      "manual": {
+        "noDescription": "No description available."
       },
       "members": {
         "title": "Project members",
@@ -603,7 +607,8 @@
           "info": "Details",
           "issues": "Linked issues",
           "versions": "Versions",
-          "qa": "Tests"
+          "qa": "Tests",
+          "manual": "Manual"
         },
         "description": {
           "title": "Description",

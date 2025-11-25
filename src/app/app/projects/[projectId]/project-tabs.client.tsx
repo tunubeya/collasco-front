@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
@@ -14,6 +14,10 @@ import { ProjectMembersTab } from "./project-members-tab.client";
 import type { FeatureOption } from "./project-qa.types";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Plus } from "lucide-react";
+import {
+  ManualOutline,
+  buildProjectManualTree,
+} from "@/ui/components/manual/manual-outline.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -25,7 +29,7 @@ type ProjectTabsProps = {
   membershipRole?: ProjectMemberRole | null;
 };
 
-type ProjectTab = "structure" | "qa" | "members";
+type ProjectTab = "structure" | "qa" | "members" | "manual";
 
 export function ProjectTabs({
   project,
@@ -36,9 +40,9 @@ export function ProjectTabs({
   currentUserId,
   membershipRole,
 }: ProjectTabsProps) {
-  
   const tTabs = useTranslations("app.projects.detail.tabs");
   const tActions = useTranslations("app.projects.detail.actions");
+  const tManual = useTranslations("app.projects.manual");
   const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
   const canManageStructure =
     membershipRole === ProjectMemberRole.OWNER ||
@@ -47,6 +51,11 @@ export function ProjectTabs({
     membershipRole === ProjectMemberRole.OWNER ||
     membershipRole === ProjectMemberRole.MAINTAINER ||
     membershipRole === ProjectMemberRole.DEVELOPER;
+
+  const manualTree = useMemo(
+    () => buildProjectManualTree(project, structureModules),
+    [project, structureModules],
+  );
 
   return (
     <section className="space-y-4">
@@ -65,6 +74,11 @@ export function ProjectTabs({
           label={tTabs("members")}
           isActive={activeTab === "members"}
           onClick={() => setActiveTab("members")}
+        />
+        <TabButton
+          label={tTabs("manual")}
+          isActive={activeTab === "manual"}
+          onClick={() => setActiveTab("manual")}
         />
       </div>
 
@@ -106,6 +120,14 @@ export function ProjectTabs({
           initialMembers={project.members ?? []}
           canManageMembers={membershipRole === ProjectMemberRole.OWNER}
           currentUserId={currentUserId}
+        />
+      )}
+
+      {activeTab === "manual" && (
+        <ManualOutline
+          root={manualTree}
+          focusId={project.id}
+          fallbackDescription={tManual("noDescription")}
         />
       )}
     </section>

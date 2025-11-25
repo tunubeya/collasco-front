@@ -322,7 +322,8 @@
         "tabs": {
           "structure": "Structuur",
           "qa": "QA-runs",
-          "members": "Leden"
+          "members": "Leden",
+          "manual": "Handleiding"
         },
         "actions": {
           "edit": "Bewerken",
@@ -337,6 +338,9 @@
           "expandAll": "Alles uitvouwen",
           "collapseAll": "Alles samenvouwen"
         }
+      },
+      "manual": {
+        "noDescription": "Geen beschrijving beschikbaar."
       },
       "members": {
         "title": "Projectleden",
@@ -528,7 +532,8 @@
           "info": "Details",
           "issues": "Issues",
           "versions": "Versies",
-          "qa": "Tests"
+          "qa": "Tests",
+          "manual": "Handleiding"
         },
         "description": {
           "title": "Beschrijving",

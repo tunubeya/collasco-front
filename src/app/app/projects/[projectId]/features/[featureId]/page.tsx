@@ -7,6 +7,7 @@ import {
   FeaturePriority,
   FeatureStatus,
   ProjectMemberRole,
+  StructureModuleNode,
 } from "@/lib/definitions";
 import {
   fetchFeatureById,
@@ -74,11 +75,13 @@ export default async function FeatureDetailPage({
   }
 
   let moduleCrumbs: { id: string; name: string }[] = [];
+  let structureModules: StructureModuleNode[] = [];
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
       sort: "sortOrder",
     });
+    structureModules = structure.modules ?? [];
     const chain = findModulePath(structure.modules, feature.moduleId);
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
@@ -195,6 +198,8 @@ export default async function FeatureDetailPage({
 
       <FeatureTabs
         feature={feature}
+        project={project}
+        structureModules={structureModules}
         featureId={featureId}
         token={session.token}
         currentUserId={currentUserId ?? undefined}

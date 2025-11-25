@@ -343,7 +343,8 @@
         "tabs": {
           "structure": "Structure",
           "qa": "Campagnes QA",
-          "members": "Membres"
+          "members": "Membres",
+          "manual": "Manuel"
         },
         "actions": {
           "edit": "Modifier",
@@ -358,6 +359,9 @@
           "expandAll": "Tout développer",
           "collapseAll": "Tout réduire"
         }
+      },
+      "manual": {
+        "noDescription": "Aucune description disponible."
       },
       "members": {
         "title": "Membres du projet",
@@ -549,7 +553,8 @@
           "info": "Informations",
           "issues": "Issues liées",
           "versions": "Versions",
-          "qa": "Tests"
+          "qa": "Tests",
+          "manual": "Manuel"
         },
         "description": {
           "title": "Description",

@@ -1,24 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 
 import type { Feature } from "@/lib/model-definitions/feature";
+import type { Project } from "@/lib/model-definitions/project";
+import type { StructureModuleNode } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import { FeatureQA } from "./feature-qa.client";
+import {
+  ManualOutline,
+  buildProjectManualTree,
+} from "@/ui/components/manual/manual-outline.client";
 
 type FeatureTabsProps = {
   feature: Feature;
+  project: Project;
+  structureModules: StructureModuleNode[];
   featureId: string;
   token: string;
   currentUserId?: string;
   canManageQa?: boolean;
 };
 
-type FeatureTab = "info" | "issues" | "versions" | "qa";
+type FeatureTab = "info" | "issues" | "versions" | "qa" | "manual";
 
 export function FeatureTabs({
   feature,
+  project,
+  structureModules,
   featureId,
   token,
   currentUserId,
@@ -26,8 +36,13 @@ export function FeatureTabs({
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
+  const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
   const [activeTab, setActiveTab] = useState<FeatureTab>("info");
+  const manualTree = useMemo(
+    () => buildProjectManualTree(project, structureModules),
+    [project, structureModules],
+  );
 
   return (
     <section className="space-y-4">
@@ -51,6 +66,11 @@ export function FeatureTabs({
           label={tTabs("qa")}
           isActive={activeTab === "qa"}
           onClick={() => setActiveTab("qa")}
+        />
+        <TabButton
+          label={tTabs("manual")}
+          isActive={activeTab === "manual"}
+          onClick={() => setActiveTab("manual")}
         />
       </div>
 
@@ -143,6 +163,14 @@ export function FeatureTabs({
           featureId={featureId}
           currentUserId={currentUserId}
           canManageQa={canManageQa}
+        />
+      )}
+
+      {activeTab === "manual" && (
+        <ManualOutline
+          root={manualTree}
+          focusId={feature.id}
+          fallbackDescription={tManual("noDescription")}
         />
       )}
     </section>

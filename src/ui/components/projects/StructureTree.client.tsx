@@ -282,7 +282,7 @@ function ModuleNode({
 
   return (
     <details
-      className="group rounded-md px-1 py-0.5"
+      className="group rounded-md py-1"
       open={isOpen}
       onToggle={(e) => {
         if (e.target !== e.currentTarget) return;
@@ -314,7 +314,7 @@ function ModuleNode({
         </Link>
 
         {showReorderButtons && (
-          <div className="ml-auto flex flex-col items-center text-muted-foreground">
+          <div className="ml-auto flex items-center gap-1 text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}
@@ -432,7 +432,7 @@ function FeatureRow({
           )}
         </div>
         {showReorderButtons && (
-          <div className="flex flex-col items-center text-muted-foreground">
+          <div className="flex items-center gap-1 text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}

@@ -144,7 +144,6 @@ function ManualNodeItem({
     typeof expandedMap[node.id] === "boolean"
       ? expandedMap[node.id]
       : node.id === rootId;
-  const paddingLeft = level * 16;
   const titleClass =
     TITLE_CLASSES[Math.min(level, TITLE_CLASSES.length - 1)];
   const descriptionClass =
@@ -156,7 +155,7 @@ function ManualNodeItem({
   const isFocused = focusId === node.id;
 
   return (
-    <div className="space-y-2" style={{ paddingLeft }}>
+    <div className="space-y-2">
       <button
         type="button"
         className={cn(
@@ -186,7 +185,7 @@ function ManualNodeItem({
           />
         ) : null}
       </button>
-      <p className={cn(descriptionClass, "pl-3")}>{description}</p>
+      <p className={cn(descriptionClass, "px-3")}>{description}</p>
       {hasChildren && isExpanded && (
         <div className="space-y-4">
           {node.children.map((child, index) => (

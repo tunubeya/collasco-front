@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ChevronRight } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { Module } from "@/lib/model-definitions/module";
@@ -23,6 +24,9 @@ type ManualOutlineProps = {
   root: ManualNode;
   focusId?: string;
   fallbackDescription: string;
+  expandLabel: string;
+  collapseLabel: string;
+  title?: string;
   className?: string;
 };
 
@@ -44,12 +48,17 @@ export function ManualOutline({
   root,
   focusId,
   fallbackDescription,
+  expandLabel,
+  collapseLabel,
+  title,
   className,
 }: ManualOutlineProps) {
   const focusPath = useMemo(() => {
     if (!focusId) return [];
     return findPath(root, focusId);
   }, [root, focusId]);
+
+  const allNodeIds = useMemo(() => collectNodeIds(root), [root]);
 
   const defaultExpanded = useMemo(() => {
     const expanded: Record<string, boolean> = { [root.id]: true };
@@ -65,8 +74,34 @@ export function ManualOutline({
     setExpanded(defaultExpanded);
   }, [defaultExpanded]);
 
+  const handleExpandAll = () =>
+    setExpanded(Object.fromEntries(allNodeIds.map((id) => [id, true])));
+  const handleCollapseAll = () => setExpanded({ [root.id]: false });
+  const hasChildren = root.children.length > 0;
+
   return (
     <div className={cn("rounded-xl border bg-background p-4", className)}>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        {title ? <h2 className="font-semibold">{title}</h2> : <div />}
+        {hasChildren && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={handleExpandAll}
+              className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+            >
+              ⤢ {expandLabel}
+            </button>
+            <button
+              type="button"
+              onClick={handleCollapseAll}
+              className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+            >
+              ⤡ {collapseLabel}
+            </button>
+          </div>
+        )}
+      </div>
       <ManualNodeItem
         node={root}
         numbering="1"
@@ -77,6 +112,7 @@ export function ManualOutline({
         }
         fallbackDescription={fallbackDescription}
         focusId={focusId}
+        rootId={root.id}
       />
     </div>
   );
@@ -90,6 +126,7 @@ type ManualNodeItemProps = {
   onToggle: (id: string) => void;
   fallbackDescription: string;
   focusId?: string;
+  rootId: string;
 };
 
 function ManualNodeItem({
@@ -100,9 +137,13 @@ function ManualNodeItem({
   onToggle,
   fallbackDescription,
   focusId,
+  rootId,
 }: ManualNodeItemProps) {
   const hasChildren = node.children.length > 0;
-  const isExpanded = expandedMap[node.id] ?? true;
+  const isExpanded =
+    typeof expandedMap[node.id] === "boolean"
+      ? expandedMap[node.id]
+      : node.id === rootId;
   const paddingLeft = level * 16;
   const titleClass =
     TITLE_CLASSES[Math.min(level, TITLE_CLASSES.length - 1)];
@@ -136,9 +177,13 @@ function ManualNodeItem({
           </span>
         </div>
         {hasChildren ? (
-          <span className="ml-3 text-xs font-semibold text-muted-foreground">
-            {isExpanded ? "−" : "+"}
-          </span>
+          <ChevronRight
+            className={cn(
+              "ml-3 h-4 w-4 shrink-0 text-muted-foreground transition-transform",
+              isExpanded ? "rotate-90" : ""
+            )}
+            aria-hidden
+          />
         ) : null}
       </button>
       <p className={cn(descriptionClass, "pl-3")}>{description}</p>
@@ -154,6 +199,7 @@ function ManualNodeItem({
               onToggle={onToggle}
               fallbackDescription={fallbackDescription}
               focusId={focusId}
+              rootId={rootId}
             />
           ))}
         </div>
@@ -257,4 +303,9 @@ function findPath(node: ManualNode, targetId: string): string[] {
     }
   }
   return [];
+}
+
+function collectNodeIds(node: ManualNode): string[] {
+  const childIds = node.children.flatMap((child) => collectNodeIds(child));
+  return [node.id, ...childIds];
 }

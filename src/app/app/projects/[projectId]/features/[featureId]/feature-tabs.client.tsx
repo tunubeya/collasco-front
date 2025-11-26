@@ -36,6 +36,7 @@ export function FeatureTabs({
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
+  const tProjectDetail = useTranslations("app.projects.detail");
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
   const [activeTab, setActiveTab] = useState<FeatureTab>("info");
@@ -171,6 +172,13 @@ export function FeatureTabs({
           root={manualTree}
           focusId={feature.id}
           fallbackDescription={tManual("noDescription")}
+          expandLabel={tProjectDetail("modules.expandAll", {
+            default: "Expand all",
+          })}
+          collapseLabel={tProjectDetail("modules.collapseAll", {
+            default: "Collapse all",
+          })}
+          title={tTabs("manual")}
         />
       )}
     </section>

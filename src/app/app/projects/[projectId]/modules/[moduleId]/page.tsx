@@ -70,11 +70,13 @@ export default async function ModuleDetailPage({
 
   // 4) Path del módulo dentro de la estructura del proyecto
   let moduleCrumbs: { id: string; name: string }[] = [];
+  let projectStructureModules: StructureModuleNode[] = [];
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
       sort: "sortOrder",
     });
+    projectStructureModules = structure.modules ?? [];
     const chain = findModulePath(structure.modules, currentModule.id);
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
@@ -178,6 +180,7 @@ export default async function ModuleDetailPage({
         project={project}
         module={currentModule}
         structureNode={structureNode!}
+        structureModules={projectStructureModules}
         canManageStructure={canManageStructure}
       />
     </div>

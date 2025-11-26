@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
@@ -10,20 +10,26 @@ import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
 import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 import { actionButtonClass } from "@/ui/styles/action-button";
+import {
+  ManualOutline,
+  buildProjectManualTree,
+} from "@/ui/components/manual/manual-outline.client";
 
 type ModuleTabsProps = {
   project: Project;
   module: Module;
   structureNode: StructureModuleNode;
+  structureModules: StructureModuleNode[];
   canManageStructure: boolean;
 };
 
-type ModuleTab = "structure" | "details";
+type ModuleTab = "structure" | "details" | "manual";
 
 export function ModuleTabs({
   project,
   module,
   structureNode,
+  structureModules,
   canManageStructure,
 }: ModuleTabsProps) {
   const [activeTab, setActiveTab] = useState<ModuleTab>("structure");
@@ -31,9 +37,16 @@ export function ModuleTabs({
   const tProjectDetail = useTranslations("app.projects.detail");
   const tProjectTabs = useTranslations("app.projects.detail.tabs");
   const tFeatureTabs = useTranslations("app.projects.feature.tabs");
+  const tManual = useTranslations("app.projects.manual");
 
   const structureLabel = tProjectTabs("structure");
   const detailsLabel = tFeatureTabs("info");
+  const manualLabel = tProjectTabs("manual");
+
+  const manualTree = useMemo(
+    () => buildProjectManualTree(project, structureModules),
+    [project, structureModules],
+  );
 
   return (
     <section className="space-y-4">
@@ -47,6 +60,11 @@ export function ModuleTabs({
           label={detailsLabel}
           isActive={activeTab === "details"}
           onClick={() => setActiveTab("details")}
+        />
+        <TabButton
+          label={manualLabel}
+          isActive={activeTab === "manual"}
+          onClick={() => setActiveTab("manual")}
         />
       </div>
 
@@ -94,6 +112,21 @@ export function ModuleTabs({
             {module.description ?? tModule("description.empty")}
           </p>
         </div>
+      )}
+
+      {activeTab === "manual" && (
+        <ManualOutline
+          root={manualTree}
+          focusId={module.id}
+          fallbackDescription={tManual("noDescription")}
+          expandLabel={tProjectDetail("modules.expandAll", {
+            default: "Expand all",
+          })}
+          collapseLabel={tProjectDetail("modules.collapseAll", {
+            default: "Collapse all",
+          })}
+          title={manualLabel}
+        />
       )}
     </section>
   );

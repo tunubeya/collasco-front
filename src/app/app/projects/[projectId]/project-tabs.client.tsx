@@ -41,6 +41,7 @@ export function ProjectTabs({
   membershipRole,
 }: ProjectTabsProps) {
   const tTabs = useTranslations("app.projects.detail.tabs");
+  const tProjectDetail = useTranslations("app.projects.detail");
   const tActions = useTranslations("app.projects.detail.actions");
   const tManual = useTranslations("app.projects.manual");
   const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
@@ -128,6 +129,13 @@ export function ProjectTabs({
           root={manualTree}
           focusId={project.id}
           fallbackDescription={tManual("noDescription")}
+          expandLabel={tProjectDetail("modules.expandAll", {
+            default: "Expand all",
+          })}
+          collapseLabel={tProjectDetail("modules.collapseAll", {
+            default: "Collapse all",
+          })}
+          title={tTabs("manual")}
         />
       )}
     </section>

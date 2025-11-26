@@ -4,8 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
-import type { Module } from "@/lib/model-definitions/module";
-import type { Feature } from "@/lib/model-definitions/feature";
 import type {
   StructureFeatureItem,
   StructureModuleNode,
@@ -17,6 +15,7 @@ export type ManualNode = {
   type: "project" | "module" | "feature";
   name: string;
   description?: string | null;
+  numbering?: string;
   children: ManualNode[];
 };
 
@@ -104,7 +103,7 @@ export function ManualOutline({
       </div>
       <ManualNodeItem
         node={root}
-        numbering="1"
+        numbering={root.numbering ?? "1"}
         level={0}
         expandedMap={expanded}
         onToggle={(id) =>
@@ -153,6 +152,10 @@ function ManualNodeItem({
       ? node.description
       : fallbackDescription;
   const isFocused = focusId === node.id;
+  const currentNumbering =
+    node.numbering && node.numbering.trim().length > 0
+      ? node.numbering
+      : numbering;
 
   return (
     <div className="space-y-2">
@@ -171,7 +174,7 @@ function ManualNodeItem({
       >
         <div className="flex flex-1 flex-col">
           <span className={cn(titleClass, "leading-tight")}>
-            <span className="mr-2 font-mono">{numbering}</span>
+            <span className="mr-2 font-mono">{currentNumbering}</span>
             {node.name}
           </span>
         </div>
@@ -185,14 +188,20 @@ function ManualNodeItem({
           />
         ) : null}
       </button>
-      <p className={cn(descriptionClass, "px-3")}>{description}</p>
+      <p className={cn(descriptionClass, "px-3 whitespace-pre-line")}>
+        {description}
+      </p>
       {hasChildren && isExpanded && (
         <div className="space-y-4">
           {node.children.map((child, index) => (
             <ManualNodeItem
               key={child.id}
               node={child}
-              numbering={`${numbering}.${index + 1}`}
+              numbering={
+                child.numbering && child.numbering.trim().length > 0
+                  ? child.numbering
+                  : `${currentNumbering}.${index + 1}`
+              }
               level={level + 1}
               expandedMap={expandedMap}
               onToggle={onToggle}
@@ -211,86 +220,69 @@ export function buildProjectManualTree(
   project: Project,
   structureModules: StructureModuleNode[]
 ): ManualNode {
-  const { moduleDescriptions, featureDescriptions } = mapProjectContent(
-    project.modules
-  );
-
-  return {
+  const manualRoot: ManualNode = {
     id: project.id,
     type: "project",
     name: project.name,
     description: project.description,
     children: structureModules.map((moduleNode) =>
-      convertModuleNode(moduleNode, moduleDescriptions, featureDescriptions)
+      convertModuleNode(moduleNode)
     ),
   };
+
+  assignNumbering(manualRoot, "1");
+
+  return manualRoot;
 }
 
-function convertModuleNode(
-  node: StructureModuleNode,
-  moduleDescriptions: Map<string, string | null>,
-  featureDescriptions: Map<string, string | null>
-): ManualNode {
+function convertModuleNode(node: StructureModuleNode): ManualNode {
   const manualNode: ManualNode = {
     id: node.id,
     type: "module",
     name: node.name,
-    description: moduleDescriptions.get(node.id) ?? null,
+    description: node.description ?? null,
     children: [],
   };
 
   manualNode.children = node.items.map((item) => {
     if (item.type === "module") {
-      return convertModuleNode(item, moduleDescriptions, featureDescriptions);
+      return convertModuleNode(item);
     }
-    return convertFeatureItem(item, featureDescriptions);
+    return convertFeatureItem(item);
   });
 
   return manualNode;
 }
 
-function convertFeatureItem(
-  item: StructureFeatureItem,
-  featureDescriptions: Map<string, string | null>
-): ManualNode {
+function convertFeatureItem(item: StructureFeatureItem): ManualNode {
   return {
     id: item.id,
     type: "feature",
     name: item.name,
-    description: featureDescriptions.get(item.id) ?? null,
+    description: item.description ?? null,
     children: [],
   };
 }
 
-function mapProjectContent(modules: Module[] | undefined | null): {
-  moduleDescriptions: Map<string, string | null>;
-  featureDescriptions: Map<string, string | null>;
-} {
-  const moduleDescriptions = new Map<string, string | null>();
-  const featureDescriptions = new Map<string, string | null>();
+function assignNumbering(node: ManualNode, numbering: string) {
+  node.numbering = numbering;
+  node.children.forEach((child, index) => {
+    assignNumbering(child, `${numbering}.${index + 1}`);
+  });
+}
 
-  const visit = (moduleList?: Module[] | null) => {
-    if (!moduleList) return;
-    moduleList.forEach((mod) => {
-      moduleDescriptions.set(mod.id, mod.description ?? null);
-      const moduleFeatures =
-        (mod.features as Feature[] | null | undefined) ?? null;
-      moduleFeatures?.forEach((feature) => {
-        featureDescriptions.set(feature.id, feature.description ?? null);
-      });
-      const children =
-        (mod.childrens as Module[] | null | undefined) ??
-        (mod as unknown as { children?: Module[] | null }).children ??
-        null;
-      if (children && children.length > 0) {
-        visit(children);
-      }
-    });
-  };
-
-  visit(modules ?? null);
-
-  return { moduleDescriptions, featureDescriptions };
+export function findManualNode(
+  node: ManualNode,
+  targetId: string
+): ManualNode | null {
+  if (node.id === targetId) return node;
+  for (const child of node.children) {
+    const found = findManualNode(child, targetId);
+    if (found) {
+      return found;
+    }
+  }
+  return null;
 }
 
 function findPath(node: ManualNode, targetId: string): string[] {

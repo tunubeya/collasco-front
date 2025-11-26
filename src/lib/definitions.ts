@@ -139,6 +139,7 @@ export type StructureFeatureItem = {
   id: string;
   moduleId: string;
   name: string;
+  description: string | null;
   status: string;      // usar tus enums si lo deseas
   priority: string | null;
   sortOrder: number;
@@ -150,6 +151,7 @@ export type StructureModuleNode = {
   type: "module";
   id: string;
   name: string;
+  description: string | null;
   parentModuleId: string | null;
   isRoot: boolean;
   sortOrder: number;

@@ -13,6 +13,7 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 import {
   ManualOutline,
   buildProjectManualTree,
+  findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
 
 type ModuleTabsProps = {
@@ -47,6 +48,11 @@ export function ModuleTabs({
     () => buildProjectManualTree(project, structureModules),
     [project, structureModules],
   );
+
+  const manualSubtree = useMemo(() => {
+    const found = findManualNode(manualTree, module.id);
+    return found ?? manualTree;
+  }, [manualTree, module.id]);
 
   return (
     <section className="space-y-4">
@@ -116,7 +122,7 @@ export function ModuleTabs({
 
       {activeTab === "manual" && (
         <ManualOutline
-          root={manualTree}
+          root={manualSubtree}
           focusId={module.id}
           fallbackDescription={tManual("noDescription")}
           expandLabel={tProjectDetail("modules.expandAll", {

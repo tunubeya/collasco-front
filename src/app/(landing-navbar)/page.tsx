@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-// import RegisterButton from '@/ui/components/auth/register-button';
-// import LoginButton from '@/ui/components/auth/login-button';
-//import { getSession } from '@/lib/session';
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import BetaProgramForm from '@/ui/components/landing/beta-program-form';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('landing');
@@ -13,228 +12,213 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// /* ── UI Helpers ──────────────────────────────────────────────────── */
-// const HighlightedText = ({ text }: { text: string }) => (
-//   <span className="relative before:absolute before:inset-x-0 before:bottom-0 before:h-3 before:bg-[color:var(--color-primary-soft)] before:rounded-sm px-0.5">
-//     <span className="relative font-bold">{text}</span>
-//   </span>
-// );
+const heroNodeKeys = ['team', 'qa', 'design', 'customer', 'release', 'feedback'] as const;
 
-// const StepCard = ({
-//   step,
-// }: {
-//   step: { number: string; title: string; description: string };
-// }) => (
-//   <div className="flex flex-col items-center text-center p-6 bg-surface rounded-xl shadow-sm border border-[color:var(--color-border)]">
-//     <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-[color:var(--color-primary-foreground)] font-bold text-xl mb-4">
-//       {step.number}
-//     </div>
-//     <h3 className="text-lg font-semibold text-[color:var(--color-foreground)] mb-2">
-//       {step.title}
-//     </h3>
-//     <p className="text-[color:var(--color-muted-fg)]">{step.description}</p>
-//   </div>
-// );
+const personas = [
+  { icon: '🧩', key: 'productManagers' },
+  { icon: '💻', key: 'developers' },
+  { icon: '🤝', key: 'customers' },
+  { icon: '🧾', key: 'qualityTeams' }
+] as const;
 
-// const FeatureSection = ({
-//   title,
-//   subtitle,
-//   children,
-//   image,
-//   reverse = false,
-// }: {
-//   title: string;
-//   subtitle: string;
-//   children: React.ReactNode;
-//   image?: string;
-//   reverse?: boolean;
-// }) => (
-//   <section className="py-16 md:py-24">
-//     <div className="max-w-7xl mx-auto px-6 md:px-8">
-//       <div
-//         className={`flex flex-col ${
-//           reverse ? 'md:flex-row-reverse' : 'md:flex-row'
-//         } items-center gap-12`}
-//       >
-//         <div className="w-full md:w-1/2">
-//           <h2 className="text-3xl md:text-4xl font-semibold text-[color:var(--color-foreground)] mb-3">
-//             {title}
-//           </h2>
-//           <p className="text-lg text-[color:var(--color-muted-fg)] mb-8">
-//             {subtitle}
-//           </p>
-//           {children}
-//         </div>
+const featureHighlights = [
+  { icon: '✅', key: 'testingWorkflows' },
+  { icon: '🔍', key: 'reviewApprovals' },
+  { icon: '🧾', key: 'versionDocs' },
+  { icon: '📘', key: 'manuals' },
+  { icon: '💬', key: 'structuredCommunication' },
+  { icon: '🔄', key: 'changeControl' },
+  { icon: '🤖', key: 'aiSupport' }
+] as const;
 
-//         <div className="w-full md:w-1/2 flex justify-center">
-//           <div className="w-full max-w-[560px] aspect-[7/4] bg-[color:var(--color-cream-100)] rounded-xl border border-[color:var(--color-border)] flex items-center justify-center overflow-hidden">
-//             {image ? (
-//               <Image
-//                 src={image}
-//                 alt="Feature"
-//                 width={700}
-//                 height={400}
-//                 className="rounded-lg object-contain"
-//               />
-//             ) : (
-//               <div className="w-32 h-32 bg-background rounded-full border border-[color:var(--color-border)] flex items-center justify-center text-[color:var(--color-muted-fg)]">
-//                 No Image
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   </section>
-// );
+const differentiators = ['jira', 'notion', 'linear'] as const;
 
 export default async function LandingPage() {
   const t = await getTranslations('landing');
-  //const session = await getSession();
+  const scheduleMeetingUrl =
+    process.env.NEXT_PUBLIC_SCHEDULE_MEETING_URL ??
+    `mailto:info@collasco.com?subject=${encodeURIComponent(
+      t('cta.scheduleEmailSubject')
+    )}&body=${encodeURIComponent(t('cta.scheduleEmailBody'))}`;
 
-  // return (
-  //   <div className="w-full flex-1">
-  //     {/* HERO */}
-  //     <div className="w-full bg-gradient-to-br from-surface to-primary/10 flex md:flex-row flex-col px-6 md:px-8 py-12 md:py-20 justify-center md:justify-between items-center gap-8">
-  //       <div className="w-full md:w-1/2 flex flex-col gap-6 max-w-[640px]">
-  //         <h1 className="text-4xl md:text-5xl font-bold leading-tight text-[color:var(--color-foreground)]">
-  //           <HighlightedText text={t('hero.title_01')} /> {t('hero.title_02')}{' '}
-  //           <HighlightedText text={t('hero.title_03')} />
-  //         </h1>
-  //         <p className="text-[color:var(--color-muted-fg)] text-lg md:text-xl">
-  //           <span className="block">{t('hero.subtitle_01')}</span>
-  //           <span className="block">{t('hero.subtitle_02')}</span>
-  //         </p>
-  //         <div className="flex gap-3 pt-1">
-  //           {!session?.token && <RegisterButton />}
-  //           <LoginButton session={session} />
-  //         </div>
-
-  //         {/* Mini KPI strip */}
-  //         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
-  //           {['kpi_0', 'kpi_1', 'kpi_2'].map((k) => (
-  //             <div
-  //               key={k}
-  //               className="bg-surface border border-[color:var(--color-border)] rounded-lg p-3 text-sm text-[color:var(--color-muted-fg)]"
-  //             >
-  //               {t(`hero.${k}`)}
-  //             </div>
-  //           ))}
-  //         </div>
-  //       </div>
-
-  //       <Image
-  //         src="/Images/grupo-de-chat.png"
-  //         alt="Collasco dashboard preview"
-  //         width={520}
-  //         height={520}
-  //         className="hidden md:block w-[520px] h-auto"
-  //         priority
-  //       />
-  //     </div>
-
-  //     {/* HOW IT WORKS */}
-  //     <section className="py-16 md:py-24 bg-surface">
-  //       <div className="max-w-7xl mx-auto px-6 md:px-8">
-  //         <div className="text-center mb-12">
-  //           <h2 className="text-3xl md:text-4xl font-semibold text-[color:var(--color-foreground)] mb-2">
-  //             {t('how.title')}
-  //           </h2>
-  //           <p className="text-lg text-[color:var(--color-muted-fg)]">
-  //             {t('how.subtitle')}
-  //           </p>
-  //         </div>
-  //         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-  //           {[0, 1, 2].map((i) => (
-  //             <StepCard
-  //               key={i}
-  //               step={{
-  //                 number: t(`how.steps.${i}.number`),
-  //                 title: t(`how.steps.${i}.title`),
-  //                 description: t(`how.steps.${i}.description`),
-  //               }}
-  //             />
-  //           ))}
-  //         </div>
-  //       </div>
-  //     </section>
-
-  //     {/* DOCUMENT CONTROL */}
-  //     <FeatureSection
-  //       title={t('docs.title')}
-  //       subtitle={t('docs.subtitle')}
-  //       image="/Images/grafico-de-barras.png"
-  //     >
-  //       <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-  //         {[0, 1, 2, 3].map((i) => (
-  //           <li key={i} className="flex items-start gap-3">
-  //             <span className="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-primary" />
-  //             <span className="text-[color:var(--color-foreground)]">
-  //               {t(`docs.features.${i}`)}
-  //             </span>
-  //           </li>
-  //         ))}
-  //       </ul>
-  //     </FeatureSection>
-
-  //     {/* AUDITS & CAPA */}
-  //     <FeatureSection
-  //       title={t('capa.title')}
-  //       subtitle={t('capa.subtitle')}
-  //       reverse
-  //       image="/Images/supervision.png"
-  //     >
-  //       <p className="text-[color:var(--color-foreground)] leading-relaxed mb-4">
-  //         {t('capa.description')}
-  //       </p>
-  //       <div className="grid grid-cols-2 gap-3">
-  //         {[0, 1, 2, 3].map((i) => (
-  //           <div
-  //             key={i}
-  //             className="bg-surface border border-[color:var(--color-border)] rounded-lg px-3 py-2 text-sm text-[color:var(--color-muted-fg)]"
-  //           >
-  //             {t(`capa.highlights.${i}`)}
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </FeatureSection>
-
-  //     {/* DASHBOARDS & COMPLIANCE */}
-  //     <FeatureSection
-  //       title={t('dash.title')}
-  //       subtitle={t('dash.subtitle')}
-  //       image="/Images/grafico-de-lineas.png"
-  //     >
-  //       <p className="text-[color:var(--color-foreground)] leading-relaxed mb-6">
-  //         {t('dash.description')}
-  //       </p>
-  //       <div className="bg-[color:var(--color-cream-100)] border border-[color:var(--color-border)] p-5 rounded-xl">
-  //         <h4 className="font-semibold text-[color:var(--color-foreground)] mb-2">
-  //           {t('dash.benefits.title')}
-  //         </h4>
-  //         <ul className="space-y-1 text-[color:var(--color-foreground)]">
-  //           {[0, 1, 2].map((i) => (
-  //             <li key={i}>• {t(`dash.benefits.${i}`)}</li>
-  //           ))}
-  //         </ul>
-  //       </div>
-  //     </FeatureSection>
-  //   </div>
-  // );
   return (
-    <main className="flex flex-1 items-center justify-center px-6 py-24 md:py-32">
-      <div className="max-w-2xl text-center space-y-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-[color:var(--color-foreground)]">
-          {t('comingSoon.title')}
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground">
-          {t('comingSoon.description')}
+    <main className="flex-1 bg-background text-[color:var(--color-foreground)]">
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden bg-[color:var(--color-primary-soft)]/40">
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/10 to-background opacity-80" />
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-6 py-20 md:flex-row md:items-center md:py-28">
+          <div className="flex-1 space-y-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+              {t('hero.tagline')}
+            </p>
+            <h1 className="text-4xl font-semibold leading-tight md:text-5xl">{t('hero.title')}</h1>
+            <p className="text-lg text-[color:var(--color-muted-fg)] md:text-xl">
+              {t('hero.description')}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={scheduleMeetingUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30 transition hover:-translate-y-0.5"
+              >
+                {t('cta.tryPlatform')}
+              </a>
+              <Link
+                href="/login"
+                className="rounded-full border border-[color:var(--color-border)] px-6 py-3 text-sm font-semibold transition hover:-translate-y-0.5"
+              >
+                {t('cta.joinBeta')}
+              </Link>
+            </div>
+          </div>
+          <div className="flex-1">
+            <div className="mx-auto grid max-w-lg grid-cols-3 gap-6 rounded-3xl border border-primary/20 bg-background/60 p-10 shadow-2xl">
+              {heroNodeKeys.map((labelKey) => (
+                <div key={labelKey} className="flex flex-col items-center gap-2 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[color:var(--color-border)] bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.25),_transparent)] p-2 text-sm font-semibold">
+                    {t(`hero.nodes.${labelKey}`)}
+                  </div>
+                  <span className="text-xs text-[color:var(--color-muted-fg)]">{t('hero.nodeLabel')}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Vision */}
+      <section className="mx-auto max-w-5xl px-6 py-16 md:py-20">
+        <div className="grid gap-10 md:grid-cols-[2fr,1fr]">
+          <div className="space-y-4">
+            <p className="text-sm font-semibold uppercase text-primary">{t('vision.label')}</p>
+            <h2 className="text-3xl font-semibold">{t('vision.title')}</h2>
+            <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description1')}</p>
+            <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description2')}</p>
+          </div>
+          <div className="rounded-2xl border border-[color:var(--color-border)] bg-surface p-6 shadow-sm">
+            <p className="text-sm font-semibold uppercase text-primary">{t('vision.cardLabel')}</p>
+            <blockquote className="mt-4 text-2xl font-medium">{t('vision.quote')}</blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* Personas */}
+      <section className="bg-surface py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase text-primary">{t('personas.label')}</p>
+            <h2 className="text-3xl font-semibold">{t('personas.title')}</h2>
+            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('personas.description')}</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {personas.map((persona) => (
+              <div
+                key={persona.key}
+                className="rounded-2xl border border-[color:var(--color-border)] bg-background/80 p-6 shadow-sm"
+              >
+                <div className="text-3xl">{persona.icon}</div>
+                <h3 className="mt-4 text-lg font-semibold">{t(`personas.items.${persona.key}.title`)}</h3>
+                <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
+                  {t(`personas.items.${persona.key}.description`)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase text-primary">{t('features.label')}</p>
+          <h2 className="text-3xl font-semibold">{t('features.title')}</h2>
+          <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('features.description')}</p>
+        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          {featureHighlights.map((feature) => (
+            <div
+              key={feature.key}
+              className="flex h-full flex-col gap-3 rounded-2xl border border-[color:var(--color-border)] bg-surface/50 p-6"
+            >
+              <div className="text-2xl">{feature.icon}</div>
+              <h3 className="text-xl font-semibold">{t(`features.items.${feature.key}.title`)}</h3>
+              <p className="text-sm text-[color:var(--color-muted-fg)]">
+                {t(`features.items.${feature.key}.description`)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Differentiators */}
+      <section className="bg-[color:var(--color-primary-soft)]/40 py-16 md:py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase text-primary">{t('differentiators.label')}</p>
+            <h2 className="text-3xl font-semibold">{t('differentiators.title')}</h2>
+            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('differentiators.description')}</p>
+          </div>
+          <div className="mt-12 space-y-6">
+            {differentiators.map((itemKey) => (
+              <div
+                key={itemKey}
+                className="rounded-2xl border border-[color:var(--color-border)] bg-background/80 p-6 shadow-sm"
+              >
+                <h3 className="text-xl font-semibold">{t(`differentiators.items.${itemKey}.tool`)}</h3>
+                <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
+                  {t(`differentiators.items.${itemKey}.challenge`)}
+                </p>
+                <p className="mt-4 text-base font-medium text-primary">
+                  {t(`differentiators.items.${itemKey}.edge`)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Promise */}
+      <section className="mx-auto max-w-4xl px-6 py-16 text-center md:py-20">
+        <p className="text-sm font-semibold uppercase text-primary">{t('promise.label')}</p>
+        <h2 className="mt-4 text-3xl font-semibold">{t('promise.title')}</h2>
+        <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('promise.description')}</p>
+        <a
+          href={scheduleMeetingUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-flex rounded-full bg-primary px-8 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30 transition hover:-translate-y-0.5"
+        >
+          {t('cta.becomeEarlyAdopter')}
+        </a>
+      </section>
+
+      {/* Stay connected */}
+      <section className="bg-surface py-16 md:py-20">
+        <div className="mx-auto grid max-w-5xl gap-10 px-6 md:grid-cols-2">
+          <div>
+            <p className="text-sm font-semibold uppercase text-primary">{t('stayConnected.label')}</p>
+            <h2 className="mt-4 text-3xl font-semibold">{t('stayConnected.title')}</h2>
+            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('stayConnected.description')}</p>
+            <p className="mt-6 font-semibold">
+              {t('stayConnected.integrationsLabel')}{' '}
+              <span className="font-normal">{t('stayConnected.integrationsValue')}</span>
+            </p>
+          </div>
+          <BetaProgramForm />
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-[color:var(--color-border)] bg-background px-6 py-10 text-center text-sm text-[color:var(--color-muted-fg)]">
+        <p>{t('footer.copyright')}</p>
+        <p className="mt-2">
+          {t('footer.contactLabel')}{' '}
+          <a href="mailto:info@collasco.com" className="underline">
+            info@collasco.com
+          </a>
         </p>
-        {/* <div className="flex flex-wrap items-center justify-center gap-3">
-          {!session?.token && <RegisterButton />}
-          <LoginButton session={session} />
-        </div> */}
-      </div>
+      </footer>
     </main>
   );
 }

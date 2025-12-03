@@ -11,6 +11,24 @@
       "title": "Binnenkort beschikbaar",
       "description": "We werken aan een nieuwe ervaring. Kom snel terug."
     },
+    "cta": {
+      "tryPlatform": "Probeer het platform",
+      "joinBeta": "Doe mee aan het bètaprogramma",
+      "becomeEarlyAdopter": "Word een early adopter",
+      "scheduleEmailSubject": "Probeer het platform",
+      "scheduleEmailBody": "Hallo Collasco-team, ik plan graag een moment om het platform uit te proberen."
+    },
+    "betaForm": {
+      "emailSubject": "Doe mee aan het Collasco-bètaprogramma",
+      "nameLabel": "Naam",
+      "namePlaceholder": "Vul je naam in",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "Vul je e-mail in",
+      "organizationLabel": "Organisatie",
+      "organizationPlaceholder": "Vul je organisatie in",
+      "challengesLabel": "Welke samenwerkingsuitdagingen ervaar je?",
+      "challengesPlaceholder": "Vertel ons over jullie proces"
+    },
     "hero": {
       "title_01": "Kwaliteit",
       "title_02": "die echt",
@@ -19,7 +37,19 @@
       "subtitle_02": "Gemaakt voor teams die waarde hechten aan helderheid en naleving.",
       "kpi_0": "ISO-klaar structuur",
       "kpi_1": "Audit trails in seconden",
-      "kpi_2": "Realtime dashboards"
+      "kpi_2": "Realtime dashboards",
+      "tagline": "Collasco — Collaboratieve kwaliteit",
+      "title": "Bouw betere software, samen.",
+      "description": "Collasco helpt teams, klanten en ontwikkelaars om met helderheid samen te creëren—van idee tot oplevering. We maken van softwareontwikkeling een gestructureerd, transparant en kwaliteitsgedreven proces.",
+      "nodeLabel": "Node",
+      "nodes": {
+        "team": "Team",
+        "qa": "QA",
+        "design": "Design",
+        "customer": "Klant",
+        "release": "Release",
+        "feedback": "Feedback"
+      }
     },
     "how": {
       "title": "Hoe het werkt",
@@ -73,6 +103,110 @@
         "1": "Eigenaarschap en verantwoordelijkheid",
         "2": "Continue verbetering zichtbaar voor iedereen"
       }
+    },
+    "vision": {
+      "label": "De visie",
+      "title": "Waarom Collasco",
+      "description1": "Software bouwen is meer dan code schrijven of een issuetracker openen. Het draait om samenwerking, co-creatie en gedeelde kennis tussen teams, testen, validaties en verbeteringen. Collasco geeft structuur en betekenis aan die samenwerking zodat ieder team met vertrouwen werkt.",
+      "description2": "Klanten, ontwikkelaars, designers, QA en compliance zien eindelijk hetzelfde proces, dezelfde feiten en dezelfde voortgang.",
+      "cardLabel": "Wanneer samenwerking structuur krijgt",
+      "quote": "“Wanneer communicatie onderdeel wordt van het proces, volgt kwaliteit vanzelf.”"
+    },
+    "personas": {
+      "label": "Voor wie",
+      "title": "Gebouwd voor teams die om kwaliteit geven",
+      "description": "Of je nu een SaaS-product bouwt of maatwerk levert, Collasco brengt iedereen samen in één gedeeld proces.",
+      "items": {
+        "productManagers": {
+          "title": "Product- en projectmanagers",
+          "description": "Helderheid voor elke stakeholder en mijlpaal."
+        },
+        "developers": {
+          "title": "Ontwikkelaars en testers",
+          "description": "Alle context die nodig is voor elke wijziging, test en release."
+        },
+        "customers": {
+          "title": "Klanten en gebruikers",
+          "description": "Inzicht in wat er gevalideerd en geleverd wordt."
+        },
+        "qualityTeams": {
+          "title": "Kwaliteits- en compliance teams",
+          "description": "Traceerbaarheid en documentatie zonder extra tools."
+        }
+      }
+    },
+    "features": {
+      "label": "Wat Collasco doet",
+      "title": "Een gestructureerde omgeving voor samenwerking",
+      "description": "Verbind samenwerking, kwaliteit, documentatie en change management in één flow.",
+      "items": {
+        "testingWorkflows": {
+          "title": "Testworkflows",
+          "description": "Beheer klantacceptatie, beta’s en designvalidaties met gestructureerde rapportage."
+        },
+        "reviewApprovals": {
+          "title": "Reviews & goedkeuringen",
+          "description": "Bepaal wie wat valideert en houd elke beslissing audit-proof."
+        },
+        "versionDocs": {
+          "title": "Versie- & release-documentatie",
+          "description": "Maak transparante, controleerbare releasenotes en documentatie van wijzigingen."
+        },
+        "manuals": {
+          "title": "Handleidingen & kwaliteitsdossiers",
+          "description": "Genereer IQ/OQ/PQ-documentatie vanuit één consistente kennisbasis."
+        },
+        "structuredCommunication": {
+          "title": "Gestructureerde communicatie",
+          "description": "Bespreek wijzigingen in context zodat feedback onderdeel van het proces wordt."
+        },
+        "changeControl": {
+          "title": "Change capture & control",
+          "description": "Detecteer elke codewijziging en laat die het volledige validatietraject doorlopen."
+        },
+        "aiSupport": {
+          "title": "AI-ondersteuning",
+          "description": "Vertaal, standaardiseer en automatiseer documentatie tussen teams en stakeholders."
+        }
+      }
+    },
+    "differentiators": {
+      "label": "Waarom Collasco",
+      "title": "Wat ons uniek maakt",
+      "description": "Collasco overbrugt de kloof tussen technische tools en collaboratief kwaliteitsbeheer.",
+      "items": {
+        "jira": {
+          "tool": "Jira / GitHub Projects",
+          "challenge": "Geweldig voor ontwikkelaars, maar te technisch voor stakeholders.",
+          "edge": "Collasco maakt het begrijpelijk en procesgericht voor iedereen."
+        },
+        "notion": {
+          "tool": "Notion / Confluence",
+          "challenge": "Flexibel, maar ongestructureerd en lastig te herhalen.",
+          "edge": "Collasco verankert samenwerking in één consistent, herhaalbaar proces."
+        },
+        "linear": {
+          "tool": "Linear",
+          "challenge": "Geoptimaliseerd voor code shippen, niet voor co-creatie.",
+          "edge": "Collasco brengt elke rol samen in een kwaliteitsgedreven samenwerkingslus."
+        }
+      }
+    },
+    "promise": {
+      "label": "Onze belofte",
+      "title": "Maak van softwareontwikkeling een herhaalbaar, traceerbaar en kwaliteitsgedreven proces.",
+      "description": "Behoud de menselijke kant van samenwerking terwijl je structuur, validatie en documentatie in elke stap garandeert."
+    },
+    "stayConnected": {
+      "label": "Blijf verbonden",
+      "title": "Vroege toegang & contact",
+      "description": "We bouwen het eerste prototype en nodigen teams uit om hun uitdagingen te delen en Collasco vroeg te testen.",
+      "integrationsLabel": "Integraties:",
+      "integrationsValue": "Werkt samen met GitHub."
+    },
+    "footer": {
+      "copyright": "© 2025 Collasco — Samenwerking & Software Co-Creation",
+      "contactLabel": "Contact:"
     }
   },
   "auth": {

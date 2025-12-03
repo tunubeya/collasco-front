@@ -11,6 +11,24 @@
       "title": "Próximamente",
       "description": "Estamos preparando una nueva experiencia. Vuelve pronto."
     },
+    "cta": {
+      "tryPlatform": "Probar la plataforma",
+      "joinBeta": "Únete al programa beta",
+      "becomeEarlyAdopter": "Conviértete en early adopter",
+      "scheduleEmailSubject": "Probar la plataforma",
+      "scheduleEmailBody": "Hola equipo de Collasco, me gustaría agendar un tiempo para probar la plataforma."
+    },
+    "betaForm": {
+      "emailSubject": "Únete al programa beta de Collasco",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Ingresa tu nombre",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Ingresa tu correo",
+      "organizationLabel": "Organización",
+      "organizationPlaceholder": "Ingresa tu organización",
+      "challengesLabel": "¿Qué desafíos de colaboración enfrentas?",
+      "challengesPlaceholder": "Cuéntanos sobre tu proceso"
+    },
     "hero": {
       "title_01": "Calidad",
       "title_02": "que realmente",
@@ -19,7 +37,19 @@
       "subtitle_02": "Diseñado para equipos que valoran la claridad y el cumplimiento.",
       "kpi_0": "Estructura lista para ISO",
       "kpi_1": "Trazabilidad de auditoría en segundos",
-      "kpi_2": "Paneles en tiempo real"
+      "kpi_2": "Paneles en tiempo real",
+      "tagline": "Collasco — Calidad colaborativa",
+      "title": "Construyan mejor software, juntos.",
+      "description": "Collasco ayuda a equipos, clientes y desarrolladores a co-crear con claridad, desde la idea hasta la entrega. Convertimos el desarrollo de software en un proceso estructurado, transparente y orientado a la calidad.",
+      "nodeLabel": "Nodo",
+      "nodes": {
+        "team": "Equipo",
+        "qa": "QA",
+        "design": "Diseño",
+        "customer": "Cliente",
+        "release": "Lanzamiento",
+        "feedback": "Retroalimentación"
+      }
     },
     "how": {
       "title": "Cómo funciona",
@@ -73,6 +103,110 @@
         "1": "Responsabilidad y trazabilidad",
         "2": "Mejora continua visible para todos"
       }
+    },
+    "vision": {
+      "label": "La visión",
+      "title": "Por qué Collasco",
+      "description1": "Construir software es más que escribir código o abrir un gestor de issues. Se trata de colaboración, co-creación y conocimiento compartido entre equipos, pruebas, validaciones y mejoras. Collasco le da estructura y sentido a esa colaboración para que cada equipo trabaje con confianza.",
+      "description2": "Clientes, desarrolladores, diseñadores, QA y áreas de cumplimiento finalmente ven el mismo proceso, las mismas verdades y el mismo progreso.",
+      "cardLabel": "Cuando la colaboración tiene estructura",
+      "quote": "“Cuando la comunicación se vuelve parte del proceso, la calidad llega de forma natural.”"
+    },
+    "personas": {
+      "label": "Para quién",
+      "title": "Diseñado para equipos que cuidan la calidad",
+      "description": "Ya sea que lances un SaaS o entregues proyectos a medida, Collasco alinea a todos en un mismo proceso compartido.",
+      "items": {
+        "productManagers": {
+          "title": "Product Managers y líderes de proyecto",
+          "description": "Claridad para cada stakeholder y hito."
+        },
+        "developers": {
+          "title": "Desarrolladores y testers",
+          "description": "Todo el contexto necesario para cada cambio, prueba y release."
+        },
+        "customers": {
+          "title": "Clientes y usuarios",
+          "description": "Visibilidad sobre lo que se valida y entrega."
+        },
+        "qualityTeams": {
+          "title": "Equipos de calidad y cumplimiento",
+          "description": "Trazabilidad y documentación sin herramientas extra."
+        }
+      }
+    },
+    "features": {
+      "label": "Qué hace Collasco",
+      "title": "Un entorno estructurado para colaborar",
+      "description": "Conecta colaboración, calidad, documentación y control de cambios en un solo flujo.",
+      "items": {
+        "testingWorkflows": {
+          "title": "Flujos de testing",
+          "description": "Gestiona pruebas de aceptación con clientes, betas y validaciones de diseño con reportes estructurados."
+        },
+        "reviewApprovals": {
+          "title": "Revisiones y aprobaciones",
+          "description": "Define quién valida qué y mantén cada decisión trazable para auditorías."
+        },
+        "versionDocs": {
+          "title": "Documentación de versiones y releases",
+          "description": "Crea notas y documentación de cambios transparentes y auditables."
+        },
+        "manuals": {
+          "title": "Manuales y archivos de calidad",
+          "description": "Genera documentación IQ/OQ/PQ desde una única base de conocimiento consistente."
+        },
+        "structuredCommunication": {
+          "title": "Comunicación estructurada",
+          "description": "Habla de los cambios en contexto para que el feedback sea parte del proceso."
+        },
+        "changeControl": {
+          "title": "Captura y control de cambios",
+          "description": "Detecta cada cambio de código y asegúrate de que recorra todo el ciclo de validación."
+        },
+        "aiSupport": {
+          "title": "Asistencia con IA",
+          "description": "Traduce, estandariza y automatiza documentación entre equipos y stakeholders."
+        }
+      }
+    },
+    "differentiators": {
+      "label": "Por qué Collasco",
+      "title": "Qué nos hace diferentes",
+      "description": "Collasco cierra la brecha entre herramientas técnicas y una gestión de calidad colaborativa.",
+      "items": {
+        "jira": {
+          "tool": "Jira / GitHub Projects",
+          "challenge": "Genial para desarrolladores, pero demasiado técnico para los stakeholders.",
+          "edge": "Collasco lo hace entendible y orientado a procesos para todos."
+        },
+        "notion": {
+          "tool": "Notion / Confluence",
+          "challenge": "Flexible, pero desestructurado y difícil de repetir.",
+          "edge": "Collasco integra la colaboración en un flujo consistente y repetible."
+        },
+        "linear": {
+          "tool": "Linear",
+          "challenge": "Optimizado para despachar código, no para co-crear.",
+          "edge": "Collasco alinea cada rol dentro de un ciclo de colaboración orientado a la calidad."
+        }
+      }
+    },
+    "promise": {
+      "label": "Nuestro compromiso",
+      "title": "Convierte el desarrollo de software en un proceso repetible, trazable y orientado a la calidad.",
+      "description": "Mantén el lado humano de la colaboración mientras garantizas estructura, validación y documentación en cada paso."
+    },
+    "stayConnected": {
+      "label": "Mantente conectado",
+      "title": "Acceso temprano y contacto",
+      "description": "Estamos construyendo el primer prototipo e invitando a equipos a compartir sus dolores y probar Collasco desde temprano.",
+      "integrationsLabel": "Integraciones:",
+      "integrationsValue": "Funciona junto a GitHub."
+    },
+    "footer": {
+      "copyright": "© 2025 Collasco — Colaboración y Co-Creación de Software",
+      "contactLabel": "Contacto:"
     }
   },
   "auth": {

@@ -1395,7 +1395,9 @@ export function TestRunPanel({
   const [runState, setRunState] = useState<QaTestRunDetail>(run);
   const [caseRows, setCaseRows] = useState<RunCaseRow[]>(() => buildCaseRows(run));
   const [resultState, setResultState] = useState<Record<string, RunResultState>>(resultsToState(run));
+  const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
   const stableResultsRef = useRef<Record<string, RunResultState>>(resultsToState(run));
+  const resultStateRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const pendingRef = useRef<Record<string, RunResultState>>({});
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
 
@@ -1404,9 +1406,15 @@ export function TestRunPanel({
     const state = resultsToState(run);
     setResultState(state);
     stableResultsRef.current = state;
+    resultStateRef.current = state;
     pendingRef.current = {};
     setCaseRows(buildCaseRows(run));
+    setCommentDrafts({});
   }, [run]);
+
+  useEffect(() => {
+    resultStateRef.current = resultState;
+  }, [resultState]);
 
   const persistUpdates = useCallback(async () => {
     const pendingEntries = Object.entries(pendingRef.current);
@@ -1474,6 +1482,43 @@ export function TestRunPanel({
       debouncedPersist();
     },
     [debouncedPersist],
+  );
+
+  const handleDraftChange = useCallback((testCaseId: string, value: string) => {
+    setCommentDrafts((prev) => {
+      const baseValue = resultStateRef.current[testCaseId]?.comment ?? "";
+      if (value === baseValue) {
+        if (!(testCaseId in prev)) {
+          return prev;
+        }
+        const nextDrafts = { ...prev };
+        delete nextDrafts[testCaseId];
+        return nextDrafts;
+      }
+      return {
+        ...prev,
+        [testCaseId]: value,
+      };
+    });
+  }, []);
+
+  const commitComment = useCallback(
+    (testCaseId: string) => {
+      setCommentDrafts((prev) => {
+        if (!(testCaseId in prev)) {
+          return prev;
+        }
+        const draftValue = prev[testCaseId];
+        const currentValue = resultStateRef.current[testCaseId]?.comment ?? "";
+        if (draftValue !== currentValue) {
+          handleResultChange(testCaseId, { comment: draftValue });
+        }
+        const nextDrafts = { ...prev };
+        delete nextDrafts[testCaseId];
+        return nextDrafts;
+      });
+    },
+    [handleResultChange],
   );
 
   const summary = useMemo(() => {
@@ -1626,6 +1671,8 @@ export function TestRunPanel({
         )}
         {rows.map((testCase) => {
           const state = resultState[testCase.testCaseId] ?? {};
+          const draftComment = commentDrafts[testCase.testCaseId];
+          const noteValue = draftComment ?? state.comment ?? "";
           return (
             <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -1678,12 +1725,15 @@ export function TestRunPanel({
                 </label>
                 <textarea
                   rows={2}
-                  value={state.comment ?? ""}
-                  onChange={(event) =>
-                    handleResultChange(testCase.testCaseId, {
-                      comment: event.target.value,
-                    })
-                  }
+                  value={noteValue}
+                  onChange={(event) => handleDraftChange(testCase.testCaseId, event.target.value)}
+                  onBlur={() => commitComment(testCase.testCaseId)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && !event.shiftKey) {
+                      event.preventDefault();
+                      commitComment(testCase.testCaseId);
+                    }
+                  }}
                   className="mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder={t("panel.notePlaceholder")}
                 />

@@ -1030,6 +1030,7 @@ function TestRunsTab({
         const payload: CreateTestRunDto = {
           ...dto,
           runById: currentUserId ?? dto.runById,
+          status: "OPEN",
         };
         const created = await createTestRun(token, featureId, payload);
         const summary = summarizeResults(created.results);
@@ -1040,6 +1041,7 @@ function TestRunsTab({
             name: created.name ?? null,
             environment: created.environment ?? null,
             by: created.runBy?.name ?? null,
+            status: created.status,
             summary,
           },
           ...prev,
@@ -1087,6 +1089,7 @@ function TestRunsTab({
                 by: run.runBy?.name ?? item.by,
                 name: run.name ?? item.name,
                 environment: run.environment ?? item.environment,
+                status: run.status,
               }
             : item,
         ),
@@ -1396,6 +1399,7 @@ export function TestRunPanel({
   const [caseRows, setCaseRows] = useState<RunCaseRow[]>(() => buildCaseRows(run));
   const [resultState, setResultState] = useState<Record<string, RunResultState>>(resultsToState(run));
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
+  const [isClosingRun, setIsClosingRun] = useState(false);
   const stableResultsRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const resultStateRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const pendingRef = useRef<Record<string, RunResultState>>({});
@@ -1440,6 +1444,7 @@ export function TestRunPanel({
       const nextState = resultsToState(updatedRun);
       setResultState(nextState);
       stableResultsRef.current = nextState;
+      resultStateRef.current = nextState;
       pendingRef.current = {};
       setRunState(updatedRun);
       setCaseRows(buildCaseRows(updatedRun));
@@ -1448,6 +1453,7 @@ export function TestRunPanel({
       window.setTimeout(() => setSaveStatus("idle"), 1200);
     } catch (error) {
       setResultState(stableResultsRef.current);
+      resultStateRef.current = stableResultsRef.current;
       pendingRef.current = {};
       setSaveStatus("error");
       toast.error(t("errors.updateResults"), {
@@ -1462,6 +1468,9 @@ export function TestRunPanel({
 
   const handleResultChange = useCallback(
     (testCaseId: string, changes: RunResultState) => {
+      if (runState.status === "CLOSED") {
+        return;
+      }
       setResultState((prev) => {
         const next = { ...prev };
         const current = next[testCaseId] ?? {};
@@ -1476,15 +1485,19 @@ export function TestRunPanel({
             [testCaseId]: merged,
           };
         }
+        resultStateRef.current = next;
         return next;
       });
       setSaveStatus("idle");
       debouncedPersist();
     },
-    [debouncedPersist],
+    [debouncedPersist, runState.status],
   );
 
   const handleDraftChange = useCallback((testCaseId: string, value: string) => {
+    if (runState.status === "CLOSED") {
+      return;
+    }
     setCommentDrafts((prev) => {
       const baseValue = resultStateRef.current[testCaseId]?.comment ?? "";
       if (value === baseValue) {
@@ -1500,7 +1513,7 @@ export function TestRunPanel({
         [testCaseId]: value,
       };
     });
-  }, []);
+  }, [runState.status]);
 
   const commitComment = useCallback(
     (testCaseId: string) => {
@@ -1520,6 +1533,12 @@ export function TestRunPanel({
     },
     [handleResultChange],
   );
+
+  const flushDrafts = useCallback(() => {
+    Object.keys(commentDrafts).forEach((testCaseId) => {
+      commitComment(testCaseId);
+    });
+  }, [commentDrafts, commitComment]);
 
   const summary = useMemo(() => {
     const total = runState.coverage?.totalCases ?? runState.results.length;
@@ -1589,6 +1608,7 @@ export function TestRunPanel({
         setCaseRows(buildCaseRows(updatedRun));
         setResultState(nextState);
         stableResultsRef.current = nextState;
+        resultStateRef.current = nextState;
         pendingRef.current = {};
         onRunUpdated(updatedRun);
       } catch (error) {
@@ -1611,6 +1631,7 @@ export function TestRunPanel({
         setCaseRows(buildCaseRows(updatedRun));
         setResultState(nextState);
         stableResultsRef.current = nextState;
+        resultStateRef.current = nextState;
         pendingRef.current = {};
         onRunUpdated(updatedRun);
       } catch (error) {
@@ -1622,10 +1643,42 @@ export function TestRunPanel({
     [onRunUpdated, runState.id, t, token],
   );
 
-  const isRunClosed =
+  const handleCloseRun = useCallback(async () => {
+    if (runState.status === "CLOSED") {
+      return;
+    }
+    flushDrafts();
+    await persistUpdates();
+    setIsClosingRun(true);
+    try {
+      const updatedRun = await updateTestRun(token, runState.id, {
+        status: "CLOSED",
+      });
+      const nextState = resultsToState(updatedRun);
+      setRunState(updatedRun);
+      setCaseRows(buildCaseRows(updatedRun));
+      setResultState(nextState);
+      stableResultsRef.current = nextState;
+      resultStateRef.current = nextState;
+      pendingRef.current = {};
+      setCommentDrafts({});
+      onRunUpdated(updatedRun);
+      toast.success(t("panel.actions.closed"));
+    } catch (error) {
+      toast.error(t("errors.updateResults"), {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    } finally {
+      setIsClosingRun(false);
+    }
+  }, [flushDrafts, onRunUpdated, persistUpdates, runState.id, runState.status, t, token]);
+
+  const isCoverageComplete =
     summary.total > 0 &&
     summary.counts.PASSED === summary.total &&
     (runState.coverage?.missingCases ?? 0) === 0;
+  const isRunClosed = runState.status === "CLOSED";
+  const showClosedTag = isRunClosed || isCoverageComplete;
 
   return (
     <div className="mt-8 space-y-6 rounded-2xl border bg-muted/40 p-6">
@@ -1660,10 +1713,19 @@ export function TestRunPanel({
           )}
         </div>
         <div className="flex flex-wrap items-center gap-3 text-sm">
+          <SummaryBadge
+            label={t(`panel.statusBadge.${runState.status ?? "OPEN"}`)}
+            tone={isRunClosed ? "success" : "default"}
+          />
           <SummaryBadge label={t("panel.summary.total", { count: summary.total })} />
           <SummaryBadge label={t("panel.summary.passed", { count: summary.counts.PASSED })} tone="success" />
           <SummaryBadge label={t("panel.summary.passRate", { rate: summary.passRate })} />
           <SavingIndicator status={saveStatus} />
+          {!isRunClosed && (
+            <Button size="sm" variant="outline" onClick={() => void handleCloseRun()} disabled={isClosingRun}>
+              {isClosingRun ? t("panel.actions.closing") : t("panel.actions.close")}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -1679,9 +1741,10 @@ export function TestRunPanel({
           const draftComment = commentDrafts[testCase.testCaseId];
           const noteValue = draftComment ?? state.comment ?? "";
           const isPassed = state.evaluation === "PASSED";
+          const isReadOnlyNote = isRunClosed || isPassed;
           const noteClasses = cn(
             "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
-            isPassed && "text-muted-foreground cursor-not-allowed",
+            isReadOnlyNote && "bg-muted text-muted-foreground cursor-not-allowed",
           );
           return (
             <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
@@ -1714,7 +1777,8 @@ export function TestRunPanel({
                         evaluation: nextValue,
                       });
                     }}
-                    className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    disabled={isRunClosed}
+                    className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-muted"
                   >
                     <option value="">{t("panel.statusPlaceholder")}</option>
                     {RESULT_STATUSES.map((status) => (
@@ -1727,6 +1791,7 @@ export function TestRunPanel({
                     size="sm"
                     variant="ghost"
                     onClick={() => handleRemoveCase(testCase.testCaseId)}
+                    disabled={isRunClosed}
                   >
                     {t("panel.removeCase")}
                   </Button>
@@ -1748,7 +1813,7 @@ export function TestRunPanel({
                       commitComment(testCase.testCaseId);
                     }
                   }}
-                  readOnly={isPassed}
+                  readOnly={isReadOnlyNote}
                   className={noteClasses}
                   placeholder={t("panel.notePlaceholder")}
                 />
@@ -1762,7 +1827,7 @@ export function TestRunPanel({
         <CoverageSummary
           coverage={runState.coverage}
           onAddCase={handleAddMissingCase}
-          isClosed={isRunClosed}
+          isClosed={showClosedTag}
         />
       )}
     </div>

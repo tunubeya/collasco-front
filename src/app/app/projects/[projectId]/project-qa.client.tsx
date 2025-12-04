@@ -92,6 +92,7 @@ export function ProjectQA({
         const payload: CreateProjectTestRunDto = {
           ...dto,
           runById: currentUserId ?? dto.runById,
+          status: "OPEN",
         };
         const created = await createProjectTestRun(token, projectId, payload);
         const summary = summarizeResults(created);
@@ -102,6 +103,7 @@ export function ProjectQA({
             name: created.name ?? null,
             environment: created.environment ?? null,
             by: created.runBy?.name ?? null,
+            status: created.status,
             feature: created.feature ?? null,
             summary,
           },
@@ -150,6 +152,7 @@ export function ProjectQA({
                 by: run.runBy?.name ?? item.by,
                 name: run.name ?? item.name,
                 environment: run.environment ?? item.environment,
+                status: run.status,
                 feature: run.feature ?? item.feature,
               }
             : item

@@ -900,6 +900,10 @@
             "hidePending": "Masquer les cas en attente"
           },
           "closedTag": "Clôturé",
+          "statusBadge": {
+            "OPEN": "Campagne ouverte",
+            "CLOSED": "Campagne clôturée"
+          },
           "summary": {
             "total": "{count} cas",
             "passed": "{count} réussis",
@@ -907,7 +911,12 @@
           },
           "saving": "Enregistrement...",
           "saved": "Enregistré",
-          "saveError": "Échec de l’enregistrement"
+          "saveError": "Échec de l’enregistrement",
+          "actions": {
+            "close": "Clore la campagne",
+            "closing": "Clôture...",
+            "closed": "Campagne clôturée."
+          }
         },
         "dialogs": {
           "cancel": "Annuler",

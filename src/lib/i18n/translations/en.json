@@ -954,15 +954,24 @@
           "hidePending": "Hide pending cases"
         },
         "closedTag": "Closed",
+        "statusBadge": {
+          "OPEN": "Open run",
+          "CLOSED": "Closed run"
+        },
         "summary": {
           "total": "{count} cases",
           "passed": "{count} passed",
-            "passRate": "{rate}% pass rate"
-          },
-          "saving": "Saving...",
-          "saved": "Saved",
-          "saveError": "Save failed"
+          "passRate": "{rate}% pass rate"
         },
+        "saving": "Saving...",
+        "saved": "Saved",
+        "saveError": "Save failed",
+        "actions": {
+          "close": "Close test run",
+          "closing": "Closing...",
+          "closed": "Test run closed."
+        }
+      },
         "dialogs": {
           "cancel": "Cancel",
           "newRun": {

@@ -69,6 +69,8 @@ export type QaRunCoverage = {
   }>;
 };
 
+export type QaRunStatus = "OPEN" | "CLOSED";
+
 export type QaTestRunDetail = {
   id: string;
   projectId: string;
@@ -78,6 +80,7 @@ export type QaTestRunDetail = {
   environment?: string | null;
   runById: string | null;
   notes?: string | null;
+  status: QaRunStatus;
   createdAt: string;
   project?: {
     id: string;
@@ -109,6 +112,7 @@ export type QaFeatureRunListItem = {
   name?: string | null;
   environment?: string | null;
   by: string | null;
+  status?: QaRunStatus;
   summary: QaEvaluationSummary;
 };
 
@@ -117,6 +121,7 @@ export type QaProjectRunListItem = QaFeatureRunListItem & {
     id: string;
     name: string;
   } | null;
+  status?: QaRunStatus;
 };
 
 export type CreateTestRunDto = {
@@ -124,6 +129,7 @@ export type CreateTestRunDto = {
   environment: string;
   runById?: string;
   notes?: string;
+  status?: QaRunStatus;
   targetTestCaseIds?: string[];
   results?: QaResultInput[];
 };
@@ -133,6 +139,7 @@ export type CreateProjectTestRunDto = {
   environment: string;
   runById?: string;
   notes?: string;
+  status?: QaRunStatus;
   targetTestCaseIds?: string[];
   results: QaResultInput[];
 };
@@ -145,6 +152,7 @@ export type UpdateTestRunDto = {
   name?: string;
   environment?: string;
   notes?: string;
+  status?: QaRunStatus;
   results?: QaResultInput[];
   removeTestCaseIds?: string[];
 };

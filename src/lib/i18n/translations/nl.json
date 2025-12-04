@@ -879,6 +879,10 @@
             "hidePending": "Openstaande cases verbergen"
           },
           "closedTag": "Afgesloten",
+          "statusBadge": {
+            "OPEN": "Run open",
+            "CLOSED": "Run afgesloten"
+          },
           "summary": {
             "total": "{count} cases",
             "passed": "{count} geslaagd",
@@ -886,7 +890,12 @@
           },
           "saving": "Bezig met opslaan...",
           "saved": "Opgeslagen",
-          "saveError": "Opslaan mislukt"
+          "saveError": "Opslaan mislukt",
+          "actions": {
+            "close": "Run afsluiten",
+            "closing": "Run wordt afgesloten...",
+            "closed": "Run afgesloten."
+          }
         },
         "dialogs": {
           "cancel": "Annuleren",

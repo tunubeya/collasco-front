@@ -954,6 +954,10 @@
             "hidePending": "Ocultar pendentes"
           },
           "closedTag": "Encerrado",
+          "statusBadge": {
+            "OPEN": "Execução aberta",
+            "CLOSED": "Execução encerrada"
+          },
           "summary": {
             "total": "{count} casos",
             "passed": "{count} aprovados",
@@ -961,7 +965,12 @@
           },
           "saving": "Salvando...",
           "saved": "Salvo",
-          "saveError": "Falha ao salvar"
+          "saveError": "Falha ao salvar",
+          "actions": {
+            "close": "Encerrar execução",
+            "closing": "Encerrando...",
+            "closed": "Execução encerrada."
+          }
         },
         "dialogs": {
           "cancel": "Cancelar",

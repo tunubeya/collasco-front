@@ -954,6 +954,10 @@
             "hidePending": "Ocultar pendientes"
           },
           "closedTag": "Cerrado",
+          "statusBadge": {
+            "OPEN": "Ejecución abierta",
+            "CLOSED": "Ejecución cerrada"
+          },
           "summary": {
             "total": "{count} casos",
             "passed": "{count} aprobados",
@@ -961,7 +965,12 @@
           },
           "saving": "Guardando...",
           "saved": "Guardado",
-          "saveError": "Error al guardar"
+          "saveError": "Error al guardar",
+          "actions": {
+            "close": "Cerrar ejecución",
+            "closing": "Cerrando...",
+            "closed": "Ejecución cerrada."
+          }
         },
         "dialogs": {
           "cancel": "Cancelar",

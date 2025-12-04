@@ -289,7 +289,7 @@ export const DialogClose = React.forwardRef<
 export const DialogConfirm = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    onConfirm?: () => void | Promise<boolean>;
+    onConfirm?: () => void | boolean | Promise<void | boolean>;
     variant?: 'primary' | 'destructive';
   }
 >(function DialogConfirm({ onConfirm, variant = 'primary', className, onClick, ...props }, ref) {
@@ -308,7 +308,7 @@ export const DialogConfirm = React.forwardRef<
           setOpen(false);
         }
       });
-    } else {
+    } else if (result !== false) {
       setOpen(false);
     }
   };
@@ -335,7 +335,7 @@ export const DialogActions = ({
 }: Readonly<{
   closeLabel: string;
   confirmLabel: string;
-  onConfirm?: () => void;
+  onConfirm?: () => void | boolean | Promise<void | boolean>;
   confirmVariant?: 'primary' | 'destructive';
 }>) => {
   return (

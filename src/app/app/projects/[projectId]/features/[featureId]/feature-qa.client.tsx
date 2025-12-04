@@ -1268,11 +1268,20 @@ function NewTestRunDialog({
     });
     if (!parsed.success) {
       setErrors(t("errors.validation"));
-      return;
+      return false;
     }
+    setErrors(null);
     setIsSubmitting(true);
     try {
       await onSubmit(parsed.data);
+      return true;
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrors(error.message);
+      } else {
+        setErrors(t("errors.create"));
+      }
+      return false;
     } finally {
       setIsSubmitting(false);
     }
@@ -1364,8 +1373,9 @@ function NewTestRunDialog({
             }
             onConfirm={() => {
               if (!isSubmitting) {
-                void handleSubmit();
+                return handleSubmit();
               }
+              return false;
             }}
           />
         </form>

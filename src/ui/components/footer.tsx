@@ -9,7 +9,7 @@ const socialMedia = [
     alt: 'LinkedIn'
   },
   {
-    href: 'mailto:contact@Collasco.com',
+    href: 'mailto:daniel@orderflow.be',
     src: 'Icons/gmail-svgrepo-com.svg',
     alt: 'Email'
   }

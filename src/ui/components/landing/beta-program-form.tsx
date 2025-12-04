@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 
-const betaEmail = process.env.NEXT_PUBLIC_BETA_EMAIL ?? 'info@collasco.com';
+const betaEmail = process.env.NEXT_PUBLIC_BETA_EMAIL ?? 'daniel@orderflow.be';
 
 type BetaFormState = {
   name: string;

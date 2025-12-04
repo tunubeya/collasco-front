@@ -37,7 +37,7 @@ export default async function LandingPage() {
   const t = await getTranslations('landing');
   const scheduleMeetingUrl =
     process.env.NEXT_PUBLIC_SCHEDULE_MEETING_URL ??
-    `mailto:info@collasco.com?subject=${encodeURIComponent(
+    `mailto:daniel@orderflow.be?subject=${encodeURIComponent(
       t('cta.scheduleEmailSubject')
     )}&body=${encodeURIComponent(t('cta.scheduleEmailBody'))}`;
 
@@ -214,8 +214,8 @@ export default async function LandingPage() {
         <p>{t('footer.copyright')}</p>
         <p className="mt-2">
           {t('footer.contactLabel')}{' '}
-          <a href="mailto:info@collasco.com" className="underline">
-            info@collasco.com
+          <a href="mailto:daniel@orderflow.be" className="underline">
+            daniel@orderflow.be
           </a>
         </p>
       </footer>

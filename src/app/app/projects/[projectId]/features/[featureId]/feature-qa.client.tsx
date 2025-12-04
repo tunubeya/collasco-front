@@ -455,11 +455,6 @@ function TestCasesTab({
                 <tr key={testCase.id} className="align-top">
                   <td className="px-4 py-3">
                     <p className="font-medium">{testCase.name}</p>
-                    {testCase.expected && (
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {testCase.expected}
-                      </p>
-                    )}
                   </td>
                   <td className="px-4 py-3 text-sm text-muted-foreground">
                     {formattedDate}

@@ -1749,7 +1749,7 @@ export function TestRunPanel({
                     </p>
                   )}
                   {testCase.expected && (
-                    <p className="text-xs text-muted-foreground">{testCase.expected}</p>
+                    <p className="whitespace-pre-wrap text-xs text-muted-foreground">{testCase.expected}</p>
                   )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3 md:justify-end">

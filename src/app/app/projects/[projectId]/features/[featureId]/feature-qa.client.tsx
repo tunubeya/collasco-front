@@ -1217,9 +1217,6 @@ function TestRunsTab({
           <TestRunPanel token={token} run={selectedRun} onRunUpdated={handleRunUpdated} />
         )}
 
-        {!isRunLoading && !selectedRun && runs.length > 0 && (
-          <p className="mt-4 text-sm text-muted-foreground">{t("list.open")}</p>
-        )}
       </div>
     </div>
   );

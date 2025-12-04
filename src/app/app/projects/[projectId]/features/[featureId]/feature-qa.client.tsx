@@ -1622,6 +1622,11 @@ export function TestRunPanel({
     [onRunUpdated, runState.id, t, token],
   );
 
+  const isRunClosed =
+    summary.total > 0 &&
+    summary.counts.PASSED === summary.total &&
+    (runState.coverage?.missingCases ?? 0) === 0;
+
   return (
     <div className="mt-8 space-y-6 rounded-2xl border bg-muted/40 p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -1673,6 +1678,11 @@ export function TestRunPanel({
           const state = resultState[testCase.testCaseId] ?? {};
           const draftComment = commentDrafts[testCase.testCaseId];
           const noteValue = draftComment ?? state.comment ?? "";
+          const isPassed = state.evaluation === "PASSED";
+          const noteClasses = cn(
+            "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
+            isPassed && "text-muted-foreground cursor-not-allowed",
+          );
           return (
             <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -1693,13 +1703,17 @@ export function TestRunPanel({
                   </label>
                   <select
                     value={state.evaluation ?? ""}
-                    onChange={(event) =>
+                    onChange={(event) => {
+                      const nextValue = event.target.value
+                        ? (event.target.value as QaEvaluation)
+                        : undefined;
+                      if (nextValue === "PASSED") {
+                        commitComment(testCase.testCaseId);
+                      }
                       handleResultChange(testCase.testCaseId, {
-                        evaluation: event.target.value
-                          ? (event.target.value as QaEvaluation)
-                          : undefined,
-                      })
-                    }
+                        evaluation: nextValue,
+                      });
+                    }}
                     className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     <option value="">{t("panel.statusPlaceholder")}</option>
@@ -1734,7 +1748,8 @@ export function TestRunPanel({
                       commitComment(testCase.testCaseId);
                     }
                   }}
-                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  readOnly={isPassed}
+                  className={noteClasses}
                   placeholder={t("panel.notePlaceholder")}
                 />
               </div>
@@ -1744,7 +1759,11 @@ export function TestRunPanel({
       </div>
 
       {runState.coverage && (
-        <CoverageSummary coverage={runState.coverage} onAddCase={handleAddMissingCase} />
+        <CoverageSummary
+          coverage={runState.coverage}
+          onAddCase={handleAddMissingCase}
+          isClosed={isRunClosed}
+        />
       )}
     </div>
   );
@@ -1780,9 +1799,11 @@ function SavingIndicator({
 function CoverageSummary({
   coverage,
   onAddCase,
+  isClosed = false,
 }: {
   coverage: QaRunCoverage;
   onAddCase?: (testCaseId: string) => void;
+  isClosed?: boolean;
 }) {
   const t = useTranslations("app.qa.runs");
   const hasMissing = coverage.missingCases > 0;
@@ -1792,12 +1813,15 @@ function CoverageSummary({
     <div className="rounded-2xl border border-dashed border-border bg-background/60 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold">
-            {t("panel.coverage.title", {
-              executed: coverage.executedCases,
-              total: coverage.totalCases,
-            })}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold">
+              {t("panel.coverage.title", {
+                executed: coverage.executedCases,
+                total: coverage.totalCases,
+              })}
+            </p>
+            {isClosed && <SummaryBadge label={t("panel.closedTag")} tone="success" />}
+          </div>
           <p className="text-xs text-muted-foreground">
             {hasMissing
               ? t("panel.coverage.pending", { count: coverage.missingCases })

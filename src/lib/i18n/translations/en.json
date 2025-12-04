@@ -944,18 +944,19 @@
           "empty": {
             "title": "No results yet",
             "description": "Add pending cases from coverage or update an existing one."
-          },
-          "coverage": {
-            "title": "{executed} of {total} cases executed",
-            "pending": "{count} pending cases",
-            "complete": "Full coverage achieved",
-            "addResult": "Add result",
-            "showPending": "Show pending cases",
-            "hidePending": "Hide pending cases"
-          },
-          "summary": {
-            "total": "{count} cases",
-            "passed": "{count} passed",
+        },
+        "coverage": {
+          "title": "{executed} of {total} cases executed",
+          "pending": "{count} pending cases",
+          "complete": "Full coverage achieved",
+          "addResult": "Add result",
+          "showPending": "Show pending cases",
+          "hidePending": "Hide pending cases"
+        },
+        "closedTag": "Closed",
+        "summary": {
+          "total": "{count} cases",
+          "passed": "{count} passed",
             "passRate": "{rate}% pass rate"
           },
           "saving": "Saving...",

@@ -953,6 +953,7 @@
             "showPending": "Mostrar pendentes",
             "hidePending": "Ocultar pendentes"
           },
+          "closedTag": "Encerrado",
           "summary": {
             "total": "{count} casos",
             "passed": "{count} aprovados",

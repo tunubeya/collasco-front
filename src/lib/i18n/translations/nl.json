@@ -878,6 +878,7 @@
             "showPending": "Openstaande cases tonen",
             "hidePending": "Openstaande cases verbergen"
           },
+          "closedTag": "Afgesloten",
           "summary": {
             "total": "{count} cases",
             "passed": "{count} geslaagd",

@@ -899,6 +899,7 @@
             "showPending": "Afficher les cas en attente",
             "hidePending": "Masquer les cas en attente"
           },
+          "closedTag": "Clôturé",
           "summary": {
             "total": "{count} cas",
             "passed": "{count} réussis",

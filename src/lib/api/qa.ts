@@ -153,6 +153,7 @@ export type UpdateTestRunDto = {
   environment?: string;
   notes?: string;
   status?: QaRunStatus;
+  targetTestCaseIds?: string[];
   results?: QaResultInput[];
   removeTestCaseIds?: string[];
 };

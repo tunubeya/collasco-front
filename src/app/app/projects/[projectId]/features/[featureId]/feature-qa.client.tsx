@@ -1411,12 +1411,14 @@ export function TestRunPanel({
   const [resultState, setResultState] = useState<Record<string, RunResultState>>(resultsToState(run));
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
   const [isClosingRun, setIsClosingRun] = useState(false);
+  const runStateRef = useRef<QaTestRunDetail>(run);
   const stableResultsRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const resultStateRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const pendingRef = useRef<Record<string, RunResultState>>({});
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
 
   useEffect(() => {
+    runStateRef.current = run;
     setRunState(run);
     const state = resultsToState(run);
     setResultState(state);
@@ -1458,6 +1460,7 @@ export function TestRunPanel({
       resultStateRef.current = nextState;
       pendingRef.current = {};
       setRunState(updatedRun);
+      runStateRef.current = updatedRun;
       setCaseRows(buildCaseRows(updatedRun));
       onRunUpdated(updatedRun);
       setSaveStatus("saved");
@@ -1616,6 +1619,7 @@ export function TestRunPanel({
         });
         const nextState = resultsToState(updatedRun);
         setRunState(updatedRun);
+        runStateRef.current = updatedRun;
         setCaseRows(buildCaseRows(updatedRun));
         setResultState(nextState);
         stableResultsRef.current = nextState;
@@ -1639,6 +1643,7 @@ export function TestRunPanel({
         });
         const nextState = resultsToState(updatedRun);
         setRunState(updatedRun);
+        runStateRef.current = updatedRun;
         setCaseRows(buildCaseRows(updatedRun));
         setResultState(nextState);
         stableResultsRef.current = nextState;
@@ -1660,13 +1665,18 @@ export function TestRunPanel({
     }
     flushDrafts();
     await persistUpdates();
+    const targetTestCaseIds = Array.from(
+      new Set((runStateRef.current?.results ?? []).map((result) => result.testCaseId)),
+    );
     setIsClosingRun(true);
     try {
       const updatedRun = await updateTestRun(token, runState.id, {
         status: "CLOSED",
+        ...(targetTestCaseIds.length ? { targetTestCaseIds } : {}),
       });
       const nextState = resultsToState(updatedRun);
       setRunState(updatedRun);
+      runStateRef.current = updatedRun;
       setCaseRows(buildCaseRows(updatedRun));
       setResultState(nextState);
       stableResultsRef.current = nextState;

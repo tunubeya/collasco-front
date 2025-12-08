@@ -42,13 +42,14 @@ import { Button } from "@/ui/components/button";
 import {
   Dialog,
   DialogActions,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeading,
   DialogTrigger,
 } from "@/ui/components/dialog/dialog";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Plus } from "lucide-react";
+import { Lock, Plus, X } from "lucide-react";
 
 type FeatureQAProps = {
   token: string;
@@ -1066,6 +1067,7 @@ function TestRunsTab({
   const openRun = useCallback(
     async (runId: string) => {
       setSelectedRunId(runId);
+      setSelectedRun(null);
       setIsRunLoading(true);
       try {
         const run = await getTestRun(token, runId);
@@ -1074,6 +1076,8 @@ function TestRunsTab({
         toast.error(t("errors.loadRun"), {
           description: error instanceof Error ? error.message : undefined,
         });
+        setSelectedRunId(null);
+        setSelectedRun(null);
       } finally {
         setIsRunLoading(false);
       }
@@ -1101,6 +1105,17 @@ function TestRunsTab({
       setSelectedRun(run);
     },
     [summarizeResults],
+  );
+
+  const handleRunDialogChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        setSelectedRunId(null);
+        setSelectedRun(null);
+        setIsRunLoading(false);
+      }
+    },
+    [],
   );
 
   const runListContent = useMemo(() => {
@@ -1210,18 +1225,14 @@ function TestRunsTab({
           />
         )}
 
-      <div>
-        {isRunLoading && (
-          <div className="mt-6 space-y-2">
-            <Skeleton className="h-6 w-40" />
-            <Skeleton className="h-32 w-full" />
-          </div>
-        )}
-        {!isRunLoading && selectedRun && (
-          <TestRunPanel token={token} run={selectedRun} onRunUpdated={handleRunUpdated} />
-        )}
-
-      </div>
+      <TestRunBubble
+        open={Boolean(selectedRunId)}
+        onOpenChange={handleRunDialogChange}
+        run={selectedRun}
+        isLoading={isRunLoading}
+        token={token}
+        onRunUpdated={handleRunUpdated}
+      />
     </div>
   );
 }
@@ -1393,6 +1404,60 @@ function NewTestRunDialog({
   );
 }
 
+
+export function TestRunBubble({
+  open,
+  onOpenChange,
+  token,
+  run,
+  isLoading,
+  onRunUpdated,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  token: string;
+  run: QaTestRunDetail | null;
+  isLoading: boolean;
+  onRunUpdated: (run: QaTestRunDetail) => void;
+}) {
+  const t = useTranslations("app.qa.runs");
+  const shouldRenderPanel = Boolean(run) && !isLoading;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <span />
+      </DialogTrigger>
+      <DialogContent className="m-4 w-full max-w-5xl rounded-3xl bg-background p-0 shadow-2xl">
+        <div className="max-h-[75vh] overflow-y-auto">
+          {shouldRenderPanel && run ? (
+            <TestRunPanel token={token} run={run} onRunUpdated={onRunUpdated} />
+          ) : isLoading ? (
+            <div className="space-y-2 p-6">
+              <Skeleton className="h-6 w-40" />
+              <Skeleton className="h-32 w-full" />
+            </div>
+          ) : (
+            <div className="p-6 text-sm text-muted-foreground">
+              {t("errors.loadRun")}
+            </div>
+          )}
+        </div>
+        <div className="flex items-center justify-end border-t px-4 py-3">
+          <DialogClose asChild>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-red-600 bg-red-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-red-500 disabled:opacity-60"
+            >
+              <X className="h-3 w-3" aria-hidden />
+              <span>{t("dialogs.cancel")}</span>
+            </button>
+          </DialogClose>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export function TestRunPanel({
   token,
@@ -1702,7 +1767,7 @@ export function TestRunPanel({
   const showClosedTag = isRunClosed || isCoverageComplete;
 
   return (
-    <div className="mt-8 space-y-6 rounded-2xl border bg-muted/40 p-6">
+    <div className="space-y-6 rounded-2xl border bg-muted/40 p-6">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 className="text-lg font-semibold">{runMeta.title}</h3>
@@ -1743,9 +1808,15 @@ export function TestRunPanel({
           <SummaryBadge label={t("panel.summary.passRate", { rate: summary.passRate })} />
           <SavingIndicator status={saveStatus} />
           {!isRunClosed && (
-            <Button size="sm" variant="outline" onClick={() => void handleCloseRun()} disabled={isClosingRun}>
-              {isClosingRun ? t("panel.actions.closing") : t("panel.actions.close")}
-            </Button>
+            <button
+              type="button"
+              onClick={() => void handleCloseRun()}
+              disabled={isClosingRun}
+              className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Lock className="h-3.5 w-3.5" aria-hidden />
+              <span>{isClosingRun ? t("panel.actions.closing") : t("panel.actions.close")}</span>
+            </button>
           )}
         </div>
       </div>
@@ -1761,11 +1832,10 @@ export function TestRunPanel({
           const state = resultState[testCase.testCaseId] ?? {};
           const draftComment = commentDrafts[testCase.testCaseId];
           const noteValue = draftComment ?? state.comment ?? "";
-          const isPassed = state.evaluation === "PASSED";
-          const isReadOnlyNote = isRunClosed || isPassed;
+          const isReadOnlyNote = isRunClosed;
           const noteClasses = cn(
             "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
-            isReadOnlyNote && "bg-muted text-muted-foreground cursor-not-allowed",
+            isReadOnlyNote && "cursor-not-allowed border-amber-200 bg-amber-50 text-amber-900",
           );
           return (
             <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
@@ -1791,9 +1861,6 @@ export function TestRunPanel({
                       const nextValue = event.target.value
                         ? (event.target.value as QaEvaluation)
                         : undefined;
-                      if (nextValue === "PASSED") {
-                        commitComment(testCase.testCaseId);
-                      }
                       handleResultChange(testCase.testCaseId, {
                         evaluation: nextValue,
                       });

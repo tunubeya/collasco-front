@@ -16,7 +16,7 @@ import {
 } from "@/lib/api/qa";
 import { Button } from "@/ui/components/button";
 import { cn } from "@/lib/utils";
-import { TestRunPanel, RESULT_STATUSES } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
+import { RESULT_STATUSES, TestRunBubble } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
 import { FeatureOption } from "./project-qa.types";
 import { NewProjectRunDialog } from "./project-qa-dialog.client";
 import { SummaryBadge, EmptyState, Skeleton, ScopeBadge } from "./project-qa-shared";
@@ -125,6 +125,7 @@ export function ProjectQA({
   const openRun = useCallback(
     async (runId: string) => {
       setSelectedRunId(runId);
+      setSelectedRun(null);
       setIsRunLoading(true);
       try {
         const run = await getTestRun(token, runId);
@@ -133,6 +134,8 @@ export function ProjectQA({
         toast.error(t("errors.loadRun"), {
           description: error instanceof Error ? error.message : undefined,
         });
+        setSelectedRunId(null);
+        setSelectedRun(null);
       } finally {
         setIsRunLoading(false);
       }
@@ -161,6 +164,17 @@ export function ProjectQA({
       setSelectedRun(run);
     },
     [summarizeResults]
+  );
+
+  const handleRunDialogChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        setSelectedRunId(null);
+        setSelectedRun(null);
+        setIsRunLoading(false);
+      }
+    },
+    []
   );
 
   const runListContent = useMemo(() => {
@@ -309,21 +323,14 @@ export function ProjectQA({
           }}
         />
 
-        <div>
-          {isRunLoading && (
-            <div className="mt-6 space-y-2">
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-32 w-full" />
-            </div>
-          )}
-          {!isRunLoading && selectedRun && (
-            <TestRunPanel
-              token={token}
-              run={selectedRun}
-              onRunUpdated={handleRunUpdated}
-            />
-          )}
-        </div>
+        <TestRunBubble
+          open={Boolean(selectedRunId)}
+          onOpenChange={handleRunDialogChange}
+          token={token}
+          run={selectedRun}
+          isLoading={isRunLoading}
+          onRunUpdated={handleRunUpdated}
+        />
       </div>
     </section>
   );

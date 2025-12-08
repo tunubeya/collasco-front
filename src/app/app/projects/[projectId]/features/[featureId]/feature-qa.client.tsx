@@ -1022,10 +1022,19 @@ function TestRunsTab({
   const handleCreateRun = useCallback(
     async (dto: CreateTestRunDto) => {
       try {
+        const cases = await listTestCases(token, featureId);
+        const targetTestCaseIds = Array.from(
+          new Set(
+            cases
+              .filter((testCase) => !testCase.isArchived)
+              .map((testCase) => testCase.id),
+          ),
+        );
         const payload: CreateTestRunDto = {
           ...dto,
           runById: currentUserId ?? dto.runById,
           status: "OPEN",
+          targetTestCaseIds,
         };
         const created = await createTestRun(token, featureId, payload);
         const summary = summarizeResults(created.results);

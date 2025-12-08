@@ -1866,7 +1866,7 @@ export function TestRunPanel({
                       });
                     }}
                     disabled={isRunClosed}
-                    className="rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-muted"
+                    className="min-w-[160px] rounded-lg border px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-muted"
                   >
                     <option value="">{t("panel.statusPlaceholder")}</option>
                     {RESULT_STATUSES.map((status) => (

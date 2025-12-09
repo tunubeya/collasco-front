@@ -107,6 +107,7 @@ export function ProjectQA({
             status: created.status,
             feature: created.feature ?? null,
             summary,
+            totalTestCases: dto.targetTestCaseIds?.length ?? 0,
           },
           ...prev,
         ]);

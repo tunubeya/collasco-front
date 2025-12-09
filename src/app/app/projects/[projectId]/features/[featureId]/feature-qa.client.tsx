@@ -1048,6 +1048,7 @@ function TestRunsTab({
             by: created.runBy?.name ?? null,
             status: created.status,
             summary,
+            totalTestCases: targetTestCaseIds.length??0,
           },
           ...prev,
         ]);
@@ -1143,7 +1144,7 @@ function TestRunsTab({
     return (
       <ul className="space-y-3">
         {runs.map((run) => {
-          const total = Object.values(run.summary ?? {}).reduce((acc, value) => acc + value, 0);
+          const total = run.totalTestCases?? 0;;
           const passed = run.summary?.PASSED ?? 0;
           const runDate = formatter.dateTime(new Date(run.runDate), {
             dateStyle: "medium",

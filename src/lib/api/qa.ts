@@ -114,6 +114,7 @@ export type QaFeatureRunListItem = {
   by: string | null;
   status?: QaRunStatus;
   summary: QaEvaluationSummary;
+  totalTestCases : number;
 };
 
 export type QaProjectRunListItem = QaFeatureRunListItem & {
@@ -383,6 +384,7 @@ export async function listTestRuns(
       { method: "GET" },
       token
     );
+    console.log(res);
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<QaFeatureRunListItem[] | { items?: QaFeatureRunListItem[] }>(res);
     if (Array.isArray(payload)) {

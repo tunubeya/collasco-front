@@ -925,6 +925,76 @@
           "refreshing": "Vernieuwen..."
         }
       },
+      "dashboard": {
+        "title": "QA dashboard",
+        "subtitle": "Track coverage, feature health and open runs.",
+        "errors": {
+          "load": "We couldn't load the QA dashboard."
+        },
+        "metrics": {
+          "totalFeatures": "Total features",
+          "featuresMissingDescription": "Missing description",
+          "featuresWithRuns": "With runs",
+          "testCoverageRatio": "Coverage",
+          "openRuns": "Open runs",
+          "runsWithFullPass": "Full pass",
+          "averagePassRate": "Pass rate"
+        },
+        "coverage": {
+          "title": "Project coverage",
+          "description": "Latest recorded coverage for this project.",
+          "caption": "{executed} of {total} features with recorded runs.",
+          "coveredBadge": "{value} coverage",
+          "pendingBadge": "{count} missing docs"
+        },
+        "featureHealth": {
+          "title": "Feature health",
+          "description": "Most recent pass rate per feature.",
+          "empty": "No health data yet.",
+          "noRuns": "No runs"
+        },
+        "featureCoverage": {
+          "title": "Coverage by feature",
+          "description": "Executed vs pending test cases per feature.",
+          "empty": "No runs yet to compute coverage.",
+          "latestRun": "Last run {date}",
+          "coverageLabel": "{executed} of {total} cases executed",
+          "missingLabel": "{count} cases pending",
+          "noRuns": "No recorded runs",
+          "badges": {
+            "hasDescription": "Has description",
+            "missingDescription": "Missing description",
+            "withRuns": "Has runs",
+            "withoutRuns": "No runs"
+          }
+        },
+        "missingDescription": {
+          "title": "Features without description",
+          "description": "Identify what needs documentation.",
+          "empty": "All features have a description.",
+          "caption": "Document the functional scope to unblock QA.",
+          "badge": "Missing description"
+        },
+        "openRuns": {
+          "title": "Open runs",
+          "description": "In-flight executions that need attention.",
+          "empty": "No open runs right now."
+        },
+        "runsWithFullPass": {
+          "title": "Runs with full pass",
+          "description": "Executions with 100% approval.",
+          "empty": "No full-pass runs yet.",
+          "badge": "100% passed"
+        },
+        "runs": {
+          "coverageLabel": "{executed} of {total} cases executed"
+        },
+        "empty": {
+          "title": "No QA data yet",
+          "description": "Create at least one run to unlock the dashboard.",
+          "retry": "Try again"
+        }
+      },
       "health": {
         "errors": {
           "load": "De health-gegevens konden niet worden geladen."

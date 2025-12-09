@@ -168,6 +168,70 @@ export type QaHealth = {
   } | null;
 };
 
+export type QaDashboardMetrics = {
+  totalFeatures: number;
+  featuresMissingDescription: number;
+  featuresWithRuns: number;
+  testCoverageRatio: number;
+  openRuns: number;
+  runsWithFullPass: number;
+  averagePassRate: number;
+};
+
+export type QaDashboardFeatureMissingDescription = {
+  id: string;
+  name: string;
+};
+
+export type QaDashboardFeatureCoverage = {
+  featureId: string;
+  featureName: string;
+  hasDescription: boolean;
+  hasTestRun: boolean;
+  latestRun: {
+    id: string;
+    runDate: string;
+    status: QaRunStatus;
+    coverage: QaRunCoverage;
+  } | null;
+};
+
+export type QaDashboardFeatureHealth = {
+  featureId: string;
+  featureName: string;
+  passRate: number | null;
+  latestRun: {
+    id: string;
+    runDate: string;
+    status: QaRunStatus;
+  } | null;
+};
+
+export type QaDashboardRunSummary = {
+  id: string;
+  runDate: string;
+  environment: string | null;
+  status: QaRunStatus;
+  feature: {
+    id: string;
+    name: string;
+  } | null;
+  runBy: string | null;
+  coverage?: QaRunCoverage;
+};
+
+export type QaProjectDashboardResponse = {
+  projectId: string;
+  metrics: QaDashboardMetrics;
+  reports: {
+    featuresMissingDescription: QaDashboardFeatureMissingDescription[];
+    featureCoverage: QaDashboardFeatureCoverage[];
+    featureHealth: QaDashboardFeatureHealth[];
+    openRuns: QaDashboardRunSummary[];
+    runsWithFullPass: QaDashboardRunSummary[];
+  };
+};
+
 async function parseJsonResponse<T>(res: Response): Promise<T> {
   const contentType = res.headers.get("content-type") ?? "";
   if (contentType.includes("application/json")) {
@@ -448,6 +512,24 @@ export async function getTestHealth(
     );
     if (!res.ok) throw res;
     return await parseJsonResponse<QaHealth>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function getProjectDashboard(
+  token: string,
+  projectId: string
+): Promise<QaProjectDashboardResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/dashboard`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaProjectDashboardResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

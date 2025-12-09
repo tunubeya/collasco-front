@@ -991,19 +991,89 @@
           "environment": "Ej. Staging",
           "notes": "Contexto opcional o criterios de entrada."
         },
-        "resultStatus": {
-          "NOT_WORKING": "No funciona",
-          "MINOR_ISSUE": "Con incidencia menor",
-          "PASSED": "Aprobado"
+          "resultStatus": {
+            "NOT_WORKING": "No funciona",
+            "MINOR_ISSUE": "Con incidencia menor",
+            "PASSED": "Aprobado"
+          },
+          "labels": {
+            "refreshing": "Actualizando"
+          }
         },
-        "labels": {
-          "refreshing": "Actualizando"
-        }
-      },
-      "health": {
-        "errors": {
-          "load": "No pudimos cargar la salud del feature."
+        "dashboard": {
+          "title": "Panel de QA",
+          "subtitle": "Visualiza cobertura, salud de features y ejecuciones recientes.",
+          "errors": {
+            "load": "No pudimos cargar el panel de QA."
+          },
+          "metrics": {
+            "totalFeatures": "Features totales",
+            "featuresMissingDescription": "Sin descripción",
+            "featuresWithRuns": "Con ejecuciones",
+            "testCoverageRatio": "Cobertura",
+            "openRuns": "Ejecuciones abiertas",
+            "runsWithFullPass": "Full pass",
+            "averagePassRate": "Tasa de aprobación"
+          },
+          "coverage": {
+            "title": "Cobertura del proyecto",
+            "description": "Última cobertura registrada para el proyecto.",
+            "caption": "{executed} de {total} features con ejecuciones registradas.",
+            "coveredBadge": "{value} de cobertura",
+            "pendingBadge": "{count} sin documentación"
+          },
+          "featureHealth": {
+            "title": "Salud por feature",
+            "description": "Tasa de aprobación más reciente por feature.",
+            "empty": "Aún no tenemos datos de salud.",
+            "noRuns": "Sin ejecuciones"
+          },
+          "featureCoverage": {
+            "title": "Cobertura por feature",
+            "description": "Comparativo de casos ejecutados vs. pendientes.",
+            "empty": "Aún no hay corridas para calcular la cobertura.",
+            "latestRun": "Última ejecución {date}",
+            "coverageLabel": "{executed} de {total} casos ejecutados",
+            "missingLabel": "{count} casos pendientes",
+            "noRuns": "Sin ejecuciones registradas",
+            "badges": {
+              "hasDescription": "Con descripción",
+              "missingDescription": "Sin descripción",
+              "withRuns": "Con corridas",
+              "withoutRuns": "Sin corridas"
+            }
+          },
+          "missingDescription": {
+            "title": "Features sin descripción",
+            "description": "Identifica qué features necesitan documentación.",
+            "empty": "Todas las features tienen descripción.",
+            "caption": "Documenta la definición funcional para alinear al equipo.",
+            "badge": "Sin descripción"
+          },
+          "openRuns": {
+            "title": "Ejecuciones abiertas",
+            "description": "Runs que siguen en progreso.",
+            "empty": "No hay ejecuciones abiertas."
+          },
+          "runsWithFullPass": {
+            "title": "Ejecuciones con full pass",
+            "description": "Runs con 100% de aprobación.",
+            "empty": "Aún no hay ejecuciones con full pass.",
+            "badge": "100% aprobado"
+          },
+          "runs": {
+            "coverageLabel": "{executed} de {total} casos ejecutados"
+          },
+          "empty": {
+            "title": "Sin datos de QA",
+            "description": "Registra al menos una ejecución para ver el panel.",
+            "retry": "Reintentar"
+          }
         },
+        "health": {
+          "errors": {
+            "load": "No pudimos cargar la salud del feature."
+          },
         "empty": {
           "title": "Sin datos de salud",
           "description": "Realiza al menos una ejecución para calcular la tasa de aprobación y tendencias."

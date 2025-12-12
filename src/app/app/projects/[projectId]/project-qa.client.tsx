@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
@@ -11,12 +12,11 @@ import {
   QaRunScope,
   QaTestRunDetail,
   createProjectTestRun,
-  getTestRun,
   listProjectTestRuns,
 } from "@/lib/api/qa";
 import { Button } from "@/ui/components/button";
 import { cn } from "@/lib/utils";
-import { RESULT_STATUSES, TestRunBubble } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
+import { RESULT_STATUSES } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
 import { FeatureOption } from "./project-qa.types";
 import { NewProjectRunDialog } from "./project-qa-dialog.client";
 import { SummaryBadge, EmptyState, Skeleton, ScopeBadge } from "./project-qa-shared";
@@ -42,13 +42,11 @@ export function ProjectQA({
 }: ProjectQAProps) {
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
+  const router = useRouter();
   const hasFeatures = featureOptions.length > 0;
 
   const [runs, setRuns] = useState<QaProjectRunListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
-  const [selectedRun, setSelectedRun] = useState<QaTestRunDetail | null>(null);
-  const [isRunLoading, setIsRunLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [scopeFilter, setScopeFilter] = useState<QaRunScope>("ALL");
 
@@ -110,8 +108,6 @@ export function ProjectQA({
           },
           ...prev,
         ]);
-        setSelectedRunId(created.id);
-        setSelectedRun(created);
         toast.success(t("alerts.created"));
       } catch (error) {
         toast.error(t("errors.create"), {
@@ -123,59 +119,11 @@ export function ProjectQA({
     [currentUserId, projectId, summarizeResults, t, token]
   );
 
-  const openRun = useCallback(
-    async (runId: string) => {
-      setSelectedRunId(runId);
-      setSelectedRun(null);
-      setIsRunLoading(true);
-      try {
-        const run = await getTestRun(token, runId);
-        setSelectedRun(run);
-      } catch (error) {
-        toast.error(t("errors.loadRun"), {
-          description: error instanceof Error ? error.message : undefined,
-        });
-        setSelectedRunId(null);
-        setSelectedRun(null);
-      } finally {
-        setIsRunLoading(false);
-      }
+  const openRunPage = useCallback(
+    (runId: string) => {
+      router.push(`/app/projects/${projectId}/test-runs/${runId}`);
     },
-    [t, token]
-  );
-
-  const handleRunUpdated = useCallback(
-    (run: QaTestRunDetail) => {
-      const summary = summarizeResults(run);
-      setRuns((prev) =>
-        prev.map((item) =>
-          item.id === run.id
-            ? {
-                ...item,
-                summary,
-                by: run.runBy?.name ?? item.by,
-                name: run.name ?? item.name,
-                environment: run.environment ?? item.environment,
-                status: run.status,
-                feature: run.feature ?? item.feature,
-              }
-            : item
-        )
-      );
-      setSelectedRun(run);
-    },
-    [summarizeResults]
-  );
-
-  const handleRunDialogChange = useCallback(
-    (open: boolean) => {
-      if (!open) {
-        setSelectedRunId(null);
-        setSelectedRun(null);
-        setIsRunLoading(false);
-      }
-    },
-    []
+    [projectId, router]
   );
 
   const runListContent = useMemo(() => {
@@ -223,8 +171,7 @@ export function ProjectQA({
             <li
               key={run.id}
               className={cn(
-                "rounded-xl border p-4 transition hover:border-primary",
-                selectedRunId === run.id && "border-primary"
+                "rounded-xl border p-4 transition hover:border-primary"
               )}
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -256,8 +203,8 @@ export function ProjectQA({
                   />
                   <Button
                     size="sm"
-                    variant={selectedRunId === run.id ? "default" : "outline"}
-                    onClick={() => openRun(run.id)}
+                    variant="outline"
+                    onClick={() => openRunPage(run.id)}
                   >
                     {t("list.open")}
                   </Button>
@@ -268,7 +215,7 @@ export function ProjectQA({
         })}
       </ul>
     );
-  }, [canManageQa, formatter, hasFeatures, isLoading, openRun, runs, selectedRunId, t]);
+  }, [canManageQa, formatter, hasFeatures, isLoading, openRunPage, runs, t]);
 
   return (
     <section className="rounded-xl border bg-background shadow-sm">
@@ -324,14 +271,6 @@ export function ProjectQA({
           }}
         />
 
-        <TestRunBubble
-          open={Boolean(selectedRunId)}
-          onOpenChange={handleRunDialogChange}
-          token={token}
-          run={selectedRun}
-          isLoading={isRunLoading}
-          onRunUpdated={handleRunUpdated}
-        />
       </div>
     </section>
   );

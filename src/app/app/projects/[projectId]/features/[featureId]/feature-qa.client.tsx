@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import {
+  useParams,
   usePathname,
   useRouter,
   useSearchParams,
@@ -30,7 +31,6 @@ import {
   createTestCases,
   createTestRun,
   getTestHealth,
-  getTestRun,
   listTestCases,
   listTestRuns,
   updateTestCase,
@@ -42,14 +42,13 @@ import { Button } from "@/ui/components/button";
 import {
   Dialog,
   DialogActions,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeading,
   DialogTrigger,
 } from "@/ui/components/dialog/dialog";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Lock, Plus, X } from "lucide-react";
+import { Lock, Plus } from "lucide-react";
 
 type FeatureQAProps = {
   token: string;
@@ -129,6 +128,8 @@ export function FeatureQA({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const params = useParams<{ projectId: string }>();
+  const projectId = params?.projectId ?? "";
 
   const initialTab = useMemo(() => {
     const current = searchParams.get("tab");
@@ -212,6 +213,7 @@ export function FeatureQA({
             runsLimit={runsLimit}
             currentUserId={currentUserId}
             canManageQa={canManageQa}
+            projectId={projectId}
           />
         )}
         {activeTab === "health" && (
@@ -971,21 +973,21 @@ function TestRunsTab({
   runsLimit,
   currentUserId,
   canManageQa = false,
+  projectId,
 }: {
   token: string;
   featureId: string;
   runsLimit: number;
   currentUserId?: string;
   canManageQa?: boolean;
+  projectId: string;
 }) {
   const t = useTranslations("app.qa.runs");
   const formatter = useFormatter();
+  const router = useRouter();
 
   const [runs, setRuns] = useState<QaFeatureRunListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
-  const [selectedRun, setSelectedRun] = useState<QaTestRunDetail | null>(null);
-  const [isRunLoading, setIsRunLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const summarizeResults = useCallback((results: QaTestRunDetail["results"]) => {
@@ -1052,8 +1054,6 @@ function TestRunsTab({
           },
           ...prev,
         ]);
-        setSelectedRunId(created.id);
-        setSelectedRun(created);
         toast.success(t("alerts.created"));
       } catch (error) {
         toast.error(t("errors.create"), {
@@ -1065,58 +1065,12 @@ function TestRunsTab({
     [currentUserId, featureId, summarizeResults, t, token],
   );
 
-  const openRun = useCallback(
-    async (runId: string) => {
-      setSelectedRunId(runId);
-      setSelectedRun(null);
-      setIsRunLoading(true);
-      try {
-        const run = await getTestRun(token, runId);
-        setSelectedRun(run);
-      } catch (error) {
-        toast.error(t("errors.loadRun"), {
-          description: error instanceof Error ? error.message : undefined,
-        });
-        setSelectedRunId(null);
-        setSelectedRun(null);
-      } finally {
-        setIsRunLoading(false);
-      }
+  const openRunPage = useCallback(
+    (runId: string) => {
+      if (!projectId) return;
+      router.push(`/app/projects/${projectId}/test-runs/${runId}`);
     },
-    [t, token],
-  );
-
-  const handleRunUpdated = useCallback(
-    (run: QaTestRunDetail) => {
-      const summary = summarizeResults(run.results);
-      setRuns((prev) =>
-        prev.map((item) =>
-          item.id === run.id
-            ? {
-                ...item,
-                summary,
-                by: run.runBy?.name ?? item.by,
-                name: run.name ?? item.name,
-                environment: run.environment ?? item.environment,
-                status: run.status,
-              }
-            : item,
-        ),
-      );
-      setSelectedRun(run);
-    },
-    [summarizeResults],
-  );
-
-  const handleRunDialogChange = useCallback(
-    (open: boolean) => {
-      if (!open) {
-        setSelectedRunId(null);
-        setSelectedRun(null);
-        setIsRunLoading(false);
-      }
-    },
-    [],
+    [projectId, router],
   );
 
   const runListContent = useMemo(() => {
@@ -1154,10 +1108,7 @@ function TestRunsTab({
           return (
             <li
               key={run.id}
-              className={cn(
-                "rounded-xl border p-4 transition hover:border-primary",
-                selectedRunId === run.id && "border-primary",
-              )}
+              className="rounded-xl border p-4 transition hover:border-primary"
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
@@ -1179,8 +1130,8 @@ function TestRunsTab({
                   <SummaryBadge label={t("summary.passed", { count: passed })} tone="success" />
                   <Button
                     size="sm"
-                    variant={selectedRunId === run.id ? "default" : "outline"}
-                    onClick={() => openRun(run.id)}
+                    variant="outline"
+                    onClick={() => openRunPage(run.id)}
                   >
                     {t("list.open")}
                   </Button>
@@ -1191,7 +1142,7 @@ function TestRunsTab({
         })}
       </ul>
     );
-  }, [formatter, isLoading, openRun, runs, selectedRunId, t, canManageQa]);
+  }, [formatter, isLoading, openRunPage, runs, t, canManageQa]);
 
   return (
     <div className="space-y-6">
@@ -1226,14 +1177,6 @@ function TestRunsTab({
           />
         )}
 
-      <TestRunBubble
-        open={Boolean(selectedRunId)}
-        onOpenChange={handleRunDialogChange}
-        run={selectedRun}
-        isLoading={isRunLoading}
-        token={token}
-        onRunUpdated={handleRunUpdated}
-      />
     </div>
   );
 }
@@ -1405,60 +1348,6 @@ function NewTestRunDialog({
   );
 }
 
-
-export function TestRunBubble({
-  open,
-  onOpenChange,
-  token,
-  run,
-  isLoading,
-  onRunUpdated,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  token: string;
-  run: QaTestRunDetail | null;
-  isLoading: boolean;
-  onRunUpdated: (run: QaTestRunDetail) => void;
-}) {
-  const t = useTranslations("app.qa.runs");
-  const shouldRenderPanel = Boolean(run) && !isLoading;
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <span />
-      </DialogTrigger>
-      <DialogContent className="m-4 w-full max-w-5xl rounded-3xl bg-background p-0 shadow-2xl">
-        <div className="max-h-[75vh] overflow-y-auto">
-          {shouldRenderPanel && run ? (
-            <TestRunPanel token={token} run={run} onRunUpdated={onRunUpdated} />
-          ) : isLoading ? (
-            <div className="space-y-2 p-6">
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-32 w-full" />
-            </div>
-          ) : (
-            <div className="p-6 text-sm text-muted-foreground">
-              {t("errors.loadRun")}
-            </div>
-          )}
-        </div>
-        <div className="flex items-center justify-end border-t px-4 py-3">
-          <DialogClose asChild>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-red-600 bg-red-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-red-500 disabled:opacity-60"
-            >
-              <X className="h-3 w-3" aria-hidden />
-              <span>{t("dialogs.cancel")}</span>
-            </button>
-          </DialogClose>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 export function TestRunPanel({
   token,

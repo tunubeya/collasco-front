@@ -7,13 +7,11 @@ import { toast } from "sonner";
 
 import {
   type QaDashboardFeatureCoverage,
-  type QaDashboardFeatureHealth,
   type QaDashboardFeatureMissingDescription,
   type QaDashboardMetrics,
   type QaDashboardRunSummary,
   getProjectDashboard,
   getProjectDashboardFeatureCoverage,
-  getProjectDashboardFeatureHealth,
   getProjectDashboardFeaturesMissingDescription,
   getProjectDashboardOpenRuns,
   getProjectDashboardRunsWithFullPass,
@@ -29,7 +27,6 @@ type ProjectQaDashboardProps = {
 type DashboardDetailType =
   | "featuresMissingDescription"
   | "featureCoverage"
-  | "featureHealth"
   | "openRuns"
   | "runsWithFullPass";
 
@@ -41,6 +38,7 @@ type DetailState = {
   pageSize: number;
   isLoading: boolean;
   error?: string | null;
+  params?: Record<string, string>;
 };
 
 const DETAIL_PAGE_SIZE = 10;
@@ -53,7 +51,7 @@ const METRIC_DETAIL_MAP: Partial<
   testCoverageRatio: "featureCoverage",
   openRuns: "openRuns",
   runsWithFullPass: "runsWithFullPass",
-  averagePassRate: "featureHealth",
+  averagePassRate: "featureCoverage",
 };
 
 export function ProjectQaDashboard({
@@ -64,6 +62,7 @@ export function ProjectQaDashboard({
   const tRuns = useTranslations("app.qa.runs.list");
   const statusLabels = useTranslations("app.qa.runs.panel.statusBadge");
   const formatter = useFormatter();
+  const detailCta = t("detail.cta");
 
   const [metrics, setMetrics] = useState<QaDashboardMetrics | null>(null);
   const [isLoadingMetrics, setIsLoadingMetrics] = useState(true);
@@ -75,7 +74,11 @@ export function ProjectQaDashboard({
     pageSize: DETAIL_PAGE_SIZE,
     isLoading: false,
     error: null,
+    params: {},
   });
+  const [coverageSortDirection, setCoverageSortDirection] = useState<
+    "asc" | "desc"
+  >("desc");
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>
@@ -88,20 +91,40 @@ export function ProjectQaDashboard({
 
   const detailFetchers = useMemo(
     () => ({
-      featuresMissingDescription: (page: number, pageSize: number) =>
+      featuresMissingDescription: (
+        page: number,
+        pageSize: number,
+        _params?: Record<string, string>
+      ) =>
         getProjectDashboardFeaturesMissingDescription(
           token,
           projectId,
           page,
           pageSize
         ),
-      featureCoverage: (page: number, pageSize: number) =>
-        getProjectDashboardFeatureCoverage(token, projectId, page, pageSize),
-      featureHealth: (page: number, pageSize: number) =>
-        getProjectDashboardFeatureHealth(token, projectId, page, pageSize),
-      openRuns: (page: number, pageSize: number) =>
+      featureCoverage: (
+        page: number,
+        pageSize: number,
+        params?: Record<string, string>
+      ) =>
+        getProjectDashboardFeatureCoverage(
+          token,
+          projectId,
+          page,
+          pageSize,
+          params?.sort as "coverageAsc" | "coverageDesc" | undefined
+        ),
+      openRuns: (
+        page: number,
+        pageSize: number,
+        _params?: Record<string, string>
+      ) =>
         getProjectDashboardOpenRuns(token, projectId, page, pageSize),
-      runsWithFullPass: (page: number, pageSize: number) =>
+      runsWithFullPass: (
+        page: number,
+        pageSize: number,
+        _params?: Record<string, string>
+      ) =>
         getProjectDashboardRunsWithFullPass(token, projectId, page, pageSize),
     }),
     [projectId, token]
@@ -118,11 +141,6 @@ export function ProjectQaDashboard({
         title: t("featureCoverage.title"),
         description: t("featureCoverage.description"),
         empty: t("featureCoverage.empty"),
-      },
-      featureHealth: {
-        title: t("featureHealth.title"),
-        description: t("featureHealth.description"),
-        empty: t("featureHealth.empty"),
       },
       openRuns: {
         title: t("openRuns.title"),
@@ -158,17 +176,28 @@ export function ProjectQaDashboard({
   }, [loadDashboard]);
 
   const loadDetail = useCallback(
-    async (type: DashboardDetailType, page: number) => {
-      setDetailState((prev) => ({
-        ...prev,
-        type,
-        isLoading: true,
-        error: null,
-        page,
-      }));
+    async (
+      type: DashboardDetailType,
+      page: number,
+      params?: Record<string, string>
+    ) => {
+      let resolvedParams = params;
+      setDetailState((prev) => {
+        const nextParams =
+          resolvedParams ?? (type === prev.type ? prev.params : undefined);
+        resolvedParams = nextParams;
+        return {
+          ...prev,
+          type,
+          isLoading: true,
+          error: null,
+          page,
+          params: nextParams,
+        };
+      });
       try {
         const fetcher = detailFetchers[type];
-        const result = await fetcher(page, DETAIL_PAGE_SIZE);
+        const result = await fetcher(page, DETAIL_PAGE_SIZE, resolvedParams);
         setDetailState({
           type,
           items: result.items,
@@ -177,6 +206,7 @@ export function ProjectQaDashboard({
           pageSize: result.pageSize ?? DETAIL_PAGE_SIZE,
           isLoading: false,
           error: null,
+          params: resolvedParams,
         });
       } catch (error) {
         const description = error instanceof Error ? error.message : null;
@@ -185,6 +215,7 @@ export function ProjectQaDashboard({
           isLoading: false,
           error: description,
           type,
+          params: resolvedParams,
         }));
         toast.error(t("errors.detail"), {
           description: description ?? undefined,
@@ -197,15 +228,35 @@ export function ProjectQaDashboard({
   const handleMetricSelect = useCallback(
     (type: DashboardDetailType | null) => {
       if (!type) return;
-      void loadDetail(type, 1);
+      const params =
+        type === "featureCoverage"
+          ? {
+              sort:
+                coverageSortDirection === "desc"
+                  ? "coverageDesc"
+                  : "coverageAsc",
+            }
+          : undefined;
+      void loadDetail(type, 1, params);
     },
-    [loadDetail]
+    [coverageSortDirection, loadDetail]
   );
 
   const handleDetailPageChange = useCallback(
     (page: number) => {
       if (!detailState.type) return;
-      void loadDetail(detailState.type, page);
+      void loadDetail(detailState.type, page, detailState.params);
+    },
+    [detailState.params, detailState.type, loadDetail]
+  );
+
+  const handleCoverageSortChange = useCallback(
+    (direction: "asc" | "desc") => {
+      setCoverageSortDirection(direction);
+      if (detailState.type === "featureCoverage") {
+        const sortParam = direction === "desc" ? "coverageDesc" : "coverageAsc";
+        void loadDetail("featureCoverage", 1, { sort: sortParam });
+      }
     },
     [detailState.type, loadDetail]
   );
@@ -292,40 +343,42 @@ export function ProjectQaDashboard({
             />
           );
           break;
-        case "featureCoverage":
+        case "featureCoverage": {
           detailContent = (
-            <FeatureCoverageList
-              items={detailState.items as QaDashboardFeatureCoverage[]}
-              formatter={formatter}
-              t={{
-                latestRun: (date) => t("featureCoverage.latestRun", { date }),
-                coverageLabel: (executed, total) =>
-                  t("featureCoverage.coverageLabel", { executed, total }),
-                missingLabel: (count) =>
-                  t("featureCoverage.missingLabel", { count }),
-                noRuns: t("featureCoverage.noRuns"),
-                badges: {
-                  hasDescription: t("featureCoverage.badges.hasDescription"),
-                  missingDescription: t(
-                    "featureCoverage.badges.missingDescription"
-                  ),
-                  withRuns: t("featureCoverage.badges.withRuns"),
-                  withoutRuns: t("featureCoverage.badges.withoutRuns"),
-                },
-              }}
-            />
+            <>
+              <CoverageSortControls
+                direction={coverageSortDirection}
+                onChange={handleCoverageSortChange}
+                  labels={{
+                    sort: t("detail.sortLabel"),
+                    highToLow: t("detail.sortDesc"),
+                    lowToHigh: t("detail.sortAsc"),
+                  }}
+              />
+              <FeatureCoverageList
+                items={detailState.items as QaDashboardFeatureCoverage[]}
+                formatter={formatter}
+                t={{
+                  latestRun: (date) => t("featureCoverage.latestRun", { date }),
+                  coverageLabel: (executed, total) =>
+                    t("featureCoverage.coverageLabel", { executed, total }),
+                  missingLabel: (count) =>
+                    t("featureCoverage.missingLabel", { count }),
+                  noRuns: t("featureCoverage.noRuns"),
+                  badges: {
+                    hasDescription: t("featureCoverage.badges.hasDescription"),
+                    missingDescription: t(
+                      "featureCoverage.badges.missingDescription"
+                    ),
+                    withRuns: t("featureCoverage.badges.withRuns"),
+                    withoutRuns: t("featureCoverage.badges.withoutRuns"),
+                  },
+                }}
+              />
+            </>
           );
           break;
-        case "featureHealth":
-          detailContent = (
-            <FeatureHealthList
-              items={detailState.items as QaDashboardFeatureHealth[]}
-              formatter={formatter}
-              formatPercent={formatPercent}
-              noRunsLabel={t("featureHealth.noRuns", { default: "—" })}
-            />
-          );
-          break;
+        }
         case "openRuns":
           detailContent = (
             <RunList
@@ -384,6 +437,7 @@ export function ProjectQaDashboard({
                 onClick={
                   detailType ? () => handleMetricSelect(detailType) : undefined
                 }
+                ctaLabel={detailType ? detailCta : undefined}
               />
             );
           })}
@@ -411,6 +465,7 @@ export function ProjectQaDashboard({
             }),
           }}
           onSelect={() => handleMetricSelect("featureCoverage")}
+          ctaLabel={detailCta}
         />
 
         <div className="rounded-2xl border bg-card p-5 shadow-sm">
@@ -485,6 +540,7 @@ function CoverageOverview({
   metrics,
   t,
   onSelect,
+  ctaLabel,
 }: {
   metrics: {
     coverage: number | null;
@@ -500,6 +556,7 @@ function CoverageOverview({
     pendingBadge: string;
   };
   onSelect?: () => void;
+  ctaLabel?: string;
 }) {
   const safeCoverage = Math.min(Math.max(metrics.coverage ?? 0, 0), 1);
   const percentage = Math.round(safeCoverage * 100);
@@ -546,9 +603,54 @@ function CoverageOverview({
             <SummaryBadge label={t.coveredBadge} tone="success" />
             <SummaryBadge label={t.pendingBadge} />
           </div>
+          {onSelect && ctaLabel && (
+            <p className="text-2xs font-medium text-primary">{ctaLabel}</p>
+          )}
         </div>
       </div>
     </article>
+  );
+}
+
+function CoverageSortControls({
+  direction,
+  onChange,
+  labels,
+}: {
+  direction: "asc" | "desc";
+  onChange: (direction: "asc" | "desc") => void;
+  labels: { sort: string; highToLow: string; lowToHigh: string };
+}) {
+  return (
+    <div className="flex flex-col gap-2 rounded-xl border bg-muted/30 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+      <p className="font-medium text-muted-foreground">{labels.sort}</p>
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => onChange("desc")}
+          className={cn(
+            "rounded-full border px-3 py-1 transition",
+            direction === "desc"
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-border bg-background text-muted-foreground hover:bg-background"
+          )}
+        >
+          {labels.highToLow}
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange("asc")}
+          className={cn(
+            "rounded-full border px-3 py-1 transition",
+            direction === "asc"
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-border bg-background text-muted-foreground hover:bg-background"
+          )}
+        >
+          {labels.lowToHigh}
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -637,53 +739,6 @@ function FeatureCoverageList({
             ) : (
               <p className="text-2xs text-muted-foreground">{t.noRuns}</p>
             )}
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function FeatureHealthList({
-  items,
-  formatter,
-  formatPercent,
-  noRunsLabel,
-}: {
-  items: QaDashboardFeatureHealth[];
-  formatter: ReturnType<typeof useFormatter>;
-  formatPercent: (value: number | null | undefined) => string;
-  noRunsLabel: string;
-}) {
-  return (
-    <ul className="space-y-4">
-      {items.map((feature) => {
-        const passRate = feature.passRate ?? 0;
-        const percentLabel = formatPercent(passRate);
-        const width = `${Math.min(Math.max(passRate, 0), 1) * 100}%`;
-        const runDate = feature.latestRun
-          ? formatter.dateTime(new Date(feature.latestRun.runDate), {
-              dateStyle: "medium",
-            })
-          : null;
-
-        return (
-          <li key={feature.featureId} className="space-y-2">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold">{feature.featureName}</p>
-                <p className="text-2xs text-muted-foreground">
-                  {runDate ?? noRunsLabel}
-                </p>
-              </div>
-              <p className="text-sm font-semibold">{percentLabel}</p>
-            </div>
-            <div className="h-2 rounded-full bg-muted">
-              <div
-                className="h-2 rounded-full bg-primary"
-                style={{ width }}
-              />
-            </div>
           </li>
         );
       })}
@@ -859,11 +914,13 @@ function DashboardMetricCard({
   value,
   onClick,
   isActive,
+  ctaLabel,
 }: {
   label: string;
   value: string;
   onClick?: () => void;
   isActive?: boolean;
+  ctaLabel?: string;
 }) {
   if (onClick) {
     return (
@@ -880,6 +937,11 @@ function DashboardMetricCard({
           {label}
         </p>
         <p className="mt-3 text-2xl font-semibold">{value}</p>
+        {ctaLabel && (
+          <span className="mt-2 inline-flex text-2xs font-medium text-primary">
+            {ctaLabel}
+          </span>
+        )}
       </button>
     );
   }

@@ -555,12 +555,20 @@ async function fetchProjectDashboardList<T>(
   projectId: string,
   resource: string,
   page: number,
-  pageSize: number
+  pageSize: number,
+  extraParams?: Record<string, string | undefined>
 ): Promise<PaginatedResult<T>> {
   try {
     const url = new URL(`${apiUrl}/qa/projects/${projectId}/dashboard/${resource}`);
     url.searchParams.set("page", String(page));
     url.searchParams.set("pageSize", String(pageSize));
+    if (extraParams) {
+      Object.entries(extraParams).forEach(([key, value]) => {
+        if (value !== undefined) {
+          url.searchParams.set(key, value);
+        }
+      });
+    }
     const res = await fetchWithAuth(url.toString(), { method: "GET" }, token);
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<PaginatedResult<T>>(res);
@@ -590,14 +598,16 @@ export function getProjectDashboardFeatureCoverage(
   token: string,
   projectId: string,
   page: number,
-  pageSize: number
+  pageSize: number,
+  sort?: "coverageAsc" | "coverageDesc"
 ) {
   return fetchProjectDashboardList<QaDashboardFeatureCoverage>(
     token,
     projectId,
     "feature-coverage",
     page,
-    pageSize
+    pageSize,
+    sort ? { sort } : undefined
   );
 }
 

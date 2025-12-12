@@ -1066,15 +1066,19 @@
           "runs": {
             "coverageLabel": "{executed} de {total} casos ejecutados"
           },
-          "detail": {
-            "title": "Detalle de métricas",
-            "subtitle": "Selecciona una métrica para revisar sus datos.",
-            "empty": "Elige cualquiera de las métricas superiores para cargar su lista.",
-            "pagination": {
-              "previous": "Anterior",
-              "next": "Siguiente"
-            }
-          },
+        "detail": {
+          "title": "Detalle de métricas",
+          "subtitle": "Selecciona una métrica para revisar sus datos.",
+          "empty": "Elige cualquiera de las métricas superiores para cargar su lista.",
+          "cta": "Ver más",
+          "sortLabel": "Ordenar por cobertura",
+          "sortDesc": "Mayor → menor",
+          "sortAsc": "Menor → mayor",
+          "pagination": {
+            "previous": "Anterior",
+            "next": "Siguiente"
+          }
+        },
           "empty": {
             "title": "Sin datos de QA",
             "description": "Registra al menos una ejecución para ver el panel.",

@@ -1070,6 +1070,10 @@
           "title": "Metric details",
           "subtitle": "Select a metric to inspect the underlying data.",
           "empty": "Choose any metric above to load its list.",
+          "cta": "Show details",
+          "sortLabel": "Sort by coverage",
+          "sortDesc": "High → Low",
+          "sortAsc": "Low → High",
           "pagination": {
             "previous": "Previous",
             "next": "Next"

@@ -476,6 +476,7 @@
         "updated": "Dernière mise à jour : {date}",
         "tabs": {
           "structure": "Structure",
+          "dashboard": "Tableau de bord",
           "qa": "Campagnes QA",
           "members": "Membres",
           "manual": "Manuel"
@@ -950,7 +951,8 @@
         "title": "QA dashboard",
         "subtitle": "Track coverage, feature health and open runs.",
         "errors": {
-          "load": "We couldn't load the QA dashboard."
+          "load": "We couldn't load the QA dashboard.",
+          "detail": "We couldn't load the selected dataset."
         },
         "metrics": {
           "totalFeatures": "Total features",
@@ -1009,6 +1011,15 @@
         },
         "runs": {
           "coverageLabel": "{executed} of {total} cases executed"
+        },
+        "detail": {
+          "title": "Metric details",
+          "subtitle": "Select a metric to inspect the underlying data.",
+          "empty": "Choose any metric above to load its list.",
+          "pagination": {
+            "previous": "Previous",
+            "next": "Next"
+          }
         },
         "empty": {
           "title": "No QA data yet",

@@ -530,6 +530,7 @@
         "updated": "Última actualización: {date}",
         "tabs": {
           "structure": "Estructura",
+          "dashboard": "Dashboard",
           "qa": "Ejecuciones QA",
           "members": "Miembros",
           "manual": "Manual"
@@ -1004,7 +1005,8 @@
           "title": "Panel de QA",
           "subtitle": "Visualiza cobertura, salud de features y ejecuciones recientes.",
           "errors": {
-            "load": "No pudimos cargar el panel de QA."
+            "load": "No pudimos cargar el panel de QA.",
+            "detail": "No pudimos cargar los datos seleccionados."
           },
           "metrics": {
             "totalFeatures": "Features totales",
@@ -1063,6 +1065,15 @@
           },
           "runs": {
             "coverageLabel": "{executed} de {total} casos ejecutados"
+          },
+          "detail": {
+            "title": "Detalle de métricas",
+            "subtitle": "Selecciona una métrica para revisar sus datos.",
+            "empty": "Elige cualquiera de las métricas superiores para cargar su lista.",
+            "pagination": {
+              "previous": "Anterior",
+              "next": "Siguiente"
+            }
           },
           "empty": {
             "title": "Sin datos de QA",

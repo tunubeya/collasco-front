@@ -223,13 +223,13 @@ export type QaDashboardRunSummary = {
 export type QaProjectDashboardResponse = {
   projectId: string;
   metrics: QaDashboardMetrics;
-  reports: {
-    featuresMissingDescription: QaDashboardFeatureMissingDescription[];
-    featureCoverage: QaDashboardFeatureCoverage[];
-    featureHealth: QaDashboardFeatureHealth[];
-    openRuns: QaDashboardRunSummary[];
-    runsWithFullPass: QaDashboardRunSummary[];
-  };
+};
+
+export type PaginatedResult<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
 };
 
 async function parseJsonResponse<T>(res: Response): Promise<T> {
@@ -534,4 +534,114 @@ export async function getProjectDashboard(
     await handleUnauthorized(error);
     throw error;
   }
+}
+
+function normalizePaginatedResult<T>(
+  payload: Partial<PaginatedResult<T>> | null | undefined,
+  fallbackPage: number,
+  fallbackPageSize: number
+): PaginatedResult<T> {
+  const items = payload?.items ?? [];
+  return {
+    items,
+    total: payload?.total ?? items.length,
+    page: payload?.page ?? fallbackPage,
+    pageSize: payload?.pageSize ?? fallbackPageSize,
+  };
+}
+
+async function fetchProjectDashboardList<T>(
+  token: string,
+  projectId: string,
+  resource: string,
+  page: number,
+  pageSize: number
+): Promise<PaginatedResult<T>> {
+  try {
+    const url = new URL(`${apiUrl}/qa/projects/${projectId}/dashboard/${resource}`);
+    url.searchParams.set("page", String(page));
+    url.searchParams.set("pageSize", String(pageSize));
+    const res = await fetchWithAuth(url.toString(), { method: "GET" }, token);
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<PaginatedResult<T>>(res);
+    return normalizePaginatedResult(payload, page, pageSize);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export function getProjectDashboardFeaturesMissingDescription(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number
+) {
+  return fetchProjectDashboardList<QaDashboardFeatureMissingDescription>(
+    token,
+    projectId,
+    "features-missing-description",
+    page,
+    pageSize
+  );
+}
+
+export function getProjectDashboardFeatureCoverage(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number
+) {
+  return fetchProjectDashboardList<QaDashboardFeatureCoverage>(
+    token,
+    projectId,
+    "feature-coverage",
+    page,
+    pageSize
+  );
+}
+
+export function getProjectDashboardFeatureHealth(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number
+) {
+  return fetchProjectDashboardList<QaDashboardFeatureHealth>(
+    token,
+    projectId,
+    "feature-health",
+    page,
+    pageSize
+  );
+}
+
+export function getProjectDashboardOpenRuns(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number
+) {
+  return fetchProjectDashboardList<QaDashboardRunSummary>(
+    token,
+    projectId,
+    "open-runs",
+    page,
+    pageSize
+  );
+}
+
+export function getProjectDashboardRunsWithFullPass(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number
+) {
+  return fetchProjectDashboardList<QaDashboardRunSummary>(
+    token,
+    projectId,
+    "runs-with-full-pass",
+    page,
+    pageSize
+  );
 }

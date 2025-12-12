@@ -1,16 +1,24 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import {
   type QaDashboardFeatureCoverage,
+  type QaDashboardFeatureHealth,
+  type QaDashboardFeatureMissingDescription,
+  type QaDashboardMetrics,
   type QaDashboardRunSummary,
-  type QaProjectDashboardResponse,
   getProjectDashboard,
+  getProjectDashboardFeatureCoverage,
+  getProjectDashboardFeatureHealth,
+  getProjectDashboardFeaturesMissingDescription,
+  getProjectDashboardOpenRuns,
+  getProjectDashboardRunsWithFullPass,
 } from "@/lib/api/qa";
+import { cn, generatePagination } from "@/lib/utils";
 import { EmptyState, Skeleton, SummaryBadge } from "./project-qa-shared";
 
 type ProjectQaDashboardProps = {
@@ -18,31 +26,56 @@ type ProjectQaDashboardProps = {
   projectId: string;
 };
 
-export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps) {
+type DashboardDetailType =
+  | "featuresMissingDescription"
+  | "featureCoverage"
+  | "featureHealth"
+  | "openRuns"
+  | "runsWithFullPass";
+
+type DetailState = {
+  type: DashboardDetailType | null;
+  items: unknown[];
+  total: number;
+  page: number;
+  pageSize: number;
+  isLoading: boolean;
+  error?: string | null;
+};
+
+const DETAIL_PAGE_SIZE = 10;
+
+const METRIC_DETAIL_MAP: Partial<
+  Record<keyof QaDashboardMetrics, DashboardDetailType>
+> = {
+  featuresMissingDescription: "featuresMissingDescription",
+  featuresWithRuns: "featureCoverage",
+  testCoverageRatio: "featureCoverage",
+  openRuns: "openRuns",
+  runsWithFullPass: "runsWithFullPass",
+  averagePassRate: "featureHealth",
+};
+
+export function ProjectQaDashboard({
+  token,
+  projectId,
+}: ProjectQaDashboardProps) {
   const t = useTranslations("app.qa.dashboard");
   const tRuns = useTranslations("app.qa.runs.list");
   const statusLabels = useTranslations("app.qa.runs.panel.statusBadge");
   const formatter = useFormatter();
-  const [data, setData] = useState<QaProjectDashboardResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const loadDashboard = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const payload = await getProjectDashboard(token, projectId);
-      setData(payload);
-    } catch (error) {
-      toast.error(t("errors.load"), {
-        description: error instanceof Error ? error.message : undefined,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [projectId, t, token]);
-
-  useEffect(() => {
-    void loadDashboard();
-  }, [loadDashboard]);
+  const [metrics, setMetrics] = useState<QaDashboardMetrics | null>(null);
+  const [isLoadingMetrics, setIsLoadingMetrics] = useState(true);
+  const [detailState, setDetailState] = useState<DetailState>({
+    type: null,
+    items: [],
+    total: 0,
+    page: 1,
+    pageSize: DETAIL_PAGE_SIZE,
+    isLoading: false,
+    error: null,
+  });
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>
@@ -53,19 +86,135 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
     [formatter]
   );
 
-  const header = useMemo(
+  const detailFetchers = useMemo(
     () => ({
-      title: t("title"),
-      subtitle: t("subtitle"),
+      featuresMissingDescription: (page: number, pageSize: number) =>
+        getProjectDashboardFeaturesMissingDescription(
+          token,
+          projectId,
+          page,
+          pageSize
+        ),
+      featureCoverage: (page: number, pageSize: number) =>
+        getProjectDashboardFeatureCoverage(token, projectId, page, pageSize),
+      featureHealth: (page: number, pageSize: number) =>
+        getProjectDashboardFeatureHealth(token, projectId, page, pageSize),
+      openRuns: (page: number, pageSize: number) =>
+        getProjectDashboardOpenRuns(token, projectId, page, pageSize),
+      runsWithFullPass: (page: number, pageSize: number) =>
+        getProjectDashboardRunsWithFullPass(token, projectId, page, pageSize),
+    }),
+    [projectId, token]
+  );
+
+  const detailMeta = useMemo(
+    () => ({
+      featuresMissingDescription: {
+        title: t("missingDescription.title"),
+        description: t("missingDescription.description"),
+        empty: t("missingDescription.empty"),
+      },
+      featureCoverage: {
+        title: t("featureCoverage.title"),
+        description: t("featureCoverage.description"),
+        empty: t("featureCoverage.empty"),
+      },
+      featureHealth: {
+        title: t("featureHealth.title"),
+        description: t("featureHealth.description"),
+        empty: t("featureHealth.empty"),
+      },
+      openRuns: {
+        title: t("openRuns.title"),
+        description: t("openRuns.description"),
+        empty: t("openRuns.empty"),
+      },
+      runsWithFullPass: {
+        title: t("runsWithFullPass.title"),
+        description: t("runsWithFullPass.description"),
+        empty: t("runsWithFullPass.empty"),
+      },
     }),
     [t]
   );
 
+  const loadDashboard = useCallback(async () => {
+    setIsLoadingMetrics(true);
+    try {
+      const payload = await getProjectDashboard(token, projectId);
+      setMetrics(payload.metrics);
+    } catch (error) {
+      toast.error(t("errors.load"), {
+        description: error instanceof Error ? error.message : undefined,
+      });
+      setMetrics(null);
+    } finally {
+      setIsLoadingMetrics(false);
+    }
+  }, [projectId, t, token]);
+
+  useEffect(() => {
+    void loadDashboard();
+  }, [loadDashboard]);
+
+  const loadDetail = useCallback(
+    async (type: DashboardDetailType, page: number) => {
+      setDetailState((prev) => ({
+        ...prev,
+        type,
+        isLoading: true,
+        error: null,
+        page,
+      }));
+      try {
+        const fetcher = detailFetchers[type];
+        const result = await fetcher(page, DETAIL_PAGE_SIZE);
+        setDetailState({
+          type,
+          items: result.items,
+          total: result.total,
+          page: result.page,
+          pageSize: result.pageSize ?? DETAIL_PAGE_SIZE,
+          isLoading: false,
+          error: null,
+        });
+      } catch (error) {
+        const description = error instanceof Error ? error.message : null;
+        setDetailState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: description,
+          type,
+        }));
+        toast.error(t("errors.detail"), {
+          description: description ?? undefined,
+        });
+      }
+    },
+    [detailFetchers, t]
+  );
+
+  const handleMetricSelect = useCallback(
+    (type: DashboardDetailType | null) => {
+      if (!type) return;
+      void loadDetail(type, 1);
+    },
+    [loadDetail]
+  );
+
+  const handleDetailPageChange = useCallback(
+    (page: number) => {
+      if (!detailState.type) return;
+      void loadDetail(detailState.type, page);
+    },
+    [detailState.type, loadDetail]
+  );
+
   let content: ReactNode = null;
 
-  if (isLoading) {
+  if (isLoadingMetrics) {
     content = <DashboardSkeleton />;
-  } else if (!data) {
+  } else if (!metrics) {
     content = (
       <EmptyState
         title={t("empty.title")}
@@ -75,9 +224,8 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
       />
     );
   } else {
-    const { metrics, reports } = data;
     const metricCards: Array<{
-      key: keyof typeof metrics;
+      key: keyof QaDashboardMetrics;
       label: string;
       format?: (value: number | null | undefined) => string;
     }> = [
@@ -110,109 +258,47 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
       },
     ];
 
-    content = (
-      <div className="space-y-6">
-        <div className="grid gap-4 lg:grid-cols-4">
-          {metricCards.map((metric) => {
-            const rawValue = metrics[metric.key] ?? 0;
-            const value =
-              metric.format !== undefined
-                ? metric.format(rawValue)
-                : formatter.number(rawValue);
-            return (
-              <article
-                key={metric.key}
-                className="rounded-2xl border bg-card p-4 shadow-sm"
-              >
-                <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
-                  {metric.label}
-                </p>
-                <p className="mt-3 text-2xl font-semibold">{value}</p>
-              </article>
-            );
-          })}
-        </div>
+    const activeDetail = detailState.type;
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <CoverageOverview
-            metrics={{
-              coverage: metrics.testCoverageRatio,
-              withRuns: metrics.featuresWithRuns,
-              total: metrics.totalFeatures,
-              missingDescriptions: metrics.featuresMissingDescription,
-            }}
-            t={{
-              title: t("coverage.title"),
-              description: t("coverage.description"),
-              caption: t("coverage.caption", {
-                executed: metrics.featuresWithRuns,
-                total: metrics.totalFeatures,
-              }),
-              coveredBadge: t("coverage.coveredBadge", {
-                value: formatPercent(metrics.testCoverageRatio),
-              }),
-              pendingBadge: t("coverage.pendingBadge", {
-                count: metrics.featuresMissingDescription,
-              }),
-            }}
-          />
-
-          <DashboardCard
-            title={t("featureHealth.title")}
-            description={t("featureHealth.description")}
-            isEmpty={!reports.featureHealth.length}
-            emptyMessage={t("featureHealth.empty")}
-          >
-            <ul className="space-y-4">
-              {reports.featureHealth.map((feature) => {
-                const passRate = feature.passRate ?? 0;
-                const percent = formatPercent(passRate);
-                const width = `${Math.min(Math.max(passRate, 0), 1) * 100}%`;
-                const runDate = feature.latestRun
-                  ? formatter.dateTime(new Date(feature.latestRun.runDate), {
-                      dateStyle: "medium",
-                    })
-                  : null;
-                return (
-                  <li key={feature.featureId} className="space-y-2">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-sm font-semibold">
-                          {feature.featureName}
-                        </p>
-                        <p className="text-2xs text-muted-foreground">
-                          {runDate ??
-                            t("featureHealth.noRuns", { default: "—" })}
-                        </p>
-                      </div>
-                      <p className="text-sm font-semibold">{percent}</p>
-                    </div>
-                    <div className="h-2 rounded-full bg-muted">
-                      <div
-                        className="h-2 rounded-full bg-primary"
-                        style={{ width }}
-                      />
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </DashboardCard>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <DashboardCard
-            title={t("featureCoverage.title")}
-            description={t("featureCoverage.description")}
-            isEmpty={!reports.featureCoverage.length}
-            emptyMessage={t("featureCoverage.empty")}
-          >
+    let detailContent: ReactNode;
+    if (!activeDetail) {
+      detailContent = (
+        <p className="text-sm text-muted-foreground">{t("detail.empty")}</p>
+      );
+    } else if (detailState.isLoading) {
+      detailContent = <DetailSkeleton />;
+    } else if (detailState.error) {
+      detailContent = (
+        <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+          {t("errors.detail")}
+        </p>
+      );
+    } else if (!detailState.items.length) {
+      detailContent = (
+        <p className="text-sm text-muted-foreground">
+          {detailMeta[activeDetail].empty}
+        </p>
+      );
+    } else {
+      switch (activeDetail) {
+        case "featuresMissingDescription":
+          detailContent = (
+            <MissingDescriptionList
+              items={
+                detailState.items as QaDashboardFeatureMissingDescription[]
+              }
+              caption={t("missingDescription.caption")}
+              badgeLabel={t("missingDescription.badge")}
+            />
+          );
+          break;
+        case "featureCoverage":
+          detailContent = (
             <FeatureCoverageList
-              items={reports.featureCoverage}
+              items={detailState.items as QaDashboardFeatureCoverage[]}
               formatter={formatter}
               t={{
-                latestRun: (date) =>
-                  t("featureCoverage.latestRun", { date }),
+                latestRun: (date) => t("featureCoverage.latestRun", { date }),
                 coverageLabel: (executed, total) =>
                   t("featureCoverage.coverageLabel", { executed, total }),
                 missingLabel: (count) =>
@@ -228,16 +314,22 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
                 },
               }}
             />
-          </DashboardCard>
-
-          <DashboardCard
-            title={t("openRuns.title")}
-            description={t("openRuns.description")}
-            isEmpty={!reports.openRuns.length}
-            emptyMessage={t("openRuns.empty")}
-          >
+          );
+          break;
+        case "featureHealth":
+          detailContent = (
+            <FeatureHealthList
+              items={detailState.items as QaDashboardFeatureHealth[]}
+              formatter={formatter}
+              formatPercent={formatPercent}
+              noRunsLabel={t("featureHealth.noRuns", { default: "—" })}
+            />
+          );
+          break;
+        case "openRuns":
+          detailContent = (
             <RunList
-              runs={reports.openRuns}
+              runs={detailState.items as QaDashboardRunSummary[]}
               formatter={formatter}
               titleFallback={(id) => tRuns("runFallback", { id })}
               runByLabel={(name) => tRuns("runBy", { name })}
@@ -245,44 +337,16 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
                 t("runs.coverageLabel", { executed, total })
               }
               badgeLabel={(status) => statusLabels(status)}
-              badgeTone={(status) => (status === "CLOSED" ? "success" : "default")}
+              badgeTone={(status) =>
+                status === "CLOSED" ? "success" : "default"
+              }
             />
-          </DashboardCard>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <DashboardCard
-            title={t("missingDescription.title")}
-            description={t("missingDescription.description")}
-            isEmpty={!reports.featuresMissingDescription.length}
-            emptyMessage={t("missingDescription.empty")}
-          >
-            <ul className="space-y-3">
-              {reports.featuresMissingDescription.map((feature) => (
-                <li
-                  key={feature.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3"
-                >
-                  <div>
-                    <p className="text-sm font-semibold">{feature.name}</p>
-                    <p className="text-2xs text-muted-foreground">
-                      {t("missingDescription.caption")}
-                    </p>
-                  </div>
-                  <SummaryBadge label={t("missingDescription.badge")} />
-                </li>
-              ))}
-            </ul>
-          </DashboardCard>
-
-          <DashboardCard
-            title={t("runsWithFullPass.title")}
-            description={t("runsWithFullPass.description")}
-            isEmpty={!reports.runsWithFullPass.length}
-            emptyMessage={t("runsWithFullPass.empty")}
-          >
+          );
+          break;
+        case "runsWithFullPass":
+          detailContent = (
             <RunList
-              runs={reports.runsWithFullPass}
+              runs={detailState.items as QaDashboardRunSummary[]}
               formatter={formatter}
               titleFallback={(id) => tRuns("runFallback", { id })}
               runByLabel={(name) => tRuns("runBy", { name })}
@@ -292,7 +356,91 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
               badgeLabel={() => t("runsWithFullPass.badge")}
               badgeTone={() => "success"}
             />
-          </DashboardCard>
+          );
+          break;
+        default:
+          detailContent = null;
+      }
+    }
+
+    content = (
+      <div className="space-y-6">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {metricCards.map((metric) => {
+            const rawValue = metrics[metric.key] ?? 0;
+            const value =
+              metric.format !== undefined
+                ? metric.format(rawValue)
+                : formatter.number(rawValue);
+            const detailType = METRIC_DETAIL_MAP[metric.key] ?? null;
+            return (
+              <DashboardMetricCard
+                key={metric.key}
+                label={metric.label}
+                value={value}
+                isActive={
+                  detailType !== null && detailState.type === detailType
+                }
+                onClick={
+                  detailType ? () => handleMetricSelect(detailType) : undefined
+                }
+              />
+            );
+          })}
+        </div>
+
+        <CoverageOverview
+          metrics={{
+            coverage: metrics.testCoverageRatio,
+            withRuns: metrics.featuresWithRuns,
+            total: metrics.totalFeatures,
+            missingDescriptions: metrics.featuresMissingDescription,
+          }}
+          t={{
+            title: t("coverage.title"),
+            description: t("coverage.description"),
+            caption: t("coverage.caption", {
+              executed: metrics.featuresWithRuns,
+              total: metrics.totalFeatures,
+            }),
+            coveredBadge: t("coverage.coveredBadge", {
+              value: formatPercent(metrics.testCoverageRatio),
+            }),
+            pendingBadge: t("coverage.pendingBadge", {
+              count: metrics.featuresMissingDescription,
+            }),
+          }}
+          onSelect={() => handleMetricSelect("featureCoverage")}
+        />
+
+        <div className="rounded-2xl border bg-card p-5 shadow-sm">
+          <div className="mb-4">
+            <p className="text-sm font-semibold">
+              {activeDetail
+                ? detailMeta[activeDetail].title
+                : t("detail.title")}
+            </p>
+            <p className="text-2xs text-muted-foreground">
+              {activeDetail
+                ? detailMeta[activeDetail].description
+                : t("detail.subtitle")}
+            </p>
+          </div>
+          <div className="space-y-4">{detailContent}</div>
+          {activeDetail &&
+            !detailState.isLoading &&
+            detailState.total > detailState.pageSize && (
+              <DetailPagination
+                page={detailState.page}
+                total={detailState.total}
+                pageSize={detailState.pageSize}
+                onPageChange={handleDetailPageChange}
+                labels={{
+                  previous: t("detail.pagination.previous"),
+                  next: t("detail.pagination.next"),
+                }}
+              />
+            )}
         </div>
       </div>
     );
@@ -301,8 +449,8 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
   return (
     <section className="rounded-xl border bg-background shadow-sm">
       <header className="border-b border-border px-4 pb-2 pt-4 md:px-6">
-        <h2 className="text-lg font-semibold">{header.title}</h2>
-        <p className="text-sm text-muted-foreground">{header.subtitle}</p>
+        <h2 className="text-lg font-semibold">{t("title")}</h2>
+        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </header>
       <div className="px-4 py-6 md:px-6">{content}</div>
     </section>
@@ -312,20 +460,23 @@ export function ProjectQaDashboard({ token, projectId }: ProjectQaDashboardProps
 function DashboardSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 lg:grid-cols-4">
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton key={index} className="h-24 w-full rounded-2xl" />
+        ))}
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-64 w-full" />
-      </div>
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-64 w-full" />
-      </div>
+      <Skeleton className="h-64 w-full rounded-2xl" />
+      <DetailSkeleton />
+    </div>
+  );
+}
+
+function DetailSkeleton() {
+  return (
+    <div className="space-y-3">
+      <Skeleton className="h-14 w-full rounded-xl" />
+      <Skeleton className="h-14 w-full rounded-xl" />
+      <Skeleton className="h-14 w-full rounded-xl" />
     </div>
   );
 }
@@ -333,6 +484,7 @@ function DashboardSkeleton() {
 function CoverageOverview({
   metrics,
   t,
+  onSelect,
 }: {
   metrics: {
     coverage: number | null;
@@ -347,12 +499,31 @@ function CoverageOverview({
     coveredBadge: string;
     pendingBadge: string;
   };
+  onSelect?: () => void;
 }) {
   const safeCoverage = Math.min(Math.max(metrics.coverage ?? 0, 0), 1);
   const percentage = Math.round(safeCoverage * 100);
   const fillDegrees = `${safeCoverage * 360}deg`;
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!onSelect) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onSelect();
+    }
+  };
+
   return (
-    <article className="space-y-4 rounded-2xl border bg-card p-4 shadow-sm">
+    <article
+      className={cn(
+        "space-y-4 rounded-2xl border bg-card p-4 shadow-sm",
+        onSelect &&
+          "cursor-pointer transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      )}
+      onClick={onSelect}
+      role={onSelect ? "button" : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onKeyDown={onSelect ? handleKeyDown : undefined}
+    >
       <div>
         <p className="text-sm font-semibold">{t.title}</p>
         <p className="text-xs text-muted-foreground">{t.description}</p>
@@ -407,8 +578,7 @@ function FeatureCoverageList({
         const coverage = feature.latestRun?.coverage;
         const executed = coverage?.executedCases ?? 0;
         const total = coverage?.totalCases ?? 0;
-        const percent =
-          total > 0 ? Math.round((executed / total) * 100) : 0;
+        const percent = total > 0 ? Math.round((executed / total) * 100) : 0;
         const missing = coverage?.missingCases ?? 0;
         const runDate = feature.latestRun
           ? formatter.dateTime(new Date(feature.latestRun.runDate), {
@@ -470,6 +640,80 @@ function FeatureCoverageList({
           </li>
         );
       })}
+    </ul>
+  );
+}
+
+function FeatureHealthList({
+  items,
+  formatter,
+  formatPercent,
+  noRunsLabel,
+}: {
+  items: QaDashboardFeatureHealth[];
+  formatter: ReturnType<typeof useFormatter>;
+  formatPercent: (value: number | null | undefined) => string;
+  noRunsLabel: string;
+}) {
+  return (
+    <ul className="space-y-4">
+      {items.map((feature) => {
+        const passRate = feature.passRate ?? 0;
+        const percentLabel = formatPercent(passRate);
+        const width = `${Math.min(Math.max(passRate, 0), 1) * 100}%`;
+        const runDate = feature.latestRun
+          ? formatter.dateTime(new Date(feature.latestRun.runDate), {
+              dateStyle: "medium",
+            })
+          : null;
+
+        return (
+          <li key={feature.featureId} className="space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold">{feature.featureName}</p>
+                <p className="text-2xs text-muted-foreground">
+                  {runDate ?? noRunsLabel}
+                </p>
+              </div>
+              <p className="text-sm font-semibold">{percentLabel}</p>
+            </div>
+            <div className="h-2 rounded-full bg-muted">
+              <div
+                className="h-2 rounded-full bg-primary"
+                style={{ width }}
+              />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function MissingDescriptionList({
+  items,
+  caption,
+  badgeLabel,
+}: {
+  items: QaDashboardFeatureMissingDescription[];
+  caption: string;
+  badgeLabel: string;
+}) {
+  return (
+    <ul className="space-y-3">
+      {items.map((feature) => (
+        <li
+          key={feature.id}
+          className="flex items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3"
+        >
+          <div>
+            <p className="text-sm font-semibold">{feature.name}</p>
+            <p className="text-2xs text-muted-foreground">{caption}</p>
+          </div>
+          <SummaryBadge label={badgeLabel} />
+        </li>
+      ))}
     </ul>
   );
 }
@@ -539,32 +783,113 @@ function RunList({
   );
 }
 
-function DashboardCard({
-  title,
-  description,
-  children,
-  isEmpty,
-  emptyMessage,
+function DetailPagination({
+  page,
+  total,
+  pageSize,
+  onPageChange,
+  labels,
 }: {
-  title: string;
-  description?: string;
-  children: ReactNode;
-  isEmpty: boolean;
-  emptyMessage: string;
+  page: number;
+  total: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
+  labels: { previous: string; next: string };
 }) {
+  const totalPages = Math.max(1, Math.ceil(total / Math.max(1, pageSize)));
+  if (totalPages <= 1) return null;
+
+  const goToPage = (target: number) => {
+    const clamped = Math.min(Math.max(1, target), totalPages);
+    if (clamped === page) return;
+    onPageChange(clamped);
+  };
+
   return (
-    <article className="rounded-2xl border bg-card p-5 shadow-sm">
-      <div className="mb-4">
-        <p className="text-sm font-semibold">{title}</p>
-        {description && (
-          <p className="text-2xs text-muted-foreground">{description}</p>
+    <div className="mt-4 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
+      <button
+        type="button"
+        onClick={() => goToPage(page - 1)}
+        className="rounded border px-3 py-1 text-sm disabled:opacity-50"
+        disabled={page <= 1}
+      >
+        {labels.previous}
+      </button>
+      <div className="flex items-center justify-center gap-1">
+        {generatePagination(page, totalPages).map((entry, index) =>
+          entry === "..." ? (
+            <span
+              key={`ellipsis-${index}`}
+              className="px-2 text-sm text-muted-foreground"
+            >
+              &hellip;
+            </span>
+          ) : (
+            <button
+              key={entry}
+              type="button"
+              onClick={() => goToPage(entry as number)}
+              className={cn(
+                "rounded border px-3 py-1 text-sm transition",
+                entry === page
+                  ? "bg-primary text-primary-foreground"
+                  : "hover:bg-muted"
+              )}
+              aria-current={entry === page ? "page" : undefined}
+            >
+              {entry}
+            </button>
+          )
         )}
       </div>
-      {isEmpty ? (
-        <p className="text-sm text-muted-foreground">{emptyMessage}</p>
-      ) : (
-        children
-      )}
-    </article>
+      <button
+        type="button"
+        onClick={() => goToPage(page + 1)}
+        className="rounded border px-3 py-1 text-sm disabled:opacity-50"
+        disabled={page >= totalPages}
+      >
+        {labels.next}
+      </button>
+    </div>
+  );
+}
+
+function DashboardMetricCard({
+  label,
+  value,
+  onClick,
+  isActive,
+}: {
+  label: string;
+  value: string;
+  onClick?: () => void;
+  isActive?: boolean;
+}) {
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        className={cn(
+          "rounded-2xl border bg-card p-4 text-left shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+          "hover:border-primary",
+          isActive && "border-primary bg-primary/5"
+        )}
+        onClick={onClick}
+      >
+        <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
+          {label}
+        </p>
+        <p className="mt-3 text-2xl font-semibold">{value}</p>
+      </button>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border bg-card p-4 shadow-sm">
+      <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </p>
+      <p className="mt-3 text-2xl font-semibold">{value}</p>
+    </div>
   );
 }

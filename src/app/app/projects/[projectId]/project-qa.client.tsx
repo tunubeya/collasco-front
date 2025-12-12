@@ -22,7 +22,6 @@ import { NewProjectRunDialog } from "./project-qa-dialog.client";
 import { SummaryBadge, EmptyState, Skeleton, ScopeBadge } from "./project-qa-shared";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Plus } from "lucide-react";
-import { ProjectQaDashboard } from "./project-qa-dashboard.client";
 
 const RUNS_LIMIT = 10;
 
@@ -272,9 +271,7 @@ export function ProjectQA({
   }, [canManageQa, formatter, hasFeatures, isLoading, openRun, runs, selectedRunId, t]);
 
   return (
-    <div className="space-y-6">
-      <ProjectQaDashboard token={token} projectId={projectId} />
-      <section className="rounded-xl border bg-background shadow-sm">
+    <section className="rounded-xl border bg-background shadow-sm">
       <header className="border-b border-border px-4 pb-2 pt-4 md:px-6">
         <h2 className="text-lg font-semibold">{t("title")}</h2>
         <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
@@ -337,6 +334,5 @@ export function ProjectQA({
         />
       </div>
     </section>
-    </div>
   );
 }

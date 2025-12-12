@@ -1071,6 +1071,7 @@
           "subtitle": "Selecciona una métrica para revisar sus datos.",
           "empty": "Elige cualquiera de las métricas superiores para cargar su lista.",
           "cta": "Ver más",
+          "showPanel": "Expandir detalles",
           "sortLabel": "Ordenar por cobertura",
           "sortDesc": "Mayor → menor",
           "sortAsc": "Menor → mayor",

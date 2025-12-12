@@ -18,6 +18,7 @@ import {
 } from "@/lib/api/qa";
 import { cn, generatePagination } from "@/lib/utils";
 import { EmptyState, Skeleton, SummaryBadge } from "./project-qa-shared";
+import { actionButtonClass } from "@/ui/styles/action-button";
 
 type ProjectQaDashboardProps = {
   token: string;
@@ -79,6 +80,8 @@ export function ProjectQaDashboard({
   const [coverageSortDirection, setCoverageSortDirection] = useState<
     "asc" | "desc"
   >("desc");
+  const [detailsVisible, setDetailsVisible] = useState(false);
+  const [hoveredMetricGroup, setHoveredMetricGroup] = useState<string | null>(null);
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>
@@ -228,6 +231,7 @@ export function ProjectQaDashboard({
   const handleMetricSelect = useCallback(
     (type: DashboardDetailType | null) => {
       if (!type) return;
+      setDetailsVisible(true);
       const params =
         type === "featureCoverage"
           ? {
@@ -253,6 +257,7 @@ export function ProjectQaDashboard({
   const handleCoverageSortChange = useCallback(
     (direction: "asc" | "desc") => {
       setCoverageSortDirection(direction);
+      setDetailsVisible(true);
       if (detailState.type === "featureCoverage") {
         const sortParam = direction === "desc" ? "coverageDesc" : "coverageAsc";
         void loadDetail("featureCoverage", 1, { sort: sortParam });
@@ -260,6 +265,21 @@ export function ProjectQaDashboard({
     },
     [detailState.type, loadDetail]
   );
+
+  const handleMetricHoverChange = useCallback((groupKey: string | null) => {
+    setHoveredMetricGroup(groupKey);
+  }, []);
+
+  const showDetailsPanel = useCallback(() => {
+    setDetailsVisible(true);
+  }, []);
+
+  const coverageGroupKey = "coverageGroup";
+  const metricGroupMap: Partial<Record<keyof QaDashboardMetrics, string>> = {
+    featuresWithRuns: coverageGroupKey,
+    testCoverageRatio: coverageGroupKey,
+    averagePassRate: coverageGroupKey,
+  };
 
   let content: ReactNode = null;
 
@@ -349,11 +369,11 @@ export function ProjectQaDashboard({
               <CoverageSortControls
                 direction={coverageSortDirection}
                 onChange={handleCoverageSortChange}
-                  labels={{
-                    sort: t("detail.sortLabel"),
-                    highToLow: t("detail.sortDesc"),
-                    lowToHigh: t("detail.sortAsc"),
-                  }}
+                labels={{
+                  sort: t("detail.sortLabel"),
+                  highToLow: t("detail.sortDesc"),
+                  lowToHigh: t("detail.sortAsc"),
+                }}
               />
               <FeatureCoverageList
                 items={detailState.items as QaDashboardFeatureCoverage[]}
@@ -426,6 +446,7 @@ export function ProjectQaDashboard({
                 ? metric.format(rawValue)
                 : formatter.number(rawValue);
             const detailType = METRIC_DETAIL_MAP[metric.key] ?? null;
+            const groupKey = metricGroupMap[metric.key];
             return (
               <DashboardMetricCard
                 key={metric.key}
@@ -438,6 +459,13 @@ export function ProjectQaDashboard({
                   detailType ? () => handleMetricSelect(detailType) : undefined
                 }
                 ctaLabel={detailType ? detailCta : undefined}
+                groupKey={groupKey}
+                isGroupHovered={
+                  groupKey !== undefined && hoveredMetricGroup === groupKey
+                }
+                onHoverChange={
+                  groupKey ? handleMetricHoverChange : undefined
+                }
               />
             );
           })}
@@ -465,38 +493,53 @@ export function ProjectQaDashboard({
             }),
           }}
           onSelect={() => handleMetricSelect("featureCoverage")}
+          groupKey={coverageGroupKey}
+          isGroupHovered={hoveredMetricGroup === coverageGroupKey}
+          onHoverChange={handleMetricHoverChange}
           ctaLabel={detailCta}
         />
 
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <div className="mb-4">
-            <p className="text-sm font-semibold">
-              {activeDetail
-                ? detailMeta[activeDetail].title
-                : t("detail.title")}
-            </p>
-            <p className="text-2xs text-muted-foreground">
-              {activeDetail
-                ? detailMeta[activeDetail].description
-                : t("detail.subtitle")}
-            </p>
+        {!detailsVisible ? (
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className={actionButtonClass()}
+              onClick={showDetailsPanel}
+            >
+              {t("detail.showPanel")}
+            </button>
           </div>
-          <div className="space-y-4">{detailContent}</div>
-          {activeDetail &&
-            !detailState.isLoading &&
-            detailState.total > detailState.pageSize && (
-              <DetailPagination
-                page={detailState.page}
-                total={detailState.total}
-                pageSize={detailState.pageSize}
-                onPageChange={handleDetailPageChange}
-                labels={{
-                  previous: t("detail.pagination.previous"),
-                  next: t("detail.pagination.next"),
-                }}
-              />
-            )}
-        </div>
+        ) : (
+          <div className="rounded-2xl border bg-card p-5 shadow-sm">
+            <div className="mb-4">
+              <p className="text-sm font-semibold">
+                {activeDetail
+                  ? detailMeta[activeDetail].title
+                  : t("detail.title")}
+              </p>
+              <p className="text-2xs text-muted-foreground">
+                {activeDetail
+                  ? detailMeta[activeDetail].description
+                  : t("detail.subtitle")}
+              </p>
+            </div>
+            <div className="space-y-4">{detailContent}</div>
+            {activeDetail &&
+              !detailState.isLoading &&
+              detailState.total > detailState.pageSize && (
+                <DetailPagination
+                  page={detailState.page}
+                  total={detailState.total}
+                  pageSize={detailState.pageSize}
+                  onPageChange={handleDetailPageChange}
+                  labels={{
+                    previous: t("detail.pagination.previous"),
+                    next: t("detail.pagination.next"),
+                  }}
+                />
+              )}
+          </div>
+        )}
       </div>
     );
   }
@@ -541,6 +584,9 @@ function CoverageOverview({
   t,
   onSelect,
   ctaLabel,
+  groupKey,
+  isGroupHovered,
+  onHoverChange,
 }: {
   metrics: {
     coverage: number | null;
@@ -557,6 +603,9 @@ function CoverageOverview({
   };
   onSelect?: () => void;
   ctaLabel?: string;
+  groupKey?: string;
+  isGroupHovered?: boolean;
+  onHoverChange?: (groupKey: string | null) => void;
 }) {
   const safeCoverage = Math.min(Math.max(metrics.coverage ?? 0, 0), 1);
   const percentage = Math.round(safeCoverage * 100);
@@ -568,18 +617,31 @@ function CoverageOverview({
       onSelect();
     }
   };
+  const handleMouseEnter = () => {
+    if (groupKey && onHoverChange) {
+      onHoverChange(groupKey);
+    }
+  };
+  const handleMouseLeave = () => {
+    if (onHoverChange) {
+      onHoverChange(null);
+    }
+  };
 
   return (
     <article
       className={cn(
         "space-y-4 rounded-2xl border bg-card p-4 shadow-sm",
         onSelect &&
-          "cursor-pointer transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          "cursor-pointer transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        isGroupHovered && "border-primary bg-primary/5"
       )}
       onClick={onSelect}
       role={onSelect ? "button" : undefined}
       tabIndex={onSelect ? 0 : undefined}
       onKeyDown={onSelect ? handleKeyDown : undefined}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div>
         <p className="text-sm font-semibold">{t.title}</p>
@@ -915,13 +977,31 @@ function DashboardMetricCard({
   onClick,
   isActive,
   ctaLabel,
+  groupKey,
+  isGroupHovered,
+  onHoverChange,
 }: {
   label: string;
   value: string;
   onClick?: () => void;
   isActive?: boolean;
   ctaLabel?: string;
+  groupKey?: string;
+  isGroupHovered?: boolean;
+  onHoverChange?: (groupKey: string | null) => void;
 }) {
+  const handleMouseEnter = () => {
+    if (groupKey && onHoverChange) {
+      onHoverChange(groupKey);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (onHoverChange) {
+      onHoverChange(null);
+    }
+  };
+
   if (onClick) {
     return (
       <button
@@ -929,9 +1009,12 @@ function DashboardMetricCard({
         className={cn(
           "rounded-2xl border bg-card p-4 text-left shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
           "hover:border-primary",
-          isActive && "border-primary bg-primary/5"
+          isActive && "border-primary bg-primary/5",
+          isGroupHovered && "border-primary bg-primary/5"
         )}
         onClick={onClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
           {label}
@@ -947,7 +1030,14 @@ function DashboardMetricCard({
   }
 
   return (
-    <div className="rounded-2xl border bg-card p-4 shadow-sm">
+    <div
+      className={cn(
+        "rounded-2xl border bg-card p-4 shadow-sm",
+        isGroupHovered && "border-primary bg-primary/5"
+      )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
         {label}
       </p>

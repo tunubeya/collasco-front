@@ -1105,6 +1105,12 @@ function TestRunsTab({
             timeStyle: "short",
           });
           const title = run.name?.trim() || t("list.runFallback", { id: run.id });
+          const statusLabel =
+            run.status === "CLOSED"
+              ? t("panel.statusBadge.CLOSED")
+              : run.status === "OPEN"
+              ? t("panel.statusBadge.OPEN")
+              : null;
           return (
             <li
               key={run.id}
@@ -1126,6 +1132,12 @@ function TestRunsTab({
                   )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
+                  {statusLabel && (
+                    <SummaryBadge
+                      label={statusLabel}
+                      tone={run.status === "CLOSED" ? "success" : "default"}
+                    />
+                  )}
                   <SummaryBadge label={t("summary.total", { count: total })} />
                   <SummaryBadge label={t("summary.passed", { count: passed })} tone="success" />
                   <Button

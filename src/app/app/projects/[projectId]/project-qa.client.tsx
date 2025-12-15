@@ -167,6 +167,12 @@ export function ProjectQA({
           const title =
             run.name?.trim() || t("list.runFallback", { id: run.id });
           const scope: QaRunScope = run.feature ? "FEATURE" : "PROJECT";
+          const statusLabel =
+            run.status === "CLOSED"
+              ? t("panel.statusBadge.CLOSED")
+              : run.status === "OPEN"
+              ? t("panel.statusBadge.OPEN")
+              : null;
           return (
             <li
               key={run.id}
@@ -196,6 +202,12 @@ export function ProjectQA({
                   )}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
+                  {statusLabel && (
+                    <SummaryBadge
+                      label={statusLabel}
+                      tone={run.status === "CLOSED" ? "success" : "default"}
+                    />
+                  )}
                   <SummaryBadge label={t("summary.total", { count: total })} />
                   <SummaryBadge
                     label={t("summary.passed", { count: passed })}

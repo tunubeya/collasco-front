@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import type { FeatureOption } from "./project-qa.types";
@@ -36,6 +36,27 @@ export function NewProjectRunDialog({
   onSubmit,
 }: NewProjectRunDialogProps) {
   const t = useTranslations("app.qa.runs");
+  const locale = useLocale();
+  const listFormatter = useMemo(
+    () => new Intl.ListFormat(locale, { style: "long", type: "conjunction" }),
+    [locale],
+  );
+  const formatFieldList = useCallback(
+    (fields: string[]) => {
+      if (fields.length === 0) return "";
+      if (fields.length === 1) return fields[0];
+      return listFormatter.format(fields);
+    },
+    [listFormatter],
+  );
+  const requiredFieldLabels = useMemo(
+    () => ({
+      name: t("fields.name"),
+      environment: t("fields.environment"),
+      entries: t("panel.entries"),
+    }),
+    [t],
+  );
   const statusLabels = useTranslations("app.qa.runs.resultStatus");
 
   const [runName, setRunName] = useState("");
@@ -126,8 +147,12 @@ export function NewProjectRunDialog({
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (!runName.trim() || !environment.trim() || !entries.length) {
-      setError(t("errors.validation"));
+    const missingFields: string[] = [];
+    if (!runName.trim()) missingFields.push(requiredFieldLabels.name);
+    if (!environment.trim()) missingFields.push(requiredFieldLabels.environment);
+    if (!entries.length) missingFields.push(requiredFieldLabels.entries);
+    if (missingFields.length) {
+      setError(t("errors.missingFields", { fields: formatFieldList(missingFields) }));
       return;
     }
     setError(null);
@@ -149,7 +174,7 @@ export function NewProjectRunDialog({
     setSelectedCase("");
     setSelectedEvaluation("");
     setComment("");
-  }, [environment, entries, notes, onSubmit, runName, t]);
+  }, [environment, entries, formatFieldList, notes, onSubmit, requiredFieldLabels, runName, t]);
 
   const hasFeatures = featureOptions.length > 0;
 

@@ -893,6 +893,7 @@
           "create": "No pudimos crear la ejecución.",
           "loadRun": "No pudimos abrir esa ejecución.",
           "validation": "Revisa la información ingresada.",
+          "missingFields": "Completa: {fields}.",
           "updateResults": "No pudimos guardar los resultados."
         },
         "hints": {

@@ -818,6 +818,7 @@
           "create": "De run kon niet worden aangemaakt.",
           "loadRun": "De run kon niet worden geopend.",
           "validation": "Controleer de ingevoerde gegevens.",
+          "missingFields": "Vul het volgende in: {fields}.",
           "updateResults": "De resultaten konden niet worden opgeslagen."
         },
         "hints": {

@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import {
   useParams,
   usePathname,
@@ -1203,6 +1203,26 @@ function NewTestRunDialog({
   onSubmit: (values: CreateTestRunDto) => Promise<void>;
 }) {
   const t = useTranslations("app.qa.runs");
+  const locale = useLocale();
+  const listFormatter = useMemo(
+    () => new Intl.ListFormat(locale, { style: "long", type: "conjunction" }),
+    [locale],
+  );
+  const formatFieldList = useCallback(
+    (fields: string[]) => {
+      if (fields.length === 0) return "";
+      if (fields.length === 1) return fields[0];
+      return listFormatter.format(fields);
+    },
+    [listFormatter],
+  );
+  const requiredFieldLabels = useMemo(
+    () => ({
+      name: t("fields.name"),
+      environment: t("fields.environment"),
+    }),
+    [t],
+  );
   const [formValues, setFormValues] = useState<CreateTestRunDto>({
     name: "",
     environment: "",
@@ -1243,7 +1263,22 @@ function NewTestRunDialog({
       notes: formValues.notes,
     });
     if (!parsed.success) {
-      setErrors(t("errors.validation"));
+      const missingKeys = Array.from(
+        new Set(
+          parsed.error.issues
+            .map((issue) => issue.path?.[0])
+            .filter(
+              (key): key is keyof typeof requiredFieldLabels =>
+                typeof key === "string" && key in requiredFieldLabels,
+            ),
+        ),
+      );
+      if (missingKeys.length) {
+        const labels = missingKeys.map((key) => requiredFieldLabels[key]);
+        setErrors(t("errors.missingFields", { fields: formatFieldList(labels) }));
+      } else {
+        setErrors(t("errors.validation"));
+      }
       return false;
     }
     setErrors(null);
@@ -1261,7 +1296,7 @@ function NewTestRunDialog({
     } finally {
       setIsSubmitting(false);
     }
-  }, [formValues, onSubmit, t]);
+  }, [formatFieldList, formValues, onSubmit, requiredFieldLabels, t]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLFormElement>) => {

@@ -893,6 +893,7 @@
           "create": "We couldn't create the test run.",
           "loadRun": "We couldn't open that run.",
           "validation": "Please review the information.",
+          "missingFields": "Please fill in: {fields}.",
           "updateResults": "We couldn't save the run results."
         },
         "hints": {

@@ -839,6 +839,7 @@
           "create": "Impossible de créer la campagne.",
           "loadRun": "Impossible d’ouvrir cette campagne.",
           "validation": "Vérifiez les informations saisies.",
+          "missingFields": "Renseignez : {fields}.",
           "updateResults": "Impossible d’enregistrer les résultats."
         },
         "hints": {

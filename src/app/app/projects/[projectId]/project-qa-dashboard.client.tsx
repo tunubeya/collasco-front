@@ -3,6 +3,7 @@
 import type { KeyboardEvent, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import {
@@ -63,6 +64,7 @@ export function ProjectQaDashboard({
   const tRuns = useTranslations("app.qa.runs.list");
   const statusLabels = useTranslations("app.qa.runs.panel.statusBadge");
   const formatter = useFormatter();
+  const router = useRouter();
   const detailCta = t("detail.cta");
 
   const [metrics, setMetrics] = useState<QaDashboardMetrics | null>(null);
@@ -280,6 +282,22 @@ export function ProjectQaDashboard({
     setDetailsVisible(true);
   }, []);
 
+  const handleNavigateToFeature = useCallback(
+    (featureId?: string | null) => {
+      if (!featureId) return;
+      router.push(`/app/projects/${projectId}/features/${featureId}`);
+    },
+    [projectId, router]
+  );
+
+  const handleNavigateToRun = useCallback(
+    (runId: string | null | undefined) => {
+      if (!runId) return;
+      router.push(`/app/projects/${projectId}/test-runs/${runId}`);
+    },
+    [projectId, router]
+  );
+
   const coverageGroupKey = "coverageGroup";
   const metricGroupMap: Partial<Record<keyof QaDashboardMetrics, string>> = {
     featuresWithRuns: coverageGroupKey,
@@ -366,6 +384,7 @@ export function ProjectQaDashboard({
               }
               caption={t("missingDescription.caption")}
               badgeLabel={t("missingDescription.badge")}
+              onSelectFeature={handleNavigateToFeature}
             />
           );
           break;
@@ -399,12 +418,13 @@ export function ProjectQaDashboard({
                     withRuns: t("featureCoverage.badges.withRuns"),
                     withoutRuns: t("featureCoverage.badges.withoutRuns"),
                   },
-                }}
-              />
-            </>
-          );
-          break;
-        }
+              }}
+              onSelectFeature={handleNavigateToFeature}
+            />
+          </>
+        );
+        break;
+      }
         case "openRuns":
           detailContent = (
             <RunList
@@ -419,6 +439,7 @@ export function ProjectQaDashboard({
               badgeTone={(status) =>
                 status === "CLOSED" ? "success" : "default"
               }
+              onSelectRun={handleNavigateToRun}
             />
           );
           break;
@@ -434,6 +455,7 @@ export function ProjectQaDashboard({
               }
               badgeLabel={() => t("runsWithFullPass.badge")}
               badgeTone={() => "success"}
+              onSelectRun={handleNavigateToRun}
             />
           );
           break;
@@ -726,6 +748,7 @@ function FeatureCoverageList({
   items,
   formatter,
   t,
+  onSelectFeature,
 }: {
   items: QaDashboardFeatureCoverage[];
   formatter: ReturnType<typeof useFormatter>;
@@ -741,6 +764,7 @@ function FeatureCoverageList({
       withoutRuns: string;
     };
   };
+  onSelectFeature?: (featureId?: string | null) => void;
 }) {
   return (
     <ul className="space-y-4">
@@ -755,11 +779,9 @@ function FeatureCoverageList({
               dateStyle: "medium",
             })
           : null;
-        return (
-          <li
-            key={feature.featureId}
-            className="space-y-3 rounded-xl border bg-background/80 px-4 py-3"
-          >
+        const isClickable = Boolean(onSelectFeature && feature.featureId);
+        const content = (
+          <>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold">{feature.featureName}</p>
@@ -807,6 +829,23 @@ function FeatureCoverageList({
             ) : (
               <p className="text-2xs text-muted-foreground">{t.noRuns}</p>
             )}
+          </>
+        );
+        return (
+          <li key={feature.featureId}>
+            {isClickable ? (
+              <button
+                type="button"
+                onClick={() => onSelectFeature?.(feature.featureId)}
+                className="w-full space-y-3 rounded-xl border bg-background/80 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {content}
+              </button>
+            ) : (
+              <div className="space-y-3 rounded-xl border bg-background/80 px-4 py-3">
+                {content}
+              </div>
+            )}
           </li>
         );
       })}
@@ -818,25 +857,44 @@ function MissingDescriptionList({
   items,
   caption,
   badgeLabel,
+  onSelectFeature,
 }: {
   items: QaDashboardFeatureMissingDescription[];
   caption: string;
   badgeLabel: string;
+  onSelectFeature?: (featureId: string) => void;
 }) {
   return (
     <ul className="space-y-3">
-      {items.map((feature) => (
-        <li
-          key={feature.id}
-          className="flex items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3"
-        >
-          <div>
-            <p className="text-sm font-semibold">{feature.name}</p>
-            <p className="text-2xs text-muted-foreground">{caption}</p>
-          </div>
-          <SummaryBadge label={badgeLabel} />
-        </li>
-      ))}
+      {items.map((feature) => {
+        const isClickable = Boolean(onSelectFeature);
+        const content = (
+          <>
+            <div>
+              <p className="text-sm font-semibold">{feature.name}</p>
+              <p className="text-2xs text-muted-foreground">{caption}</p>
+            </div>
+            <SummaryBadge label={badgeLabel} />
+          </>
+        );
+        return (
+          <li key={feature.id}>
+            {isClickable ? (
+              <button
+                type="button"
+                onClick={() => onSelectFeature?.(feature.id)}
+                className="flex w-full items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {content}
+              </button>
+            ) : (
+              <div className="flex items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3">
+                {content}
+              </div>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -849,6 +907,7 @@ function RunList({
   coverageLabel,
   badgeLabel,
   badgeTone,
+  onSelectRun,
 }: {
   runs: QaDashboardRunSummary[];
   formatter: ReturnType<typeof useFormatter>;
@@ -857,6 +916,7 @@ function RunList({
   coverageLabel: (executed: number, total: number) => string;
   badgeLabel: (status: QaDashboardRunSummary["status"]) => string;
   badgeTone?: (status: QaDashboardRunSummary["status"]) => "default" | "success";
+  onSelectRun?: (runId: string) => void;
 }) {
   return (
     <ul className="space-y-3">
@@ -866,11 +926,9 @@ function RunList({
           dateStyle: "medium",
           timeStyle: "short",
         });
-        return (
-          <li
-            key={run.id}
-            className="space-y-2 rounded-xl border bg-background/80 px-4 py-3"
-          >
+        const isClickable = Boolean(onSelectRun);
+        const content = (
+          <>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold">{title}</p>
@@ -898,6 +956,23 @@ function RunList({
                   run.coverage.totalCases
                 )}
               </p>
+            )}
+          </>
+        );
+        return (
+          <li key={run.id}>
+            {isClickable ? (
+              <button
+                type="button"
+                onClick={() => onSelectRun?.(run.id)}
+                className="w-full space-y-2 rounded-xl border bg-background/80 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {content}
+              </button>
+            ) : (
+              <div className="space-y-2 rounded-xl border bg-background/80 px-4 py-3">
+                {content}
+              </div>
             )}
           </li>
         );

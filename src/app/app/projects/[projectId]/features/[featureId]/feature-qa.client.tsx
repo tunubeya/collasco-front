@@ -1374,7 +1374,15 @@ export function TestRunPanel({
   const formatter = useFormatter();
   const statusLabels = useTranslations("app.qa.runs.resultStatus");
   const [runState, setRunState] = useState<QaTestRunDetail>(run);
-  const [caseRows, setCaseRows] = useState<RunCaseRow[]>(() => buildCaseRows(run));
+  const [caseRows, setCaseRows] = useState<RunCaseRow[]>(() => {
+    const initialAllowed =
+      run.targetTestCaseIds?.length && run.coverage?.missingTestCases
+        ? run.coverage.missingTestCases.filter((testCase) =>
+            run.targetTestCaseIds?.includes(testCase.id),
+          )
+        : undefined;
+    return buildCaseRows(run, initialAllowed);
+  });
   const [resultState, setResultState] = useState<Record<string, RunResultState>>(resultsToState(run));
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
   const [isClosingRun, setIsClosingRun] = useState(false);
@@ -1383,6 +1391,7 @@ export function TestRunPanel({
   const resultStateRef = useRef<Record<string, RunResultState>>(resultsToState(run));
   const pendingRef = useRef<Record<string, RunResultState>>({});
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const coverageScope = runState.coverage?.scope ?? (runState.featureId ? "FEATURE" : "PROJECT");
 
   useEffect(() => {
     runStateRef.current = run;
@@ -1392,9 +1401,35 @@ export function TestRunPanel({
     stableResultsRef.current = state;
     resultStateRef.current = state;
     pendingRef.current = {};
-    setCaseRows(buildCaseRows(run));
+    const allowedMissing =
+      run.targetTestCaseIds?.length && run.coverage?.missingTestCases
+        ? run.coverage.missingTestCases.filter((testCase) =>
+            run.targetTestCaseIds?.includes(testCase.id),
+          )
+        : undefined;
+    setCaseRows(buildCaseRows(run, allowedMissing));
     setCommentDrafts({});
   }, [run]);
+
+  const targetCaseSet = useMemo(() => {
+    const ids = runState.targetTestCaseIds ?? [];
+    if (!ids.length) {
+      return null;
+    }
+    return new Set(ids);
+  }, [runState.targetTestCaseIds]);
+
+  const filteredMissingCases = useMemo(() => {
+    const missing = runState.coverage?.missingTestCases ?? [];
+    if (!targetCaseSet) {
+      return missing;
+    }
+    return missing.filter((testCase) => targetCaseSet.has(testCase.id));
+  }, [runState.coverage?.missingTestCases, targetCaseSet]);
+
+  useEffect(() => {
+    setCaseRows(buildCaseRows(runState, filteredMissingCases));
+  }, [filteredMissingCases, runState]);
 
   useEffect(() => {
     resultStateRef.current = resultState;
@@ -1428,7 +1463,6 @@ export function TestRunPanel({
       pendingRef.current = {};
       setRunState(updatedRun);
       runStateRef.current = updatedRun;
-      setCaseRows(buildCaseRows(updatedRun));
       onRunUpdated(updatedRun);
       setSaveStatus("saved");
       window.setTimeout(() => setSaveStatus("idle"), 1200);
@@ -1522,7 +1556,8 @@ export function TestRunPanel({
   }, [commentDrafts, commitComment]);
 
   const summary = useMemo(() => {
-    const total = runState.coverage?.totalCases ?? runState.results.length;
+    const total =
+      targetCaseSet?.size ?? runState.coverage?.totalCases ?? runState.results.length;
     const counts = RESULT_STATUSES.reduce<Record<QaEvaluation, number>>(
       (acc, evaluation) => {
         acc[evaluation] = Object.values(resultState).filter((value) => value.evaluation === evaluation).length;
@@ -1540,7 +1575,22 @@ export function TestRunPanel({
       counts,
       passRate,
     };
-  }, [resultState, runState.coverage, runState.results]);
+  }, [resultState, runState.coverage, runState.results, targetCaseSet]);
+
+  const displayCoverage = useMemo(() => {
+    if (!runState.coverage) {
+      return null;
+    }
+    if (targetCaseSet) {
+      return {
+        ...runState.coverage,
+        totalCases: targetCaseSet.size,
+        missingCases: filteredMissingCases.length,
+        missingTestCases: filteredMissingCases,
+      };
+    }
+    return runState.coverage;
+  }, [filteredMissingCases, runState.coverage, targetCaseSet]);
 
   const runMeta = useMemo(() => {
     return {
@@ -1566,8 +1616,13 @@ export function TestRunPanel({
     });
   }, [caseRows]);
 
+  const canAddCoverageCases = coverageScope === "PROJECT";
+
   const handleAddMissingCase = useCallback(
     async (testCaseId: string) => {
+      if (!canAddCoverageCases) {
+        return;
+      }
       if (caseRows.some((row) => row.testCaseId === testCaseId)) {
         return;
       }
@@ -1587,7 +1642,6 @@ export function TestRunPanel({
         const nextState = resultsToState(updatedRun);
         setRunState(updatedRun);
         runStateRef.current = updatedRun;
-        setCaseRows(buildCaseRows(updatedRun));
         setResultState(nextState);
         stableResultsRef.current = nextState;
         resultStateRef.current = nextState;
@@ -1599,7 +1653,7 @@ export function TestRunPanel({
         });
       }
     },
-    [caseRows, onRunUpdated, runState.coverage?.missingTestCases, runState.id, t, token],
+    [canAddCoverageCases, caseRows, onRunUpdated, runState.coverage?.missingTestCases, runState.id, t, token],
   );
 
   const handleRemoveCase = useCallback(
@@ -1611,7 +1665,6 @@ export function TestRunPanel({
         const nextState = resultsToState(updatedRun);
         setRunState(updatedRun);
         runStateRef.current = updatedRun;
-        setCaseRows(buildCaseRows(updatedRun));
         setResultState(nextState);
         stableResultsRef.current = nextState;
         resultStateRef.current = nextState;
@@ -1644,7 +1697,6 @@ export function TestRunPanel({
       const nextState = resultsToState(updatedRun);
       setRunState(updatedRun);
       runStateRef.current = updatedRun;
-      setCaseRows(buildCaseRows(updatedRun));
       setResultState(nextState);
       stableResultsRef.current = nextState;
       resultStateRef.current = nextState;
@@ -1661,10 +1713,12 @@ export function TestRunPanel({
     }
   }, [flushDrafts, onRunUpdated, persistUpdates, runState.id, runState.status, t, token]);
 
+  const missingCount = targetCaseSet ? filteredMissingCases.length : runState.coverage?.missingCases ?? 0;
+
   const isCoverageComplete =
     summary.total > 0 &&
     summary.counts.PASSED === summary.total &&
-    (runState.coverage?.missingCases ?? 0) === 0;
+    missingCount === 0;
   const isRunClosed = runState.status === "CLOSED";
   const showClosedTag = isRunClosed || isCoverageComplete;
 
@@ -1813,10 +1867,10 @@ export function TestRunPanel({
         })}
       </div>
 
-      {runState.coverage && (
+      {displayCoverage && (
         <CoverageSummary
-          coverage={runState.coverage}
-          onAddCase={handleAddMissingCase}
+          coverage={displayCoverage}
+          onAddCase={canAddCoverageCases ? handleAddMissingCase : undefined}
           isClosed={showClosedTag}
         />
       )}
@@ -1930,17 +1984,26 @@ function resultsToState(run: QaTestRunDetail): Record<string, RunResultState> {
   return next;
 }
 
-function buildCaseRows(run: QaTestRunDetail): RunCaseRow[] {
-  const rows: RunCaseRow[] = run.results.map((result) => ({
-    testCaseId: result.testCaseId,
-    name: result.testCase?.name ?? result.testCaseId,
-    expected: result.testCase?.expected ?? null,
-    featureName: result.testCase?.feature?.name ?? null,
-  }));
-  const existingIds = new Set(rows.map((row) => row.testCaseId));
-  const missing = run.coverage?.missingTestCases ?? [];
+function buildCaseRows(
+  run: QaTestRunDetail,
+  allowedMissing?: QaRunCoverage["missingTestCases"],
+): RunCaseRow[] {
+  const seen = new Set<string>();
+  const rows: RunCaseRow[] = [];
+  for (const result of run.results) {
+    if (seen.has(result.testCaseId)) continue;
+    seen.add(result.testCaseId);
+    rows.push({
+      testCaseId: result.testCaseId,
+      name: result.testCase?.name ?? result.testCaseId,
+      expected: result.testCase?.expected ?? null,
+      featureName: result.testCase?.feature?.name ?? null,
+    });
+  }
+  const missing = allowedMissing ?? run.coverage?.missingTestCases ?? [];
   for (const testCase of missing) {
-    if (existingIds.has(testCase.id)) continue;
+    if (seen.has(testCase.id)) continue;
+    seen.add(testCase.id);
     rows.push({
       testCaseId: testCase.id,
       name: testCase.name,

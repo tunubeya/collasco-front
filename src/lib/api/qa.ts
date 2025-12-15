@@ -102,6 +102,8 @@ export type QaTestRunDetail = {
   } | null;
   results: QaTestRunResult[];
   coverage: QaRunCoverage;
+  targetTestCaseIds?: string[];
+  isTargetScopeCustom?: boolean;
 };
 
 export type QaEvaluationSummary = Record<QaEvaluation, number>;

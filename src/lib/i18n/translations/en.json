@@ -950,6 +950,7 @@
           "title": "{executed} of {total} cases executed",
           "pending": "{count} pending cases",
           "complete": "Full coverage achieved",
+          "allExecuted": "All tests were executed",
           "addResult": "Add result",
           "showPending": "Show pending cases",
           "hidePending": "Hide pending cases"

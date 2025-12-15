@@ -950,6 +950,7 @@
             "title": "{executed} de {total} casos executados",
             "pending": "{count} casos pendentes",
             "complete": "Cobertura completa",
+            "allExecuted": "Todos os testes foram executados",
             "addResult": "Adicionar resultado",
             "showPending": "Mostrar pendentes",
             "hidePending": "Ocultar pendentes"

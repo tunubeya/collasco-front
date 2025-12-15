@@ -1715,12 +1715,7 @@ export function TestRunPanel({
 
   const missingCount = targetCaseSet ? filteredMissingCases.length : runState.coverage?.missingCases ?? 0;
 
-  const isCoverageComplete =
-    summary.total > 0 &&
-    summary.counts.PASSED === summary.total &&
-    missingCount === 0;
   const isRunClosed = runState.status === "CLOSED";
-  const showClosedTag = isRunClosed || isCoverageComplete;
 
   return (
     <div className="space-y-6 rounded-2xl border bg-muted/40 p-6">
@@ -1764,15 +1759,19 @@ export function TestRunPanel({
           <SummaryBadge label={t("panel.summary.passRate", { rate: summary.passRate })} />
           <SavingIndicator status={saveStatus} />
           {!isRunClosed && (
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant="secondary"
               onClick={() => void handleCloseRun()}
               disabled={isClosingRun}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
+              className="gap-2 uppercase tracking-wide"
             >
               <Lock className="h-3.5 w-3.5" aria-hidden />
-              <span>{isClosingRun ? t("panel.actions.closing") : t("panel.actions.close")}</span>
-            </button>
+              <span className="text-xs font-semibold">
+                {isClosingRun ? t("panel.actions.closing") : t("panel.actions.close")}
+              </span>
+            </Button>
           )}
         </div>
       </div>
@@ -1833,9 +1832,10 @@ export function TestRunPanel({
                   </select>
                   <Button
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                     onClick={() => handleRemoveCase(testCase.testCaseId)}
                     disabled={isRunClosed}
+                    className="border-destructive/40 text-destructive hover:bg-destructive/5"
                   >
                     {t("panel.removeCase")}
                   </Button>
@@ -1871,7 +1871,6 @@ export function TestRunPanel({
         <CoverageSummary
           coverage={displayCoverage}
           onAddCase={canAddCoverageCases ? handleAddMissingCase : undefined}
-          isClosed={showClosedTag}
         />
       )}
     </div>
@@ -1908,14 +1907,13 @@ function SavingIndicator({
 function CoverageSummary({
   coverage,
   onAddCase,
-  isClosed = false,
 }: {
   coverage: QaRunCoverage;
   onAddCase?: (testCaseId: string) => void;
-  isClosed?: boolean;
 }) {
   const t = useTranslations("app.qa.runs");
   const hasMissing = coverage.missingCases > 0;
+  const allExecuted = !hasMissing && coverage.totalCases > 0;
   const [showPending, setShowPending] = useState(false);
 
   return (
@@ -1929,7 +1927,9 @@ function CoverageSummary({
                 total: coverage.totalCases,
               })}
             </p>
-            {isClosed && <SummaryBadge label={t("panel.closedTag")} tone="success" />}
+            {allExecuted && (
+              <SummaryBadge label={t("panel.coverage.allExecuted")} tone="success" />
+            )}
           </div>
           <p className="text-xs text-muted-foreground">
             {hasMissing

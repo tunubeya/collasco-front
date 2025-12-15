@@ -896,6 +896,7 @@
             "title": "{executed} sur {total} cas exécutés",
             "pending": "{count} cas en attente",
             "complete": "Couverture complète",
+            "allExecuted": "Tous les tests ont été exécutés",
             "addResult": "Ajouter un résultat",
             "showPending": "Afficher les cas en attente",
             "hidePending": "Masquer les cas en attente"

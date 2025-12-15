@@ -875,6 +875,7 @@
             "title": "{executed} van {total} cases uitgevoerd",
             "pending": "{count} cases openstaand",
             "complete": "Volledige dekking",
+            "allExecuted": "Alle tests zijn uitgevoerd",
             "addResult": "Resultaat toevoegen",
             "showPending": "Openstaande cases tonen",
             "hidePending": "Openstaande cases verbergen"

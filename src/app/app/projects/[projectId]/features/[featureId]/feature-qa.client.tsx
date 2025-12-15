@@ -1748,8 +1748,6 @@ export function TestRunPanel({
     }
   }, [flushDrafts, onRunUpdated, persistUpdates, runState.id, runState.status, t, token]);
 
-  const missingCount = targetCaseSet ? filteredMissingCases.length : runState.coverage?.missingCases ?? 0;
-
   const isRunClosed = runState.status === "CLOSED";
 
   return (

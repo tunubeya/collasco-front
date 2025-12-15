@@ -98,13 +98,15 @@ export function ProjectQaDashboard({
         page: number,
         pageSize: number,
         _params?: Record<string, string>
-      ) =>
-        getProjectDashboardFeaturesMissingDescription(
+      ) => {
+        void _params;
+        return getProjectDashboardFeaturesMissingDescription(
           token,
           projectId,
           page,
           pageSize
-        ),
+        );
+      },
       featureCoverage: (
         page: number,
         pageSize: number,
@@ -121,14 +123,18 @@ export function ProjectQaDashboard({
         page: number,
         pageSize: number,
         _params?: Record<string, string>
-      ) =>
-        getProjectDashboardOpenRuns(token, projectId, page, pageSize),
+      ) => {
+        void _params;
+        return getProjectDashboardOpenRuns(token, projectId, page, pageSize);
+      },
       runsWithFullPass: (
         page: number,
         pageSize: number,
         _params?: Record<string, string>
-      ) =>
-        getProjectDashboardRunsWithFullPass(token, projectId, page, pageSize),
+      ) => {
+        void _params;
+        return getProjectDashboardRunsWithFullPass(token, projectId, page, pageSize);
+      },
     }),
     [projectId, token]
   );

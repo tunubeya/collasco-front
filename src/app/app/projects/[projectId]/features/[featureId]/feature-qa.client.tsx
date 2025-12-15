@@ -1473,7 +1473,11 @@ export function TestRunPanel({
   const persistUpdates = useCallback(async () => {
     const pendingEntries = Object.entries(pendingRef.current);
     const payloadResults = pendingEntries
-      .filter(([, value]) => Boolean(value.evaluation))
+      .filter(([, value]) => {
+        const hasEvaluation = Boolean(value.evaluation);
+        const hasComment = Boolean(value.comment && value.comment.trim().length);
+        return hasEvaluation || hasComment;
+      })
       .map(([testCaseId, value]) => ({
         testCaseId,
         evaluation: value.evaluation as QaEvaluation,

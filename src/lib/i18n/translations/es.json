@@ -1074,6 +1074,7 @@
           "empty": "Elige cualquiera de las métricas superiores para cargar su lista.",
           "cta": "Ver más",
           "showPanel": "Expandir detalles",
+          "openInNewTab": "Abrir en una nueva pestaña",
           "sortLabel": "Ordenar por cobertura",
           "sortDesc": "Mayor → menor",
           "sortAsc": "Menor → mayor",

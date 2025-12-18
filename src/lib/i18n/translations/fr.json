@@ -1020,6 +1020,7 @@
           "empty": "Choose any metric above to load its list.",
           "cta": "Show details",
           "showPanel": "Expand details",
+          "openInNewTab": "Ouvrir dans un nouvel onglet",
           "sortLabel": "Sort by coverage",
           "sortDesc": "High → Low",
           "sortAsc": "Low → High",

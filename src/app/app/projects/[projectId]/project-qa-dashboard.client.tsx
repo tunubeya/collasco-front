@@ -4,6 +4,7 @@ import type { KeyboardEvent, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -65,6 +66,7 @@ export function ProjectQaDashboard({
   const statusLabels = useTranslations("app.qa.runs.panel.statusBadge");
   const formatter = useFormatter();
   const detailCta = t("detail.cta");
+  const openExternalLabel = t("detail.openInNewTab");
 
   const [metrics, setMetrics] = useState<QaDashboardMetrics | null>(null);
   const [isLoadingMetrics, setIsLoadingMetrics] = useState(true);
@@ -378,6 +380,7 @@ export function ProjectQaDashboard({
               caption={t("missingDescription.caption")}
               badgeLabel={t("missingDescription.badge")}
               getFeatureHref={getFeatureHref}
+              openExternalLabel={openExternalLabel}
             />
           );
           break;
@@ -413,6 +416,7 @@ export function ProjectQaDashboard({
                   },
                 }}
                 getFeatureHref={getFeatureHref}
+                openExternalLabel={openExternalLabel}
               />
           </>
         );
@@ -433,6 +437,7 @@ export function ProjectQaDashboard({
                 status === "CLOSED" ? "success" : "default"
               }
               getRunHref={getRunHref}
+              openExternalLabel={openExternalLabel}
             />
           );
           break;
@@ -449,6 +454,7 @@ export function ProjectQaDashboard({
               badgeLabel={() => t("runsWithFullPass.badge")}
               badgeTone={() => "success"}
               getRunHref={getRunHref}
+              openExternalLabel={openExternalLabel}
             />
           );
           break;
@@ -743,6 +749,7 @@ function FeatureCoverageList({
   t,
   onSelectFeature,
   getFeatureHref,
+  openExternalLabel,
 }: {
   items: QaDashboardFeatureCoverage[];
   formatter: ReturnType<typeof useFormatter>;
@@ -760,6 +767,7 @@ function FeatureCoverageList({
   };
   onSelectFeature?: (featureId?: string | null) => void;
   getFeatureHref?: (featureId: string) => string;
+  openExternalLabel: string;
 }) {
   return (
     <ul className="space-y-4">
@@ -778,18 +786,35 @@ function FeatureCoverageList({
           feature.featureId && getFeatureHref
             ? getFeatureHref(feature.featureId)
             : null;
-        const isLink = Boolean(href);
         const isClickable = Boolean(onSelectFeature && feature.featureId);
+        const externalLink =
+          href && openExternalLabel ? (
+            <Link
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={openExternalLabel}
+              title={openExternalLabel}
+              className="text-muted-foreground transition hover:text-primary"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">{openExternalLabel}</span>
+            </Link>
+          ) : null;
         const content = (
           <>
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold">{feature.featureName}</p>
                 <p className="text-2xs text-muted-foreground">
                   {runDate ? t.latestRun(runDate) : t.noRuns}
                 </p>
               </div>
-              <p className="text-lg font-semibold">{percent}%</p>
+              <div className="flex items-center gap-2">
+                <p className="text-lg font-semibold">{percent}%</p>
+                {externalLink}
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               <SummaryBadge
@@ -833,14 +858,7 @@ function FeatureCoverageList({
         );
         return (
           <li key={feature.featureId}>
-            {isLink ? (
-              <Link
-                href={href!}
-                className="block w-full space-y-3 rounded-xl border bg-background/80 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {content}
-              </Link>
-            ) : isClickable ? (
+            {isClickable ? (
               <button
                 type="button"
                 onClick={() => onSelectFeature?.(feature.featureId)}
@@ -866,39 +884,51 @@ function MissingDescriptionList({
   badgeLabel,
   onSelectFeature,
   getFeatureHref,
+  openExternalLabel,
 }: {
   items: QaDashboardFeatureMissingDescription[];
   caption: string;
   badgeLabel: string;
   onSelectFeature?: (featureId: string) => void;
   getFeatureHref?: (featureId: string) => string;
+  openExternalLabel: string;
 }) {
   return (
     <ul className="space-y-3">
       {items.map((feature) => {
         const href =
           getFeatureHref && feature.id ? getFeatureHref(feature.id) : null;
-        const isLink = Boolean(href);
         const isClickable = Boolean(onSelectFeature);
+        const externalLink =
+          href && openExternalLabel ? (
+            <Link
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={openExternalLabel}
+              title={openExternalLabel}
+              className="text-muted-foreground transition hover:text-primary"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">{openExternalLabel}</span>
+            </Link>
+          ) : null;
         const content = (
-          <>
+          <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-sm font-semibold">{feature.name}</p>
               <p className="text-2xs text-muted-foreground">{caption}</p>
             </div>
-            <SummaryBadge label={badgeLabel} />
-          </>
+            <div className="flex items-center gap-2">
+              <SummaryBadge label={badgeLabel} />
+              {externalLink}
+            </div>
+          </div>
         );
         return (
           <li key={feature.id}>
-            {isLink ? (
-              <Link
-                href={href!}
-                className="flex w-full items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {content}
-              </Link>
-            ) : isClickable ? (
+            {isClickable ? (
               <button
                 type="button"
                 onClick={() => onSelectFeature?.(feature.id)}
@@ -928,6 +958,7 @@ function RunList({
   badgeTone,
   onSelectRun,
   getRunHref,
+  openExternalLabel,
 }: {
   runs: QaDashboardRunSummary[];
   formatter: ReturnType<typeof useFormatter>;
@@ -938,6 +969,7 @@ function RunList({
   badgeTone?: (status: QaDashboardRunSummary["status"]) => "default" | "success";
   onSelectRun?: (runId: string) => void;
   getRunHref?: (runId: string) => string;
+  openExternalLabel: string;
 }) {
   return (
     <ul className="space-y-3">
@@ -947,9 +979,23 @@ function RunList({
           dateStyle: "medium",
           timeStyle: "short",
         });
-        const href = getRunHref ? getRunHref(run.id) : null;
-        const isLink = Boolean(href);
         const isClickable = Boolean(onSelectRun);
+        const href = getRunHref ? getRunHref(run.id) : null;
+        const externalLink =
+          href && openExternalLabel ? (
+            <Link
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={openExternalLabel}
+              title={openExternalLabel}
+              className="text-muted-foreground transition hover:text-primary"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">{openExternalLabel}</span>
+            </Link>
+          ) : null;
         const content = (
           <>
             <div className="flex items-center justify-between gap-3">
@@ -957,10 +1003,13 @@ function RunList({
                 <p className="text-sm font-semibold">{title}</p>
                 <p className="text-2xs text-muted-foreground">{runDate}</p>
               </div>
-              <SummaryBadge
-                label={badgeLabel(run.status)}
-                tone={badgeTone ? badgeTone(run.status) : "default"}
-              />
+              <div className="flex items-center gap-2">
+                <SummaryBadge
+                  label={badgeLabel(run.status)}
+                  tone={badgeTone ? badgeTone(run.status) : "default"}
+                />
+                {externalLink}
+              </div>
             </div>
             {run.environment && (
               <p className="text-2xs text-muted-foreground">
@@ -984,14 +1033,7 @@ function RunList({
         );
         return (
           <li key={run.id}>
-            {isLink ? (
-              <Link
-                href={href!}
-                className="block w-full space-y-2 rounded-xl border bg-background/80 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                {content}
-              </Link>
-            ) : isClickable ? (
+            {isClickable ? (
               <button
                 type="button"
                 onClick={() => onSelectRun?.(run.id)}

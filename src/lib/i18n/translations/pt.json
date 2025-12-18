@@ -1074,6 +1074,7 @@
           "empty": "Choose any metric above to load its list.",
           "cta": "Show details",
           "showPanel": "Expand details",
+          "openInNewTab": "Abrir em uma nova aba",
           "sortLabel": "Sort by coverage",
           "sortDesc": "High → Low",
           "sortAsc": "Low → High",

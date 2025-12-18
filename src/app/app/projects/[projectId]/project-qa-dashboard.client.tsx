@@ -3,7 +3,7 @@
 import type { KeyboardEvent, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "sonner";
 
 import {
@@ -64,7 +64,6 @@ export function ProjectQaDashboard({
   const tRuns = useTranslations("app.qa.runs.list");
   const statusLabels = useTranslations("app.qa.runs.panel.statusBadge");
   const formatter = useFormatter();
-  const router = useRouter();
   const detailCta = t("detail.cta");
 
   const [metrics, setMetrics] = useState<QaDashboardMetrics | null>(null);
@@ -282,20 +281,14 @@ export function ProjectQaDashboard({
     setDetailsVisible(true);
   }, []);
 
-  const handleNavigateToFeature = useCallback(
-    (featureId?: string | null) => {
-      if (!featureId) return;
-      router.push(`/app/projects/${projectId}/features/${featureId}`);
-    },
-    [projectId, router]
+  const getFeatureHref = useCallback(
+    (featureId: string) => `/app/projects/${projectId}/features/${featureId}`,
+    [projectId]
   );
 
-  const handleNavigateToRun = useCallback(
-    (runId: string | null | undefined) => {
-      if (!runId) return;
-      router.push(`/app/projects/${projectId}/test-runs/${runId}`);
-    },
-    [projectId, router]
+  const getRunHref = useCallback(
+    (runId: string) => `/app/projects/${projectId}/test-runs/${runId}`,
+    [projectId]
   );
 
   const coverageGroupKey = "coverageGroup";
@@ -384,7 +377,7 @@ export function ProjectQaDashboard({
               }
               caption={t("missingDescription.caption")}
               badgeLabel={t("missingDescription.badge")}
-              onSelectFeature={handleNavigateToFeature}
+              getFeatureHref={getFeatureHref}
             />
           );
           break;
@@ -418,9 +411,9 @@ export function ProjectQaDashboard({
                     withRuns: t("featureCoverage.badges.withRuns"),
                     withoutRuns: t("featureCoverage.badges.withoutRuns"),
                   },
-              }}
-              onSelectFeature={handleNavigateToFeature}
-            />
+                }}
+                getFeatureHref={getFeatureHref}
+              />
           </>
         );
         break;
@@ -439,7 +432,7 @@ export function ProjectQaDashboard({
               badgeTone={(status) =>
                 status === "CLOSED" ? "success" : "default"
               }
-              onSelectRun={handleNavigateToRun}
+              getRunHref={getRunHref}
             />
           );
           break;
@@ -455,7 +448,7 @@ export function ProjectQaDashboard({
               }
               badgeLabel={() => t("runsWithFullPass.badge")}
               badgeTone={() => "success"}
-              onSelectRun={handleNavigateToRun}
+              getRunHref={getRunHref}
             />
           );
           break;
@@ -749,6 +742,7 @@ function FeatureCoverageList({
   formatter,
   t,
   onSelectFeature,
+  getFeatureHref,
 }: {
   items: QaDashboardFeatureCoverage[];
   formatter: ReturnType<typeof useFormatter>;
@@ -765,6 +759,7 @@ function FeatureCoverageList({
     };
   };
   onSelectFeature?: (featureId?: string | null) => void;
+  getFeatureHref?: (featureId: string) => string;
 }) {
   return (
     <ul className="space-y-4">
@@ -779,6 +774,11 @@ function FeatureCoverageList({
               dateStyle: "medium",
             })
           : null;
+        const href =
+          feature.featureId && getFeatureHref
+            ? getFeatureHref(feature.featureId)
+            : null;
+        const isLink = Boolean(href);
         const isClickable = Boolean(onSelectFeature && feature.featureId);
         const content = (
           <>
@@ -833,7 +833,14 @@ function FeatureCoverageList({
         );
         return (
           <li key={feature.featureId}>
-            {isClickable ? (
+            {isLink ? (
+              <Link
+                href={href!}
+                className="block w-full space-y-3 rounded-xl border bg-background/80 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {content}
+              </Link>
+            ) : isClickable ? (
               <button
                 type="button"
                 onClick={() => onSelectFeature?.(feature.featureId)}
@@ -858,15 +865,20 @@ function MissingDescriptionList({
   caption,
   badgeLabel,
   onSelectFeature,
+  getFeatureHref,
 }: {
   items: QaDashboardFeatureMissingDescription[];
   caption: string;
   badgeLabel: string;
   onSelectFeature?: (featureId: string) => void;
+  getFeatureHref?: (featureId: string) => string;
 }) {
   return (
     <ul className="space-y-3">
       {items.map((feature) => {
+        const href =
+          getFeatureHref && feature.id ? getFeatureHref(feature.id) : null;
+        const isLink = Boolean(href);
         const isClickable = Boolean(onSelectFeature);
         const content = (
           <>
@@ -879,7 +891,14 @@ function MissingDescriptionList({
         );
         return (
           <li key={feature.id}>
-            {isClickable ? (
+            {isLink ? (
+              <Link
+                href={href!}
+                className="flex w-full items-center justify-between gap-3 rounded-xl border bg-background/70 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {content}
+              </Link>
+            ) : isClickable ? (
               <button
                 type="button"
                 onClick={() => onSelectFeature?.(feature.id)}
@@ -908,6 +927,7 @@ function RunList({
   badgeLabel,
   badgeTone,
   onSelectRun,
+  getRunHref,
 }: {
   runs: QaDashboardRunSummary[];
   formatter: ReturnType<typeof useFormatter>;
@@ -917,6 +937,7 @@ function RunList({
   badgeLabel: (status: QaDashboardRunSummary["status"]) => string;
   badgeTone?: (status: QaDashboardRunSummary["status"]) => "default" | "success";
   onSelectRun?: (runId: string) => void;
+  getRunHref?: (runId: string) => string;
 }) {
   return (
     <ul className="space-y-3">
@@ -926,6 +947,8 @@ function RunList({
           dateStyle: "medium",
           timeStyle: "short",
         });
+        const href = getRunHref ? getRunHref(run.id) : null;
+        const isLink = Boolean(href);
         const isClickable = Boolean(onSelectRun);
         const content = (
           <>
@@ -961,7 +984,14 @@ function RunList({
         );
         return (
           <li key={run.id}>
-            {isClickable ? (
+            {isLink ? (
+              <Link
+                href={href!}
+                className="block w-full space-y-2 rounded-xl border bg-background/80 px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {content}
+              </Link>
+            ) : isClickable ? (
               <button
                 type="button"
                 onClick={() => onSelectRun?.(run.id)}

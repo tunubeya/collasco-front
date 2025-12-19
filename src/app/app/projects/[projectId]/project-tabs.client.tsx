@@ -18,7 +18,6 @@ import {
   ManualOutline,
   buildProjectManualTree,
 } from "@/ui/components/manual/manual-outline.client";
-import { ProjectQaDashboard } from "./project-qa-dashboard.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -30,7 +29,7 @@ type ProjectTabsProps = {
   membershipRole?: ProjectMemberRole | null;
 };
 
-type ProjectTab = "structure" | "dashboard" | "qa" | "members" | "manual";
+type ProjectTab = "structure" | "qa" | "members" | "manual";
 
 export function ProjectTabs({
   project,
@@ -66,11 +65,6 @@ export function ProjectTabs({
           label={tTabs("structure")}
           isActive={activeTab === "structure"}
           onClick={() => setActiveTab("structure")}
-        />
-        <TabButton
-          label={tTabs("dashboard")}
-          isActive={activeTab === "dashboard"}
-          onClick={() => setActiveTab("dashboard")}
         />
         <TabButton
           label={tTabs("qa")}
@@ -119,10 +113,6 @@ export function ProjectTabs({
           canManageQa={canManageQa}
         />
       )}
-      {activeTab === "dashboard" && (
-        <ProjectQaDashboard token={token} projectId={projectId} />
-      )}
-
       {activeTab === "members" && (
         <ProjectMembersTab
           token={token}

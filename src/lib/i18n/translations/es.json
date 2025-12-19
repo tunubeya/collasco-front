@@ -415,7 +415,8 @@
       "breadcrumbs": {
         "projects": "Proyectos",
         "modules": "Módulos",
-        "features": "Features"
+        "features": "Features",
+        "dashboard": "Dashboard"
       }
     },
     "settings": {
@@ -538,7 +539,9 @@
         "actions": {
           "edit": "Editar",
           "delete": "Eliminar",
-          "addModule": "Agregar módulo"
+          "addModule": "Agregar módulo",
+          "viewDashboard": "Ir al dashboard",
+          "backToProject": "Volver al proyecto"
         },
         "modules": {
           "title": "Módulos",

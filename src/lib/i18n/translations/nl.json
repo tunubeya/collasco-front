@@ -361,7 +361,8 @@
       "breadcrumbs": {
         "projects": "Projecten",
         "modules": "Modules",
-        "features": "Features"
+        "features": "Features",
+        "dashboard": "Dashboard"
       }
     },
     "settings": {
@@ -463,7 +464,9 @@
         "actions": {
           "edit": "Bewerken",
           "delete": "Verwijderen",
-          "addModule": "Module toevoegen"
+          "addModule": "Module toevoegen",
+          "viewDashboard": "Ga naar dashboard",
+          "backToProject": "Terug naar project"
         },
         "modules": {
           "title": "Modules",

@@ -973,6 +973,7 @@
           "statusPlaceholder": "Select status",
           "testCasePlaceholder": "Select test case",
           "notePlaceholder": "Optional notes or evidence links...",
+          "noteRequiresStatus": "Select a status before writing notes.",
           "empty": {
             "title": "No results yet",
             "description": "Add pending cases from coverage or update an existing one."

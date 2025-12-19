@@ -1824,10 +1824,12 @@ export function TestRunPanel({
           const state = resultState[testCase.testCaseId] ?? {};
           const draftComment = commentDrafts[testCase.testCaseId];
           const noteValue = draftComment ?? state.comment ?? "";
-          const isReadOnlyNote = isRunClosed;
+          const needsStatusSelection = !state.evaluation;
+          const isNoteDisabled = isRunClosed || needsStatusSelection;
           const noteClasses = cn(
             "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
-            isReadOnlyNote && "cursor-not-allowed border-amber-200 bg-amber-50 text-amber-900",
+            isNoteDisabled &&
+              "cursor-not-allowed border-amber-200 bg-amber-50 text-amber-900",
           );
           return (
             <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
@@ -1894,10 +1896,15 @@ export function TestRunPanel({
                       commitComment(testCase.testCaseId);
                     }
                   }}
-                  readOnly={isReadOnlyNote}
+                  disabled={isNoteDisabled}
                   className={noteClasses}
                   placeholder={t("panel.notePlaceholder")}
                 />
+                {needsStatusSelection && !isRunClosed && (
+                  <p className="mt-1 text-xs text-amber-600">
+                    {t("panel.noteRequiresStatus")}
+                  </p>
+                )}
               </div>
             </div>
           );

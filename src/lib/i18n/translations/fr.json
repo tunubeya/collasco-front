@@ -922,6 +922,7 @@
           "statusPlaceholder": "Sélectionnez un statut",
           "testCasePlaceholder": "Sélectionnez un cas de test",
           "notePlaceholder": "Notes ou liens de preuve (optionnel)...",
+          "noteRequiresStatus": "Sélectionnez un statut avant d’ajouter une note.",
           "empty": {
             "title": "Aucun résultat",
             "description": "Ajoutez les cas en attente depuis la couverture ou mettez à jour un résultat existant."

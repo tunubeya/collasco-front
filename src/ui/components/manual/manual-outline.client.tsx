@@ -9,6 +9,7 @@ import type {
   StructureModuleNode,
 } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 export type ManualNode = {
   id: string;
@@ -147,10 +148,10 @@ function ManualNodeItem({
     TITLE_CLASSES[Math.min(level, TITLE_CLASSES.length - 1)];
   const descriptionClass =
     DESCRIPTION_CLASSES[Math.min(level, DESCRIPTION_CLASSES.length - 1)];
-  const description =
+  const richTextValue =
     node.description && node.description.trim().length > 0
       ? node.description
-      : fallbackDescription;
+      : null;
   const isFocused = focusId === node.id;
   const currentNumbering =
     node.numbering && node.numbering.trim().length > 0
@@ -188,9 +189,13 @@ function ManualNodeItem({
           />
         ) : null}
       </button>
-      <p className={cn(descriptionClass, "px-3 whitespace-pre-line")}>
-        {description}
-      </p>
+      <div className="px-3">
+        <RichTextPreview
+          value={richTextValue}
+          emptyLabel={fallbackDescription}
+          className={cn(descriptionClass)}
+        />
+      </div>
       {hasChildren && isExpanded && (
         <div className="space-y-4">
           {node.children.map((child, index) => (

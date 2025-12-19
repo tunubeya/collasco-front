@@ -472,6 +472,9 @@
           "noDescription": "Geen beschrijving beschikbaar",
           "expandAll": "Alles uitvouwen",
           "collapseAll": "Alles samenvouwen"
+        },
+        "description": {
+          "empty": "Geen beschrijving beschikbaar."
         }
       },
       "manual": {
@@ -559,6 +562,15 @@
           "status": { "label": "Status" },
           "visibility": { "label": "Zichtbaarheid" }
         },
+        "richText": {
+          "bold": "Vet",
+          "italic": "Cursief",
+          "underline": "Onderstrepen",
+          "bulletList": "Opsommingstekens",
+          "orderedList": "Genummerde lijst",
+          "clear": "Opmaak wissen",
+          "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
+        },
         "errors": {
           "required": "Dit veld is verplicht.",
           "validation": "Controleer de gegevens.",
@@ -625,6 +637,15 @@
               "rootOption": "Hoofdmodule",
               "hint": "Laat leeg om een hoofdmodule te maken."
             }
+          },
+          "richText": {
+            "bold": "Vet",
+            "italic": "Cursief",
+            "underline": "Onderstrepen",
+            "bulletList": "Opsommingstekens",
+            "orderedList": "Genummerde lijst",
+            "clear": "Opmaak wissen",
+            "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
           },
           "errors": {
             "required": "Dit veld is verplicht.",
@@ -719,6 +740,15 @@
               "label": "Prioriteit",
               "placeholder": "Geen prioriteit (optioneel)"
             }
+          },
+          "richText": {
+            "bold": "Vet",
+            "italic": "Cursief",
+            "underline": "Onderstrepen",
+            "bulletList": "Lijst met opsommingstekens",
+            "orderedList": "Genummerde lijst",
+            "clear": "Opmaak wissen",
+            "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U) voor opmaak. Shift+Enter voegt een zachte regel toe."
           },
           "errors": {
             "required": "Dit veld is verplicht.",

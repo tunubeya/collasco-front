@@ -9,6 +9,7 @@ import type { Module } from "@/lib/model-definitions/module";
 import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
 import { StructureTree } from "@/ui/components/projects/StructureTree.client";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import {
   ManualOutline,
@@ -114,9 +115,10 @@ export function ModuleTabs({
 
       {activeTab === "details" && (
         <div className="rounded-xl border bg-background p-4">
-          <p className="text-sm text-muted-foreground whitespace-pre-line">
-            {module.description ?? tModule("description.empty")}
-          </p>
+          <RichTextPreview
+            value={module.description}
+            emptyLabel={tModule("description.empty")}
+          />
         </div>
       )}
 

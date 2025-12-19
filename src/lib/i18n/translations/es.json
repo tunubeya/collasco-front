@@ -547,6 +547,9 @@
           "noDescription": "Sin descripción disponible",
           "expandAll": "Expandir todo",
           "collapseAll": "Colapsar todo"
+        },
+        "description": {
+          "empty": "Sin descripción disponible."
         }
       },
       "manual": {
@@ -617,6 +620,9 @@
         "retry": "Reintentar",
         "backToList": "Volver a proyectos"
       },
+      "description": {
+        "empty": "Sin descripción disponible."
+      },
       "form": {
         "fields": {
           "name": {
@@ -633,6 +639,15 @@
           },
           "status": { "label": "Estado" },
           "visibility": { "label": "Visibilidad" }
+        },
+        "richText": {
+          "bold": "Negrita",
+          "italic": "Cursiva",
+          "underline": "Subrayado",
+          "bulletList": "Lista con viñetas",
+          "orderedList": "Lista numerada",
+          "clear": "Limpiar formato",
+          "helper": "Usa la barra o atajos (Ctrl/Cmd + B/I/U). Shift+Enter agrega un salto suave."
         },
         "errors": {
           "required": "Este campo es obligatorio.",
@@ -695,12 +710,21 @@
               "label": "Descripción",
               "placeholder": "Descripción opcional"
             },
-            "parent": {
-              "label": "Módulo padre",
-              "rootOption": "Módulo raíz",
-              "hint": "Déjalo vacío para crear un módulo raíz."
-            }
-          },
+          "parent": {
+            "label": "Módulo padre",
+            "rootOption": "Módulo raíz",
+            "hint": "Déjalo vacío para crear un módulo raíz."
+          }
+        },
+        "richText": {
+          "bold": "Negrita",
+          "italic": "Cursiva",
+          "underline": "Subrayado",
+          "bulletList": "Lista con viñetas",
+          "orderedList": "Lista numerada",
+          "clear": "Limpiar formato",
+          "helper": "Usa la barra o atajos (Ctrl/Cmd + B/I/U). Shift+Enter agrega un salto suave."
+        },
           "errors": {
             "required": "Este campo es obligatorio.",
             "invalidParent": "No puedes usar el mismo módulo como padre.",
@@ -794,6 +818,15 @@
               "label": "Prioridad",
               "placeholder": "Sin prioridad (opcional)"
             }
+          },
+          "richText": {
+            "bold": "Negrita",
+            "italic": "Cursiva",
+            "underline": "Subrayado",
+            "bulletList": "Lista con viñetas",
+            "orderedList": "Lista numerada",
+            "clear": "Limpiar formato",
+            "helper": "Usa la barra o los atajos (Ctrl/Cmd + B/I/U) para dar formato. Shift+Enter agrega un salto suave."
           },
           "errors": {
             "required": "Este campo es obligatorio.",

@@ -493,6 +493,9 @@
           "noDescription": "Aucune description disponible",
           "expandAll": "Tout développer",
           "collapseAll": "Tout réduire"
+        },
+        "description": {
+          "empty": "Aucune description disponible."
         }
       },
       "manual": {
@@ -563,6 +566,9 @@
         "retry": "Réessayer",
         "backToList": "Retour aux projets"
       },
+      "description": {
+        "empty": "Aucune description disponible."
+      },
       "form": {
         "fields": {
           "name": {
@@ -579,6 +585,15 @@
           },
           "status": { "label": "Statut" },
           "visibility": { "label": "Visibilité" }
+        },
+        "richText": {
+          "bold": "Gras",
+          "italic": "Italique",
+          "underline": "Souligné",
+          "bulletList": "Liste à puces",
+          "orderedList": "Liste numérotée",
+          "clear": "Effacer le format",
+          "helper": "Utilisez la barre ou les raccourcis (Ctrl/Cmd + B/I/U). Shift+Entrée ajoute un saut souple."
         },
         "errors": {
           "required": "Ce champ est obligatoire.",
@@ -641,12 +656,21 @@
               "label": "Description",
               "placeholder": "Description optionnelle"
             },
-            "parent": {
-              "label": "Module parent",
-              "rootOption": "Module racine",
-              "hint": "Laissez vide pour créer un module racine."
-            }
-          },
+          "parent": {
+            "label": "Module parent",
+            "rootOption": "Module racine",
+            "hint": "Laissez vide pour créer un module racine."
+          }
+        },
+        "richText": {
+          "bold": "Gras",
+          "italic": "Italique",
+          "underline": "Souligné",
+          "bulletList": "Liste à puces",
+          "orderedList": "Liste numérotée",
+          "clear": "Effacer le format",
+          "helper": "Utilisez la barre ou les raccourcis (Ctrl/Cmd + B/I/U). Shift+Entrée ajoute un saut souple."
+        },
           "errors": {
             "required": "Ce champ est obligatoire.",
             "invalidParent": "Impossible d’utiliser le module comme parent de lui-même.",
@@ -740,6 +764,15 @@
               "label": "Priorité",
               "placeholder": "Sans priorité (facultatif)"
             }
+          },
+          "richText": {
+            "bold": "Gras",
+            "italic": "Italique",
+            "underline": "Souligné",
+            "bulletList": "Liste à puces",
+            "orderedList": "Liste numérotée",
+            "clear": "Effacer le format",
+            "helper": "Utilisez la barre ou les raccourcis (Ctrl/Cmd + B/I/U) pour formater. Shift+Entrée ajoute un saut souple."
           },
           "errors": {
             "required": "Ce champ est obligatoire.",

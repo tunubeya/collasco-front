@@ -7,6 +7,7 @@ import { fetchGetUserProfile, fetchProjectById, fetchProjectStructure } from "@/
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
 import { ProjectTabs } from "./project-tabs.client";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import type { FeatureOption } from "./project-qa.types";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
@@ -87,9 +88,12 @@ export default async function ProjectDetailPage({
                <div>
           <h1 className="text-2xl font-bold">{project.name}</h1>
           {project.description && (
-            <p className="text-sm mt-1 whitespace-pre-line">
-              {project.description}
-            </p>
+            <div className="mt-1">
+              <RichTextPreview
+                value={project.description}
+                emptyLabel={t("description.empty")}
+              />
+            </div>
           )}
           <p className="text-xs text-muted-foreground mt-1">
             {t("updated", { date: formattedUpdatedAt })}

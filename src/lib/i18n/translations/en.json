@@ -546,7 +546,10 @@
           "sortOrder": "Order #{order}",
           "noDescription": "No description available",
           "expandAll": "Expand all",
-        "collapseAll": "Collapse all"
+          "collapseAll": "Collapse all"
+        },
+        "description": {
+          "empty": "No description provided."
         }
       },
       "manual": {
@@ -634,6 +637,15 @@
           "status": { "label": "Status" },
           "visibility": { "label": "Visibility" }
         },
+        "richText": {
+          "bold": "Bold",
+          "italic": "Italic",
+          "underline": "Underline",
+          "bulletList": "Bulleted list",
+          "orderedList": "Numbered list",
+          "clear": "Clear formatting",
+          "helper": "Use the toolbar or shortcuts (Ctrl/Cmd + B/I/U). Shift+Enter inserts a soft break."
+        },
         "errors": {
           "required": "This field is required.",
           "validation": "Please review the information.",
@@ -700,6 +712,15 @@
               "rootOption": "Root module",
               "hint": "Leave empty to create a root module."
             }
+          },
+          "richText": {
+            "bold": "Bold",
+            "italic": "Italic",
+            "underline": "Underline",
+            "bulletList": "Bulleted list",
+            "orderedList": "Numbered list",
+            "clear": "Clear formatting",
+            "helper": "Use the toolbar or shortcuts (Ctrl/Cmd + B/I/U). Shift+Enter inserts a soft break."
           },
           "errors": {
             "required": "This field is required.",
@@ -794,6 +815,15 @@
               "label": "Priority",
               "placeholder": "No priority (optional)"
             }
+          },
+          "richText": {
+            "bold": "Bold",
+            "italic": "Italic",
+            "underline": "Underline",
+            "bulletList": "Bulleted list",
+            "orderedList": "Numbered list",
+            "clear": "Clear formatting",
+            "helper": "Use the toolbar or shortcuts (Ctrl/Cmd + B/I/U) to format. Shift+Enter inserts a soft break."
           },
           "errors": {
             "required": "This field is required.",

@@ -12,6 +12,7 @@ import {
   ManualOutline,
   buildProjectManualTree,
 } from "@/ui/components/manual/manual-outline.client";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 type FeatureTabsProps = {
   feature: Feature;
@@ -78,9 +79,10 @@ export function FeatureTabs({
       {activeTab === "info" && (
         <section className="rounded-xl border bg-background p-4">
           <h2 className="mb-2 font-semibold">{t("description.title")}</h2>
-          <p className="text-sm text-muted-foreground whitespace-pre-line">
-            {feature.description ?? t("description.empty")}
-          </p>
+          <RichTextPreview
+            value={feature.description}
+            emptyLabel={t("description.empty")}
+          />
         </section>
       )}
 

@@ -11,6 +11,7 @@ import {
   ProjectStatus,
   Visibility,
 } from "@/lib/definitions";
+import { RichTextEditor } from "./RichTextEditor";
 
 type ProjectFormProps = {
   mode: "create" | "edit";
@@ -89,22 +90,21 @@ export function ProjectForm({
         )}
       </div>
 
-      <div className="space-y-2">
-        <label
-          htmlFor="project-description"
-          className="text-sm font-medium text-foreground"
-        >
-          {t("fields.description.label")}
-        </label>
-        <textarea
-          id="project-description"
-          name="description"
-          defaultValue={defaultValues?.description ?? ""}
-          rows={4}
-          className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          placeholder={t("fields.description.placeholder")}
-        />
-      </div>
+      <RichTextEditor
+        name="description"
+        label={t("fields.description.label")}
+        placeholder={t("fields.description.placeholder")}
+        defaultValue={defaultValues?.description ?? ""}
+        helperText={t("richText.helper")}
+        labels={{
+          bold: t("richText.bold"),
+          italic: t("richText.italic"),
+          underline: t("richText.underline"),
+          bulletList: t("richText.bulletList"),
+          orderedList: t("richText.orderedList"),
+          clear: t("richText.clear"),
+        }}
+      />
 
       <div className="space-y-2">
         <label

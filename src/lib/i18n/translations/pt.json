@@ -547,6 +547,9 @@
           "noDescription": "Sem descrição disponível",
           "expandAll": "Expandir tudo",
           "collapseAll": "Colapsar tudo"
+        },
+        "description": {
+          "empty": "Nenhuma descrição disponível."
         }
       },
       "manual": {
@@ -634,6 +637,15 @@
           "status": { "label": "Status" },
           "visibility": { "label": "Visibilidade" }
         },
+        "richText": {
+          "bold": "Negrito",
+          "italic": "Itálico",
+          "underline": "Sublinhado",
+          "bulletList": "Lista com marcadores",
+          "orderedList": "Lista numerada",
+          "clear": "Limpar formatação",
+          "helper": "Use a barra ou atalhos (Ctrl/Cmd + B/I/U). Shift+Enter adiciona uma quebra suave."
+        },
         "errors": {
           "required": "Este campo é obrigatório.",
           "validation": "Revise as informações.",
@@ -695,12 +707,21 @@
               "label": "Descrição",
               "placeholder": "Descrição opcional"
             },
-            "parent": {
-              "label": "Módulo pai",
-              "rootOption": "Módulo raiz",
-              "hint": "Deixe em branco para criar um módulo raiz."
-            }
-          },
+          "parent": {
+            "label": "Módulo pai",
+            "rootOption": "Módulo raiz",
+            "hint": "Deixe em branco para criar um módulo raiz."
+          }
+        },
+        "richText": {
+          "bold": "Negrito",
+          "italic": "Itálico",
+          "underline": "Sublinhado",
+          "bulletList": "Lista com marcadores",
+          "orderedList": "Lista numerada",
+          "clear": "Limpar formatação",
+          "helper": "Use a barra ou atalhos (Ctrl/Cmd + B/I/U). Shift+Enter adiciona uma quebra suave."
+        },
           "errors": {
             "required": "Este campo é obrigatório.",
             "invalidParent": "Não é possível usar o próprio módulo como pai.",
@@ -794,6 +815,15 @@
               "label": "Prioridade",
               "placeholder": "Sem prioridade (opcional)"
             }
+          },
+          "richText": {
+            "bold": "Negrito",
+            "italic": "Itálico",
+            "underline": "Sublinhado",
+            "bulletList": "Lista com marcadores",
+            "orderedList": "Lista numerada",
+            "clear": "Limpar formatação",
+            "helper": "Use a barra ou os atalhos (Ctrl/Cmd + B/I/U) para formatar. Shift+Enter adiciona uma quebra suave."
           },
           "errors": {
             "required": "Este campo é obrigatório.",

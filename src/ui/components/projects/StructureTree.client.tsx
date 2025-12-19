@@ -34,7 +34,6 @@ type StructureTreeProps = {
   emptyLabel: string;
   expandLabel: string;
   collapseLabel: string;
-  description?: string | null;
   headerActions?: React.ReactNode;
   className?: string;
   canManageStructure?: boolean;

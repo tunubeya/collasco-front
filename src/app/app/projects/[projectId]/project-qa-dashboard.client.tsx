@@ -10,10 +10,12 @@ import { toast } from "sonner";
 import {
   type QaDashboardFeatureCoverage,
   type QaDashboardFeatureMissingDescription,
+  type QaDashboardFeatureWithoutTestCases,
   type QaDashboardMetrics,
   type QaDashboardRunSummary,
   getProjectDashboard,
   getProjectDashboardFeatureCoverage,
+  getProjectDashboardFeaturesWithoutTestCases,
   getProjectDashboardFeaturesMissingDescription,
   getProjectDashboardOpenRuns,
   getProjectDashboardRunsWithFullPass,
@@ -29,6 +31,7 @@ type ProjectQaDashboardProps = {
 
 type DashboardDetailType =
   | "featuresMissingDescription"
+  | "featuresWithoutTestCases"
   | "featureCoverage"
   | "openRuns"
   | "runsWithFullPass";
@@ -50,6 +53,7 @@ const METRIC_DETAIL_MAP: Partial<
   Record<keyof QaDashboardMetrics, DashboardDetailType>
 > = {
   featuresMissingDescription: "featuresMissingDescription",
+  featuresWithoutTestCases: "featuresWithoutTestCases",
   featuresWithRuns: "featureCoverage",
   testCoverageRatio: "featureCoverage",
   openRuns: "openRuns",
@@ -110,6 +114,19 @@ export function ProjectQaDashboard({
           pageSize
         );
       },
+      featuresWithoutTestCases: (
+        page: number,
+        pageSize: number,
+        _params?: Record<string, string>
+      ) => {
+        void _params;
+        return getProjectDashboardFeaturesWithoutTestCases(
+          token,
+          projectId,
+          page,
+          pageSize
+        );
+      },
       featureCoverage: (
         page: number,
         pageSize: number,
@@ -149,6 +166,11 @@ export function ProjectQaDashboard({
         description: t("missingDescription.description"),
         empty: t("missingDescription.empty"),
       },
+      featuresWithoutTestCases: {
+        title: t("featuresWithoutTestCases.title"),
+        description: t("featuresWithoutTestCases.description"),
+        empty: t("featuresWithoutTestCases.empty"),
+      },
       featureCoverage: {
         title: t("featureCoverage.title"),
         description: t("featureCoverage.description"),
@@ -172,7 +194,13 @@ export function ProjectQaDashboard({
     setIsLoadingMetrics(true);
     try {
       const payload = await getProjectDashboard(token, projectId);
-      setMetrics(payload.metrics);
+      setMetrics({
+        ...payload.metrics,
+        featuresWithoutTestCases:
+          payload.featuresWithoutTestCases ??
+          payload.metrics.featuresWithoutTestCases ??
+          0,
+      });
     } catch (error) {
       toast.error(t("errors.load"), {
         description: error instanceof Error ? error.message : undefined,
@@ -325,6 +353,10 @@ export function ProjectQaDashboard({
         label: t("metrics.featuresMissingDescription"),
       },
       {
+        key: "featuresWithoutTestCases",
+        label: t("metrics.featuresWithoutTestCases"),
+      },
+      {
         key: "featuresWithRuns",
         label: t("metrics.featuresWithRuns"),
       },
@@ -379,6 +411,19 @@ export function ProjectQaDashboard({
               }
               caption={t("missingDescription.caption")}
               badgeLabel={t("missingDescription.badge")}
+              getFeatureHref={getFeatureHref}
+              openExternalLabel={openExternalLabel}
+            />
+          );
+          break;
+        case "featuresWithoutTestCases":
+          detailContent = (
+            <MissingDescriptionList
+              items={
+                detailState.items as QaDashboardFeatureWithoutTestCases[]
+              }
+              caption={t("featuresWithoutTestCases.caption")}
+              badgeLabel={t("featuresWithoutTestCases.badge")}
               getFeatureHref={getFeatureHref}
               openExternalLabel={openExternalLabel}
             />
@@ -886,7 +931,7 @@ function MissingDescriptionList({
   getFeatureHref,
   openExternalLabel,
 }: {
-  items: QaDashboardFeatureMissingDescription[];
+  items: Array<{ id: string; name: string }>;
   caption: string;
   badgeLabel: string;
   onSelectFeature?: (featureId: string) => void;

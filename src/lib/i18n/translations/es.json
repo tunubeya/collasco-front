@@ -1048,9 +1048,10 @@
             "detail": "No pudimos cargar los datos seleccionados."
           },
           "metrics": {
-            "totalFeatures": "Features totales",
-            "featuresMissingDescription": "Sin descripción",
-            "featuresWithRuns": "Con ejecuciones",
+          "totalFeatures": "Features totales",
+          "featuresMissingDescription": "Sin descripción",
+          "featuresWithoutTestCases": "Sin casos de prueba",
+          "featuresWithRuns": "Con ejecuciones",
             "testCoverageRatio": "Cobertura",
             "openRuns": "Ejecuciones abiertas",
             "runsWithFullPass": "Full pass",
@@ -1084,13 +1085,20 @@
               "withoutRuns": "Sin corridas"
             }
           },
-          "missingDescription": {
-            "title": "Features sin descripción",
-            "description": "Identifica qué features necesitan documentación.",
-            "empty": "Todas las features tienen descripción.",
-            "caption": "Documenta la definición funcional para alinear al equipo.",
-            "badge": "Sin descripción"
-          },
+        "missingDescription": {
+          "title": "Features sin descripción",
+          "description": "Identifica qué features necesitan documentación.",
+          "empty": "Todas las features tienen descripción.",
+          "caption": "Documenta la definición funcional para alinear al equipo.",
+          "badge": "Sin descripción"
+        },
+        "featuresWithoutTestCases": {
+          "title": "Features sin casos de prueba",
+          "description": "Detecta el alcance que aún no tiene validaciones.",
+          "empty": "Todas las features tienen casos de prueba.",
+          "caption": "Agrega al menos un caso para garantizar trazabilidad.",
+          "badge": "Sin test cases"
+        },
           "openRuns": {
             "title": "Ejecuciones abiertas",
             "description": "Runs que siguen en progreso.",

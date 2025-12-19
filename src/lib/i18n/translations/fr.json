@@ -996,6 +996,7 @@
         "metrics": {
           "totalFeatures": "Total features",
           "featuresMissingDescription": "Missing description",
+          "featuresWithoutTestCases": "Sans cas de test",
           "featuresWithRuns": "With runs",
           "testCoverageRatio": "Coverage",
           "openRuns": "Open runs",
@@ -1036,6 +1037,13 @@
           "empty": "All features have a description.",
           "caption": "Document the functional scope to unblock QA.",
           "badge": "Missing description"
+        },
+        "featuresWithoutTestCases": {
+          "title": "Features sans cas de test",
+          "description": "Repérez les fonctionnalités encore sans validation.",
+          "empty": "Toutes les features ont des cas de test.",
+          "caption": "Ajoutez au moins un cas pour assurer la traçabilité.",
+          "badge": "Aucun test"
         },
         "openRuns": {
           "title": "Open runs",

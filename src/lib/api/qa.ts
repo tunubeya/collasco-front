@@ -173,6 +173,7 @@ export type QaHealth = {
 export type QaDashboardMetrics = {
   totalFeatures: number;
   featuresMissingDescription: number;
+  featuresWithoutTestCases: number;
   featuresWithRuns: number;
   testCoverageRatio: number;
   openRuns: number;
@@ -181,6 +182,11 @@ export type QaDashboardMetrics = {
 };
 
 export type QaDashboardFeatureMissingDescription = {
+  id: string;
+  name: string;
+};
+
+export type QaDashboardFeatureWithoutTestCases = {
   id: string;
   name: string;
 };
@@ -225,6 +231,7 @@ export type QaDashboardRunSummary = {
 export type QaProjectDashboardResponse = {
   projectId: string;
   metrics: QaDashboardMetrics;
+  featuresWithoutTestCases?: number;
 };
 
 export type PaginatedResult<T> = {
@@ -591,6 +598,21 @@ export function getProjectDashboardFeaturesMissingDescription(
     token,
     projectId,
     "features-missing-description",
+    page,
+    pageSize
+  );
+}
+
+export function getProjectDashboardFeaturesWithoutTestCases(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number
+) {
+  return fetchProjectDashboardList<QaDashboardFeatureWithoutTestCases>(
+    token,
+    projectId,
+    "features-without-testcases",
     page,
     pageSize
   );

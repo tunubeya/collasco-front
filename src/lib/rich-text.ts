@@ -85,5 +85,57 @@ export function sanitizeRichTextClient(value: string): string {
   };
 
   walk(body);
+  const paragraphs = Array.from(body.querySelectorAll("p"));
+  paragraphs.forEach((paragraph) => {
+    normalizeParagraph(paragraph);
+  });
   return body.innerHTML ?? "";
+}
+
+function normalizeParagraph(paragraph: HTMLElement) {
+  if (!paragraph.textContent || !paragraph.textContent.trim()) {
+    paragraph.textContent = "";
+    return;
+  }
+  preserveLeadingIndentation(paragraph);
+}
+
+function preserveLeadingIndentation(paragraph: HTMLElement) {
+  let atLineStart = true;
+  const visit = (node: Node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const value = node.textContent ?? "";
+      if (atLineStart) {
+        node.textContent = convertLeadingWhitespace(value);
+      }
+      if (/\S/.test(value)) {
+        atLineStart = false;
+      }
+      return;
+    }
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const element = node as HTMLElement;
+      if (element.tagName.toLowerCase() === "br") {
+        atLineStart = true;
+        return;
+      }
+      Array.from(element.childNodes).forEach((child) => visit(child));
+    }
+  };
+
+  Array.from(paragraph.childNodes).forEach((node) => visit(node));
+}
+
+function convertLeadingWhitespace(value: string): string {
+  if (!value) return value;
+  const match = value.match(/^([\r\n]*)([ \t]+)/);
+  if (!match) {
+    return value;
+  }
+  const [, breaks = "", spaces = ""] = match;
+  const nbsp = spaces
+    .split("")
+    .map((char) => (char === "\t" ? "\u00a0".repeat(4) : "\u00a0"))
+    .join("");
+  return `${breaks}${nbsp}${value.slice(match[0].length)}`;
 }

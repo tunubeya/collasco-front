@@ -51,8 +51,10 @@ export function RichTextPreview({
       )}
       <style jsx>{`
         .rich-text-preview :global(p) {
-          margin: 0 0 0.5rem;
-          white-space: pre-wrap;
+          margin: 0;
+        }
+        .rich-text-preview :global(p:empty) {
+          min-height: 1em;
         }
         .rich-text-preview :global(ul) {
           list-style: disc;

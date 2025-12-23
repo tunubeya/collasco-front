@@ -990,7 +990,20 @@
           "title": "Feature health",
           "description": "Most recent pass rate per feature.",
           "empty": "No health data yet.",
-          "noRuns": "No runs"
+          "noRuns": "No runs",
+          "notAvailable": "N/B",
+          "lastRunLabel": "Laatste run",
+          "stats": {
+            "executed": "{count} uitgevoerd",
+            "passed": "{count} geslaagd",
+            "failed": "{count} mislukt"
+          },
+          "labels": {
+            "missing": "Ontbrekende testcases",
+            "passed": "Getest en geslaagd",
+            "failed": "Getest en niet geslaagd"
+          },
+          "missingAlert": "{count, plural, =0 {Er ontbreken testcases in de laatste run} one {{count} testcase is niet uitgevoerd in de laatste run} other {{count} testcases zijn niet uitgevoerd in de laatste run}}"
         },
         "featureCoverage": {
           "title": "Coverage by feature",
@@ -1000,12 +1013,8 @@
           "coverageLabel": "{executed} of {total} cases executed",
           "missingLabel": "{count} cases pending",
           "noRuns": "No recorded runs",
-          "badges": {
-            "hasDescription": "Has description",
-            "missingDescription": "Missing description",
-            "withRuns": "Has runs",
-            "withoutRuns": "No runs"
-          }
+          "cta": "Bekijk coverage per feature",
+          "noCases": "Geen actieve testcases"
         },
         "missingDescription": {
           "title": "Features without description",
@@ -1042,6 +1051,8 @@
           "cta": "Show details",
           "showPanel": "Expand details",
           "openInNewTab": "Openen in een nieuw tabblad",
+          "openFeature": "Ga naar feature",
+          "back": "Terug naar dashboard",
           "sortLabel": "Sort by coverage",
           "sortDesc": "High → Low",
           "sortAsc": "Low → High",
@@ -1067,6 +1078,11 @@
         "metrics": {
           "passRate": "Slaagpercentage",
           "lastRun": "Laatste run",
+          "coverage": "Laatste coverage",
+          "coverageValue": "{executed} van {total} cases uitgevoerd",
+          "passRateHint": "Gebaseerd op {executed} van {total} cases uitgevoerd in de laatste run.",
+          "coverageComplete": "Alle testcases zijn uitgevoerd in de laatste run.",
+          "coverageIncomplete": "{remaining, plural, one {{remaining} case werd niet uitgevoerd} other {{remaining} cases werden niet uitgevoerd}}",
           "flaky": "Flaky cases",
           "flakyValue": "{count} flaky cases",
           "notAvailable": "N/B"

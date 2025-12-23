@@ -1,6 +1,6 @@
 "use client";
 
-import type { KeyboardEvent, ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
@@ -11,30 +11,36 @@ import {
   type QaDashboardFeatureCoverage,
   type QaDashboardFeatureMissingDescription,
   type QaDashboardFeatureWithoutTestCases,
+  type QaDashboardFeatureHealth,
   type QaDashboardMetrics,
   type QaDashboardRunSummary,
   getProjectDashboard,
   getProjectDashboardFeatureCoverage,
   getProjectDashboardFeaturesWithoutTestCases,
   getProjectDashboardFeaturesMissingDescription,
+  getProjectDashboardFeatureHealth,
   getProjectDashboardOpenRuns,
   getProjectDashboardRunsWithFullPass,
 } from "@/lib/api/qa";
 import { cn, generatePagination } from "@/lib/utils";
 import { EmptyState, Skeleton, SummaryBadge } from "./project-qa-shared";
-import { actionButtonClass } from "@/ui/styles/action-button";
 
 type ProjectQaDashboardProps = {
   token: string;
   projectId: string;
+  initialDetail?: DashboardDetailType;
+  showSummary?: boolean;
+  detailParams?: Partial<Record<DashboardDetailType, Record<string, string>>>;
+  showHeader?: boolean;
 };
 
-type DashboardDetailType =
+export type DashboardDetailType =
   | "featuresMissingDescription"
   | "featuresWithoutTestCases"
   | "featureCoverage"
   | "openRuns"
-  | "runsWithFullPass";
+  | "runsWithFullPass"
+  | "featureHealth";
 
 type DetailState = {
   type: DashboardDetailType | null;
@@ -49,21 +55,13 @@ type DetailState = {
 
 const DETAIL_PAGE_SIZE = 10;
 
-const METRIC_DETAIL_MAP: Partial<
-  Record<keyof QaDashboardMetrics, DashboardDetailType>
-> = {
-  featuresMissingDescription: "featuresMissingDescription",
-  featuresWithoutTestCases: "featuresWithoutTestCases",
-  featuresWithRuns: "featureCoverage",
-  testCoverageRatio: "featureCoverage",
-  openRuns: "openRuns",
-  runsWithFullPass: "runsWithFullPass",
-  averagePassRate: "featureCoverage",
-};
-
 export function ProjectQaDashboard({
   token,
   projectId,
+  initialDetail,
+  showSummary = true,
+  detailParams,
+  showHeader = true,
 }: ProjectQaDashboardProps) {
   const t = useTranslations("app.qa.dashboard");
   const tRuns = useTranslations("app.qa.runs.list");
@@ -87,8 +85,6 @@ export function ProjectQaDashboard({
   const [coverageSortDirection, setCoverageSortDirection] = useState<
     "asc" | "desc"
   >("desc");
-  const [detailsVisible, setDetailsVisible] = useState(false);
-  const [hoveredMetricGroup, setHoveredMetricGroup] = useState<string | null>(null);
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>
@@ -137,8 +133,21 @@ export function ProjectQaDashboard({
           projectId,
           page,
           pageSize,
-          params?.sort as "coverageAsc" | "coverageDesc" | undefined
+          params ?? {}
         ),
+      featureHealth: (
+        page: number,
+        pageSize: number,
+        _params?: Record<string, string>
+      ) => {
+        void _params;
+        return getProjectDashboardFeatureHealth(
+          token,
+          projectId,
+          page,
+          pageSize
+        );
+      },
       openRuns: (
         page: number,
         pageSize: number,
@@ -186,6 +195,11 @@ export function ProjectQaDashboard({
         description: t("runsWithFullPass.description"),
         empty: t("runsWithFullPass.empty"),
       },
+      featureHealth: {
+        title: t("featureHealth.title"),
+        description: t("featureHealth.description"),
+        empty: t("featureHealth.empty"),
+      },
     }),
     [t]
   );
@@ -215,6 +229,17 @@ export function ProjectQaDashboard({
     void loadDashboard();
   }, [loadDashboard]);
 
+  const mergeDetailParams = useCallback(
+    (
+      type: DashboardDetailType,
+      override?: Record<string, string>
+    ): Record<string, string> | undefined => {
+      const base = detailParams?.[type];
+      if (!base) return override;
+      return { ...base, ...(override ?? {}) };
+    },
+    [detailParams]
+  );
   const loadDetail = useCallback(
     async (
       type: DashboardDetailType,
@@ -265,23 +290,20 @@ export function ProjectQaDashboard({
     [detailFetchers, t]
   );
 
-  const handleMetricSelect = useCallback(
-    (type: DashboardDetailType | null) => {
-      if (!type) return;
-      setDetailsVisible(true);
-      const params =
-        type === "featureCoverage"
-          ? {
-              sort:
-                coverageSortDirection === "desc"
-                  ? "coverageDesc"
-                  : "coverageAsc",
-            }
-          : undefined;
-      void loadDetail(type, 1, params);
-    },
-    [coverageSortDirection, loadDetail]
-  );
+  useEffect(() => {
+    if (!initialDetail) return;
+    const override =
+      initialDetail === "featureCoverage"
+        ? {
+            sort:
+              coverageSortDirection === "desc"
+                ? "coverageDesc"
+                : "coverageAsc",
+          }
+        : undefined;
+    const params = mergeDetailParams(initialDetail, override);
+    void loadDetail(initialDetail, 1, params);
+  }, [coverageSortDirection, initialDetail, loadDetail, mergeDetailParams]);
 
   const handleDetailPageChange = useCallback(
     (page: number) => {
@@ -294,22 +316,16 @@ export function ProjectQaDashboard({
   const handleCoverageSortChange = useCallback(
     (direction: "asc" | "desc") => {
       setCoverageSortDirection(direction);
-      setDetailsVisible(true);
       if (detailState.type === "featureCoverage") {
         const sortParam = direction === "desc" ? "coverageDesc" : "coverageAsc";
-        void loadDetail("featureCoverage", 1, { sort: sortParam });
+        const params = mergeDetailParams("featureCoverage", {
+          sort: sortParam,
+        });
+        void loadDetail("featureCoverage", 1, params);
       }
     },
-    [detailState.type, loadDetail]
+    [detailState.type, loadDetail, mergeDetailParams]
   );
-
-  const handleMetricHoverChange = useCallback((groupKey: string | null) => {
-    setHoveredMetricGroup(groupKey);
-  }, []);
-
-  const showDetailsPanel = useCallback(() => {
-    setDetailsVisible(true);
-  }, []);
 
   const getFeatureHref = useCallback(
     (featureId: string) => `/app/projects/${projectId}/features/${featureId}`,
@@ -320,13 +336,6 @@ export function ProjectQaDashboard({
     (runId: string) => `/app/projects/${projectId}/test-runs/${runId}`,
     [projectId]
   );
-
-  const coverageGroupKey = "coverageGroup";
-  const metricGroupMap: Partial<Record<keyof QaDashboardMetrics, string>> = {
-    featuresWithRuns: coverageGroupKey,
-    testCoverageRatio: coverageGroupKey,
-    averagePassRate: coverageGroupKey,
-  };
 
   let content: ReactNode = null;
 
@@ -346,37 +355,39 @@ export function ProjectQaDashboard({
       key: keyof QaDashboardMetrics;
       label: string;
       format?: (value: number | null | undefined) => string;
+      detailType?: DashboardDetailType;
+      slug?: string;
     }> = [
       { key: "totalFeatures", label: t("metrics.totalFeatures") },
       {
         key: "featuresMissingDescription",
         label: t("metrics.featuresMissingDescription"),
+        detailType: "featuresMissingDescription",
+        slug: "no-description",
       },
       {
         key: "featuresWithoutTestCases",
         label: t("metrics.featuresWithoutTestCases"),
+        detailType: "featuresWithoutTestCases",
+        slug: "no-test-cases",
       },
       {
         key: "featuresWithRuns",
         label: t("metrics.featuresWithRuns"),
-      },
-      {
-        key: "testCoverageRatio",
-        label: t("metrics.testCoverageRatio"),
-        format: formatPercent,
+        detailType: "featureHealth",
+        slug: "with-runs",
       },
       {
         key: "openRuns",
         label: t("metrics.openRuns"),
+        detailType: "openRuns",
+        slug: "open-runs",
       },
       {
         key: "runsWithFullPass",
         label: t("metrics.runsWithFullPass"),
-      },
-      {
-        key: "averagePassRate",
-        label: t("metrics.averagePassRate"),
-        format: formatPercent,
+        detailType: "runsWithFullPass",
+        slug: "fullpass",
       },
     ];
 
@@ -422,8 +433,7 @@ export function ProjectQaDashboard({
               items={
                 detailState.items as QaDashboardFeatureWithoutTestCases[]
               }
-              caption={t("featuresWithoutTestCases.caption")}
-              badgeLabel={t("featuresWithoutTestCases.badge")}
+              linkLabel={t("detail.openFeature")}
               getFeatureHref={getFeatureHref}
               openExternalLabel={openExternalLabel}
             />
@@ -451,14 +461,7 @@ export function ProjectQaDashboard({
                   missingLabel: (count) =>
                     t("featureCoverage.missingLabel", { count }),
                   noRuns: t("featureCoverage.noRuns"),
-                  badges: {
-                    hasDescription: t("featureCoverage.badges.hasDescription"),
-                    missingDescription: t(
-                      "featureCoverage.badges.missingDescription"
-                    ),
-                    withRuns: t("featureCoverage.badges.withRuns"),
-                    withoutRuns: t("featureCoverage.badges.withoutRuns"),
-                  },
+                  noCases: t("featureCoverage.noCases"),
                 }}
                 getFeatureHref={getFeatureHref}
                 openExternalLabel={openExternalLabel}
@@ -503,13 +506,44 @@ export function ProjectQaDashboard({
             />
           );
           break;
+        case "featureHealth":
+          detailContent = (
+            <FeatureHealthList
+              items={detailState.items as QaDashboardFeatureHealth[]}
+              formatter={formatter}
+              t={{
+                lastRunLabel: t("featureHealth.lastRunLabel"),
+                noRuns: t("featureHealth.noRuns"),
+                notAvailable: t("featureHealth.notAvailable"),
+                stats: {
+                  executed: (count) =>
+                    t("featureHealth.stats.executed", { count }),
+                  passed: (count) =>
+                    t("featureHealth.stats.passed", { count }),
+                  failed: (count) =>
+                    t("featureHealth.stats.failed", { count }),
+                },
+                missingAlert: (count) =>
+                  t("featureHealth.missingAlert", { count }),
+                labels: {
+                  missing: t("featureHealth.labels.missing"),
+                  passed: t("featureHealth.labels.passed"),
+                  failed: t("featureHealth.labels.failed"),
+                },
+              }}
+              getFeatureHref={getFeatureHref}
+              openExternalLabel={openExternalLabel}
+            />
+          );
+          break;
         default:
           detailContent = null;
       }
     }
 
-    content = (
-      <div className="space-y-6">
+    const detailBaseHref = `/app/projects/${projectId}/dashboard`;
+    const summarySection = showSummary ? (
+      <>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {metricCards.map((metric) => {
             const rawValue = metrics[metric.key] ?? 0;
@@ -517,27 +551,24 @@ export function ProjectQaDashboard({
               metric.format !== undefined
                 ? metric.format(rawValue)
                 : formatter.number(rawValue);
-            const detailType = METRIC_DETAIL_MAP[metric.key] ?? null;
-            const groupKey = metricGroupMap[metric.key];
+            const isCoverageButton = metric.key === "totalFeatures";
+            const detailHref = isCoverageButton
+              ? `${detailBaseHref}/coverage`
+              : metric.slug !== undefined
+              ? `${detailBaseHref}/${metric.slug}`
+              : undefined;
+            const ctaLabel = isCoverageButton
+              ? t("featureCoverage.cta")
+              : metric.detailType
+              ? detailCta
+              : undefined;
             return (
               <DashboardMetricCard
                 key={metric.key}
                 label={metric.label}
                 value={value}
-                isActive={
-                  detailType !== null && detailState.type === detailType
-                }
-                onClick={
-                  detailType ? () => handleMetricSelect(detailType) : undefined
-                }
-                ctaLabel={detailType ? detailCta : undefined}
-                groupKey={groupKey}
-                isGroupHovered={
-                  groupKey !== undefined && hoveredMetricGroup === groupKey
-                }
-                onHoverChange={
-                  groupKey ? handleMetricHoverChange : undefined
-                }
+                href={detailHref}
+                ctaLabel={ctaLabel}
               />
             );
           })}
@@ -564,64 +595,58 @@ export function ProjectQaDashboard({
               count: metrics.featuresMissingDescription,
             }),
           }}
-          onSelect={() => handleMetricSelect("featureCoverage")}
-          groupKey={coverageGroupKey}
-          isGroupHovered={hoveredMetricGroup === coverageGroupKey}
-          onHoverChange={handleMetricHoverChange}
+          ctaHref={`${detailBaseHref}/coverage`}
           ctaLabel={detailCta}
         />
+      </>
+    ) : null;
 
-        {!detailsVisible ? (
-          <div className="flex justify-center">
-            <button
-              type="button"
-              className={actionButtonClass()}
-              onClick={showDetailsPanel}
-            >
-              {t("detail.showPanel")}
-            </button>
-          </div>
-        ) : (
-          <div className="rounded-2xl border bg-card p-5 shadow-sm">
-            <div className="mb-4">
-              <p className="text-sm font-semibold">
-                {activeDetail
-                  ? detailMeta[activeDetail].title
-                  : t("detail.title")}
-              </p>
-              <p className="text-2xs text-muted-foreground">
-                {activeDetail
-                  ? detailMeta[activeDetail].description
-                  : t("detail.subtitle")}
-              </p>
-            </div>
-            <div className="space-y-4">{detailContent}</div>
-            {activeDetail &&
-              !detailState.isLoading &&
-              detailState.total > detailState.pageSize && (
-                <DetailPagination
-                  page={detailState.page}
-                  total={detailState.total}
-                  pageSize={detailState.pageSize}
-                  onPageChange={handleDetailPageChange}
-                  labels={{
-                    previous: t("detail.pagination.previous"),
-                    next: t("detail.pagination.next"),
-                  }}
-                />
-              )}
-          </div>
-        )}
+    const detailSection = (
+      <div className="rounded-2xl border bg-card p-5 shadow-sm">
+        <div className="mb-4">
+          <p className="text-sm font-semibold">
+            {activeDetail ? detailMeta[activeDetail].title : t("detail.title")}
+          </p>
+          <p className="text-2xs text-muted-foreground">
+            {activeDetail
+              ? detailMeta[activeDetail].description
+              : t("detail.subtitle")}
+          </p>
+        </div>
+        <div className="space-y-4">{detailContent}</div>
+        {activeDetail &&
+          !detailState.isLoading &&
+          detailState.total > detailState.pageSize && (
+            <DetailPagination
+              page={detailState.page}
+              total={detailState.total}
+              pageSize={detailState.pageSize}
+              onPageChange={handleDetailPageChange}
+              labels={{
+                previous: t("detail.pagination.previous"),
+                next: t("detail.pagination.next"),
+              }}
+            />
+          )}
+      </div>
+    );
+
+    content = (
+      <div className="space-y-6">
+        {summarySection}
+        {!showSummary && detailSection}
       </div>
     );
   }
 
   return (
     <section className="rounded-xl border bg-background shadow-sm">
-      <header className="border-b border-border px-4 pb-2 pt-4 md:px-6">
-        <h2 className="text-lg font-semibold">{t("title")}</h2>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
-      </header>
+      {showHeader && (
+        <header className="border-b border-border px-4 pb-2 pt-4 md:px-6">
+          <h2 className="text-lg font-semibold">{t("title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+        </header>
+      )}
       <div className="px-4 py-6 md:px-6">{content}</div>
     </section>
   );
@@ -654,11 +679,8 @@ function DetailSkeleton() {
 function CoverageOverview({
   metrics,
   t,
-  onSelect,
   ctaLabel,
-  groupKey,
-  isGroupHovered,
-  onHoverChange,
+  ctaHref,
 }: {
   metrics: {
     coverage: number | null;
@@ -673,48 +695,15 @@ function CoverageOverview({
     coveredBadge: string;
     pendingBadge: string;
   };
-  onSelect?: () => void;
   ctaLabel?: string;
-  groupKey?: string;
-  isGroupHovered?: boolean;
-  onHoverChange?: (groupKey: string | null) => void;
+  ctaHref?: string;
 }) {
   const safeCoverage = Math.min(Math.max(metrics.coverage ?? 0, 0), 1);
   const percentage = Math.round(safeCoverage * 100);
   const fillDegrees = `${safeCoverage * 360}deg`;
-  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (!onSelect) return;
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      onSelect();
-    }
-  };
-  const handleMouseEnter = () => {
-    if (groupKey && onHoverChange) {
-      onHoverChange(groupKey);
-    }
-  };
-  const handleMouseLeave = () => {
-    if (onHoverChange) {
-      onHoverChange(null);
-    }
-  };
 
   return (
-    <article
-      className={cn(
-        "space-y-4 rounded-2xl border bg-card p-4 shadow-sm",
-        onSelect &&
-          "cursor-pointer transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-        isGroupHovered && "border-primary bg-primary/5"
-      )}
-      onClick={onSelect}
-      role={onSelect ? "button" : undefined}
-      tabIndex={onSelect ? 0 : undefined}
-      onKeyDown={onSelect ? handleKeyDown : undefined}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <article className="space-y-4 rounded-2xl border bg-card p-4 shadow-sm">
       <div>
         <p className="text-sm font-semibold">{t.title}</p>
         <p className="text-xs text-muted-foreground">{t.description}</p>
@@ -737,8 +726,13 @@ function CoverageOverview({
             <SummaryBadge label={t.coveredBadge} tone="success" />
             <SummaryBadge label={t.pendingBadge} />
           </div>
-          {onSelect && ctaLabel && (
-            <p className="text-2xs font-medium text-primary">{ctaLabel}</p>
+          {ctaLabel && ctaHref && (
+            <Link
+              href={ctaHref}
+              className="inline-flex w-fit text-2xs font-medium text-primary transition hover:text-primary/80"
+            >
+              {ctaLabel}
+            </Link>
           )}
         </div>
       </div>
@@ -803,12 +797,7 @@ function FeatureCoverageList({
     coverageLabel: (executed: number, total: number) => string;
     missingLabel: (count: number) => string;
     noRuns: string;
-    badges: {
-      hasDescription: string;
-      missingDescription: string;
-      withRuns: string;
-      withoutRuns: string;
-    };
+    noCases: string;
   };
   onSelectFeature?: (featureId?: string | null) => void;
   getFeatureHref?: (featureId: string) => string;
@@ -817,11 +806,19 @@ function FeatureCoverageList({
   return (
     <ul className="space-y-4">
       {items.map((feature) => {
-        const coverage = feature.latestRun?.coverage;
-        const executed = coverage?.executedCases ?? 0;
-        const total = coverage?.totalCases ?? 0;
-        const percent = total > 0 ? Math.round((executed / total) * 100) : 0;
-        const missing = coverage?.missingCases ?? 0;
+        const total = feature.totalTestCases ?? 0;
+        const executed = feature.executedTestCases ?? 0;
+        const missing =
+          feature.missingTestCases ??
+          (total > 0 ? Math.max(total - executed, 0) : 0);
+        const ratio =
+          feature.coverageRatio !== null && feature.coverageRatio !== undefined
+            ? feature.coverageRatio
+            : total > 0
+            ? executed / total
+            : null;
+        const percent =
+          ratio !== null ? Math.round(Math.min(Math.max(ratio, 0), 1) * 100) : null;
         const runDate = feature.latestRun
           ? formatter.dateTime(new Date(feature.latestRun.runDate), {
               dateStyle: "medium",
@@ -857,48 +854,33 @@ function FeatureCoverageList({
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-lg font-semibold">{percent}%</p>
+                <p className="text-lg font-semibold">
+                  {percent !== null ? `${percent}%` : t.noCases}
+                </p>
                 {externalLink}
               </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <SummaryBadge
-                label={
-                  feature.hasDescription
-                    ? t.badges.hasDescription
-                    : t.badges.missingDescription
-                }
-                tone={feature.hasDescription ? "success" : "default"}
-              />
-              <SummaryBadge
-                label={
-                  feature.hasTestRun
-                    ? t.badges.withRuns
-                    : t.badges.withoutRuns
-                }
-                tone={feature.hasTestRun ? "success" : "default"}
-              />
+            <div className="space-y-2">
+              <div className="h-2 rounded-full bg-muted">
+                <div
+                  className="h-2 rounded-full bg-primary transition-all"
+                  style={{ width: `${percent ?? 0}%` }}
+                />
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-2xs text-muted-foreground">
+                <span>{t.coverageLabel(executed, total)}</span>
+                {percent !== null ? (
+                  <>
+                    <span aria-hidden>•</span>
+                    <span>{percent}%</span>
+                  </>
+                ) : null}
+                {total === 0 ? <span>{t.noCases}</span> : null}
+              </div>
+              {missing > 0 ? (
+                <SummaryBadge label={t.missingLabel(missing)} />
+              ) : null}
             </div>
-            {coverage ? (
-              <>
-                <div className="h-2 rounded-full bg-muted">
-                  <div
-                    className="h-2 rounded-full bg-primary"
-                    style={{ width: `${percent}%` }}
-                  />
-                </div>
-                <p className="text-2xs text-muted-foreground">
-                  {t.coverageLabel(executed, total)}
-                </p>
-                {missing > 0 && (
-                  <p className="text-2xs text-amber-700">
-                    {t.missingLabel(missing)}
-                  </p>
-                )}
-              </>
-            ) : (
-              <p className="text-2xs text-muted-foreground">{t.noRuns}</p>
-            )}
           </>
         );
         return (
@@ -923,27 +905,106 @@ function FeatureCoverageList({
   );
 }
 
-function MissingDescriptionList({
+function FeatureHealthList({
   items,
-  caption,
-  badgeLabel,
-  onSelectFeature,
+  formatter,
+  t,
   getFeatureHref,
   openExternalLabel,
 }: {
-  items: Array<{ id: string; name: string }>;
-  caption: string;
-  badgeLabel: string;
-  onSelectFeature?: (featureId: string) => void;
+  items: QaDashboardFeatureHealth[];
+  formatter: ReturnType<typeof useFormatter>;
+  t: {
+    lastRunLabel: string;
+    noRuns: string;
+    notAvailable: string;
+    stats: {
+      executed: (count: number) => string;
+      passed: (count: number) => string;
+      failed: (count: number) => string;
+    };
+    missingAlert: (count: number) => string;
+    labels: {
+      missing: string;
+      passed: string;
+      failed: string;
+    };
+  };
   getFeatureHref?: (featureId: string) => string;
   openExternalLabel: string;
 }) {
   return (
     <ul className="space-y-3">
       {items.map((feature) => {
+        const passRate =
+          feature.passRate !== null && feature.passRate !== undefined
+            ? formatter.number(feature.passRate, {
+                style: "percent",
+                maximumFractionDigits: 0,
+              })
+            : t.notAvailable;
+        const runDate = feature.latestRun
+          ? formatter.dateTime(new Date(feature.latestRun.runDate), {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })
+          : null;
+        const lastRunText = runDate
+          ? `${t.lastRunLabel}: ${runDate}`
+          : t.noRuns;
+        const executedCount =
+          typeof feature.executedTestCases === "number"
+            ? feature.executedTestCases
+            : null;
+        const passedCount =
+          typeof feature.passedTestCases === "number"
+            ? feature.passedTestCases
+            : null;
+        const failedCount =
+          typeof feature.failedTestCases === "number"
+            ? feature.failedTestCases
+            : null;
+        const stats: string[] = [];
+        if (executedCount !== null) {
+          stats.push(t.stats.executed(executedCount));
+        }
+        if (passedCount !== null) {
+          stats.push(t.stats.passed(passedCount));
+        }
+        if (failedCount !== null) {
+          stats.push(t.stats.failed(failedCount));
+        }
+        const missingAlert =
+          feature.hasMissingTestCases && feature.missingTestCasesCount !== null
+            ? t.missingAlert(feature.missingTestCasesCount)
+            : feature.hasMissingTestCases
+            ? t.missingAlert(0)
+            : null;
+        const badgeToneClasses: Record<"default" | "success" | "danger", string> = {
+          default: "border-muted bg-muted/60 text-muted-foreground",
+          success: "border-emerald-200 bg-emerald-100 text-emerald-800",
+          danger: "border-red-200 bg-red-100 text-red-800",
+        };
+        const hasFailures = failedCount !== null && failedCount > 0;
+        const hasFullPass =
+          !feature.hasMissingTestCases &&
+          executedCount !== null &&
+          executedCount > 0 &&
+          !hasFailures;
+        const badges: Array<{ label: string; tone: "default" | "success" | "danger" }> = [];
+        if (feature.hasMissingTestCases) {
+          badges.push({ label: t.labels.missing, tone: "default" });
+        }
+        if (hasFailures) {
+          badges.push({ label: t.labels.failed, tone: "danger" });
+        }
+        if (hasFullPass) {
+          badges.push({ label: t.labels.passed, tone: "success" });
+        }
         const href =
-          getFeatureHref && feature.id ? getFeatureHref(feature.id) : null;
-        const isClickable = Boolean(onSelectFeature);
+          getFeatureHref && feature.featureId
+            ? getFeatureHref(feature.featureId)
+            : null;
         const externalLink =
           href && openExternalLabel ? (
             <Link
@@ -959,15 +1020,119 @@ function MissingDescriptionList({
               <span className="sr-only">{openExternalLabel}</span>
             </Link>
           ) : null;
+        const badgeElements =
+          badges.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {badges.map((badge) => (
+                <span
+                  key={`${feature.featureId}-${badge.label}`}
+                  className={cn(
+                    "inline-flex rounded-full border px-2 py-0.5 text-2xs font-medium",
+                    badgeToneClasses[badge.tone]
+                  )}
+                >
+                  {badge.label}
+                </span>
+              ))}
+            </div>
+          ) : null;
+        return (
+          <li key={feature.featureId}>
+            <div className="space-y-2 rounded-xl border bg-background/80 px-4 py-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold">{feature.featureName}</p>
+                  <p className="text-2xs text-muted-foreground">{lastRunText}</p>
+                  {badgeElements}
+                  {stats.length ? (
+                    <p className="text-2xs text-muted-foreground">
+                      {stats.join(" · ")}
+                    </p>
+                  ) : null}
+                  {missingAlert ? (
+                    <p className="text-2xs font-medium text-destructive">
+                      {missingAlert}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="flex items-center gap-2">
+                  <p className="text-lg font-semibold">{passRate}</p>
+                  {externalLink}
+                </div>
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+  function MissingDescriptionList({
+  items,
+  caption,
+  badgeLabel,
+  linkLabel,
+  onSelectFeature,
+  getFeatureHref,
+  openExternalLabel,
+}: {
+  items: Array<{ id: string; name: string }>;
+  caption?: string;
+  badgeLabel?: string;
+  linkLabel?: string;
+  onSelectFeature?: (featureId: string) => void;
+  getFeatureHref?: (featureId: string) => string;
+  openExternalLabel: string;
+}) {
+  return (
+    <ul className="space-y-3">
+      {items.map((feature) => {
+        const href =
+          getFeatureHref && feature.id ? getFeatureHref(feature.id) : null;
+        const isClickable = Boolean(onSelectFeature);
+        const baseLinkProps = href
+          ? {
+              href,
+              target: "_blank",
+              rel: "noreferrer",
+              onClick: (event: MouseEvent) => event.stopPropagation(),
+            }
+          : null;
+        const externalLink =
+          baseLinkProps && openExternalLabel ? (
+            <Link
+              {...baseLinkProps}
+              aria-label={openExternalLabel}
+              title={openExternalLabel}
+              className="text-muted-foreground transition hover:text-primary"
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">{openExternalLabel}</span>
+            </Link>
+          ) : null;
+        const buttonLink =
+          baseLinkProps && linkLabel ? (
+            <Link
+              {...baseLinkProps}
+              aria-label={openExternalLabel}
+              title={openExternalLabel}
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary transition hover:underline"
+            >
+              {linkLabel}
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          ) : null;
         const content = (
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-sm font-semibold">{feature.name}</p>
-              <p className="text-2xs text-muted-foreground">{caption}</p>
+              {caption ? (
+                <p className="text-2xs text-muted-foreground">{caption}</p>
+              ) : null}
             </div>
             <div className="flex items-center gap-2">
-              <SummaryBadge label={badgeLabel} />
-              {externalLink}
+              {badgeLabel ? <SummaryBadge label={badgeLabel} /> : null}
+              {buttonLink ?? externalLink}
             </div>
           </div>
         );
@@ -1172,74 +1337,38 @@ function DetailPagination({
 function DashboardMetricCard({
   label,
   value,
-  onClick,
-  isActive,
+  href,
   ctaLabel,
-  groupKey,
-  isGroupHovered,
-  onHoverChange,
 }: {
   label: string;
   value: string;
-  onClick?: () => void;
-  isActive?: boolean;
+  href?: string;
   ctaLabel?: string;
-  groupKey?: string;
-  isGroupHovered?: boolean;
-  onHoverChange?: (groupKey: string | null) => void;
 }) {
-  const handleMouseEnter = () => {
-    if (groupKey && onHoverChange) {
-      onHoverChange(groupKey);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (onHoverChange) {
-      onHoverChange(null);
-    }
-  };
-
-  if (onClick) {
-    return (
-      <button
-        type="button"
-        className={cn(
-          "rounded-2xl border bg-card p-4 text-left shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-          "hover:border-primary",
-          isActive && "border-primary bg-primary/5",
-          isGroupHovered && "border-primary bg-primary/5"
-        )}
-        onClick={onClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
-          {label}
-        </p>
-        <p className="mt-3 text-2xl font-semibold">{value}</p>
-        {ctaLabel && (
-          <span className="mt-2 inline-flex text-2xs font-medium text-primary">
-            {ctaLabel}
-          </span>
-        )}
-      </button>
-    );
-  }
-
-  return (
-    <div
-      className={cn(
-        "rounded-2xl border bg-card p-4 shadow-sm",
-        isGroupHovered && "border-primary bg-primary/5"
-      )}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+  const content = (
+    <>
       <p className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">
         {label}
       </p>
       <p className="mt-3 text-2xl font-semibold">{value}</p>
-    </div>
+      {ctaLabel && (
+        <span className="mt-2 inline-flex text-2xs font-medium text-primary">
+          {ctaLabel}
+        </span>
+      )}
+    </>
   );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="block rounded-2xl border bg-card p-4 shadow-sm transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className="rounded-2xl border bg-card p-4 shadow-sm">{content}</div>;
 }

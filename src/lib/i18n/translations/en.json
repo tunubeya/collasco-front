@@ -1065,7 +1065,20 @@
           "title": "Feature health",
           "description": "Most recent pass rate per feature.",
           "empty": "No health data yet.",
-          "noRuns": "No runs"
+          "noRuns": "No runs",
+          "notAvailable": "N/A",
+          "lastRunLabel": "Last run",
+          "stats": {
+            "executed": "{count} executed",
+            "passed": "{count} passed",
+            "failed": "{count} failed"
+          },
+          "labels": {
+            "missing": "Missing test cases",
+            "passed": "Tested & passed",
+            "failed": "Tested & not passed"
+          },
+          "missingAlert": "{count, plural, =0 {Some test cases weren't executed in the latest run} one {{count} test case wasn't executed in the latest run} other {{count} test cases weren't executed in the latest run}}"
         },
         "featureCoverage": {
           "title": "Coverage by feature",
@@ -1075,12 +1088,8 @@
           "coverageLabel": "{executed} of {total} cases executed",
           "missingLabel": "{count} cases pending",
           "noRuns": "No recorded runs",
-          "badges": {
-            "hasDescription": "Has description",
-            "missingDescription": "Missing description",
-            "withRuns": "Has runs",
-            "withoutRuns": "No runs"
-          }
+          "cta": "View coverage by feature",
+          "noCases": "No active test cases"
         },
         "missingDescription": {
           "title": "Features without description",
@@ -1117,6 +1126,8 @@
           "cta": "Show details",
           "showPanel": "Expand details",
           "openInNewTab": "Open in a new tab",
+          "back": "Back to dashboard",
+          "openFeature": "Go to feature",
           "sortLabel": "Sort by coverage",
           "sortDesc": "High → Low",
           "sortAsc": "Low → High",
@@ -1142,6 +1153,11 @@
         "metrics": {
           "passRate": "Pass rate",
           "lastRun": "Last run",
+          "coverage": "Latest coverage",
+          "coverageValue": "{executed} of {total} cases executed",
+          "passRateHint": "Based on {executed} of {total} executed cases in the last run.",
+          "coverageComplete": "All test cases were executed in the last run.",
+          "coverageIncomplete": "{remaining, plural, one {{remaining} case wasn't executed} other {{remaining} cases weren't executed}}",
           "flaky": "Flaky cases",
           "flakyValue": "{count} flaky cases",
           "notAvailable": "N/A"

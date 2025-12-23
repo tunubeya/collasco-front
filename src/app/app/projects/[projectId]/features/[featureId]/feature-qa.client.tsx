@@ -2120,16 +2120,50 @@ function HealthTab({
     health.passRate !== undefined && health.passRate !== null
       ? normalizePassRate(health.passRate)
       : null;
+  const totalCases =
+    health.testCaseCounts && typeof health.testCaseCounts.total === "number"
+      ? health.testCaseCounts.total
+      : null;
+  const executedCases =
+    health.testCaseCounts && typeof health.testCaseCounts.executed === "number"
+      ? health.testCaseCounts.executed
+      : null;
+  const hasCoverageData =
+    totalCases !== null && executedCases !== null && totalCases > 0;
+  const remainingCases =
+    hasCoverageData && totalCases !== null && executedCases !== null
+      ? Math.max(totalCases - executedCases, 0)
+      : null;
   const lastRun = health.lastRun
     ? formatter.dateTime(new Date(health.lastRun.runDate), {
         dateStyle: "medium",
         timeStyle: "short",
       })
     : null;
+  const coverageValue =
+    hasCoverageData && totalCases !== null && executedCases !== null
+      ? t("metrics.coverageValue", {
+          executed: executedCases,
+          total: totalCases,
+        })
+      : t("metrics.notAvailable");
+  const coverageHelper =
+    remainingCases === null
+      ? undefined
+      : remainingCases === 0
+      ? t("metrics.coverageComplete")
+      : t("metrics.coverageIncomplete", { remaining: remainingCases });
+  const passRateHelper =
+    hasCoverageData && totalCases !== null && executedCases !== null
+      ? t("metrics.passRateHint", {
+          executed: executedCases,
+          total: totalCases,
+        })
+      : undefined;
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <MetricCard
           label={t("metrics.passRate")}
           value={
@@ -2137,6 +2171,12 @@ function HealthTab({
               ? `${normalizedPassRate}%`
               : t("metrics.notAvailable")
           }
+          helper={passRateHelper}
+        />
+        <MetricCard
+          label={t("metrics.coverage")}
+          value={coverageValue}
+          helper={coverageHelper}
         />
         <MetricCard
           label={t("metrics.lastRun")}
@@ -2157,9 +2197,11 @@ function normalizePassRate(value: number): number {
 function MetricCard({
   label,
   value,
+  helper,
 }: {
   label: string;
   value: string;
+  helper?: string;
 }) {
   return (
     <div className="rounded-2xl border bg-background p-5 shadow-sm">
@@ -2169,6 +2211,9 @@ function MetricCard({
       <p className="mt-2 text-2xl font-semibold text-foreground">
         {value}
       </p>
+      {helper ? (
+        <p className="mt-1 text-xs text-muted-foreground">{helper}</p>
+      ) : null}
     </div>
   );
 }

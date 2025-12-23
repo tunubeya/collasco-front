@@ -1064,27 +1064,36 @@
             "coveredBadge": "{value} de cobertura",
             "pendingBadge": "{count} sin documentación"
           },
-          "featureHealth": {
-            "title": "Salud por feature",
-            "description": "Tasa de aprobación más reciente por feature.",
-            "empty": "Aún no tenemos datos de salud.",
-            "noRuns": "Sin ejecuciones"
+        "featureHealth": {
+          "title": "Salud por feature",
+          "description": "Tasa de aprobación más reciente por feature.",
+          "empty": "Aún no tenemos datos de salud.",
+          "noRuns": "Sin ejecuciones",
+          "notAvailable": "N/D",
+          "lastRunLabel": "Última ejecución",
+          "stats": {
+            "executed": "{count} ejecutados",
+            "passed": "{count} aprobados",
+            "failed": "{count} fallidos"
           },
-          "featureCoverage": {
-            "title": "Cobertura por feature",
-            "description": "Comparativo de casos ejecutados vs. pendientes.",
-            "empty": "Aún no hay corridas para calcular la cobertura.",
-            "latestRun": "Última ejecución {date}",
-            "coverageLabel": "{executed} de {total} casos ejecutados",
-            "missingLabel": "{count} casos pendientes",
-            "noRuns": "Sin ejecuciones registradas",
-            "badges": {
-              "hasDescription": "Con descripción",
-              "missingDescription": "Sin descripción",
-              "withRuns": "Con corridas",
-              "withoutRuns": "Sin corridas"
-            }
+          "labels": {
+            "missing": "Casos pendientes por probar",
+            "passed": "Probado y aprobado",
+            "failed": "Probado y no aprobado"
           },
+          "missingAlert": "{count, plural, =0 {Faltan casos por ejecutar en la última corrida} one {{count} caso no se ejecutó en la última corrida} other {{count} casos no se ejecutaron en la última corrida}}"
+        },
+        "featureCoverage": {
+          "title": "Cobertura por feature",
+          "description": "Comparativo de casos ejecutados vs. pendientes.",
+          "empty": "Aún no hay corridas para calcular la cobertura.",
+          "latestRun": "Última ejecución {date}",
+          "coverageLabel": "{executed} de {total} casos ejecutados",
+          "missingLabel": "{count} casos pendientes",
+          "noRuns": "Sin ejecuciones registradas",
+          "cta": "Ver cobertura por feature",
+          "noCases": "Sin casos activos"
+        },
         "missingDescription": {
           "title": "Features sin descripción",
           "description": "Identifica qué features necesitan documentación.",
@@ -1120,6 +1129,8 @@
           "cta": "Ver más",
           "showPanel": "Expandir detalles",
           "openInNewTab": "Abrir en una nueva pestaña",
+          "openFeature": "Ir al feature",
+          "back": "Volver al panel",
           "sortLabel": "Ordenar por cobertura",
           "sortDesc": "Mayor → menor",
           "sortAsc": "Menor → mayor",
@@ -1145,6 +1156,11 @@
         "metrics": {
           "passRate": "Tasa de aprobación",
           "lastRun": "Última ejecución",
+          "coverage": "Cobertura más reciente",
+          "coverageValue": "{executed} de {total} casos ejecutados",
+          "passRateHint": "Calculada sobre {executed} de {total} casos ejecutados en la última corrida.",
+          "coverageComplete": "Todos los casos se ejecutaron en la última corrida.",
+          "coverageIncomplete": "{remaining, plural, one {{remaining} caso no se ejecutó} other {{remaining} casos no se ejecutaron}}",
           "flaky": "Casos inestables",
           "flakyValue": "{count} casos inestables",
           "notAvailable": "N/D"

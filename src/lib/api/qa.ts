@@ -161,6 +161,11 @@ export type UpdateTestRunDto = {
   removeTestCaseIds?: string[];
 };
 
+export type QaTestCaseCounts = {
+  total: number;
+  executed: number;
+};
+
 export type QaHealth = {
   featureId: string;
   passRate: number | null;
@@ -168,6 +173,8 @@ export type QaHealth = {
     id: string;
     runDate: string;
   } | null;
+  allTestCasesCovered?: boolean;
+  testCaseCounts?: QaTestCaseCounts | null;
 };
 
 export type QaDashboardMetrics = {
@@ -178,7 +185,6 @@ export type QaDashboardMetrics = {
   testCoverageRatio: number;
   openRuns: number;
   runsWithFullPass: number;
-  averagePassRate: number;
 };
 
 export type QaDashboardFeatureMissingDescription = {
@@ -194,13 +200,14 @@ export type QaDashboardFeatureWithoutTestCases = {
 export type QaDashboardFeatureCoverage = {
   featureId: string;
   featureName: string;
-  hasDescription: boolean;
-  hasTestRun: boolean;
+  totalTestCases: number | null;
+  executedTestCases: number | null;
+  missingTestCases: number | null;
+  coverageRatio: number | null;
   latestRun: {
     id: string;
     runDate: string;
     status: QaRunStatus;
-    coverage: QaRunCoverage;
   } | null;
 };
 
@@ -213,6 +220,11 @@ export type QaDashboardFeatureHealth = {
     runDate: string;
     status: QaRunStatus;
   } | null;
+  executedTestCases: number | null;
+  passedTestCases: number | null;
+  failedTestCases: number | null;
+  hasMissingTestCases: boolean;
+  missingTestCasesCount: number | null;
 };
 
 export type QaDashboardRunSummary = {
@@ -623,7 +635,7 @@ export function getProjectDashboardFeatureCoverage(
   projectId: string,
   page: number,
   pageSize: number,
-  sort?: "coverageAsc" | "coverageDesc"
+  params?: Record<string, string | undefined>
 ) {
   return fetchProjectDashboardList<QaDashboardFeatureCoverage>(
     token,
@@ -631,7 +643,7 @@ export function getProjectDashboardFeatureCoverage(
     "feature-coverage",
     page,
     pageSize,
-    sort ? { sort } : undefined
+    params
   );
 }
 

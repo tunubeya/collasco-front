@@ -1014,7 +1014,20 @@
           "title": "Feature health",
           "description": "Most recent pass rate per feature.",
           "empty": "No health data yet.",
-          "noRuns": "No runs"
+          "noRuns": "No runs",
+          "notAvailable": "N/D",
+          "lastRunLabel": "Dernière exécution",
+          "stats": {
+            "executed": "{count} exécutés",
+            "passed": "{count} réussis",
+            "failed": "{count} échoués"
+          },
+          "labels": {
+            "missing": "Cas à tester",
+            "passed": "Testé et réussi",
+            "failed": "Testé et non validé"
+          },
+          "missingAlert": "{count, plural, =0 {Certains cas n'ont pas été exécutés lors de la dernière campagne} one {{count} cas n'a pas été exécuté lors de la dernière campagne} other {{count} cas n'ont pas été exécutés lors de la dernière campagne}}"
         },
         "featureCoverage": {
           "title": "Coverage by feature",
@@ -1024,12 +1037,8 @@
           "coverageLabel": "{executed} of {total} cases executed",
           "missingLabel": "{count} cases pending",
           "noRuns": "No recorded runs",
-          "badges": {
-            "hasDescription": "Has description",
-            "missingDescription": "Missing description",
-            "withRuns": "Has runs",
-            "withoutRuns": "No runs"
-          }
+          "cta": "Voir la couverture par fonctionnalité",
+          "noCases": "Aucun cas actif"
         },
         "missingDescription": {
           "title": "Features without description",
@@ -1066,6 +1075,8 @@
           "cta": "Show details",
           "showPanel": "Expand details",
           "openInNewTab": "Ouvrir dans un nouvel onglet",
+          "openFeature": "Aller à la fonctionnalité",
+          "back": "Retour au tableau de bord",
           "sortLabel": "Sort by coverage",
           "sortDesc": "High → Low",
           "sortAsc": "Low → High",
@@ -1091,6 +1102,11 @@
         "metrics": {
           "passRate": "Taux de réussite",
           "lastRun": "Dernière campagne",
+          "coverage": "Couverture la plus récente",
+          "coverageValue": "{executed} sur {total} cas exécutés",
+          "passRateHint": "Basé sur {executed} des {total} cas exécutés lors de la dernière campagne.",
+          "coverageComplete": "Tous les cas ont été exécutés lors de la dernière campagne.",
+          "coverageIncomplete": "{remaining, plural, one {{remaining} cas n’a pas été exécuté} other {{remaining} cas n’ont pas été exécutés}}",
           "flaky": "Cas instables",
           "flakyValue": "{count} cas instables",
           "notAvailable": "N/D"

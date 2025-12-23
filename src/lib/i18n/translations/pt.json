@@ -1065,7 +1065,20 @@
           "title": "Feature health",
           "description": "Most recent pass rate per feature.",
           "empty": "No health data yet.",
-          "noRuns": "No runs"
+          "noRuns": "No runs",
+          "notAvailable": "N/D",
+          "lastRunLabel": "Última execução",
+          "stats": {
+            "executed": "{count} executados",
+            "passed": "{count} aprovados",
+            "failed": "{count} reprovados"
+          },
+          "labels": {
+            "missing": "Casos pendentes para testar",
+            "passed": "Testado e aprovado",
+            "failed": "Testado e não aprovado"
+          },
+          "missingAlert": "{count, plural, =0 {Existem casos não executados na última execução} one {{count} caso não foi executado na última execução} other {{count} casos não foram executados na última execução}}"
         },
         "featureCoverage": {
           "title": "Coverage by feature",
@@ -1075,12 +1088,8 @@
           "coverageLabel": "{executed} of {total} cases executed",
           "missingLabel": "{count} cases pending",
           "noRuns": "No recorded runs",
-          "badges": {
-            "hasDescription": "Has description",
-            "missingDescription": "Missing description",
-            "withRuns": "Has runs",
-            "withoutRuns": "No runs"
-          }
+          "cta": "Ver cobertura por feature",
+          "noCases": "Sem casos ativos"
         },
         "missingDescription": {
           "title": "Features without description",
@@ -1117,6 +1126,8 @@
           "cta": "Show details",
           "showPanel": "Expand details",
           "openInNewTab": "Abrir em uma nova aba",
+          "openFeature": "Ir para a feature",
+          "back": "Voltar ao dashboard",
           "sortLabel": "Sort by coverage",
           "sortDesc": "High → Low",
           "sortAsc": "Low → High",
@@ -1142,6 +1153,11 @@
         "metrics": {
           "passRate": "Taxa de aprovação",
           "lastRun": "Última execução",
+          "coverage": "Cobertura mais recente",
+          "coverageValue": "{executed} de {total} casos executados",
+          "passRateHint": "Calculada sobre {executed} de {total} casos executados na última execução.",
+          "coverageComplete": "Todos os casos foram executados na última execução.",
+          "coverageIncomplete": "{remaining, plural, one {{remaining} caso não foi executado} other {{remaining} casos não foram executados}}",
           "flaky": "Casos instáveis",
           "flakyValue": "{count} casos instáveis",
           "notAvailable": "N/D"

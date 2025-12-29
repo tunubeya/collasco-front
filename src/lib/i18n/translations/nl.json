@@ -896,7 +896,8 @@
           "removeCase": "Testcase verwijderen",
           "fields": {
             "status": "Status",
-            "note": "Notitie"
+            "note": "Notitie",
+            "steps": "Stappen"
           },
           "statusPlaceholder": "Kies een status",
           "testCasePlaceholder": "Selecteer een testcase...",

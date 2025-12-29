@@ -920,7 +920,8 @@
           "removeCase": "Retirer le cas",
           "fields": {
             "status": "Statut",
-            "note": "Note"
+            "note": "Note",
+            "steps": "Étapes"
           },
           "statusPlaceholder": "Sélectionnez un statut",
           "testCasePlaceholder": "Sélectionnez un cas de test",

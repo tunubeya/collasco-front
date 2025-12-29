@@ -971,7 +971,8 @@
           "removeCase": "Remover caso",
           "fields": {
             "status": "Status",
-            "note": "Nota"
+            "note": "Nota",
+            "steps": "Passos"
           },
           "statusPlaceholder": "Selecione um status",
           "testCasePlaceholder": "Selecione um caso de teste",

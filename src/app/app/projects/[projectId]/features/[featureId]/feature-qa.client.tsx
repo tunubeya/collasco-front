@@ -74,6 +74,7 @@ type RunResultState = {
 type RunCaseRow = {
   testCaseId: string;
   name: string;
+  steps?: string | null;
   expected?: string | null;
   featureName?: string | null;
 };
@@ -1841,6 +1842,16 @@ export function TestRunPanel({
                       {testCase.featureName}
                     </p>
                   )}
+                  {testCase.steps && (
+                    <details className="group mt-1">
+                      <summary className="cursor-pointer select-none text-xs font-medium text-primary hover:underline">
+                        {t("panel.fields.steps")}
+                      </summary>
+                      <p className="mt-1 whitespace-pre-wrap border-l-2 border-muted pl-2 text-xs text-muted-foreground">
+                        {testCase.steps}
+                      </p>
+                    </details>
+                  )}
                   {testCase.expected && (
                     <p className="whitespace-pre-wrap text-xs text-muted-foreground">{testCase.expected}</p>
                   )}
@@ -2040,6 +2051,7 @@ function buildCaseRows(
     rows.push({
       testCaseId: result.testCaseId,
       name: result.testCase?.name ?? result.testCaseId,
+      steps: result.testCase?.steps ?? null,
       expected: result.testCase?.expected ?? null,
       featureName: result.testCase?.feature?.name ?? null,
     });
@@ -2051,6 +2063,7 @@ function buildCaseRows(
     rows.push({
       testCaseId: testCase.id,
       name: testCase.name,
+      steps: null,
       expected: null,
       featureName: testCase.featureName,
     });

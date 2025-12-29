@@ -974,7 +974,8 @@
           "removeCase": "Quitar caso",
           "fields": {
             "status": "Estado",
-            "note": "Nota"
+            "note": "Nota",
+            "steps": "Pasos"
           },
           "statusPlaceholder": "Selecciona un estado",
           "testCasePlaceholder": "Selecciona un caso de prueba",

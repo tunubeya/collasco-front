@@ -848,7 +848,10 @@ function FeatureCoverageList({
           <>
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold">{feature.featureName}</p>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-semibold">{feature.featureName}</p>
+                  {externalLink}
+                </div>
                 <p className="text-2xs text-muted-foreground">
                   {runDate ? t.latestRun(runDate) : t.noRuns}
                 </p>
@@ -857,7 +860,6 @@ function FeatureCoverageList({
                 <p className="text-lg font-semibold">
                   {percent !== null ? `${percent}%` : t.noCases}
                 </p>
-                {externalLink}
               </div>
             </div>
             <div className="space-y-2">
@@ -1041,7 +1043,10 @@ function FeatureHealthList({
             <div className="space-y-2 rounded-xl border bg-background/80 px-4 py-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold">{feature.featureName}</p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-sm font-semibold">{feature.featureName}</p>
+                    {externalLink}
+                  </div>
                   <p className="text-2xs text-muted-foreground">{lastRunText}</p>
                   {badgeElements}
                   {stats.length ? (
@@ -1057,7 +1062,6 @@ function FeatureHealthList({
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="text-lg font-semibold">{passRate}</p>
-                  {externalLink}
                 </div>
               </div>
             </div>
@@ -1125,14 +1129,16 @@ function FeatureHealthList({
         const content = (
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold">{feature.name}</p>
+              <div className="flex items-center gap-1.5">
+                <p className="text-sm font-semibold">{feature.name}</p>
+                {buttonLink ?? externalLink}
+              </div>
               {caption ? (
                 <p className="text-2xs text-muted-foreground">{caption}</p>
               ) : null}
             </div>
             <div className="flex items-center gap-2">
               {badgeLabel ? <SummaryBadge label={badgeLabel} /> : null}
-              {buttonLink ?? externalLink}
             </div>
           </div>
         );
@@ -1210,7 +1216,10 @@ function RunList({
           <>
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold">{title}</p>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-sm font-semibold">{title}</p>
+                  {externalLink}
+                </div>
                 <p className="text-2xs text-muted-foreground">{runDate}</p>
               </div>
               <div className="flex items-center gap-2">
@@ -1218,7 +1227,6 @@ function RunList({
                   label={badgeLabel(run.status)}
                   tone={badgeTone ? badgeTone(run.status) : "default"}
                 />
-                {externalLink}
               </div>
             </div>
             {run.environment && (

@@ -966,6 +966,23 @@ function FeatureHealthList({
           typeof feature.failedTestCases === "number"
             ? feature.failedTestCases
             : null;
+        const safePassed = Math.max(passedCount ?? 0, 0);
+        let safeFailed = Math.max(failedCount ?? 0, 0);
+        if (
+          safeFailed === 0 &&
+          executedCount !== null &&
+          executedCount > safePassed
+        ) {
+          safeFailed = Math.max(executedCount - safePassed, 0);
+        }
+        const safeMissing = Math.max(
+          feature.missingTestCasesCount ?? 0,
+          0
+        );
+        let totalTestCases = safePassed + safeFailed + safeMissing;
+        if (totalTestCases === 0 && executedCount) {
+          totalTestCases = executedCount;
+        }
         const stats: string[] = [];
         if (executedCount !== null) {
           stats.push(t.stats.executed(executedCount));
@@ -1051,12 +1068,25 @@ function FeatureHealthList({
                   {badgeElements}
                   {stats.length ? (
                     <p className="text-2xs text-muted-foreground">
-                      {stats.join(" · ")}
-                    </p>
-                  ) : null}
-                  {missingAlert ? (
-                    <p className="text-2xs font-medium text-destructive">
-                      {missingAlert}
+                  {stats.join(" · ")}
+                </p>
+              ) : null}
+              {totalTestCases > 0 ? (
+                <TestCaseDistributionBar
+                  total={totalTestCases}
+                  missing={safeMissing}
+                  passed={safePassed}
+                  failed={safeFailed}
+                  labels={{
+                    missing: t.labels.missing,
+                    passed: t.labels.passed,
+                    failed: t.labels.failed,
+                  }}
+                />
+              ) : null}
+              {missingAlert ? (
+                <p className="text-2xs font-medium text-destructive">
+                  {missingAlert}
                     </p>
                   ) : null}
                 </div>
@@ -1268,6 +1298,79 @@ function RunList({
         );
       })}
     </ul>
+  );
+}
+
+function TestCaseDistributionBar({
+  total,
+  missing,
+  passed,
+  failed,
+  labels,
+}: {
+  total: number;
+  missing: number;
+  passed: number;
+  failed: number;
+  labels: { missing: string; passed: string; failed: string };
+}) {
+  if (total <= 0) return null;
+  const segments = [
+    { value: missing, color: "bg-slate-300 dark:bg-slate-600" },
+    { value: passed, color: "bg-emerald-500" },
+    { value: failed, color: "bg-rose-500" },
+  ].filter((segment) => segment.value > 0);
+  let offset = 0;
+  return (
+    <div className="space-y-1">
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+        {segments.map((segment, index) => {
+          const width = Math.max((segment.value / total) * 100, 0);
+          if (width <= 0) {
+            return null;
+          }
+          const style = {
+            width: `${width}%`,
+            left: `${offset}%`,
+          };
+          offset += width;
+          return (
+            <span
+              // eslint-disable-next-line react/no-array-index-key
+              key={`${segment.color}-${index}`}
+              className={cn(
+                "absolute inset-y-0",
+                segment.color
+              )}
+              style={style}
+            />
+          );
+        })}
+      </div>
+      <div className="flex flex-wrap gap-3 text-2xs text-muted-foreground">
+        <LegendDot colorClass="bg-slate-400 dark:bg-slate-500" label={`${labels.missing}: ${missing}`} />
+        <LegendDot colorClass="bg-emerald-500" label={`${labels.passed}: ${passed}`} />
+        <LegendDot colorClass="bg-rose-500" label={`${labels.failed}: ${failed}`} />
+      </div>
+    </div>
+  );
+}
+
+function LegendDot({
+  colorClass,
+  label,
+}: {
+  colorClass: string;
+  label: string;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span
+        className={cn("h-2 w-2 rounded-full", colorClass)}
+        aria-hidden="true"
+      />
+      <span>{label}</span>
+    </span>
   );
 }
 

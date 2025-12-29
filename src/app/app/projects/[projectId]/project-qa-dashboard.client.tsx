@@ -84,7 +84,7 @@ export function ProjectQaDashboard({
   });
   const [coverageSortDirection, setCoverageSortDirection] = useState<
     "asc" | "desc"
-  >("desc");
+  >("asc");
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>

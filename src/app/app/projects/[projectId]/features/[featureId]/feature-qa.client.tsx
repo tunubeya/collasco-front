@@ -1828,7 +1828,6 @@ export function TestRunPanel({
           const state = resultState[testCase.testCaseId] ?? {};
           const draftComment = commentDrafts[testCase.testCaseId];
           const noteValue = draftComment ?? state.comment ?? "";
-          const needsStatusSelection = !state.evaluation;
           const isNoteDisabled = isRunClosed;
           const noteClasses = cn(
             "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",

@@ -1100,7 +1100,17 @@
           "description": "Identifica qué features necesitan documentación.",
           "empty": "Todas las features tienen descripción.",
           "caption": "Documenta la definición funcional para alinear al equipo.",
-          "badge": "Sin descripción"
+          "badge": "Sin descripción",
+          "filter": {
+            "label": "Mostrar",
+            "all": "Todos",
+            "features": "Features",
+            "modules": "Módulos"
+          },
+          "entityType": {
+            "FEATURE": "Feature",
+            "MODULE": "Módulo"
+          }
         },
         "featuresWithoutTestCases": {
           "title": "Features sin casos de prueba",

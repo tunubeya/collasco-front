@@ -1046,7 +1046,17 @@
           "description": "Identify what needs documentation.",
           "empty": "All features have a description.",
           "caption": "Document the functional scope to unblock QA.",
-          "badge": "Missing description"
+          "badge": "Missing description",
+          "filter": {
+            "label": "Afficher",
+            "all": "Tout",
+            "features": "Fonctionnalités",
+            "modules": "Modules"
+          },
+          "entityType": {
+            "FEATURE": "Feature",
+            "MODULE": "Module"
+          }
         },
         "featuresWithoutTestCases": {
           "title": "Features sans cas de test",

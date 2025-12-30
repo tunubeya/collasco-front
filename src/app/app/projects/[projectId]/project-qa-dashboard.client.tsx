@@ -53,6 +53,8 @@ type DetailState = {
   params?: Record<string, string>;
 };
 
+type MissingDescriptionTypeFilter = "ALL" | "FEATURE" | "MODULE";
+
 const DETAIL_PAGE_SIZE = 10;
 
 export function ProjectQaDashboard({
@@ -85,6 +87,8 @@ export function ProjectQaDashboard({
   const [coverageSortDirection, setCoverageSortDirection] = useState<
     "asc" | "desc"
   >("asc");
+  const [missingDescriptionType, setMissingDescriptionType] =
+    useState<MissingDescriptionTypeFilter>("ALL");
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>
@@ -95,21 +99,31 @@ export function ProjectQaDashboard({
     [formatter]
   );
 
+  const sanitizeDetailParams = useCallback(
+    (params?: Record<string, string | undefined>) => {
+      if (!params) return undefined;
+      const entries = Object.entries(params).filter(
+        ([, value]) => value !== undefined
+      ) as Array<[string, string]>;
+      return entries.length ? Object.fromEntries(entries) : undefined;
+    },
+    []
+  );
+
   const detailFetchers = useMemo(
     () => ({
       featuresMissingDescription: (
         page: number,
         pageSize: number,
-        _params?: Record<string, string>
-      ) => {
-        void _params;
-        return getProjectDashboardFeaturesMissingDescription(
+        params?: Record<string, string>
+      ) =>
+        getProjectDashboardFeaturesMissingDescription(
           token,
           projectId,
           page,
-          pageSize
-        );
-      },
+          pageSize,
+          params
+        ),
       featuresWithoutTestCases: (
         page: number,
         pageSize: number,
@@ -232,13 +246,14 @@ export function ProjectQaDashboard({
   const mergeDetailParams = useCallback(
     (
       type: DashboardDetailType,
-      override?: Record<string, string>
+      override?: Record<string, string | undefined>
     ): Record<string, string> | undefined => {
       const base = detailParams?.[type];
-      if (!base) return override;
-      return { ...base, ...(override ?? {}) };
+      if (!base && !override) return undefined;
+      const merged = { ...(base ?? {}), ...(override ?? {}) };
+      return sanitizeDetailParams(merged);
     },
-    [detailParams]
+    [detailParams, sanitizeDetailParams]
   );
   const loadDetail = useCallback(
     async (
@@ -300,10 +315,29 @@ export function ProjectQaDashboard({
                 ? "coverageDesc"
                 : "coverageAsc",
           }
+        : initialDetail === "featuresMissingDescription"
+        ? missingDescriptionType === "ALL"
+          ? undefined
+          : { type: missingDescriptionType }
         : undefined;
     const params = mergeDetailParams(initialDetail, override);
     void loadDetail(initialDetail, 1, params);
-  }, [coverageSortDirection, initialDetail, loadDetail, mergeDetailParams]);
+  }, [
+    coverageSortDirection,
+    initialDetail,
+    loadDetail,
+    mergeDetailParams,
+    missingDescriptionType,
+  ]);
+
+  useEffect(() => {
+    const initialType = detailParams?.featuresMissingDescription?.type;
+    if (initialType === "FEATURE" || initialType === "MODULE") {
+      setMissingDescriptionType((prev) =>
+        prev === "ALL" ? initialType : prev
+      );
+    }
+  }, [detailParams]);
 
   const handleDetailPageChange = useCallback(
     (page: number) => {
@@ -327,6 +361,20 @@ export function ProjectQaDashboard({
     [detailState.type, loadDetail, mergeDetailParams]
   );
 
+  const handleMissingDescriptionFilterChange = useCallback(
+    (next: MissingDescriptionTypeFilter) => {
+      setMissingDescriptionType(next);
+      const override =
+        next === "ALL" ? { type: undefined } : { type: next };
+      const params = mergeDetailParams(
+        "featuresMissingDescription",
+        override
+      );
+      void loadDetail("featuresMissingDescription", 1, params);
+    },
+    [loadDetail, mergeDetailParams]
+  );
+
   const getFeatureHref = useCallback(
     (featureId: string) => `/app/projects/${projectId}/features/${featureId}`,
     [projectId]
@@ -335,6 +383,24 @@ export function ProjectQaDashboard({
   const getRunHref = useCallback(
     (runId: string) => `/app/projects/${projectId}/test-runs/${runId}`,
     [projectId]
+  );
+
+  const missingDescriptionFilterLabels = useMemo(
+    () => ({
+      label: t("missingDescription.filter.label"),
+      all: t("missingDescription.filter.all"),
+      features: t("missingDescription.filter.features"),
+      modules: t("missingDescription.filter.modules"),
+    }),
+    [t]
+  );
+
+  const missingDescriptionEntityLabels = useMemo(
+    () => ({
+      FEATURE: t("missingDescription.entityType.FEATURE"),
+      MODULE: t("missingDescription.entityType.MODULE"),
+    }),
+    [t]
   );
 
   let content: ReactNode = null;
@@ -424,6 +490,7 @@ export function ProjectQaDashboard({
               badgeLabel={t("missingDescription.badge")}
               getFeatureHref={getFeatureHref}
               openExternalLabel={openExternalLabel}
+              entityLabels={missingDescriptionEntityLabels}
             />
           );
           break;
@@ -601,17 +668,26 @@ export function ProjectQaDashboard({
       </>
     ) : null;
 
-    const detailSection = (
-      <div className="rounded-2xl border bg-card p-5 shadow-sm">
-        <div className="mb-4">
-          <p className="text-sm font-semibold">
-            {activeDetail ? detailMeta[activeDetail].title : t("detail.title")}
-          </p>
-          <p className="text-2xs text-muted-foreground">
-            {activeDetail
-              ? detailMeta[activeDetail].description
-              : t("detail.subtitle")}
-          </p>
+  const detailSection = (
+    <div className="rounded-2xl border bg-card p-5 shadow-sm">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold">
+              {activeDetail ? detailMeta[activeDetail].title : t("detail.title")}
+            </p>
+            <p className="text-2xs text-muted-foreground">
+              {activeDetail
+                ? detailMeta[activeDetail].description
+                : t("detail.subtitle")}
+            </p>
+          </div>
+          {activeDetail === "featuresMissingDescription" && (
+            <MissingDescriptionFilter
+              value={missingDescriptionType}
+              labels={missingDescriptionFilterLabels}
+              onChange={handleMissingDescriptionFilterChange}
+            />
+          )}
         </div>
         <div className="space-y-4">{detailContent}</div>
         {activeDetail &&
@@ -1101,7 +1177,7 @@ function FeatureHealthList({
     </ul>
   );
 }
-  function MissingDescriptionList({
+function MissingDescriptionList({
   items,
   caption,
   badgeLabel,
@@ -1109,14 +1185,16 @@ function FeatureHealthList({
   onSelectFeature,
   getFeatureHref,
   openExternalLabel,
+  entityLabels,
 }: {
-  items: Array<{ id: string; name: string }>;
+  items: Array<{ id: string; name: string; entityType?: string }>;
   caption?: string;
   badgeLabel?: string;
   linkLabel?: string;
   onSelectFeature?: (featureId: string) => void;
   getFeatureHref?: (featureId: string) => string;
   openExternalLabel: string;
+  entityLabels?: Record<string, string>;
 }) {
   return (
     <ul className="space-y-3">
@@ -1161,6 +1239,11 @@ function FeatureHealthList({
             <div>
               <div className="flex items-center gap-1.5">
                 <p className="text-sm font-semibold">{feature.name}</p>
+                {feature.entityType && entityLabels ? (
+                  <span className="inline-flex rounded-full border border-muted px-2 py-0.5 text-2xs text-muted-foreground">
+                    {entityLabels[feature.entityType] ?? feature.entityType}
+                  </span>
+                ) : null}
                 {buttonLink ?? externalLink}
               </div>
               {caption ? (
@@ -1441,6 +1524,43 @@ function DetailPagination({
       >
         {labels.next}
       </button>
+    </div>
+  );
+}
+
+function MissingDescriptionFilter({
+  value,
+  labels,
+  onChange,
+}: {
+  value: MissingDescriptionTypeFilter;
+  labels: { label: string; all: string; features: string; modules: string };
+  onChange: (next: MissingDescriptionTypeFilter) => void;
+}) {
+  const options: Array<{ value: MissingDescriptionTypeFilter; label: string }> =
+    [
+      { value: "ALL", label: labels.all },
+      { value: "FEATURE", label: labels.features },
+      { value: "MODULE", label: labels.modules },
+    ];
+  return (
+    <div className="flex flex-wrap items-center gap-2 text-xs">
+      <span className="font-medium text-muted-foreground">{labels.label}</span>
+      {options.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          className={cn(
+            "rounded-full border px-3 py-1 transition",
+            value === option.value
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-border bg-background text-muted-foreground hover:bg-background"
+          )}
+          onClick={() => onChange(option.value)}
+        >
+          {option.label}
+        </button>
+      ))}
     </div>
   );
 }

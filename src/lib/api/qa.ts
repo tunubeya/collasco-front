@@ -191,9 +191,12 @@ export type QaDashboardMetrics = {
   runsWithFullPass: number;
 };
 
+export type QaDescriptionEntityType = "FEATURE" | "MODULE";
+
 export type QaDashboardFeatureMissingDescription = {
   id: string;
   name: string;
+  entityType: QaDescriptionEntityType;
 };
 
 export type QaDashboardFeatureWithoutTestCases = {
@@ -607,14 +610,16 @@ export function getProjectDashboardFeaturesMissingDescription(
   token: string,
   projectId: string,
   page: number,
-  pageSize: number
+  pageSize: number,
+  params?: { type?: QaDescriptionEntityType }
 ) {
   return fetchProjectDashboardList<QaDashboardFeatureMissingDescription>(
     token,
     projectId,
     "features-missing-description",
     page,
-    pageSize
+    pageSize,
+    params
   );
 }
 

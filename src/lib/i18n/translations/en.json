@@ -767,6 +767,7 @@
           "issues": "Linked issues",
           "versions": "Versions",
           "qa": "Tests",
+          "linked": "Linked features",
           "manual": "Manual"
         },
         "description": {
@@ -778,6 +779,37 @@
           "issueLink": "Issue",
           "pullRequestLink": "Pull request",
           "empty": "No linked issues."
+        },
+        "linked": {
+          "title": "Linked features",
+          "description": "Keep related work in sync with bidirectional references.",
+          "empty": "This feature has no links yet.",
+          "actions": {
+            "add": "Feature",
+            "cancel": "Cancel"
+          },
+          "form": {
+            "title": "Link feature",
+            "subtitle": "Choose an existing feature from the same project.",
+            "feature": "Feature",
+            "featurePlaceholder": "Select a feature to link",
+            "reason": "Reason (optional)",
+            "reasonPlaceholder": "Why are these features related?",
+            "reasonHelp": "Max. 500 characters.",
+            "submit": "Link feature",
+            "errors": {
+              "targetRequired": "Choose another feature to create the link."
+            }
+          },
+          "list": {
+            "remove": "Remove link",
+            "unknownModule": "Unknown module"
+          },
+          "messages": {
+            "linked": "Feature linked.",
+            "removed": "Link removed.",
+            "error": "We couldn't update the linked features."
+          }
         },
         "versions": {
           "title": "Versions",

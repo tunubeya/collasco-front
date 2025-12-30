@@ -770,6 +770,7 @@
           "issues": "Issues y PR",
           "versions": "Versiones",
           "qa": "Pruebas",
+          "linked": "Features vinculadas",
           "manual": "Manual"
         },
         "description": {
@@ -781,6 +782,37 @@
           "issueLink": "Issue",
           "pullRequestLink": "Pull request",
           "empty": "Sin elementos vinculados."
+        },
+        "linked": {
+          "title": "Features vinculadas",
+          "description": "Mantén sincronizado el trabajo relacionado con enlaces bidireccionales.",
+          "empty": "Esta feature aún no tiene vínculos.",
+          "actions": {
+            "add": "Feature",
+            "cancel": "Cancelar"
+          },
+          "form": {
+            "title": "Vincular feature",
+            "subtitle": "Selecciona una feature existente del proyecto.",
+            "feature": "Feature",
+            "featurePlaceholder": "Selecciona una feature",
+            "reason": "Motivo (opcional)",
+            "reasonPlaceholder": "¿Por qué están relacionadas?",
+            "reasonHelp": "Máx. 500 caracteres.",
+            "submit": "Vincular feature",
+            "errors": {
+              "targetRequired": "Elige otra feature para crear el vínculo."
+            }
+          },
+          "list": {
+            "remove": "Quitar vínculo",
+            "unknownModule": "Módulo desconocido"
+          },
+          "messages": {
+            "linked": "Feature vinculada.",
+            "removed": "Vínculo eliminado.",
+            "error": "No se pudieron actualizar las features vinculadas."
+          }
         },
         "versions": {
           "title": "Versiones",

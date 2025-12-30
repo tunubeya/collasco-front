@@ -21,6 +21,8 @@ import type { Feature } from "@/lib/model-definitions/feature";
 import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
+import type { QaLinkedFeature } from "@/lib/api/qa";
+import { listLinkedFeatures } from "@/lib/api/qa";
 
 // 👇 importa la server action de delete
 import { deleteFeature } from "@/app/app/projects/[projectId]/features/[featureId]/edit/actions";
@@ -76,6 +78,12 @@ export default async function FeatureDetailPage({
 
   let moduleCrumbs: { id: string; name: string }[] = [];
   let structureModules: StructureModuleNode[] = [];
+  let linkableFeatures: Array<{
+    id: string;
+    name: string;
+    moduleId: string | null;
+    moduleName: string | null;
+  }> = [];
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
@@ -86,6 +94,9 @@ export default async function FeatureDetailPage({
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
     }
+    linkableFeatures = extractFeatureOptions(structure.modules).filter(
+      (item) => item.id !== feature.id
+    );
   } catch (error) {
     await handlePageError(error);
   }
@@ -123,6 +134,13 @@ export default async function FeatureDetailPage({
     membershipRole === ProjectMemberRole.OWNER ||
     membershipRole === ProjectMemberRole.MAINTAINER ||
     membershipRole === ProjectMemberRole.DEVELOPER;
+
+  let linkedFeatures: QaLinkedFeature[] = [];
+  try {
+    linkedFeatures = await listLinkedFeatures(session.token, feature.id);
+  } catch (error) {
+    await handlePageError(error);
+  }
 
   return (
     <div className="grid gap-6">
@@ -204,9 +222,47 @@ export default async function FeatureDetailPage({
         token={session.token}
         currentUserId={currentUserId ?? undefined}
         canManageQa={canManageQa}
+        initialLinkedFeatures={linkedFeatures}
+        linkableFeatures={linkableFeatures}
+        projectId={projectId}
       />
     </div>
   );
+}
+
+function extractFeatureOptions(
+  modules: StructureModuleNode[]
+): Array<{
+  id: string;
+  name: string;
+  moduleId: string | null;
+  moduleName: string | null;
+}> {
+  const result: Array<{
+    id: string;
+    name: string;
+    moduleId: string | null;
+    moduleName: string | null;
+  }> = [];
+
+  const visitModule = (node: StructureModuleNode) => {
+    node.items.forEach((item) => {
+      if (item.type === "feature") {
+        result.push({
+          id: item.id,
+          name: item.name,
+          moduleId: node.id,
+          moduleName: node.name ?? null,
+        });
+      } else {
+        visitModule(item);
+      }
+    });
+  };
+
+  modules.forEach((module) => visitModule(module));
+
+  return result;
 }
 
 // … tus badges se mantienen igual …

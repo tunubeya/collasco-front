@@ -716,6 +716,7 @@
           "issues": "Issues liées",
           "versions": "Versions",
           "qa": "Tests",
+          "linked": "Features liées",
           "manual": "Manuel"
         },
         "description": {
@@ -727,6 +728,37 @@
           "issueLink": "Issue",
           "pullRequestLink": "Pull request",
           "empty": "Aucune issue liée."
+        },
+        "linked": {
+          "title": "Features liées",
+          "description": "Gérez les dépendances avec des liens bidirectionnels.",
+          "empty": "Cette feature n’a pas encore de liens.",
+          "actions": {
+            "add": "Feature",
+            "cancel": "Annuler"
+          },
+          "form": {
+            "title": "Lier une feature",
+            "subtitle": "Sélectionnez une feature existante du projet.",
+            "feature": "Feature",
+            "featurePlaceholder": "Sélectionnez une feature",
+            "reason": "Motif (optionnel)",
+            "reasonPlaceholder": "Pourquoi sont-elles liées ?",
+            "reasonHelp": "500 caractères maximum.",
+            "submit": "Lier la feature",
+            "errors": {
+              "targetRequired": "Choisissez une autre feature pour créer le lien."
+            }
+          },
+          "list": {
+            "remove": "Retirer le lien",
+            "unknownModule": "Module inconnu"
+          },
+          "messages": {
+            "linked": "Feature liée.",
+            "removed": "Lien supprimé.",
+            "error": "Impossible de mettre à jour les features liées."
+          }
         },
         "versions": {
           "title": "Versions",

@@ -234,6 +234,14 @@ export type QaDashboardFeatureHealth = {
   missingTestCasesCount: number | null;
 };
 
+export type QaLinkedFeature = {
+  id: string;
+  name: string;
+  moduleId: string | null;
+  moduleName: string | null;
+  reason?: string | null;
+};
+
 export type QaDashboardRunSummary = {
   id: string;
   runDate: string;
@@ -668,6 +676,87 @@ export function getProjectDashboardFeatureHealth(
     page,
     pageSize
   );
+}
+
+export async function listLinkedFeatures(
+  token: string,
+  featureId: string
+): Promise<QaLinkedFeature[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/features/${featureId}/linked-features`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function createLinkedFeature(
+  token: string,
+  featureId: string,
+  dto: { targetFeatureId: string; reason?: string }
+): Promise<QaLinkedFeature[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/features/${featureId}/linked-features`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function deleteLinkedFeature(
+  token: string,
+  featureId: string,
+  linkedFeatureId: string
+): Promise<QaLinkedFeature[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/features/${featureId}/linked-features/${linkedFeatureId}`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
 }
 
 export function getProjectDashboardOpenRuns(

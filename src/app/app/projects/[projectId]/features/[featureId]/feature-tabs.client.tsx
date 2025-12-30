@@ -13,6 +13,15 @@ import {
   buildProjectManualTree,
 } from "@/ui/components/manual/manual-outline.client";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
+import type { QaLinkedFeature } from "@/lib/api/qa";
+import { LinkedFeaturesPanel } from "./feature-linked-features.client";
+
+type LinkedOption = {
+  id: string;
+  name: string;
+  moduleId: string | null;
+  moduleName: string | null;
+};
 
 type FeatureTabsProps = {
   feature: Feature;
@@ -22,9 +31,18 @@ type FeatureTabsProps = {
   token: string;
   currentUserId?: string;
   canManageQa?: boolean;
+  initialLinkedFeatures: QaLinkedFeature[];
+  linkableFeatures: LinkedOption[];
+  projectId: string;
 };
 
-type FeatureTab = "info" | "issues" | "versions" | "qa" | "manual";
+type FeatureTab =
+  | "info"
+  | "issues"
+  | "versions"
+  | "qa"
+  | "linked"
+  | "manual";
 
 export function FeatureTabs({
   feature,
@@ -34,6 +52,9 @@ export function FeatureTabs({
   token,
   currentUserId,
   canManageQa = false,
+  initialLinkedFeatures,
+  linkableFeatures,
+  projectId,
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
@@ -68,6 +89,11 @@ export function FeatureTabs({
           label={tTabs("qa")}
           isActive={activeTab === "qa"}
           onClick={() => setActiveTab("qa")}
+        />
+        <TabButton
+          label={tTabs("linked")}
+          isActive={activeTab === "linked"}
+          onClick={() => setActiveTab("linked")}
         />
         <TabButton
           label={tTabs("manual")}
@@ -166,6 +192,16 @@ export function FeatureTabs({
           featureId={featureId}
           currentUserId={currentUserId}
           canManageQa={canManageQa}
+        />
+      )}
+
+      {activeTab === "linked" && (
+        <LinkedFeaturesPanel
+          token={token}
+          featureId={featureId}
+          initialLinks={initialLinkedFeatures}
+          options={linkableFeatures}
+          projectId={projectId}
         />
       )}
 

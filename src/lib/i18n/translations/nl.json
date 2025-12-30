@@ -692,6 +692,7 @@
           "issues": "Issues",
           "versions": "Versies",
           "qa": "Tests",
+          "linked": "Gelinkte features",
           "manual": "Handleiding"
         },
         "description": {
@@ -703,6 +704,37 @@
           "issueLink": "Issue",
           "pullRequestLink": "Pull request",
           "empty": "Geen gekoppelde items."
+        },
+        "linked": {
+          "title": "Gelinkte features",
+          "description": "Houd gerelateerd werk in sync met bidirectionele links.",
+          "empty": "Deze feature heeft nog geen links.",
+          "actions": {
+            "add": "Feature",
+            "cancel": "Annuleren"
+          },
+          "form": {
+            "title": "Feature linken",
+            "subtitle": "Kies een bestaande feature uit hetzelfde project.",
+            "feature": "Feature",
+            "featurePlaceholder": "Selecteer een feature",
+            "reason": "Reden (optioneel)",
+            "reasonPlaceholder": "Waarom horen ze bij elkaar?",
+            "reasonHelp": "Max. 500 tekens.",
+            "submit": "Feature linken",
+            "errors": {
+              "targetRequired": "Kies een andere feature om te linken."
+            }
+          },
+          "list": {
+            "remove": "Link verwijderen",
+            "unknownModule": "Onbekende module"
+          },
+          "messages": {
+            "linked": "Feature gelinkt.",
+            "removed": "Link verwijderd.",
+            "error": "Kon de gelinkte features niet bijwerken."
+          }
         },
         "versions": {
           "title": "Versies",

@@ -80,6 +80,7 @@ type RunCaseRow = {
 };
 
 export const RESULT_STATUSES: QaEvaluation[] = [
+  "NOT_STARTED",
   "NOT_WORKING",
   "MINOR_ISSUE",
   "PASSED",
@@ -998,6 +999,7 @@ function TestRunsTab({
         return acc;
       },
       {
+        NOT_STARTED: 0,
         NOT_WORKING: 0,
         MINOR_ISSUE: 0,
         PASSED: 0,
@@ -1051,7 +1053,7 @@ function TestRunsTab({
             by: created.runBy?.name ?? null,
             status: created.status,
             summary,
-            totalTestCases: targetTestCaseIds.length??0,
+            totalTestCases: targetTestCaseIds.length ?? 0,
           },
           ...prev,
         ]);
@@ -1099,7 +1101,7 @@ function TestRunsTab({
     return (
       <ul className="space-y-3">
         {runs.map((run) => {
-          const total = run.totalTestCases?? 0;;
+          const total = run.totalTestCases ?? 0;
           const passed = run.summary?.PASSED ?? 0;
           const runDate = formatter.dateTime(new Date(run.runDate), {
             dateStyle: "medium",
@@ -1481,7 +1483,7 @@ export function TestRunPanel({
       })
       .map(([testCaseId, value]) => ({
         testCaseId,
-        evaluation: value.evaluation as QaEvaluation,
+        ...(value.evaluation ? { evaluation: value.evaluation as QaEvaluation } : {}),
         comment: value.comment?.trim() || undefined,
       }));
 
@@ -1604,6 +1606,7 @@ export function TestRunPanel({
         return acc;
       },
       {
+        NOT_STARTED: 0,
         NOT_WORKING: 0,
         MINOR_ISSUE: 0,
         PASSED: 0,
@@ -1675,7 +1678,7 @@ export function TestRunPanel({
           results: [
             {
               testCaseId,
-              evaluation: "NOT_WORKING",
+              evaluation: "NOT_STARTED",
             },
           ],
         });
@@ -1826,7 +1829,7 @@ export function TestRunPanel({
           const draftComment = commentDrafts[testCase.testCaseId];
           const noteValue = draftComment ?? state.comment ?? "";
           const needsStatusSelection = !state.evaluation;
-          const isNoteDisabled = isRunClosed || needsStatusSelection;
+          const isNoteDisabled = isRunClosed;
           const noteClasses = cn(
             "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
             isNoteDisabled &&
@@ -1873,7 +1876,6 @@ export function TestRunPanel({
                     disabled={isRunClosed}
                     className="min-w-[160px] rounded-lg border px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-muted"
                   >
-                    <option value="">{t("panel.statusPlaceholder")}</option>
                     {RESULT_STATUSES.map((status) => (
                       <option key={status} value={status}>
                         {statusLabels(status)}
@@ -1911,11 +1913,6 @@ export function TestRunPanel({
                   className={noteClasses}
                   placeholder={t("panel.notePlaceholder")}
                 />
-                {needsStatusSelection && !isRunClosed && (
-                  <p className="mt-1 text-xs text-amber-600">
-                    {t("panel.noteRequiresStatus")}
-                  </p>
-                )}
               </div>
             </div>
           );

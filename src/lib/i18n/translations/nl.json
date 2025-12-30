@@ -902,7 +902,6 @@
           "statusPlaceholder": "Kies een status",
           "testCasePlaceholder": "Selecteer een testcase...",
           "notePlaceholder": "Optionele notities of bewijslinks...",
-          "noteRequiresStatus": "Kies eerst een status voordat je een notitie schrijft.",
           "empty": {
             "title": "Nog geen resultaten",
             "description": "Voeg openstaande cases toe vanuit de dekking of werk een bestaand resultaat bij."
@@ -955,6 +954,7 @@
           "notes": "Optionele context of instapcriteria."
         },
         "resultStatus": {
+          "NOT_STARTED": "Niet gestart",
           "NOT_WORKING": "Werkt niet",
           "MINOR_ISSUE": "Klein probleem",
           "PASSED": "Geslaagd"

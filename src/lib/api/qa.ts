@@ -3,7 +3,11 @@ import { handleUnauthorized } from "@/lib/server-auth-helpers";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
-export type QaEvaluation = "NOT_WORKING" | "MINOR_ISSUE" | "PASSED";
+export type QaEvaluation =
+  | "NOT_STARTED"
+  | "NOT_WORKING"
+  | "MINOR_ISSUE"
+  | "PASSED";
 
 export type QaTestCase = {
   id: string;
@@ -33,7 +37,7 @@ export type UpdateTestCaseDto = Partial<{
 
 export type QaResultInput = {
   testCaseId: string;
-  evaluation: QaEvaluation;
+  evaluation?: QaEvaluation;
   comment?: string;
 };
 
@@ -469,7 +473,6 @@ export async function listTestRuns(
       { method: "GET" },
       token
     );
-    console.log(res);
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<QaFeatureRunListItem[] | { items?: QaFeatureRunListItem[] }>(res);
     if (Array.isArray(payload)) {

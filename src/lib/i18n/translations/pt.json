@@ -977,7 +977,6 @@
           "statusPlaceholder": "Selecione um status",
           "testCasePlaceholder": "Selecione um caso de teste",
           "notePlaceholder": "Notas ou links de evidência opcionais...",
-          "noteRequiresStatus": "Selecione um status antes de registrar a nota.",
           "empty": {
             "title": "Sem resultados ainda",
             "description": "Adicione os casos pendentes na cobertura ou atualize um existente."
@@ -1030,6 +1029,7 @@
           "notes": "Contexto opcional ou critérios de entrada."
         },
         "resultStatus": {
+          "NOT_STARTED": "Não iniciado",
           "NOT_WORKING": "Não funciona",
           "MINOR_ISSUE": "Com problema menor",
           "PASSED": "Aprovado"

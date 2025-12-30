@@ -77,6 +77,7 @@ export function ProjectQA({
         return acc;
       },
       {
+        NOT_STARTED: 0,
         NOT_WORKING: 0,
         MINOR_ISSUE: 0,
         PASSED: 0,

@@ -926,7 +926,6 @@
           "statusPlaceholder": "Sélectionnez un statut",
           "testCasePlaceholder": "Sélectionnez un cas de test",
           "notePlaceholder": "Notes ou liens de preuve (optionnel)...",
-          "noteRequiresStatus": "Sélectionnez un statut avant d’ajouter une note.",
           "empty": {
             "title": "Aucun résultat",
             "description": "Ajoutez les cas en attente depuis la couverture ou mettez à jour un résultat existant."
@@ -979,6 +978,7 @@
           "notes": "Contexte optionnel ou critères d’entrée."
         },
         "resultStatus": {
+          "NOT_STARTED": "Non commencé",
           "NOT_WORKING": "Ne fonctionne pas",
           "MINOR_ISSUE": "Problème mineur",
           "PASSED": "Réussi"

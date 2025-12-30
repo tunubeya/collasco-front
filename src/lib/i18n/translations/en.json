@@ -977,7 +977,6 @@
           "statusPlaceholder": "Select status",
           "testCasePlaceholder": "Select test case",
           "notePlaceholder": "Optional notes or evidence links...",
-          "noteRequiresStatus": "Select a status before writing notes.",
           "empty": {
             "title": "No results yet",
             "description": "Add pending cases from coverage or update an existing one."
@@ -1030,6 +1029,7 @@
           "notes": "Optional context or entry criteria."
         },
         "resultStatus": {
+          "NOT_STARTED": "Not started",
           "NOT_WORKING": "Not working",
           "MINOR_ISSUE": "Minor issue",
           "PASSED": "Passed"

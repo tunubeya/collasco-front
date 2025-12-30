@@ -16,7 +16,7 @@ type DraftResult = {
   featureName: string;
   testCaseId: string;
   testCaseName: string;
-  evaluation: QaEvaluation;
+  evaluation?: QaEvaluation;
   comment?: string;
 };
 
@@ -114,12 +114,13 @@ export function NewProjectRunDialog({
   );
 
   const handleAddEntry = useCallback(() => {
-    if (!selectedFeature || !selectedCase || !selectedEvaluation) {
+    if (!selectedFeature || !selectedCase) {
       setError(t("errors.validation"));
       return;
     }
     const featureName = featureOptions.find((option) => option.id === selectedFeature)?.name ?? "";
     const testCaseName = availableCases.find((testCase) => testCase.id === selectedCase)?.name ?? selectedCase;
+    const evaluationValue = selectedEvaluation ? (selectedEvaluation as QaEvaluation) : undefined;
     setEntries((prev) => {
       if (prev.some((entry) => entry.testCaseId === selectedCase)) {
         return prev;
@@ -131,7 +132,7 @@ export function NewProjectRunDialog({
           featureName,
           testCaseId: selectedCase,
           testCaseName,
-          evaluation: selectedEvaluation as QaEvaluation,
+          evaluation: evaluationValue,
           comment: comment.trim() || undefined,
         },
       ];
@@ -163,7 +164,7 @@ export function NewProjectRunDialog({
       targetTestCaseIds: entries.map((entry) => entry.testCaseId),
       results: entries.map((entry) => ({
         testCaseId: entry.testCaseId,
-        evaluation: entry.evaluation,
+        ...(entry.evaluation ? { evaluation: entry.evaluation } : {}),
         comment: entry.comment,
       })),
     });
@@ -297,12 +298,11 @@ export function NewProjectRunDialog({
                       onChange={(event) => setSelectedEvaluation(event.target.value as QaEvaluation)}
                       className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     >
-                      <option value="">{t("panel.statusPlaceholder")}</option>
-                      {RESULT_STATUSES.map((status) => (
-                        <option key={status} value={status}>
-                          {statusLabels(status)}
-                        </option>
-                      ))}
+                    {RESULT_STATUSES.map((status) => (
+                      <option key={status} value={status}>
+                        {statusLabels(status)}
+                      </option>
+                    ))}
                     </select>
                   </div>
 
@@ -323,7 +323,7 @@ export function NewProjectRunDialog({
                 <div className="flex items-center justify-end">
                   <Button
                     onClick={handleAddEntry}
-                    disabled={!selectedCase || !selectedEvaluation}
+                    disabled={!selectedCase}
                     variant="secondary"
                   >
                     {t("panel.coverage.addResult")}
@@ -356,7 +356,7 @@ export function NewProjectRunDialog({
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                            {statusLabels(entry.evaluation)}
+                            {statusLabels(entry.evaluation ?? "NOT_STARTED")}
                           </span>
                           <Button variant="ghost" size="sm" onClick={() => handleRemoveEntry(entry.testCaseId)}>
                             ×

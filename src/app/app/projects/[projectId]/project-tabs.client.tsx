@@ -18,6 +18,7 @@ import {
   ManualOutline,
   buildProjectManualTree,
 } from "@/ui/components/manual/manual-outline.client";
+import { ProjectLabelsTab } from "./project-labels-tab.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -29,7 +30,7 @@ type ProjectTabsProps = {
   membershipRole?: ProjectMemberRole | null;
 };
 
-type ProjectTab = "structure" | "qa" | "members" | "manual";
+type ProjectTab = "structure" | "qa" | "members" | "labels" | "manual";
 
 export function ProjectTabs({
   project,
@@ -57,6 +58,7 @@ export function ProjectTabs({
     () => buildProjectManualTree(project, structureModules),
     [project, structureModules],
   );
+  const canManageLabels = membershipRole === ProjectMemberRole.OWNER;
 
   return (
     <section className="space-y-4">
@@ -75,6 +77,11 @@ export function ProjectTabs({
           label={tTabs("members")}
           isActive={activeTab === "members"}
           onClick={() => setActiveTab("members")}
+        />
+        <TabButton
+          label={tTabs("labels")}
+          isActive={activeTab === "labels"}
+          onClick={() => setActiveTab("labels")}
         />
         <TabButton
           label={tTabs("manual")}
@@ -124,6 +131,14 @@ export function ProjectTabs({
           initialMembers={project.members ?? []}
           canManageMembers={membershipRole === ProjectMemberRole.OWNER}
           currentUserId={currentUserId}
+        />
+      )}
+
+      {activeTab === "labels" && (
+        <ProjectLabelsTab
+          token={token}
+          projectId={projectId}
+          canManageLabels={canManageLabels}
         />
       )}
 

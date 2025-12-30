@@ -534,6 +534,7 @@
           "dashboard": "Dashboard",
           "qa": "Ejecuciones QA",
           "members": "Miembros",
+          "labels": "Etiquetas",
           "manual": "Manual"
         },
         "actions": {
@@ -615,6 +616,67 @@
         },
         "validation": {
           "userId": "Ingresa el ID del usuario."
+        }
+      },
+      "labels": {
+        "title": "Etiquetas personalizadas",
+        "subtitle": "Configura etiquetas de QA para controlar quién ve y edita cada contenido.",
+        "actions": {
+          "add": "Nueva etiqueta",
+          "edit": "Editar",
+          "delete": "Eliminar",
+          "save": "Guardar",
+          "saving": "Guardando...",
+          "cancel": "Cancelar"
+        },
+        "messages": {
+          "loadError": "No pudimos cargar las etiquetas.",
+          "saveError": "No pudimos guardar la etiqueta.",
+          "created": "Etiqueta creada.",
+          "updated": "Etiqueta actualizada.",
+          "deleted": "Etiqueta eliminada.",
+          "deleteError": "No pudimos eliminar la etiqueta.",
+          "deleteConfirm": "¿Eliminar la etiqueta \"{name}\"?",
+          "ownerOnly": "Solo el owner puede modificar las etiquetas."
+        },
+        "table": {
+          "name": "Etiqueta",
+          "mandatory": "Obligatoria",
+          "mandatoryYes": "Sí",
+          "mandatoryNo": "No",
+          "visibleToRoles": "Visible para",
+          "readOnlyRoles": "Solo lectura",
+          "noReadOnly": "Todos los roles visibles pueden editar.",
+          "actions": "Acciones"
+        },
+        "empty": {
+          "title": "Aún no definiste etiquetas",
+          "description": "Crea etiquetas para organizar tus formularios y ejecuciones de QA.",
+          "action": "Crear etiqueta"
+        },
+        "fields": {
+          "name": "Nombre",
+          "namePlaceholder": "Ej. Documentación requerida",
+          "isMandatory": "Campo obligatorio",
+          "visibleToRoles": "Roles con acceso",
+          "visibleToRolesHint": "Selecciona quién verá elementos con esta etiqueta.",
+          "readOnlyRoles": "Roles en modo lectura",
+          "readOnlyRolesHint": "Podrán verla pero no editar el contenido."
+        },
+        "dialog": {
+          "createTitle": "Nueva etiqueta",
+          "editTitle": "Editar etiqueta",
+          "description": "Define la visibilidad y permisos para la etiqueta."
+        },
+        "validation": {
+          "name": "Ingresa un nombre."
+        },
+        "roleNames": {
+          "OWNER": "Propietario",
+          "MAINTAINER": "Maintainer",
+          "DEVELOPER": "Desarrollador",
+          "VIEWER": "Lector",
+          "TESTER": "Tester"
         }
       },
       "detailErrors": {

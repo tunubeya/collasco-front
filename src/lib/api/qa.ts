@@ -242,6 +242,34 @@ export type QaLinkedFeature = {
   reason?: string | null;
 };
 
+export type QaLabelRole =
+  | "OWNER"
+  | "MAINTAINER"
+  | "DEVELOPER"
+  | "VIEWER"
+  | "TESTER";
+
+export type QaProjectLabel = {
+  id: string;
+  name: string;
+  isMandatory: boolean;
+  visibleToRoles: QaLabelRole[];
+  readOnlyRoles: QaLabelRole[];
+};
+
+export type CreateQaProjectLabelDto = {
+  name: string;
+  isMandatory?: boolean;
+  visibleToRoles?: QaLabelRole[];
+  readOnlyRoles?: QaLabelRole[];
+};
+
+export type UpdateQaProjectLabelDto = Partial<CreateQaProjectLabelDto>;
+
+export type DeleteQaProjectLabelResponse = {
+  success: boolean;
+};
+
 export type QaDashboardRunSummary = {
   id: string;
   runDate: string;
@@ -753,6 +781,97 @@ export async function deleteLinkedFeature(
       return payload.items;
     }
     return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listProjectLabels(
+  token: string,
+  projectId: string
+): Promise<QaProjectLabel[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaProjectLabel[] | { items?: QaProjectLabel[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function createProjectLabel(
+  token: string,
+  projectId: string,
+  dto: CreateQaProjectLabelDto
+): Promise<QaProjectLabel> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaProjectLabel>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function updateProjectLabel(
+  token: string,
+  projectId: string,
+  labelId: string,
+  dto: UpdateQaProjectLabelDto
+): Promise<QaProjectLabel> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels/${labelId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaProjectLabel>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function deleteProjectLabel(
+  token: string,
+  projectId: string,
+  labelId: string
+): Promise<DeleteQaProjectLabelResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels/${labelId}`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<DeleteQaProjectLabelResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

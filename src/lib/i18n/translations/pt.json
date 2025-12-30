@@ -534,6 +534,7 @@
           "dashboard": "Painel",
           "qa": "Execuções QA",
           "members": "Membros",
+          "labels": "Etiquetas",
           "manual": "Manual"
         },
         "actions": {
@@ -615,6 +616,67 @@
         },
         "validation": {
           "userId": "Informe o ID do usuário."
+        }
+      },
+      "labels": {
+        "title": "Custom labels",
+        "subtitle": "Configure QA labels and decide who can see or edit the tagged content.",
+        "actions": {
+          "add": "New label",
+          "edit": "Edit",
+          "delete": "Delete",
+          "save": "Save",
+          "saving": "Saving...",
+          "cancel": "Cancel"
+        },
+        "messages": {
+          "loadError": "We couldn't load the labels.",
+          "saveError": "We couldn't save the label.",
+          "created": "Label created.",
+          "updated": "Label updated.",
+          "deleted": "Label deleted.",
+          "deleteError": "We couldn't delete the label.",
+          "deleteConfirm": "Delete the \"{name}\" label?",
+          "ownerOnly": "Only the owner can modify labels."
+        },
+        "table": {
+          "name": "Label",
+          "mandatory": "Mandatory",
+          "mandatoryYes": "Yes",
+          "mandatoryNo": "No",
+          "visibleToRoles": "Visible to",
+          "readOnlyRoles": "Read only",
+          "noReadOnly": "All visible roles can edit.",
+          "actions": "Actions"
+        },
+        "empty": {
+          "title": "No labels yet",
+          "description": "Create labels to organize your QA flows and runs.",
+          "action": "Create label"
+        },
+        "fields": {
+          "name": "Name",
+          "namePlaceholder": "e.g. Privacy approval",
+          "isMandatory": "Mandatory field",
+          "visibleToRoles": "Roles with access",
+          "visibleToRolesHint": "Choose who can see items tagged with this label.",
+          "readOnlyRoles": "Read-only roles",
+          "readOnlyRolesHint": "They will see the label but cannot edit the content."
+        },
+        "dialog": {
+          "createTitle": "New label",
+          "editTitle": "Edit label",
+          "description": "Define visibility and permissions for this label."
+        },
+        "validation": {
+          "name": "Enter a name."
+        },
+        "roleNames": {
+          "OWNER": "Owner",
+          "MAINTAINER": "Maintainer",
+          "DEVELOPER": "Developer",
+          "VIEWER": "Viewer",
+          "TESTER": "Tester"
         }
       },
       "detailErrors": {

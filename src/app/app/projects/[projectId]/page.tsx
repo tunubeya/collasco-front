@@ -14,7 +14,7 @@ import { handlePageError } from "@/lib/handle-page-error";
 import { deleteProject } from "@/app/app/projects/actions";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { LayoutDashboard, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 
 type Params = { projectId: string };
@@ -105,14 +105,6 @@ export default async function ProjectDetailPage({
             status={project.status}
             label={tStatus(project.status)}
           />
-          <Link
-            href={`/app/projects/${project.id}/dashboard`}
-            className={actionButtonClass({ variant: "neutral" })}
-          >
-            <LayoutDashboard className="mr-2 h-4 w-4" aria-hidden />
-            {t("actions.viewDashboard", { default: "View dashboard" })}
-          </Link>
-
           {/* Botones de acción */}
           {canManageProject && (
             <div className="flex gap-2">

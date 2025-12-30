@@ -81,6 +81,10 @@ export function ProjectTabs({
           isActive={activeTab === "manual"}
           onClick={() => setActiveTab("manual")}
         />
+        <TabButton
+          label={tTabs("dashboard")}
+          href={`/app/projects/${projectId}/dashboard`}
+        />
       </div>
 
       {activeTab === "structure" && (
@@ -143,22 +147,34 @@ export function ProjectTabs({
 
 function TabButton({
   label,
-  isActive,
+  isActive = false,
   onClick,
+  href,
 }: {
   label: string;
-  isActive: boolean;
-  onClick: () => void;
+  isActive?: boolean;
+  onClick?: () => void;
+  href?: string;
 }) {
+  const className = cn(
+    "rounded-full border px-3 py-1 text-sm transition",
+    isActive
+      ? "border-primary bg-primary text-primary-foreground"
+      : "border-border bg-muted text-muted-foreground hover:bg-background",
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {label}
+      </Link>
+    );
+  }
+
   return (
     <button
       type="button"
-      className={cn(
-        "rounded-full border px-3 py-1 text-sm transition",
-        isActive
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-muted text-muted-foreground hover:bg-background",
-      )}
+      className={className}
       onClick={onClick}
     >
       {label}

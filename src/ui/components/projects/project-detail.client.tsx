@@ -21,12 +21,6 @@ export default function ProjectDetailClient({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border bg-background p-4">
-        <RichTextPreview
-          value={project.description}
-          emptyLabel={t("description.empty")}
-        />
-      </div>
       <StructureTree
         projectId={project.id}
         roots={structureModules}

@@ -679,6 +679,45 @@
           "TESTER": "Tester"
         }
       },
+      "documentation": {
+        "title": "Documentación por etiqueta",
+        "subtitle": "Describe la evidencia que cada rol puede consultar o editar.",
+        "empty": "No hay secciones disponibles para tu rol.",
+        "badges": {
+          "mandatory": "Obligatoria",
+          "readOnly": "Solo lectura",
+          "notApplicable": "No aplica"
+        },
+        "labels": {
+          "updatedAt": "Actualizado {date}"
+        },
+        "fields": {
+          "notApplicable": "No aplica",
+          "notApplicableHint": "Oculta este campo para este feature o módulo.",
+          "editorLabel": "Contenido",
+          "editorPlaceholder": "Describe la evidencia, las validaciones o notas relevantes.",
+          "editorHelper": "Usa texto enriquecido para mantener claridad y contexto."
+        },
+        "states": {
+          "notApplicable": "Esta etiqueta está marcada como no aplicable.",
+          "empty": "Aún no hay contenido."
+        },
+        "messages": {
+          "loadError": "No pudimos cargar la documentación.",
+          "saved": "Documentación guardada.",
+          "saveError": "No pudimos guardar esta etiqueta."
+        },
+        "actions": {
+          "edit": "Editar contenido",
+          "save": "Guardar",
+          "cancel": "Cancelar",
+          "markNotApplicable": "Marcar como N/A",
+          "markApplicable": "Volver a aplicar"
+        },
+        "validation": {
+          "content": "Ingresa contenido o marca la etiqueta como no aplicable."
+        }
+      },
       "detailErrors": {
         "title": "No se pudo cargar el proyecto",
         "description": "No pudimos obtener el proyecto. Intenta nuevamente.",

@@ -182,6 +182,7 @@ export default async function ModuleDetailPage({
         structureNode={structureNode!}
         structureModules={projectStructureModules}
         canManageStructure={canManageStructure}
+        token={session.token}
       />
     </div>
   );

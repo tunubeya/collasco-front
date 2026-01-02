@@ -16,6 +16,7 @@ import {
   buildProjectManualTree,
   findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
+import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 
 type ModuleTabsProps = {
   project: Project;
@@ -23,6 +24,7 @@ type ModuleTabsProps = {
   structureNode: StructureModuleNode;
   structureModules: StructureModuleNode[];
   canManageStructure: boolean;
+  token: string;
 };
 
 type ModuleTab = "structure" | "details" | "manual";
@@ -33,6 +35,7 @@ export function ModuleTabs({
   structureNode,
   structureModules,
   canManageStructure,
+  token,
 }: ModuleTabsProps) {
   const [activeTab, setActiveTab] = useState<ModuleTab>("structure");
   const tModule = useTranslations("app.projects.module");
@@ -114,10 +117,17 @@ export function ModuleTabs({
       )}
 
       {activeTab === "details" && (
-        <div className="rounded-xl border bg-background p-4">
-          <RichTextPreview
-            value={module.description}
-            emptyLabel={tModule("description.empty")}
+        <div className="space-y-4">
+          <div className="rounded-xl border bg-background p-4">
+            <RichTextPreview
+              value={module.description}
+              emptyLabel={tModule("description.empty")}
+            />
+          </div>
+          <EntityDocumentationPanel
+            token={token}
+            entityId={module.id}
+            entityType="module"
           />
         </div>
       )}

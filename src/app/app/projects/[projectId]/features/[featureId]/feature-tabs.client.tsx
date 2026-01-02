@@ -15,6 +15,7 @@ import {
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import type { QaLinkedFeature } from "@/lib/api/qa";
 import { LinkedFeaturesPanel } from "./feature-linked-features.client";
+import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 
 type LinkedOption = {
   id: string;
@@ -103,13 +104,20 @@ export function FeatureTabs({
       </div>
 
       {activeTab === "info" && (
-        <section className="rounded-xl border bg-background p-4">
-          <h2 className="mb-2 font-semibold">{t("description.title")}</h2>
-          <RichTextPreview
-            value={feature.description}
-            emptyLabel={t("description.empty")}
+        <>
+          <section className="rounded-xl border bg-background p-4">
+            <h2 className="mb-2 font-semibold">{t("description.title")}</h2>
+            <RichTextPreview
+              value={feature.description}
+              emptyLabel={t("description.empty")}
+            />
+          </section>
+          <EntityDocumentationPanel
+            token={token}
+            entityId={featureId}
+            entityType="feature"
           />
-        </section>
+        </>
       )}
 
       {activeTab === "issues" && (

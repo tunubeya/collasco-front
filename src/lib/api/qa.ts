@@ -270,6 +270,24 @@ export type DeleteQaProjectLabelResponse = {
   success: boolean;
 };
 
+export type QaDocumentationField = {
+  id: string | null;
+  content?: string | null;
+  isNotApplicable?: boolean;
+  updatedAt?: string | null;
+};
+
+export type QaDocumentationEntry = {
+  label: QaProjectLabel;
+  field: QaDocumentationField | null;
+  canEdit: boolean;
+};
+
+export type UpdateQaDocumentationEntryDto = {
+  content?: string | null;
+  isNotApplicable?: boolean;
+};
+
 export type QaDashboardRunSummary = {
   id: string;
   runDate: string;
@@ -872,6 +890,118 @@ export async function deleteProjectLabel(
     );
     if (!res.ok) throw res;
     return await parseJsonResponse<DeleteQaProjectLabelResponse>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listFeatureDocumentation(
+  token: string,
+  featureId: string
+): Promise<QaDocumentationEntry[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/features/${featureId}/documentation`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listModuleDocumentation(
+  token: string,
+  moduleId: string
+): Promise<QaDocumentationEntry[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/modules/${moduleId}/documentation`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function updateFeatureDocumentationEntry(
+  token: string,
+  featureId: string,
+  labelId: string,
+  dto: UpdateQaDocumentationEntryDto
+): Promise<QaDocumentationEntry[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/features/${featureId}/documentation/${labelId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function updateModuleDocumentationEntry(
+  token: string,
+  moduleId: string,
+  labelId: string,
+  dto: UpdateQaDocumentationEntryDto
+): Promise<QaDocumentationEntry[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/modules/${moduleId}/documentation/${labelId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

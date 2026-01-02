@@ -25,6 +25,9 @@ type RichTextEditorProps = {
   defaultValue?: string | null;
   helperText?: string;
   labels: ToolbarLabels;
+  onValueChange?: (value: string) => void;
+  disabled?: boolean;
+  hideLabel?: boolean;
 };
 
 export function RichTextEditor({
@@ -34,6 +37,9 @@ export function RichTextEditor({
   defaultValue,
   helperText,
   labels,
+  onValueChange,
+  disabled = false,
+  hideLabel = false,
 }: RichTextEditorProps) {
   const normalized = useMemo(
     () => normalizeRichTextInput(defaultValue),
@@ -58,6 +64,7 @@ export function RichTextEditor({
       Underline,
     ],
     content: normalized || "<p></p>",
+    editable: !disabled,
     editorProps: {
       attributes: {
         class:
@@ -86,10 +93,19 @@ export function RichTextEditor({
   }, [currentValue]);
 
   useEffect(() => {
+    onValueChange?.(currentValue ?? "");
+  }, [currentValue, onValueChange]);
+
+  useEffect(() => {
     if (!editor) return;
     editor.commands.setContent(normalized || "<p></p>");
     setCurrentValue(normalized);
   }, [normalized, editor]);
+
+  useEffect(() => {
+    if (!editor) return;
+    editor.setEditable(!disabled);
+  }, [disabled, editor]);
 
   const controls = [
     {
@@ -131,9 +147,11 @@ export function RichTextEditor({
 
   return (
     <div className="space-y-2">
-      <label htmlFor={`${name}-editor`} className="text-sm font-medium text-foreground">
-        {label}
-      </label>
+      {!hideLabel && (
+        <label htmlFor={`${name}-editor`} className="text-sm font-medium text-foreground">
+          {label}
+        </label>
+      )}
       <input ref={hiddenInputRef} type="hidden" name={name} defaultValue={currentValue} />
       <div className="rounded-lg border bg-background focus-within:ring-2 focus-within:ring-primary">
         <div className="flex flex-wrap items-center gap-2 border-b px-3 py-2">
@@ -142,7 +160,7 @@ export function RichTextEditor({
               key={label}
               type="button"
               onClick={() => action()}
-              disabled={!editor}
+              disabled={!editor || disabled}
               className={cn(
                 "rounded border px-2 py-1 text-xs transition",
                 isActive?.()
@@ -158,7 +176,7 @@ export function RichTextEditor({
           <button
             type="button"
             onClick={clearFormatting}
-            disabled={!editor}
+            disabled={!editor || disabled}
             aria-label={labels.clear}
             title={labels.clear}
             className="rounded border px-2 py-1 text-xs text-muted-foreground transition hover:border-border hover:bg-muted/50 disabled:opacity-50"
@@ -171,6 +189,7 @@ export function RichTextEditor({
             id={`${name}-editor`}
             editor={editor}
             className="min-h-[160px] py-2 text-sm leading-relaxed focus:outline-none"
+            aria-disabled={disabled}
           />
           {!editor && (
             <p className="py-2 text-sm text-muted-foreground">{placeholder}</p>

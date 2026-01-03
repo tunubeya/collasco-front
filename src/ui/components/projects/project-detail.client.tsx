@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
 import { StructureTree } from "@/ui/components/projects/StructureTree.client";
-import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 export default function ProjectDetailClient({
   project,

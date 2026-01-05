@@ -245,7 +245,7 @@ function convertModuleNode(node: StructureModuleNode): ManualNode {
     id: node.id,
     type: "module",
     name: node.name,
-    description: node.description ?? null,
+    description: buildDocumentationDescription(node.documentationLabels),
     children: [],
   };
 
@@ -264,9 +264,38 @@ function convertFeatureItem(item: StructureFeatureItem): ManualNode {
     id: item.id,
     type: "feature",
     name: item.name,
-    description: item.description ?? null,
+    description: buildDocumentationDescription(item.documentationLabels),
     children: [],
   };
+}
+
+function buildDocumentationDescription(
+  labels: StructureModuleNode["documentationLabels"] | StructureFeatureItem["documentationLabels"]
+): string | null {
+  if (!labels || labels.length === 0) return null;
+  const sections = labels
+    .filter(
+      (label) =>
+        !label.isNotApplicable &&
+        typeof label.content === "string" &&
+        label.content.trim().length > 0
+    )
+    .map(
+      (label) =>
+        `<p><strong>${escapeHtml(label.labelName)}</strong></p>${label.content ?? ""}`
+    );
+
+  if (sections.length === 0) return null;
+  return sections.join("<hr />");
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function assignNumbering(node: ManualNode, numbering: string) {

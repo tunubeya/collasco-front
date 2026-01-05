@@ -134,34 +134,44 @@ export type MoveOrderResponse = {
   sortOrder: number;
 };
 
+
+export type StructureDocumentationLabel = {
+  labelId: string;
+  labelName: string;
+  content: string | null;
+  isNotApplicable: boolean;
+  updatedAt: string | null;
+};
+
 export type StructureFeatureItem = {
   type: "feature";
   id: string;
   moduleId: string;
   name: string;
-  description: string | null;
   status: string;      // usar tus enums si lo deseas
   priority: string | null;
   sortOrder: number;
   order: number;
   createdAt: string;
   publishedVersionId: string | null;
+  documentationLabels: StructureDocumentationLabel[];
 };
 export type StructureModuleNode = {
   type: "module";
   id: string;
   name: string;
-  description: string | null;
   parentModuleId: string | null;
   isRoot: boolean;
   sortOrder: number;
   order: number;
   createdAt: string;
   publishedVersionId: string | null;
+  documentationLabels: StructureDocumentationLabel[];
   items: Array<StructureModuleNode | StructureFeatureItem>;
 };
 
 export type ProjectStructureResponse = {
   projectId: string;
+  description?: string | null;
   modules: StructureModuleNode[];
 };

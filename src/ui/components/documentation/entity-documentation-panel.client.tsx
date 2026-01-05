@@ -29,7 +29,7 @@ export function EntityDocumentationPanel({
   entityType,
 }: EntityDocumentationPanelProps) {
   const t = useTranslations("app.projects.documentation");
-  const tRichText = useTranslations("app.projects.detail.form.richText");
+  const tRichText = useTranslations("app.projects.form.richText");
   const formatter = useFormatter();
   const [entries, setEntries] = useState<QaDocumentationEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);

@@ -501,6 +501,15 @@
             "saved": "Voorkeuren bijgewerkt."
           }
         },
+        "filters": {
+          "label": "Toon",
+          "content": "Alleen met inhoud",
+          "all": "Alles tonen"
+        },
+        "states": {
+          "notApplicable": "Niet van toepassing",
+          "empty": "Geen inhoud."
+        },
         "loading": "Handleiding laden...",
         "error": "De handleiding kon niet worden geladen.",
         "retry": "Opnieuw proberen"

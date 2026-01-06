@@ -522,6 +522,15 @@
             "saved": "Préférences enregistrées."
           }
         },
+        "filters": {
+          "label": "Afficher",
+          "content": "Uniquement avec contenu",
+          "all": "Tout afficher"
+        },
+        "states": {
+          "notApplicable": "Non applicable",
+          "empty": "Aucun contenu."
+        },
         "loading": "Chargement du manuel...",
         "error": "Impossible de charger le manuel.",
         "retry": "Réessayer"

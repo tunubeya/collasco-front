@@ -576,6 +576,15 @@
             "saved": "Preferencias guardadas."
           }
         },
+        "filters": {
+          "label": "Mostrar",
+          "content": "Solo con contenido",
+          "all": "Mostrar todo"
+        },
+        "states": {
+          "notApplicable": "No aplica",
+          "empty": "Sin contenido."
+        },
         "loading": "Cargando manual...",
         "error": "No pudimos cargar el manual.",
         "retry": "Reintentar"

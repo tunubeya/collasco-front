@@ -45,6 +45,7 @@ export function ManualTabContent({
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"content" | "all">("content");
   const isMountedRef = useRef(true);
 
   useEffect(() => {
@@ -100,10 +101,30 @@ export function ManualTabContent({
     [project, projectDescription],
   );
 
+  const manualStates = useMemo(
+    () => ({
+      notApplicable: tManual("states.notApplicable"),
+      empty: tManual("states.empty"),
+    }),
+    [tManual],
+  );
+
+  const filterOptions = useMemo(
+    () => [
+      { value: "content" as const, label: tManual("filters.content") },
+      { value: "all" as const, label: tManual("filters.all") },
+    ],
+    [tManual],
+  );
+  const filterLabel = tManual("filters.label");
+
   const manualTree = useMemo(() => {
     if (!modules) return null;
-    return buildProjectManualTree(manualProject, modules);
-  }, [manualProject, modules]);
+    return buildProjectManualTree(manualProject, modules, {
+      mode: viewMode,
+      statuses: manualStates,
+    });
+  }, [manualProject, manualStates, modules, viewMode]);
 
   const outlineRoot = useMemo(() => {
     if (!manualTree) return null;
@@ -144,6 +165,10 @@ export function ManualTabContent({
           expandLabel={expandLabel}
           collapseLabel={collapseLabel}
           title={title}
+          filterOptions={filterOptions}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          filterLabel={filterLabel}
         />
       )}
     </div>

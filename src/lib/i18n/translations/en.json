@@ -576,6 +576,15 @@
             "saved": "Preferences updated."
           }
         },
+        "filters": {
+          "label": "View",
+          "content": "Only with content",
+          "all": "Show all labels"
+        },
+        "states": {
+          "notApplicable": "Not applicable",
+          "empty": "No content yet."
+        },
         "loading": "Loading manual...",
         "error": "We couldn't load the manual.",
         "retry": "Retry"

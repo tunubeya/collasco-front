@@ -28,6 +28,10 @@ type ManualOutlineProps = {
   collapseLabel: string;
   title?: string;
   className?: string;
+  filterOptions?: Array<{ value: "all" | "content"; label: string }>;
+  viewMode?: "all" | "content";
+  onViewModeChange?: (mode: "all" | "content") => void;
+  filterLabel?: string;
 };
 
 const TITLE_CLASSES = [
@@ -52,6 +56,10 @@ export function ManualOutline({
   collapseLabel,
   title,
   className,
+  filterOptions,
+  viewMode,
+  onViewModeChange,
+  filterLabel,
 }: ManualOutlineProps) {
   const focusPath = useMemo(() => {
     if (!focusId) return [];
@@ -83,24 +91,45 @@ export function ManualOutline({
     <div className={cn("rounded-xl border bg-background p-4", className)}>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         {title ? <h2 className="font-semibold">{title}</h2> : <div />}
-        {hasChildren && (
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={handleExpandAll}
-              className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
-            >
-              ⤢ {expandLabel}
-            </button>
-            <button
-              type="button"
-              onClick={handleCollapseAll}
-              className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
-            >
-              ⤡ {collapseLabel}
-            </button>
-          </div>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {filterOptions && filterOptions.length > 0 && (
+            <label className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span>{filterLabel ?? ""}</span>
+              <select
+                className="min-w-[160px] rounded-md border px-3 py-1 text-xs text-foreground"
+                value={viewMode}
+                onChange={(event) =>
+                  onViewModeChange?.(event.target.value as "all" | "content")
+                }
+                aria-label={filterLabel ?? "Filter"}
+              >
+                {filterOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          {hasChildren && (
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleExpandAll}
+                className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+              >
+                ⤢ {expandLabel}
+              </button>
+              <button
+                type="button"
+                onClick={handleCollapseAll}
+                className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+              >
+                ⤡ {collapseLabel}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <ManualNodeItem
         node={root}
@@ -221,9 +250,18 @@ function ManualNodeItem({
   );
 }
 
+type ManualBuildOptions = {
+  mode: "all" | "content";
+  statuses: {
+    notApplicable: string;
+    empty: string;
+  };
+};
+
 export function buildProjectManualTree(
   project: Project,
-  structureModules: StructureModuleNode[]
+  structureModules: StructureModuleNode[],
+  options?: ManualBuildOptions
 ): ManualNode {
   const manualRoot: ManualNode = {
     id: project.id,
@@ -231,7 +269,7 @@ export function buildProjectManualTree(
     name: project.name,
     description: project.description,
     children: structureModules.map((moduleNode) =>
-      convertModuleNode(moduleNode)
+      convertModuleNode(moduleNode, options)
     ),
   };
 
@@ -240,57 +278,82 @@ export function buildProjectManualTree(
   return manualRoot;
 }
 
-function convertModuleNode(node: StructureModuleNode): ManualNode {
+function convertModuleNode(
+  node: StructureModuleNode,
+  options?: ManualBuildOptions
+): ManualNode {
   const manualNode: ManualNode = {
     id: node.id,
     type: "module",
     name: node.name,
-    description: buildDocumentationDescription(node.documentationLabels),
+    description: buildDocumentationDescription(node.documentationLabels, options),
     children: [],
   };
 
   manualNode.children = node.items.map((item) => {
     if (item.type === "module") {
-      return convertModuleNode(item);
+      return convertModuleNode(item, options);
     }
-    return convertFeatureItem(item);
+    return convertFeatureItem(item, options);
   });
 
   return manualNode;
 }
 
-function convertFeatureItem(item: StructureFeatureItem): ManualNode {
+function convertFeatureItem(
+  item: StructureFeatureItem,
+  options?: ManualBuildOptions
+): ManualNode {
   return {
     id: item.id,
     type: "feature",
     name: item.name,
-    description: buildDocumentationDescription(item.documentationLabels),
+    description: buildDocumentationDescription(item.documentationLabels, options),
     children: [],
   };
 }
 
 function buildDocumentationDescription(
-  labels: StructureModuleNode["documentationLabels"] | StructureFeatureItem["documentationLabels"]
+  labels:
+    | StructureModuleNode["documentationLabels"]
+    | StructureFeatureItem["documentationLabels"],
+  options?: ManualBuildOptions
 ): string | null {
   if (!labels || labels.length === 0) return null;
+  const mode = options?.mode ?? "content";
+  const emptyText = options?.statuses?.empty ?? "No content";
+  const notApplicableText =
+    options?.statuses?.notApplicable ?? "Not applicable";
   const sections = labels
-    .filter(
-      (label) =>
-        !label.isNotApplicable &&
-        typeof label.content === "string" &&
-        label.content.trim().length > 0
-    )
-    .map(
-      (label) => {
-        const badge = label.isMandatory ? " *" : "";
-        return `<p><strong>${escapeHtml(label.labelName)}${badge}</strong></p>${
-          label.content ?? ""
-        }`;
+    .map((label) => {
+      const trimmed = label.content?.trim() ?? "";
+      if (mode === "content") {
+        if (label.isNotApplicable || trimmed.length === 0) {
+          return null;
+        }
+        return renderSection(label.labelName, label.content ?? "", label.isMandatory);
       }
+      let body: string;
+      if (label.isNotApplicable) {
+        body = `<p><em>${escapeHtml(notApplicableText)}</em></p>`;
+      } else if (trimmed.length === 0) {
+        body = `<p><em>${escapeHtml(emptyText)}</em></p>`;
+      } else {
+        body = label.content ?? "";
+      }
+      return renderSection(label.labelName, body, label.isMandatory);
+    })
+    .filter(
+      (section): section is string => Boolean(section && section.trim().length)
     );
 
   if (sections.length === 0) return null;
   return sections.join("<hr />");
+}
+
+function renderSection(labelName: string, content: string, isMandatory?: boolean) {
+  const badge = isMandatory ? " *" : "";
+  return `<p><strong>${escapeHtml(labelName)}${badge}</strong></p>${content}`;
 }
 
 function escapeHtml(value: string): string {

@@ -12,6 +12,7 @@ import {
   updateDocumentationLabelPreferences,
   type ProjectDocumentationLabelOption,
 } from "@/lib/api/qa";
+import { MANUAL_LABELS_EVENT } from "@/ui/components/manual/manual-events";
 
 type ManualLabelsNavbarProps = {
   token: string;
@@ -28,6 +29,18 @@ export function ManualLabelsNavbar({
   const [isLoading, setIsLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
 
+  const notifyManualRefresh = useCallback(
+    (selected: string[]) => {
+      if (typeof window === "undefined") return;
+      window.dispatchEvent(
+        new CustomEvent(MANUAL_LABELS_EVENT, {
+          detail: { projectId, selectedLabelIds: selected },
+        }),
+      );
+    },
+    [projectId],
+  );
+
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -37,7 +50,9 @@ export function ManualLabelsNavbar({
         options = await listProjectDocumentationLabels(token, projectId);
       }
       setLabels(options ?? []);
-      setSelectedIds(preferences?.selectedLabelIds ?? []);
+      const selected = preferences?.selectedLabelIds ?? [];
+      setSelectedIds(selected);
+      notifyManualRefresh(selected);
     } catch (error) {
       toast.error(t("messages.loadError"), {
         description: error instanceof Error ? error.message : undefined,
@@ -84,7 +99,9 @@ export function ManualLabelsNavbar({
         if (updated?.availableLabels) {
           setLabels(updated.availableLabels);
         }
-        setSelectedIds(updated?.selectedLabelIds ?? next);
+        const resolved = updated?.selectedLabelIds ?? next;
+        setSelectedIds(resolved);
+        notifyManualRefresh(resolved);
         toast.success(t("messages.saved"));
       } catch (error) {
         setSelectedIds(previous);
@@ -95,7 +112,7 @@ export function ManualLabelsNavbar({
         setSavingId(null);
       }
     },
-    [projectId, savingId, selectedIds, t, token],
+    [notifyManualRefresh, projectId, savingId, selectedIds, t, token],
   );
 
   return (

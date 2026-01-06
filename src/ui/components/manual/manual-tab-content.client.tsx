@@ -12,6 +12,7 @@ import {
   buildProjectManualTree,
   findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
+import { MANUAL_LABELS_EVENT } from "@/ui/components/manual/manual-events";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -92,6 +93,19 @@ export function ManualTabContent({
   useEffect(() => {
     void loadStructure();
   }, [loadStructure]);
+
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const custom = event as CustomEvent<{ projectId: string }>;
+      if (custom.detail?.projectId === projectId) {
+        void loadStructure();
+      }
+    };
+    window.addEventListener(MANUAL_LABELS_EVENT, handler);
+    return () => {
+      window.removeEventListener(MANUAL_LABELS_EVENT, handler);
+    };
+  }, [loadStructure, projectId]);
 
   const manualProject = useMemo(
     () => ({

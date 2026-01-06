@@ -21,6 +21,7 @@ import { ModuleTabs } from "@/ui/components/modules/module-tabs.client";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Pencil, Trash2 } from "lucide-react";
 import { deleteModule } from "@/app/app/projects/[projectId]/modules/[moduleId]/edit/actions";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 type Params = {
   projectId: string;
@@ -115,6 +116,7 @@ export default async function ModuleDetailPage({
   const canManageStructure =
     membershipRole === ProjectMemberRole.OWNER ||
     membershipRole === ProjectMemberRole.MAINTAINER;
+  const hasDescription = Boolean(currentModule.description?.trim());
 
   return (
     <div className="grid gap-6">
@@ -123,7 +125,15 @@ export default async function ModuleDetailPage({
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold">{currentModule.name}</h1>
-            <p className="text-sm text-muted-foreground">
+            {hasDescription && (
+              <div className="mt-2">
+                <RichTextPreview
+                  value={currentModule.description}
+                  emptyLabel={tModule("description.empty")}
+                />
+              </div>
+            )}
+            <p className="mt-2 text-sm text-muted-foreground">
               {tModule("header.project", { name: project.name })}
             </p>
             <p className="text-xs text-muted-foreground">

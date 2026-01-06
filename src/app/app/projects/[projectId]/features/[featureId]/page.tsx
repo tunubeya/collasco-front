@@ -31,6 +31,7 @@ import { findModulePath } from "@/lib/structure-helpers";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { FeatureTabs } from "./feature-tabs.client";
 import { Pencil, Trash2 } from "lucide-react";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 type Params = { projectId: string; featureId: string };
 
@@ -112,6 +113,7 @@ export default async function FeatureDetailPage({
   const formattedUpdatedAt = formatter.dateTime(new Date(feature.updatedAt), {
     dateStyle: "medium",
   });
+  const hasFeatureDescription = Boolean(feature.description?.trim());
 
   const breadcrumbItems = [
     { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
@@ -149,7 +151,15 @@ export default async function FeatureDetailPage({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold">{feature.name}</h1>
-            <p className="text-sm text-muted-foreground">
+            {hasFeatureDescription && (
+              <div className="mt-2">
+                <RichTextPreview
+                  value={feature.description}
+                  emptyLabel={t("description.empty")}
+                />
+              </div>
+            )}
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("header.project", { name: project.name })}
             </p>
             <p className="text-xs text-muted-foreground">

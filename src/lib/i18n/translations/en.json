@@ -891,7 +891,7 @@
           "delete": "Delete"
         },
         "tabs": {
-          "info": "Details",
+          "info": "Documentation",
           "issues": "Linked issues",
           "versions": "Versions",
           "qa": "Tests",

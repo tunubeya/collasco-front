@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { FeatureQA } from "./feature-qa.client";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
-import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import type { QaLinkedFeature } from "@/lib/api/qa";
 import { LinkedFeaturesPanel } from "./feature-linked-features.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
@@ -36,7 +35,7 @@ type FeatureTabsProps = {
 };
 
 type FeatureTab =
-  | "info"
+  | "documentation"
   | "issues"
   | "versions"
   | "qa"
@@ -60,14 +59,14 @@ export function FeatureTabs({
   const tProjectDetail = useTranslations("app.projects.detail");
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
-  const [activeTab, setActiveTab] = useState<FeatureTab>("info");
+  const [activeTab, setActiveTab] = useState<FeatureTab>("documentation");
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
         <TabButton
           label={tTabs("info")}
-          isActive={activeTab === "info"}
-          onClick={() => setActiveTab("info")}
+          isActive={activeTab === "documentation"}
+          onClick={() => setActiveTab("documentation")}
         />
         <TabButton
           label={tTabs("issues")}
@@ -96,22 +95,13 @@ export function FeatureTabs({
         />
       </div>
 
-      {activeTab === "info" && (
-        <>
-          <section className="rounded-xl border bg-background p-4">
-            <h2 className="mb-2 font-semibold">{t("description.title")}</h2>
-            <RichTextPreview
-              value={feature.description}
-              emptyLabel={t("description.empty")}
-            />
-          </section>
-          <EntityDocumentationPanel
-            token={token}
-            entityId={featureId}
-            entityType="feature"
-            projectId={projectId}
-          />
-        </>
+      {activeTab === "documentation" && (
+        <EntityDocumentationPanel
+          token={token}
+          entityId={featureId}
+          entityType="feature"
+          projectId={projectId}
+        />
       )}
 
       {activeTab === "issues" && (

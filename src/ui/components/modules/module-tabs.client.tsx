@@ -9,7 +9,6 @@ import type { Module } from "@/lib/model-definitions/module";
 import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
 import { StructureTree } from "@/ui/components/projects/StructureTree.client";
-import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
@@ -24,7 +23,7 @@ type ModuleTabsProps = {
   token: string;
 };
 
-type ModuleTab = "structure" | "details" | "manual";
+type ModuleTab = "structure" | "documentation" | "manual";
 
 export function ModuleTabs({
   project,
@@ -42,7 +41,7 @@ export function ModuleTabs({
   const tManual = useTranslations("app.projects.manual");
 
   const structureLabel = tProjectTabs("structure");
-  const detailsLabel = tFeatureTabs("info");
+  const documentationLabel = tFeatureTabs("info");
   const manualLabel = tProjectTabs("manual");
 
   return (
@@ -54,9 +53,9 @@ export function ModuleTabs({
           onClick={() => setActiveTab("structure")}
         />
         <TabButton
-          label={detailsLabel}
-          isActive={activeTab === "details"}
-          onClick={() => setActiveTab("details")}
+          label={documentationLabel}
+          isActive={activeTab === "documentation"}
+          onClick={() => setActiveTab("documentation")}
         />
         <TabButton
           label={manualLabel}
@@ -103,21 +102,13 @@ export function ModuleTabs({
         </>
       )}
 
-      {activeTab === "details" && (
-        <div className="space-y-4">
-          <div className="rounded-xl border bg-background p-4">
-            <RichTextPreview
-              value={module.description}
-              emptyLabel={tModule("description.empty")}
-            />
-          </div>
-          <EntityDocumentationPanel
-            token={token}
-            entityId={module.id}
-            entityType="module"
-            projectId={project.id}
-          />
-        </div>
+      {activeTab === "documentation" && (
+        <EntityDocumentationPanel
+          token={token}
+          entityId={module.id}
+          entityType="module"
+          projectId={project.id}
+        />
       )}
 
       {activeTab === "manual" && (

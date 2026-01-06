@@ -13,7 +13,6 @@ import {
   updateModuleDocumentationEntry,
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { RichTextContent } from "@/ui/components/rich-text-content";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
@@ -325,14 +324,9 @@ export function EntityDocumentationPanel({
                     <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
                       {t("states.notApplicable")}
                     </div>
-                  ) : entry.field?.content ? (
-                    <RichTextContent
-                      content={entry.field.content}
-                      className="prose prose-sm max-w-none"
-                    />
-                  ) : (
+                  ) : !entry.field?.content ? (
                     <p className="text-muted-foreground">{t("states.empty")}</p>
-                  )}
+                  ) : null}
                 </div>
 
                 {entry.canEdit && entry.field?.isNotApplicable && (

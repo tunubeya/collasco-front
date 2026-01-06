@@ -51,13 +51,17 @@ export function ManualLabelsNavbar({
     void fetchData();
   }, [fetchData]);
 
+  const orderedLabels = useMemo(
+    () => [...labels].sort((a, b) => a.displayOrder - b.displayOrder),
+    [labels],
+  );
   const selectedLabels = useMemo(
-    () => labels.filter((label) => selectedIds.includes(label.id)),
-    [labels, selectedIds],
+    () => orderedLabels.filter((label) => selectedIds.includes(label.id)),
+    [orderedLabels, selectedIds],
   );
   const availableLabels = useMemo(
-    () => labels.filter((label) => !selectedIds.includes(label.id)),
-    [labels, selectedIds],
+    () => orderedLabels.filter((label) => !selectedIds.includes(label.id)),
+    [orderedLabels, selectedIds],
   );
 
   const handleToggle = useCallback(
@@ -109,7 +113,7 @@ export function ManualLabelsNavbar({
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           <span>{t("loading")}</span>
         </div>
-      ) : labels.length === 0 ? (
+      ) : orderedLabels.length === 0 ? (
         <p className="mt-3 text-sm text-muted-foreground">{t("empty")}</p>
       ) : (
         <div className="mt-4 space-y-4">

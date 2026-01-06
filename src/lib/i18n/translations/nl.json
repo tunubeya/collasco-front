@@ -596,10 +596,10 @@
           "actions": "Actions"
         },
         "reorder": {
-          "moveUp": "Move up",
-          "moveDown": "Move down",
-          "success": "Label order updated.",
-          "error": "Unable to reorder that label."
+          "moveUp": "Omhoog",
+          "moveDown": "Omlaag",
+          "success": "Volgorde bijgewerkt.",
+          "error": "Label kon niet worden verplaatst."
         },
         "empty": {
           "title": "No labels yet",
@@ -816,7 +816,7 @@
           "delete": "Verwijderen"
         },
         "tabs": {
-          "info": "Details",
+          "info": "Documentatie",
           "issues": "Issues",
           "versions": "Versies",
           "qa": "Tests",

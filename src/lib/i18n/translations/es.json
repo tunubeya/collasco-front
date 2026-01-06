@@ -894,7 +894,7 @@
           "delete": "Eliminar"
         },
         "tabs": {
-          "info": "Información",
+          "info": "Documentación",
           "issues": "Issues y PR",
           "versions": "Versiones",
           "qa": "Pruebas",

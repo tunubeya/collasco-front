@@ -617,10 +617,10 @@
           "actions": "Actions"
         },
         "reorder": {
-          "moveUp": "Move up",
-          "moveDown": "Move down",
-          "success": "Label order updated.",
-          "error": "Unable to reorder that label."
+          "moveUp": "Monter",
+          "moveDown": "Descendre",
+          "success": "Ordre des étiquettes mis à jour.",
+          "error": "Impossible de réorganiser cette étiquette."
         },
         "empty": {
           "title": "No labels yet",
@@ -840,7 +840,7 @@
           "delete": "Supprimer"
         },
         "tabs": {
-          "info": "Informations",
+          "info": "Documentation",
           "issues": "Issues liées",
           "versions": "Versions",
           "qa": "Tests",

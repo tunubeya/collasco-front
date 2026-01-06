@@ -138,6 +138,8 @@ export type MoveOrderResponse = {
 export type StructureDocumentationLabel = {
   labelId: string;
   labelName: string;
+  isMandatory: boolean;
+  displayOrder: number;
   content: string | null;
   isNotApplicable: boolean;
   updatedAt: string | null;

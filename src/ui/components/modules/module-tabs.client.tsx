@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
@@ -11,12 +11,9 @@ import type { StructureModuleNode } from "@/lib/definitions";
 import { StructureTree } from "@/ui/components/projects/StructureTree.client";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import {
-  ManualOutline,
-  buildProjectManualTree,
-  findManualNode,
-} from "@/ui/components/manual/manual-outline.client";
+import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
+import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 
 type ModuleTabsProps = {
   project: Project;
@@ -33,7 +30,7 @@ export function ModuleTabs({
   project,
   module,
   structureNode,
-  structureModules,
+  structureModules: _structureModules,
   canManageStructure,
   token,
 }: ModuleTabsProps) {
@@ -47,16 +44,6 @@ export function ModuleTabs({
   const structureLabel = tProjectTabs("structure");
   const detailsLabel = tFeatureTabs("info");
   const manualLabel = tProjectTabs("manual");
-
-  const manualTree = useMemo(
-    () => buildProjectManualTree(project, structureModules),
-    [project, structureModules],
-  );
-
-  const manualSubtree = useMemo(() => {
-    const found = findManualNode(manualTree, module.id);
-    return found ?? manualTree;
-  }, [manualTree, module.id]);
 
   return (
     <section className="space-y-4">
@@ -128,23 +115,30 @@ export function ModuleTabs({
             token={token}
             entityId={module.id}
             entityType="module"
+            projectId={project.id}
           />
         </div>
       )}
 
       {activeTab === "manual" && (
-        <ManualOutline
-          root={manualSubtree}
-          focusId={module.id}
-          fallbackDescription={tManual("noDescription")}
-          expandLabel={tProjectDetail("modules.expandAll", {
-            default: "Expand all",
-          })}
-          collapseLabel={tProjectDetail("modules.collapseAll", {
-            default: "Collapse all",
-          })}
-          title={manualLabel}
-        />
+        <div className="space-y-4">
+          <ManualLabelsNavbar token={token} projectId={project.id} />
+          <ManualTabContent
+            token={token}
+            project={project}
+            projectId={project.id}
+            focusId={module.id}
+            subtreeRootId={module.id}
+            fallbackDescription={tManual("noDescription")}
+            expandLabel={tProjectDetail("modules.expandAll", {
+              default: "Expand all",
+            })}
+            collapseLabel={tProjectDetail("modules.collapseAll", {
+              default: "Collapse all",
+            })}
+            title={manualLabel}
+          />
+        </div>
       )}
     </section>
   );

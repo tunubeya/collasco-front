@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
@@ -14,10 +14,8 @@ import { ProjectMembersTab } from "./project-members-tab.client";
 import type { FeatureOption } from "./project-qa.types";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Plus } from "lucide-react";
-import {
-  ManualOutline,
-  buildProjectManualTree,
-} from "@/ui/components/manual/manual-outline.client";
+import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
+import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 import { ProjectLabelsTab } from "./project-labels-tab.client";
 
 type ProjectTabsProps = {
@@ -54,10 +52,6 @@ export function ProjectTabs({
     membershipRole === ProjectMemberRole.MAINTAINER ||
     membershipRole === ProjectMemberRole.DEVELOPER;
 
-  const manualTree = useMemo(
-    () => buildProjectManualTree(project, structureModules),
-    [project, structureModules],
-  );
   const canManageLabels = membershipRole === ProjectMemberRole.OWNER;
 
   return (
@@ -143,18 +137,23 @@ export function ProjectTabs({
       )}
 
       {activeTab === "manual" && (
-        <ManualOutline
-          root={manualTree}
-          focusId={project.id}
-          fallbackDescription={tManual("noDescription")}
-          expandLabel={tProjectDetail("modules.expandAll", {
-            default: "Expand all",
-          })}
-          collapseLabel={tProjectDetail("modules.collapseAll", {
-            default: "Collapse all",
-          })}
-          title={tTabs("manual")}
-        />
+        <div className="space-y-4">
+          <ManualLabelsNavbar token={token} projectId={projectId} />
+          <ManualTabContent
+            token={token}
+            project={project}
+            projectId={projectId}
+            focusId={project.id}
+            fallbackDescription={tManual("noDescription")}
+            expandLabel={tProjectDetail("modules.expandAll", {
+              default: "Expand all",
+            })}
+            collapseLabel={tProjectDetail("modules.collapseAll", {
+              default: "Collapse all",
+            })}
+            title={tTabs("manual")}
+          />
+        </div>
       )}
     </section>
   );

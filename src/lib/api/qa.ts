@@ -257,6 +257,18 @@ export type QaProjectLabel = {
   readOnlyRoles: QaLabelRole[];
 };
 
+export type ProjectDocumentationLabelOption = {
+  id: string;
+  name: string;
+  isMandatory: boolean;
+  displayOrder: number;
+};
+
+export type DocumentationLabelPreferences = {
+  selectedLabelIds: string[];
+  availableLabels?: ProjectDocumentationLabelOption[];
+};
+
 export type CreateQaProjectLabelDto = {
   name: string;
   isMandatory?: boolean;
@@ -813,6 +825,104 @@ export async function listProjectLabels(
     const res = await fetchWithAuth(
       `${apiUrl}/qa/projects/${projectId}/labels`,
       { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaProjectLabel[] | { items?: QaProjectLabel[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listProjectDocumentationLabels(
+  token: string,
+  projectId: string
+): Promise<ProjectDocumentationLabelOption[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/${projectId}/documentation/labels`,
+      { method: "GET" },
+      token
+    );
+
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      ProjectDocumentationLabelOption[] | { items?: ProjectDocumentationLabelOption[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function getDocumentationLabelPreferences(
+  token: string,
+  projectId: string
+): Promise<DocumentationLabelPreferences> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/${projectId}/documentation/label-preferences`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<DocumentationLabelPreferences>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function updateDocumentationLabelPreferences(
+  token: string,
+  projectId: string,
+  labelIds: string[]
+): Promise<DocumentationLabelPreferences> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/${projectId}/documentation/label-preferences`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ labelIds }),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<DocumentationLabelPreferences>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function reorderProjectLabelOrder(
+  token: string,
+  projectId: string,
+  labelId: string,
+  newIndex: number
+): Promise<QaProjectLabel[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels/${labelId}/order`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newIndex }),
+      },
       token
     );
     if (!res.ok) throw res;

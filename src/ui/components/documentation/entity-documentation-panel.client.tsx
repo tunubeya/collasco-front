@@ -8,6 +8,7 @@ import {
   type UpdateQaDocumentationEntryDto,
   listFeatureDocumentation,
   listModuleDocumentation,
+  listProjectDocumentationLabels,
   updateFeatureDocumentationEntry,
   updateModuleDocumentationEntry,
 } from "@/lib/api/qa";
@@ -21,18 +22,23 @@ type EntityDocumentationPanelProps = {
   token: string;
   entityId: string;
   entityType: "feature" | "module";
+  projectId: string;
 };
 
 export function EntityDocumentationPanel({
   token,
   entityId,
   entityType,
+  projectId,
 }: EntityDocumentationPanelProps) {
   const t = useTranslations("app.projects.documentation");
   const tRichText = useTranslations("app.projects.form.richText");
   const formatter = useFormatter();
   const [entries, setEntries] = useState<QaDocumentationEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [labelOptions, setLabelOptions] = useState<
+    Awaited<ReturnType<typeof listProjectDocumentationLabels>>
+  >([]);
   const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
   const [draftContent, setDraftContent] = useState<string>("");
   const [savingLabelId, setSavingLabelId] = useState<string | null>(null);
@@ -82,6 +88,52 @@ export function EntityDocumentationPanel({
   useEffect(() => {
     void fetchEntries();
   }, [fetchEntries]);
+
+  const fetchLabelOptions = useCallback(async () => {
+    try {
+      const data = await listProjectDocumentationLabels(token, projectId);
+      setLabelOptions(data);
+    } catch (err) {
+      toast.error(t("messages.loadError"), {
+        description: err instanceof Error ? err.message : undefined,
+      });
+    }
+  }, [projectId, t, token]);
+
+  useEffect(() => {
+    void fetchLabelOptions();
+  }, [fetchLabelOptions]);
+
+  const displayEntries = useMemo(() => {
+    if (!labelOptions.length) return entries;
+    const entryMap = new Map(entries.map((entry) => [entry.label.id, entry]));
+    return labelOptions.map((option) => {
+      const existing = entryMap.get(option.id);
+      if (existing) {
+        if (existing.label.isMandatory !== option.isMandatory) {
+          return {
+            ...existing,
+            label: {
+              ...existing.label,
+              isMandatory: option.isMandatory,
+            },
+          };
+        }
+        return existing;
+      }
+      return {
+        label: {
+          id: option.id,
+          name: option.name,
+          isMandatory: option.isMandatory,
+          visibleToRoles: [],
+          readOnlyRoles: [],
+        },
+        field: null,
+        canEdit: true,
+      } satisfies QaDocumentationEntry;
+    });
+  }, [entries, labelOptions]);
 
   const handleEdit = useCallback((entry: QaDocumentationEntry) => {
     setEditingLabelId(entry.label.id);
@@ -173,13 +225,13 @@ export function EntityDocumentationPanel({
 
       {isLoading ? (
         <DocumentationSkeleton />
-      ) : entries.length === 0 ? (
+      ) : displayEntries.length === 0 ? (
         <p className="rounded-lg border border-dashed border-muted-foreground/40 bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
           {t("empty")}
         </p>
       ) : (
         <div className="space-y-4">
-          {entries.map((entry) => {
+          {displayEntries.map((entry) => {
             const lastUpdated = entry.field?.updatedAt
               ? formatter.dateTime(new Date(entry.field.updatedAt), {
                   dateStyle: "medium",

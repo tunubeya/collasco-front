@@ -281,8 +281,12 @@ function buildDocumentationDescription(
         label.content.trim().length > 0
     )
     .map(
-      (label) =>
-        `<p><strong>${escapeHtml(label.labelName)}</strong></p>${label.content ?? ""}`
+      (label) => {
+        const badge = label.isMandatory ? " *" : "";
+        return `<p><strong>${escapeHtml(label.labelName)}${badge}</strong></p>${
+          label.content ?? ""
+        }`;
+      }
     );
 
   if (sections.length === 0) return null;

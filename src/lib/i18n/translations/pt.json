@@ -557,7 +557,28 @@
         }
       },
       "manual": {
-        "noDescription": "Nenhuma descrição disponível."
+        "noDescription": "Nenhuma descrição disponível.",
+        "labelsNavbar": {
+          "title": "Rótulos do manual",
+          "subtitle": "Escolha quais rótulos destacar abaixo do manual.",
+          "loading": "Carregando rótulos...",
+          "empty": "Este projeto ainda não tem rótulos visíveis.",
+          "sections": {
+            "selected": "Rótulos fixados",
+            "available": "Rótulos disponíveis"
+          },
+          "selectedEmpty": "Você ainda não fixou rótulos.",
+          "availableEmpty": "Não há mais rótulos disponíveis.",
+          "mandatory": "Obrigatória",
+          "messages": {
+            "loadError": "Não conseguimos carregar os rótulos.",
+            "saveError": "Não foi possível atualizar suas preferências.",
+            "saved": "Preferências atualizadas."
+          }
+        },
+        "loading": "Carregando manual...",
+        "error": "Não conseguimos carregar o manual.",
+        "retry": "Tentar novamente"
       },
       "members": {
         "title": "Membros do projeto",
@@ -648,6 +669,12 @@
           "readOnlyRoles": "Read only",
           "noReadOnly": "All visible roles can edit.",
           "actions": "Actions"
+        },
+        "reorder": {
+          "moveUp": "Move up",
+          "moveDown": "Move down",
+          "success": "Label order updated.",
+          "error": "Unable to reorder that label."
         },
         "empty": {
           "title": "No labels yet",

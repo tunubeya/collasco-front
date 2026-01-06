@@ -17,6 +17,7 @@ import {
   createProjectLabel,
   deleteProjectLabel,
   listProjectLabels,
+  reorderProjectLabelOrder,
   updateProjectLabel,
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
@@ -29,7 +30,7 @@ import {
   DialogTrigger,
 } from "@/ui/components/dialog/dialog";
 import { cn } from "@/lib/utils";
-import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 
 type ProjectLabelsTabProps = {
   token: string;
@@ -65,6 +66,7 @@ export function ProjectLabelsTab({
   canManageLabels,
 }: ProjectLabelsTabProps) {
   const t = useTranslations("app.projects.labels");
+  const tReorder = useTranslations("app.projects.labels.reorder");
   const tRoles = useTranslations("app.projects.labels.roleNames");
   const [labels, setLabels] = useState<QaProjectLabel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -76,6 +78,7 @@ export function ProjectLabelsTab({
   const [formError, setFormError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [reorderingId, setReorderingId] = useState<string | null>(null);
 
   const roleOptions = useMemo(() => {
     const roleSet = new Set<QaLabelRole>(DEFAULT_ROLE_OPTIONS);
@@ -230,6 +233,31 @@ export function ProjectLabelsTab({
     [fetchLabels, projectId, t, token],
   );
 
+  const handleReorder = useCallback(
+    async (label: QaProjectLabel, newIndex: number) => {
+      if (!canManageLabels) return;
+      if (newIndex < 0 || newIndex >= labels.length) return;
+      setReorderingId(label.id);
+      try {
+        const updated = await reorderProjectLabelOrder(
+          token,
+          projectId,
+          label.id,
+          newIndex,
+        );
+        setLabels(updated);
+        toast.success(tReorder("success"));
+      } catch (error) {
+        toast.error(tReorder("error"), {
+          description: error instanceof Error ? error.message : undefined,
+        });
+      } finally {
+        setReorderingId(null);
+      }
+    },
+    [canManageLabels, labels.length, projectId, tReorder, token],
+  );
+
   return (
     <section className="space-y-4 rounded-xl border bg-background p-4 md:p-6">
       <header className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -286,7 +314,7 @@ export function ProjectLabelsTab({
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {labels.map((label) => (
+              {labels.map((label, index) => (
                 <tr key={label.id} className="align-top">
                   <td className="px-3 py-3 font-medium">{label.name}</td>
                   <td className="px-3 py-3">
@@ -324,7 +352,39 @@ export function ProjectLabelsTab({
                   </td>
                   {canManageLabels && (
                     <td className="px-3 py-3 text-right">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex flex-wrap items-center justify-end gap-2">
+                        <div className="flex flex-col gap-1">
+                          <button
+                            type="button"
+                            className="rounded border border-border bg-background p-1 text-muted-foreground transition hover:text-foreground disabled:opacity-40"
+                            aria-label={tReorder("moveUp")}
+                            title={tReorder("moveUp")}
+                            disabled={reorderingId === label.id || index === 0}
+                            onClick={() => void handleReorder(label, index - 1)}
+                          >
+                            {reorderingId === label.id ? (
+                              <Loader2 className="h-3 w-3 animate-spin" aria-hidden />
+                            ) : (
+                              <ArrowUp className="h-3 w-3" aria-hidden />
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            className="rounded border border-border bg-background p-1 text-muted-foreground transition hover:text-foreground disabled:opacity-40"
+                            aria-label={tReorder("moveDown")}
+                            title={tReorder("moveDown")}
+                            disabled={
+                              reorderingId === label.id || index === labels.length - 1
+                            }
+                            onClick={() => void handleReorder(label, index + 1)}
+                          >
+                            {reorderingId === label.id ? (
+                              <Loader2 className="h-3 w-3 animate-spin" aria-hidden />
+                            ) : (
+                              <ArrowDown className="h-3 w-3" aria-hidden />
+                            )}
+                          </button>
+                        </div>
                         <button
                           type="button"
                           className={actionButtonClass({

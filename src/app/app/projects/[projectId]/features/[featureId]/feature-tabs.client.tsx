@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 
 import type { Feature } from "@/lib/model-definitions/feature";
@@ -8,10 +8,8 @@ import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import { FeatureQA } from "./feature-qa.client";
-import {
-  ManualOutline,
-  buildProjectManualTree,
-} from "@/ui/components/manual/manual-outline.client";
+import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
+import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import type { QaLinkedFeature } from "@/lib/api/qa";
 import { LinkedFeaturesPanel } from "./feature-linked-features.client";
@@ -48,7 +46,7 @@ type FeatureTab =
 export function FeatureTabs({
   feature,
   project,
-  structureModules,
+  structureModules: _structureModules,
   featureId,
   token,
   currentUserId,
@@ -63,11 +61,6 @@ export function FeatureTabs({
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
   const [activeTab, setActiveTab] = useState<FeatureTab>("info");
-  const manualTree = useMemo(
-    () => buildProjectManualTree(project, structureModules),
-    [project, structureModules],
-  );
-
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
@@ -116,6 +109,7 @@ export function FeatureTabs({
             token={token}
             entityId={featureId}
             entityType="feature"
+            projectId={projectId}
           />
         </>
       )}
@@ -214,18 +208,23 @@ export function FeatureTabs({
       )}
 
       {activeTab === "manual" && (
-        <ManualOutline
-          root={manualTree}
-          focusId={feature.id}
-          fallbackDescription={tManual("noDescription")}
-          expandLabel={tProjectDetail("modules.expandAll", {
-            default: "Expand all",
-          })}
-          collapseLabel={tProjectDetail("modules.collapseAll", {
-            default: "Collapse all",
-          })}
-          title={tTabs("manual")}
-        />
+        <div className="space-y-4">
+          <ManualLabelsNavbar token={token} projectId={projectId} />
+          <ManualTabContent
+            token={token}
+            project={project}
+            projectId={projectId}
+            focusId={feature.id}
+            fallbackDescription={tManual("noDescription")}
+            expandLabel={tProjectDetail("modules.expandAll", {
+              default: "Expand all",
+            })}
+            collapseLabel={tProjectDetail("modules.collapseAll", {
+              default: "Collapse all",
+            })}
+            title={tTabs("manual")}
+          />
+        </div>
       )}
     </section>
   );

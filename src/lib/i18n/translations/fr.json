@@ -503,7 +503,28 @@
         }
       },
       "manual": {
-        "noDescription": "Aucune description disponible."
+        "noDescription": "Aucune description disponible.",
+        "labelsNavbar": {
+          "title": "Étiquettes du manuel",
+          "subtitle": "Choisissez celles que vous souhaitez mettre en avant sous le manuel.",
+          "loading": "Chargement des étiquettes...",
+          "empty": "Ce projet n'a pas encore d'étiquettes visibles.",
+          "sections": {
+            "selected": "Étiquettes épinglées",
+            "available": "Étiquettes disponibles"
+          },
+          "selectedEmpty": "Vous n'avez pas encore épinglé d'étiquettes.",
+          "availableEmpty": "Aucune autre étiquette disponible.",
+          "mandatory": "Obligatoire",
+          "messages": {
+            "loadError": "Impossible de charger les étiquettes.",
+            "saveError": "Impossible de mettre à jour vos préférences.",
+            "saved": "Préférences enregistrées."
+          }
+        },
+        "loading": "Chargement du manuel...",
+        "error": "Impossible de charger le manuel.",
+        "retry": "Réessayer"
       },
       "members": {
         "title": "Membres du projet",
@@ -594,6 +615,12 @@
           "readOnlyRoles": "Read only",
           "noReadOnly": "All visible roles can edit.",
           "actions": "Actions"
+        },
+        "reorder": {
+          "moveUp": "Move up",
+          "moveDown": "Move down",
+          "success": "Label order updated.",
+          "error": "Unable to reorder that label."
         },
         "empty": {
           "title": "No labels yet",

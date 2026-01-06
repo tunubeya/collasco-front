@@ -16,6 +16,7 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
+import { RichTextContent } from "@/ui/components/rich-text-content";
 
 type EntityDocumentationPanelProps = {
   token: string;
@@ -106,7 +107,7 @@ export function EntityDocumentationPanel({
   const displayEntries = useMemo(() => {
     if (!labelOptions.length) return entries;
     const entryMap = new Map(entries.map((entry) => [entry.label.id, entry]));
-    return labelOptions.map((option) => {
+    const ordered = labelOptions.map((option) => {
       const existing = entryMap.get(option.id);
       if (existing) {
         if (existing.label.isMandatory !== option.isMandatory) {
@@ -132,6 +133,16 @@ export function EntityDocumentationPanel({
         canEdit: true,
       } satisfies QaDocumentationEntry;
     });
+    const applicable: QaDocumentationEntry[] = [];
+    const notApplicable: QaDocumentationEntry[] = [];
+    ordered.forEach((entry) => {
+      if (entry.field?.isNotApplicable) {
+        notApplicable.push(entry);
+      } else {
+        applicable.push(entry);
+      }
+    });
+    return [...applicable, ...notApplicable];
   }, [entries, labelOptions]);
 
   const handleEdit = useCallback((entry: QaDocumentationEntry) => {
@@ -246,7 +257,7 @@ export function EntityDocumentationPanel({
                 className={cn(
                   "rounded-xl border px-4 py-3 shadow-sm transition-colors",
                   isNotApplicable
-                    ? "border-amber-200 bg-amber-50/80"
+                    ? "border-muted-foreground/20 bg-muted/60 text-muted-foreground"
                     : "border-border bg-background",
                 )}
               >
@@ -265,7 +276,7 @@ export function EntityDocumentationPanel({
                         </span>
                       )}
                       {isNotApplicable && (
-                        <span className="rounded-full bg-amber-200/80 px-2 py-0.5 font-medium text-amber-900">
+                        <span className="rounded-full bg-muted/80 px-2 py-0.5 font-medium text-muted-foreground">
                           {t("badges.notApplicable")}
                         </span>
                       )}
@@ -321,12 +332,17 @@ export function EntityDocumentationPanel({
                       </div>
                     </div>
                   ) : entry.field?.isNotApplicable ? (
-                    <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                    <p className="text-xs italic text-muted-foreground">
                       {t("states.notApplicable")}
-                    </div>
-                  ) : !entry.field?.content ? (
+                    </p>
+                  ) : entry.field?.content ? (
+                    <RichTextContent
+                      content={entry.field.content}
+                      className="prose prose-sm max-w-none text-muted-foreground"
+                    />
+                  ) : (
                     <p className="text-muted-foreground">{t("states.empty")}</p>
-                  ) : null}
+                  )}
                 </div>
 
                 {entry.canEdit && entry.field?.isNotApplicable && (

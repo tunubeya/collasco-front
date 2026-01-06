@@ -117,12 +117,12 @@ export function ManualLabelsNavbar({
 
   return (
     <section className="rounded-xl border bg-background p-4">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <Star className="h-4 w-4 text-primary" aria-hidden />
+      <div className="flex items-start gap-2">
+        <Star className="h-4 w-4 text-primary" aria-hidden />
+        <div>
           <h3 className="text-sm font-semibold">{t("title")}</h3>
+          <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
       </div>
 
       {isLoading ? (
@@ -135,9 +135,14 @@ export function ManualLabelsNavbar({
       ) : (
         <div className="mt-4 space-y-4">
           <div>
-            <p className="text-xs font-semibold uppercase text-muted-foreground">
-              {t("sections.selected")}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("sections.selected")}
+              </p>
+              <span className="text-[11px] text-muted-foreground">
+                {t("sections.visibleCount", { count: selectedLabels.length })}
+              </span>
+            </div>
             {selectedLabels.length === 0 ? (
               <p className="mt-2 text-xs text-muted-foreground">
                 {t("selectedEmpty")}
@@ -158,11 +163,6 @@ export function ManualLabelsNavbar({
                     aria-pressed={true}
                 >
                   <span>{label.name}</span>
-                  {label.isMandatory && (
-                    <span className="ml-2 rounded-full bg-white/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary-foreground">
-                      {t("mandatory")}
-                    </span>
-                  )}
                 </button>
               ))}
             </div>
@@ -170,9 +170,14 @@ export function ManualLabelsNavbar({
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase text-muted-foreground">
-              {t("sections.available")}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("sections.available")}
+              </p>
+              <span className="text-[11px] text-muted-foreground">
+                {t("sections.hiddenCount", { count: availableLabels.length })}
+              </span>
+            </div>
             {availableLabels.length === 0 ? (
               <p className="mt-2 text-xs text-muted-foreground">
                 {t("availableEmpty")}
@@ -193,11 +198,6 @@ export function ManualLabelsNavbar({
                     aria-pressed={false}
                   >
                     <span>{label.name}</span>
-                    {label.isMandatory && (
-                      <span className="ml-2 rounded-full border border-dashed border-muted-foreground/50 px-2 py-0.5 text-[10px] uppercase tracking-wide">
-                        {t("mandatory")}
-                      </span>
-                    )}
                   </button>
                 ))}
               </div>

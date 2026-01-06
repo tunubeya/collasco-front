@@ -559,16 +559,18 @@
       "manual": {
         "noDescription": "No description available.",
         "labelsNavbar": {
-          "title": "Documentation labels",
-          "subtitle": "Pick which labels you want to highlight beneath the manual.",
+          "title": "Manual label visibility",
+          "subtitle": "Choose the labels shown in the manual tree.",
           "loading": "Loading labels...",
           "empty": "This project doesn't have visible labels yet.",
           "sections": {
-            "selected": "Pinned labels",
-            "available": "Available labels"
+            "selected": "Visible in manual",
+            "available": "Hidden labels",
+            "visibleCount": "{count, plural, one {# label} other {# labels}}",
+            "hiddenCount": "{count, plural, one {# label} other {# labels}}"
           },
-          "selectedEmpty": "You haven't pinned any labels yet.",
-          "availableEmpty": "No more labels available.",
+          "selectedEmpty": "No labels are visible yet.",
+          "availableEmpty": "All labels are already visible.",
           "mandatory": "Mandatory",
           "messages": {
             "loadError": "We couldn't load your labels.",

@@ -559,16 +559,18 @@
       "manual": {
         "noDescription": "Nenhuma descrição disponível.",
         "labelsNavbar": {
-          "title": "Rótulos do manual",
-          "subtitle": "Escolha quais rótulos destacar abaixo do manual.",
+          "title": "Rótulos exibidos no manual",
+          "subtitle": "Escolha quais rótulos aparecem no manual.",
           "loading": "Carregando rótulos...",
           "empty": "Este projeto ainda não tem rótulos visíveis.",
           "sections": {
-            "selected": "Rótulos fixados",
-            "available": "Rótulos disponíveis"
+            "selected": "Visíveis no manual",
+            "available": "Ocultos",
+            "visibleCount": "{count, plural, one {# rótulo} other {# rótulos}}",
+            "hiddenCount": "{count, plural, one {# rótulo} other {# rótulos}}"
           },
-          "selectedEmpty": "Você ainda não fixou rótulos.",
-          "availableEmpty": "Não há mais rótulos disponíveis.",
+          "selectedEmpty": "Nenhum rótulo está visível ainda.",
+          "availableEmpty": "Todos os rótulos já estão visíveis.",
           "mandatory": "Obrigatória",
           "messages": {
             "loadError": "Não conseguimos carregar os rótulos.",

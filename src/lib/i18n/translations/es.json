@@ -559,16 +559,18 @@
       "manual": {
         "noDescription": "Sin descripción disponible.",
         "labelsNavbar": {
-          "title": "Etiquetas del manual",
-          "subtitle": "Elige cuáles quieres resaltar debajo del manual.",
+          "title": "Etiquetas visibles en el manual",
+          "subtitle": "Elige qué etiquetas se ven en el manual.",
           "loading": "Cargando etiquetas...",
           "empty": "Este proyecto aún no tiene etiquetas visibles.",
           "sections": {
-            "selected": "Etiquetas fijadas",
-            "available": "Etiquetas disponibles"
+            "selected": "Visibles en el manual",
+            "available": "Ocultas",
+            "visibleCount": "{count, plural, one {# etiqueta} other {# etiquetas}}",
+            "hiddenCount": "{count, plural, one {# etiqueta} other {# etiquetas}}"
           },
-          "selectedEmpty": "Aún no fijaste etiquetas.",
-          "availableEmpty": "No hay más etiquetas disponibles.",
+          "selectedEmpty": "Todavía no hay etiquetas visibles.",
+          "availableEmpty": "Todas las etiquetas ya son visibles.",
           "mandatory": "Obligatoria",
           "messages": {
             "loadError": "No pudimos cargar las etiquetas.",

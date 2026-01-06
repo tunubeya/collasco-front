@@ -505,16 +505,18 @@
       "manual": {
         "noDescription": "Aucune description disponible.",
         "labelsNavbar": {
-          "title": "Étiquettes du manuel",
-          "subtitle": "Choisissez celles que vous souhaitez mettre en avant sous le manuel.",
+          "title": "Visibilité des étiquettes du manuel",
+          "subtitle": "Choisissez les étiquettes visibles dans le manuel.",
           "loading": "Chargement des étiquettes...",
           "empty": "Ce projet n'a pas encore d'étiquettes visibles.",
           "sections": {
-            "selected": "Étiquettes épinglées",
-            "available": "Étiquettes disponibles"
+            "selected": "Visibles dans le manuel",
+            "available": "Masquées",
+            "visibleCount": "{count, plural, one {# étiquette} other {# étiquettes}}",
+            "hiddenCount": "{count, plural, one {# étiquette} other {# étiquettes}}"
           },
-          "selectedEmpty": "Vous n'avez pas encore épinglé d'étiquettes.",
-          "availableEmpty": "Aucune autre étiquette disponible.",
+          "selectedEmpty": "Aucune étiquette n'est visible pour le moment.",
+          "availableEmpty": "Toutes les étiquettes sont déjà visibles.",
           "mandatory": "Obligatoire",
           "messages": {
             "loadError": "Impossible de charger les étiquettes.",

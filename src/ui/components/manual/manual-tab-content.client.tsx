@@ -131,6 +131,7 @@ export function ManualTabContent({
     [tManual],
   );
   const filterLabel = tManual("filters.label");
+  const linkedLabel = tManual("linkedFeatures.linkedTo");
 
   const manualTree = useMemo(() => {
     if (!modules) return null;
@@ -183,6 +184,7 @@ export function ManualTabContent({
           viewMode={viewMode}
           onViewModeChange={setViewMode}
           filterLabel={filterLabel}
+          linkedLabel={linkedLabel}
         />
       )}
     </div>

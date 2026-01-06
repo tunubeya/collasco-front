@@ -157,6 +157,13 @@ export type StructureFeatureItem = {
   createdAt: string;
   publishedVersionId: string | null;
   documentationLabels: StructureDocumentationLabel[];
+  linkedFeatures?: Array<{
+    id: string;
+    name: string;
+    moduleId: string | null;
+    moduleName: string | null;
+    reason?: string | null;
+  }>;
 };
 export type StructureModuleNode = {
   type: "module";

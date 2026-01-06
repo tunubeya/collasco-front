@@ -587,6 +587,9 @@
           "notApplicable": "Not applicable",
           "empty": "No content yet."
         },
+        "linkedFeatures": {
+          "linkedTo": "Linked to"
+        },
         "loading": "Loading manual...",
         "error": "We couldn't load the manual.",
         "retry": "Retry"

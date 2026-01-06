@@ -533,6 +533,9 @@
           "notApplicable": "Non applicable",
           "empty": "Aucun contenu."
         },
+        "linkedFeatures": {
+          "linkedTo": "Liée à"
+        },
         "loading": "Chargement du manuel...",
         "error": "Impossible de charger le manuel.",
         "retry": "Réessayer"

@@ -512,6 +512,9 @@
           "notApplicable": "Niet van toepassing",
           "empty": "Geen inhoud."
         },
+        "linkedFeatures": {
+          "linkedTo": "Gelinkt aan"
+        },
         "loading": "Handleiding laden...",
         "error": "De handleiding kon niet worden geladen.",
         "retry": "Opnieuw proberen"

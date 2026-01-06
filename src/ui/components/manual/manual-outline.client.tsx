@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
@@ -17,6 +17,13 @@ export type ManualNode = {
   name: string;
   description?: string | null;
   numbering?: string;
+  linkedFeatures?: Array<{
+    id: string;
+    name: string;
+    moduleId: string | null;
+    moduleName: string | null;
+    reason?: string | null;
+  }>;
   children: ManualNode[];
 };
 
@@ -32,6 +39,7 @@ type ManualOutlineProps = {
   viewMode?: "all" | "content";
   onViewModeChange?: (mode: "all" | "content") => void;
   filterLabel?: string;
+  linkedLabel?: string;
 };
 
 const TITLE_CLASSES = [
@@ -60,6 +68,7 @@ export function ManualOutline({
   viewMode,
   onViewModeChange,
   filterLabel,
+  linkedLabel,
 }: ManualOutlineProps) {
   const focusPath = useMemo(() => {
     if (!focusId) return [];
@@ -81,6 +90,31 @@ export function ManualOutline({
   useEffect(() => {
     setExpanded(defaultExpanded);
   }, [defaultExpanded]);
+
+  const handleNavigateTo = useCallback(
+    (targetId: string) => {
+      const path = findPath(root, targetId);
+      if (!path.length) return;
+      setExpanded((prev) => {
+        const next = { ...prev };
+        path.forEach((id) => {
+          next[id] = true;
+        });
+        return next;
+      });
+      window.requestAnimationFrame(() => {
+        const anchor = document.getElementById(getNodeDomId(targetId));
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: "smooth", block: "start" });
+          const button = anchor.querySelector("button");
+          if (button instanceof HTMLButtonElement) {
+            button.focus({ preventScroll: true });
+          }
+        }
+      });
+    },
+    [root],
+  );
 
   const handleExpandAll = () =>
     setExpanded(Object.fromEntries(allNodeIds.map((id) => [id, true])));
@@ -142,6 +176,8 @@ export function ManualOutline({
         fallbackDescription={fallbackDescription}
         focusId={focusId}
         rootId={root.id}
+        onNavigateTo={handleNavigateTo}
+        linkedLabel={linkedLabel}
       />
     </div>
   );
@@ -156,6 +192,8 @@ type ManualNodeItemProps = {
   fallbackDescription: string;
   focusId?: string;
   rootId: string;
+  onNavigateTo?: (id: string) => void;
+  linkedLabel?: string;
 };
 
 function ManualNodeItem({
@@ -167,6 +205,8 @@ function ManualNodeItem({
   fallbackDescription,
   focusId,
   rootId,
+  onNavigateTo,
+  linkedLabel,
 }: ManualNodeItemProps) {
   const hasChildren = node.children.length > 0;
   const isExpanded =
@@ -188,7 +228,7 @@ function ManualNodeItem({
       : numbering;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2" id={getNodeDomId(node.id)}>
       <button
         type="button"
         className={cn(
@@ -218,6 +258,47 @@ function ManualNodeItem({
           />
         ) : null}
       </button>
+      {node.linkedFeatures?.length ? (
+        <div className="flex flex-wrap items-center gap-2 px-3 text-xs text-muted-foreground">
+          <span>{linkedLabel ?? "Linked to"}:</span>
+          {node.linkedFeatures.map((linked) => {
+            const hasReason = Boolean(linked.reason && linked.reason.trim().length);
+            const reasonId = hasReason ? `reason-${node.id}-${linked.id}` : undefined;
+            return (
+              <div key={linked.id} className="relative">
+                <button
+                  type="button"
+                  className="rounded-full border border-border px-2 py-0.5 text-[11px] transition hover:border-primary hover:text-primary"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onNavigateTo?.(linked.id);
+                  }}
+                  onMouseEnter={() => {
+                    if (reasonId) {
+                      document.getElementById(reasonId)?.classList.remove("hidden");
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (reasonId) {
+                      document.getElementById(reasonId)?.classList.add("hidden");
+                    }
+                  }}
+                >
+                  {linked.name}
+                </button>
+                {hasReason ? (
+                  <div
+                    id={reasonId}
+                    className="hidden absolute left-0 top-full z-10 mt-1 w-64 rounded-md border border-border bg-background p-2 text-[11px] text-muted-foreground shadow-lg"
+                  >
+                    {linked.reason}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
       <div className="px-3">
         <RichTextPreview
           value={richTextValue}
@@ -242,6 +323,8 @@ function ManualNodeItem({
               fallbackDescription={fallbackDescription}
               focusId={focusId}
               rootId={rootId}
+              onNavigateTo={onNavigateTo}
+              linkedLabel={linkedLabel}
             />
           ))}
         </div>
@@ -309,6 +392,7 @@ function convertFeatureItem(
     type: "feature",
     name: item.name,
     description: buildDocumentationDescription(item.documentationLabels, options),
+    linkedFeatures: item.linkedFeatures ?? [],
     children: [],
   };
 }
@@ -400,4 +484,8 @@ function findPath(node: ManualNode, targetId: string): string[] {
 function collectNodeIds(node: ManualNode): string[] {
   const childIds = node.children.flatMap((child) => collectNodeIds(child));
   return [node.id, ...childIds];
+}
+
+function getNodeDomId(id: string) {
+  return `manual-node-${id}`;
 }

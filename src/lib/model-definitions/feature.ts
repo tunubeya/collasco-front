@@ -16,6 +16,8 @@ export type Feature = {
   versions?: FeatureVersion[];
   issueElements?: IssueElement[];
   publishedVersion?: { id: string; versionNumber: number } | null;
+  linkedFeaturesCount?: number;
+  testCasesCount?: number;
 };
 export type CreateFeatureDto = {
   name: string;

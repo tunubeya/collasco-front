@@ -60,6 +60,8 @@ export function FeatureTabs({
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
   const [activeTab, setActiveTab] = useState<FeatureTab>("documentation");
+  const linkedFeaturesCount = feature.linkedFeaturesCount ?? 0;
+  const testCasesCount = feature.testCasesCount ?? 0;
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
@@ -82,11 +84,13 @@ export function FeatureTabs({
           label={tTabs("qa")}
           isActive={activeTab === "qa"}
           onClick={() => setActiveTab("qa")}
+          badge={testCasesCount}
         />
         <TabButton
           label={tTabs("linked")}
           isActive={activeTab === "linked"}
           onClick={() => setActiveTab("linked")}
+          badge={linkedFeaturesCount}
         />
         <TabButton
           label={tTabs("manual")}
@@ -224,10 +228,12 @@ function TabButton({
   label,
   isActive,
   onClick,
+  badge,
 }: {
   label: string;
   isActive: boolean;
   onClick: () => void;
+  badge?: number;
 }) {
   return (
     <button
@@ -240,7 +246,21 @@ function TabButton({
       )}
       onClick={onClick}
     >
-      {label}
+      <span className="flex items-center gap-1">
+        {label}
+        {badge && badge > 0 ? (
+          <span
+            className={cn(
+              "inline-flex min-w-[1.5rem] items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-semibold",
+              isActive
+                ? "bg-primary/80 text-primary-foreground"
+                : "bg-background/80 text-primary",
+            )}
+          >
+            {badge}
+          </span>
+        ) : null}
+      </span>
     </button>
   );
 }

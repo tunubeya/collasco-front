@@ -513,7 +513,8 @@
           "empty": "Geen inhoud."
         },
         "linkedFeatures": {
-          "linkedTo": "Gelinkt aan"
+          "references": "Verwijst naar",
+          "referencedBy": "Wordt gelinkt door"
         },
         "loading": "Handleiding laden...",
         "error": "De handleiding kon niet worden geladen.",
@@ -868,10 +869,14 @@
               "targetRequired": "Kies een andere feature om te linken."
             }
           },
-          "list": {
-            "remove": "Link verwijderen",
-            "unknownModule": "Onbekende module"
-          },
+        "list": {
+          "remove": "Link verwijderen",
+          "unknownModule": "Onbekende module",
+          "direction": {
+            "references": "Verwijst naar {name}",
+            "referencedBy": "Wordt gelinkt door {name}"
+          }
+        },
           "messages": {
             "linked": "Feature gelinkt.",
             "removed": "Link verwijderd.",

@@ -163,6 +163,7 @@ export type StructureFeatureItem = {
     moduleId: string | null;
     moduleName: string | null;
     reason?: string | null;
+    direction: "references" | "referenced_by";
   }>;
 };
 export type StructureModuleNode = {

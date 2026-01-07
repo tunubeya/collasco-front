@@ -588,7 +588,8 @@
           "empty": "Sin contenido."
         },
         "linkedFeatures": {
-          "linkedTo": "Vinculada a"
+          "references": "Referencia a",
+          "referencedBy": "Referenciada por"
         },
         "loading": "Cargando manual...",
         "error": "No pudimos cargar el manual.",
@@ -946,10 +947,14 @@
               "targetRequired": "Elige otra feature para crear el vínculo."
             }
           },
-          "list": {
-            "remove": "Quitar vínculo",
-            "unknownModule": "Módulo desconocido"
-          },
+        "list": {
+          "remove": "Quitar vínculo",
+          "unknownModule": "Módulo desconocido",
+          "direction": {
+            "references": "Referencia a {name}",
+            "referencedBy": "Referenciado por {name}"
+          }
+        },
           "messages": {
             "linked": "Feature vinculada.",
             "removed": "Vínculo eliminado.",

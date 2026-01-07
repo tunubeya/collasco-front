@@ -142,6 +142,11 @@ export function LinkedFeaturesPanel({
                     <p className="text-2xs text-muted-foreground">
                       {link.moduleName ?? t("list.unknownModule")}
                     </p>
+                    <p className="text-2xs text-muted-foreground">
+                      {link.direction === "references"
+                        ? t("list.direction.references", { name: link.name })
+                        : t("list.direction.referencedBy", { name: link.name })}
+                    </p>
                     {link.reason ? (
                       <p className="mt-1 text-xs text-muted-foreground">
                         {link.reason}

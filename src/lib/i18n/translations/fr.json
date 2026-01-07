@@ -534,7 +534,8 @@
           "empty": "Aucun contenu."
         },
         "linkedFeatures": {
-          "linkedTo": "Liée à"
+          "references": "Fait référence à",
+          "referencedBy": "Référencée par"
         },
         "loading": "Chargement du manuel...",
         "error": "Impossible de charger le manuel.",
@@ -892,10 +893,14 @@
               "targetRequired": "Choisissez une autre feature pour créer le lien."
             }
           },
-          "list": {
-            "remove": "Retirer le lien",
-            "unknownModule": "Module inconnu"
-          },
+        "list": {
+          "remove": "Retirer le lien",
+          "unknownModule": "Module inconnu",
+          "direction": {
+            "references": "Fait référence à {name}",
+            "referencedBy": "Référencée par {name}"
+          }
+        },
           "messages": {
             "linked": "Feature liée.",
             "removed": "Lien supprimé.",

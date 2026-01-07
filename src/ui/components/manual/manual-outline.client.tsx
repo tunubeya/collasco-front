@@ -23,6 +23,7 @@ export type ManualNode = {
     moduleId: string | null;
     moduleName: string | null;
     reason?: string | null;
+    direction: "references" | "referenced_by";
   }>;
   children: ManualNode[];
 };
@@ -39,7 +40,10 @@ type ManualOutlineProps = {
   viewMode?: "all" | "content";
   onViewModeChange?: (mode: "all" | "content") => void;
   filterLabel?: string;
-  linkedLabel?: string;
+  linkedLabel?: {
+    references?: string;
+    referencedBy?: string;
+  } | string;
 };
 
 const TITLE_CLASSES = [
@@ -116,6 +120,19 @@ export function ManualOutline({
     [root],
   );
 
+  const resolvedLinkedLabels = useMemo(() => {
+    if (!linkedLabel) {
+      return { references: "References", referencedBy: "Referenced by" };
+    }
+    if (typeof linkedLabel === "string") {
+      return { references: linkedLabel, referencedBy: linkedLabel };
+    }
+    return {
+      references: linkedLabel.references ?? "References",
+      referencedBy: linkedLabel.referencedBy ?? "Referenced by",
+    };
+  }, [linkedLabel]);
+
   const handleExpandAll = () =>
     setExpanded(Object.fromEntries(allNodeIds.map((id) => [id, true])));
   const handleCollapseAll = () => setExpanded({ [root.id]: false });
@@ -177,7 +194,7 @@ export function ManualOutline({
         focusId={focusId}
         rootId={root.id}
         onNavigateTo={handleNavigateTo}
-        linkedLabel={linkedLabel}
+        linkedLabel={resolvedLinkedLabels}
       />
     </div>
   );
@@ -193,7 +210,10 @@ type ManualNodeItemProps = {
   focusId?: string;
   rootId: string;
   onNavigateTo?: (id: string) => void;
-  linkedLabel?: string;
+  linkedLabel?: {
+    references: string;
+    referencedBy: string;
+  };
 };
 
 function ManualNodeItem({
@@ -226,6 +246,8 @@ function ManualNodeItem({
     node.numbering && node.numbering.trim().length > 0
       ? node.numbering
       : numbering;
+  const referencesLabel = linkedLabel?.references ?? "References";
+  const referencedByLabel = linkedLabel?.referencedBy ?? "Referenced by";
 
   return (
     <div className="space-y-2" id={getNodeDomId(node.id)}>
@@ -260,10 +282,13 @@ function ManualNodeItem({
       </button>
       {node.linkedFeatures?.length ? (
         <div className="flex flex-wrap items-center gap-2 px-3 text-xs text-muted-foreground">
-          <span>{linkedLabel ?? "Linked to"}:</span>
           {node.linkedFeatures.map((linked) => {
             const hasReason = Boolean(linked.reason && linked.reason.trim().length);
             const reasonId = hasReason ? `reason-${node.id}-${linked.id}` : undefined;
+            const descriptor =
+              linked.direction === "referenced_by"
+                ? referencedByLabel
+                : referencesLabel;
             return (
               <div key={linked.id} className="relative">
                 <button
@@ -284,7 +309,8 @@ function ManualNodeItem({
                     }
                   }}
                 >
-                  {linked.name}
+                  <span className="font-semibold">{descriptor}</span>{" "}
+                  <span>{linked.name}</span>
                 </button>
                 {hasReason ? (
                   <div
@@ -392,7 +418,10 @@ function convertFeatureItem(
     type: "feature",
     name: item.name,
     description: buildDocumentationDescription(item.documentationLabels, options),
-    linkedFeatures: item.linkedFeatures ?? [],
+    linkedFeatures: (item.linkedFeatures ?? []).map((linked) => ({
+      ...linked,
+      direction: linked.direction ?? "references",
+    })),
     children: [],
   };
 }

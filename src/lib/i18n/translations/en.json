@@ -588,7 +588,8 @@
           "empty": "No content yet."
         },
         "linkedFeatures": {
-          "linkedTo": "Linked to"
+          "references": "References",
+          "referencedBy": "Referenced by"
         },
         "loading": "Loading manual...",
         "error": "We couldn't load the manual.",
@@ -943,10 +944,14 @@
               "targetRequired": "Choose another feature to create the link."
             }
           },
-          "list": {
-            "remove": "Remove link",
-            "unknownModule": "Unknown module"
-          },
+        "list": {
+          "remove": "Remove link",
+          "unknownModule": "Unknown module",
+          "direction": {
+            "references": "References {name}",
+            "referencedBy": "Referenced by {name}"
+          }
+        },
           "messages": {
             "linked": "Feature linked.",
             "removed": "Link removed.",

@@ -78,7 +78,6 @@ export default async function FeatureDetailPage({
   }
 
   let moduleCrumbs: { id: string; name: string }[] = [];
-  let structureModules: StructureModuleNode[] = [];
   let linkableFeatures: Array<{
     id: string;
     name: string;
@@ -90,7 +89,6 @@ export default async function FeatureDetailPage({
       limit: 1000,
       sort: "sortOrder",
     });
-    structureModules = structure.modules ?? [];
     const chain = findModulePath(structure.modules, feature.moduleId);
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
@@ -240,7 +238,6 @@ export default async function FeatureDetailPage({
       <FeatureTabs
         feature={feature}
         project={project}
-        structureModules={structureModules}
         featureId={featureId}
         token={session.token}
         currentUserId={currentUserId ?? undefined}

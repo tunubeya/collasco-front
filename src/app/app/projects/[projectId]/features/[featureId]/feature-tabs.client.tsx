@@ -5,7 +5,6 @@ import { useFormatter, useTranslations } from "next-intl";
 
 import type { Feature } from "@/lib/model-definitions/feature";
 import type { Project } from "@/lib/model-definitions/project";
-import type { StructureModuleNode } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import { FeatureQA } from "./feature-qa.client";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
@@ -24,7 +23,6 @@ type LinkedOption = {
 type FeatureTabsProps = {
   feature: Feature;
   project: Project;
-  structureModules: StructureModuleNode[];
   featureId: string;
   token: string;
   currentUserId?: string;
@@ -47,7 +45,6 @@ type FeatureTab =
 export function FeatureTabs({
   feature,
   project,
-  structureModules: _structureModules,
   featureId,
   token,
   currentUserId,

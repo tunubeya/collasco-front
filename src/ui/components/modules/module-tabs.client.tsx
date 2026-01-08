@@ -18,7 +18,6 @@ type ModuleTabsProps = {
   project: Project;
   module: Module;
   structureNode: StructureModuleNode;
-  structureModules: StructureModuleNode[];
   canManageStructure: boolean;
   token: string;
 };
@@ -29,7 +28,6 @@ export function ModuleTabs({
   project,
   module,
   structureNode,
-  structureModules: _structureModules,
   canManageStructure,
   token,
 }: ModuleTabsProps) {

@@ -47,15 +47,18 @@ export function LinkedFeaturesPanel({
   const [isPending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const selectableOptions = useMemo(
-    () =>
-      options.map((option) => ({
-        value: option.id,
-        label: option.name,
-        description: option.moduleName ?? "",
-      })),
-    [options]
-  );
+  const selectableOptions = useMemo(() => {
+    return options
+      .map((option) => {
+        const moduleLabel = option.moduleName ?? t("list.unknownModule");
+        const combinedLabel = `${moduleLabel} - ${option.name}`;
+        return {
+          value: option.id,
+          label: combinedLabel,
+        };
+      })
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [options, t]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -189,7 +192,6 @@ export function LinkedFeaturesPanel({
                 {selectableOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
-                    {option.description ? ` — ${option.description}` : ""}
                   </option>
                 ))}
               </select>

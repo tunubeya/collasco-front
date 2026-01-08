@@ -159,7 +159,7 @@ export default async function FeatureDetailPage({
     <div className="grid gap-6">
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
       <header className="rounded-xl border bg-background p-4">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold">{feature.name}</h1>
             {hasFeatureDescription && (

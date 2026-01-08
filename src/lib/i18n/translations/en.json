@@ -929,7 +929,8 @@
           "empty": "This feature has no links yet.",
           "actions": {
             "add": "Feature",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "edit": "Edit link"
           },
           "form": {
             "title": "Link feature",
@@ -944,17 +945,26 @@
               "targetRequired": "Choose another feature to create the link."
             }
           },
-        "list": {
-          "remove": "Remove link",
-          "unknownModule": "Unknown module",
-          "direction": {
-            "references": "References {name}",
-            "referencedBy": "Referenced by {name}"
-          }
-        },
+          "editForm": {
+            "title": "Edit link",
+            "subtitle": "Update the note or move the relation to another feature.",
+            "featurePlaceholder": "Keep current feature",
+            "submit": "Save changes"
+          },
+          "list": {
+            "edit": "Edit link",
+            "remove": "Remove link",
+            "unknownModule": "Unknown module",
+            "direction": {
+              "references": "References {name}",
+              "referencedBy": "Referenced by {name}"
+            }
+          },
           "messages": {
             "linked": "Feature linked.",
+            "updated": "Link updated.",
             "removed": "Link removed.",
+            "noChanges": "No changes to save.",
             "error": "We couldn't update the linked features."
           }
         },

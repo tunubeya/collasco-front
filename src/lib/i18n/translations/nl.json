@@ -854,7 +854,8 @@
           "empty": "Deze feature heeft nog geen links.",
           "actions": {
             "add": "Feature",
-            "cancel": "Annuleren"
+            "cancel": "Annuleren",
+            "edit": "Link bewerken"
           },
           "form": {
             "title": "Feature linken",
@@ -869,17 +870,26 @@
               "targetRequired": "Kies een andere feature om te linken."
             }
           },
-        "list": {
-          "remove": "Link verwijderen",
-          "unknownModule": "Onbekende module",
-          "direction": {
-            "references": "Verwijst naar {name}",
-            "referencedBy": "Wordt gelinkt door {name}"
-          }
-        },
+          "editForm": {
+            "title": "Link bewerken",
+            "subtitle": "Werk de notitie bij of koppel de link aan een andere feature.",
+            "featurePlaceholder": "Huidige feature behouden",
+            "submit": "Wijzigingen opslaan"
+          },
+          "list": {
+            "edit": "Link bewerken",
+            "remove": "Link verwijderen",
+            "unknownModule": "Onbekende module",
+            "direction": {
+              "references": "Verwijst naar {name}",
+              "referencedBy": "Wordt gelinkt door {name}"
+            }
+          },
           "messages": {
             "linked": "Feature gelinkt.",
+            "updated": "Link bijgewerkt.",
             "removed": "Link verwijderd.",
+            "noChanges": "Geen wijzigingen om op te slaan.",
             "error": "Kon de gelinkte features niet bijwerken."
           }
         },

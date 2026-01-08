@@ -932,7 +932,8 @@
           "empty": "Esta feature aún no tiene vínculos.",
           "actions": {
             "add": "Feature",
-            "cancel": "Cancelar"
+            "cancel": "Cancelar",
+            "edit": "Editar vínculo"
           },
           "form": {
             "title": "Vincular feature",
@@ -947,17 +948,26 @@
               "targetRequired": "Elige otra feature para crear el vínculo."
             }
           },
-        "list": {
-          "remove": "Quitar vínculo",
-          "unknownModule": "Módulo desconocido",
-          "direction": {
-            "references": "Referencia a {name}",
-            "referencedBy": "Referenciado por {name}"
-          }
-        },
+          "editForm": {
+            "title": "Editar vínculo",
+            "subtitle": "Actualiza la nota o mueve la relación a otra feature.",
+            "featurePlaceholder": "Mantener feature actual",
+            "submit": "Guardar cambios"
+          },
+          "list": {
+            "edit": "Editar vínculo",
+            "remove": "Quitar vínculo",
+            "unknownModule": "Módulo desconocido",
+            "direction": {
+              "references": "Referencia a {name}",
+              "referencedBy": "Referenciado por {name}"
+            }
+          },
           "messages": {
             "linked": "Feature vinculada.",
+            "updated": "Vínculo actualizado.",
             "removed": "Vínculo eliminado.",
+            "noChanges": "No hay cambios para guardar.",
             "error": "No se pudieron actualizar las features vinculadas."
           }
         },

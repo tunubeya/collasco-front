@@ -818,6 +818,37 @@ export async function deleteLinkedFeature(
   }
 }
 
+export async function updateLinkedFeature(
+  token: string,
+  featureId: string,
+  linkedFeatureId: string,
+  dto: { reason?: string | null; targetFeatureId?: string }
+): Promise<QaLinkedFeature[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/features/${featureId}/linked-features/${linkedFeatureId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function listProjectLabels(
   token: string,
   projectId: string

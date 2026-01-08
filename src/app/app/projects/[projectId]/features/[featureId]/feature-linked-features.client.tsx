@@ -10,6 +10,7 @@ import {
   QaLinkedFeature,
   createLinkedFeature,
   deleteLinkedFeature,
+  updateLinkedFeature,
 } from "@/lib/api/qa";
 import { Button } from "@/ui/components/button";
 import {
@@ -46,6 +47,10 @@ export function LinkedFeaturesPanel({
   const [reason, setReason] = useState("");
   const [isPending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingLink, setEditingLink] = useState<QaLinkedFeature | null>(null);
+  const [editTargetId, setEditTargetId] = useState("");
+  const [editReason, setEditReason] = useState("");
 
   const selectableOptions = useMemo(() => {
     return options
@@ -59,6 +64,11 @@ export function LinkedFeaturesPanel({
       })
       .sort((a, b) => a.label.localeCompare(b.label));
   }, [options, t]);
+
+  const editOptions = useMemo(() => {
+    if (!editingLink) return selectableOptions;
+    return selectableOptions.filter((option) => option.value !== editingLink.id);
+  }, [selectableOptions, editingLink]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -77,6 +87,60 @@ export function LinkedFeaturesPanel({
           setReason("");
           setDialogOpen(false);
           toast.success(t("messages.linked"));
+        })
+        .catch((error) => {
+          const description =
+            error instanceof Error ? error.message : undefined;
+          toast.error(t("messages.error"), { description });
+        });
+    });
+  };
+
+  const openEditDialog = (link: QaLinkedFeature) => {
+    setEditingLink(link);
+    setEditReason(link.reason ?? "");
+    setEditTargetId("");
+    setEditDialogOpen(true);
+  };
+
+  const closeEditDialog = () => {
+    setEditDialogOpen(false);
+    setEditingLink(null);
+    setEditReason("");
+    setEditTargetId("");
+  };
+
+  const handleEditSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!editingLink) return;
+
+    const payload: { reason?: string | null; targetFeatureId?: string } = {};
+    const trimmedReason = editReason.trim();
+    const originalReason = editingLink.reason ?? "";
+
+    if (trimmedReason !== originalReason) {
+      if (trimmedReason.length > 0) {
+        payload.reason = trimmedReason;
+      } else if (editingLink.reason) {
+        payload.reason = null;
+      }
+    }
+
+    if (editTargetId && editTargetId !== editingLink.id) {
+      payload.targetFeatureId = editTargetId;
+    }
+
+    if (!("reason" in payload) && !("targetFeatureId" in payload)) {
+      toast.info(t("messages.noChanges"));
+      return;
+    }
+
+    startTransition(() => {
+      updateLinkedFeature(token, featureId, editingLink.id, payload)
+        .then((updated) => {
+          setLinks(updated);
+          closeEditDialog();
+          toast.success(t("messages.updated"));
         })
         .catch((error) => {
           const description =
@@ -160,6 +224,16 @@ export function LinkedFeaturesPanel({
                     type="button"
                     variant="outline"
                     size="sm"
+                    onClick={() => openEditDialog(link)}
+                    disabled={isPending}
+                    className="w-full md:w-auto"
+                  >
+                    {t("list.edit")}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
                     onClick={() => handleRemove(link.id)}
                     disabled={isPending}
                     className="w-full md:w-auto"
@@ -225,6 +299,68 @@ export function LinkedFeaturesPanel({
               </Button>
               <Button type="submit" disabled={isPending || !selectedId}>
                 {t("form.submit")}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={editDialogOpen} onOpenChange={(open) => (open ? setEditDialogOpen(true) : closeEditDialog())}>
+        <DialogContent className="m-4 max-w-2xl rounded-2xl bg-background p-6 shadow-xl">
+          <DialogHeading>{t("editForm.title")}</DialogHeading>
+          <DialogDescription>{t("editForm.subtitle")}</DialogDescription>
+          <form className="grid gap-4" onSubmit={handleEditSubmit}>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("form.feature")}
+              </label>
+              <select
+                value={editTargetId}
+                onChange={(event) => setEditTargetId(event.target.value)}
+                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                disabled={isPending || editOptions.length === 0}
+              >
+                <option value="">
+                  {t("editForm.featurePlaceholder", {
+                    name: editingLink?.name ?? "",
+                  })}
+                </option>
+                {editOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("form.reason")}
+              </label>
+              <textarea
+                value={editReason}
+                onChange={(event) => setEditReason(event.target.value)}
+                placeholder={t("form.reasonPlaceholder")}
+                maxLength={500}
+                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                disabled={isPending}
+              />
+              <p className="text-2xs text-muted-foreground">
+                {t("form.reasonHelp")}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={closeEditDialog}
+                disabled={isPending}
+              >
+                {t("actions.cancel")}
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {t("editForm.submit")}
               </Button>
             </div>
           </form>

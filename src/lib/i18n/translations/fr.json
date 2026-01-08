@@ -878,7 +878,8 @@
           "empty": "Cette feature n’a pas encore de liens.",
           "actions": {
             "add": "Feature",
-            "cancel": "Annuler"
+            "cancel": "Annuler",
+            "edit": "Modifier le lien"
           },
           "form": {
             "title": "Lier une feature",
@@ -893,17 +894,26 @@
               "targetRequired": "Choisissez une autre feature pour créer le lien."
             }
           },
-        "list": {
-          "remove": "Retirer le lien",
-          "unknownModule": "Module inconnu",
-          "direction": {
-            "references": "Fait référence à {name}",
-            "referencedBy": "Référencée par {name}"
-          }
-        },
+          "editForm": {
+            "title": "Modifier le lien",
+            "subtitle": "Mettez à jour la note ou changez de fonctionnalité liée.",
+            "featurePlaceholder": "Conserver la feature actuelle",
+            "submit": "Enregistrer"
+          },
+          "list": {
+            "edit": "Modifier le lien",
+            "remove": "Retirer le lien",
+            "unknownModule": "Module inconnu",
+            "direction": {
+              "references": "Fait référence à {name}",
+              "referencedBy": "Référencée par {name}"
+            }
+          },
           "messages": {
             "linked": "Feature liée.",
+            "updated": "Lien mis à jour.",
             "removed": "Lien supprimé.",
+            "noChanges": "Aucun changement à enregistrer.",
             "error": "Impossible de mettre à jour les features liées."
           }
         },

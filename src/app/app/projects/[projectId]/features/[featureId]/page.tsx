@@ -22,7 +22,7 @@ import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
 import { handlePageError } from "@/lib/handle-page-error";
 import type { QaLinkedFeature } from "@/lib/api/qa";
-import { listLinkedFeatures } from "@/lib/api/qa";
+import { getTestHealth, listLinkedFeatures } from "@/lib/api/qa";
 
 // 👇 importa la server action de delete
 import { deleteFeature } from "@/app/app/projects/[projectId]/features/[featureId]/edit/actions";
@@ -144,6 +144,19 @@ export default async function FeatureDetailPage({
     await handlePageError(error);
   }
 
+  const linkedFeaturesCount =
+    feature.linkedFeaturesCount ?? linkedFeatures.length ?? 0;
+
+  let testCasesCount = feature.testCasesCount ?? null;
+  if (testCasesCount == null) {
+    try {
+      const health = await getTestHealth(session.token, feature.id);
+      testCasesCount = health.testCaseCounts?.total ?? testCasesCount ?? 0;
+    } catch (error) {
+      console.error("[FeatureDetailPage] Failed to load QA health:", error);
+    }
+  }
+
   return (
     <div className="grid gap-6">
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
@@ -235,6 +248,8 @@ export default async function FeatureDetailPage({
         initialLinkedFeatures={linkedFeatures}
         linkableFeatures={linkableFeatures}
         projectId={projectId}
+        linkedFeaturesCount={linkedFeaturesCount}
+        testCasesCount={testCasesCount ?? 0}
       />
     </div>
   );

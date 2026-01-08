@@ -32,6 +32,8 @@ type FeatureTabsProps = {
   initialLinkedFeatures: QaLinkedFeature[];
   linkableFeatures: LinkedOption[];
   projectId: string;
+  linkedFeaturesCount?: number | null;
+  testCasesCount?: number | null;
 };
 
 type FeatureTab =
@@ -53,6 +55,8 @@ export function FeatureTabs({
   initialLinkedFeatures,
   linkableFeatures,
   projectId,
+  linkedFeaturesCount,
+  testCasesCount,
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
@@ -60,8 +64,9 @@ export function FeatureTabs({
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
   const [activeTab, setActiveTab] = useState<FeatureTab>("documentation");
-  const linkedFeaturesCount = feature.linkedFeaturesCount ?? 0;
-  const testCasesCount = feature.testCasesCount ?? 0;
+  const linkedBadgeCount =
+    linkedFeaturesCount ?? feature.linkedFeaturesCount ?? initialLinkedFeatures.length ?? 0;
+  const qaBadgeCount = testCasesCount ?? feature.testCasesCount ?? 0;
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
@@ -84,13 +89,13 @@ export function FeatureTabs({
           label={tTabs("qa")}
           isActive={activeTab === "qa"}
           onClick={() => setActiveTab("qa")}
-          badge={testCasesCount}
+          badge={qaBadgeCount}
         />
         <TabButton
           label={tTabs("linked")}
           isActive={activeTab === "linked"}
           onClick={() => setActiveTab("linked")}
-          badge={linkedFeaturesCount}
+          badge={linkedBadgeCount}
         />
         <TabButton
           label={tTabs("manual")}

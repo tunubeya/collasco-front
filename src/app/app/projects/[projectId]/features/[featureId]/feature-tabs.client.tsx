@@ -29,6 +29,7 @@ type FeatureTabsProps = {
   canManageQa?: boolean;
   initialLinkedFeatures: QaLinkedFeature[];
   linkableFeatures: LinkedOption[];
+  modulePathById: Record<string, string>;
   projectId: string;
   linkedFeaturesCount?: number | null;
   testCasesCount?: number | null;
@@ -51,6 +52,7 @@ export function FeatureTabs({
   canManageQa = false,
   initialLinkedFeatures,
   linkableFeatures,
+  modulePathById,
   projectId,
   linkedFeaturesCount,
   testCasesCount,
@@ -199,6 +201,7 @@ export function FeatureTabs({
           featureId={featureId}
           initialLinks={initialLinkedFeatures}
           options={linkableFeatures}
+          modulePathById={modulePathById}
           projectId={projectId}
         />
       )}

@@ -26,6 +26,7 @@ type LinkedFeaturesPanelProps = {
   featureId: string;
   initialLinks: QaLinkedFeature[];
   projectId: string;
+  modulePathById: Record<string, string>;
   options: Array<{
     id: string;
     name: string;
@@ -39,6 +40,7 @@ export function LinkedFeaturesPanel({
   featureId,
   initialLinks,
   projectId,
+  modulePathById,
   options,
 }: LinkedFeaturesPanelProps) {
   const t = useTranslations("app.projects.feature.linked");
@@ -207,7 +209,11 @@ export function LinkedFeaturesPanel({
                       {link.name}
                     </p>
                     <p className="text-2xs text-muted-foreground">
-                      {link.moduleName ?? t("list.unknownModule")}
+                      {link.moduleId
+                        ? modulePathById[link.moduleId] ??
+                          link.moduleName ??
+                          t("list.unknownModule")
+                        : link.moduleName ?? t("list.unknownModule")}
                     </p>
                     <p className="text-2xs text-muted-foreground">
                       {link.direction === "references"

@@ -84,11 +84,13 @@ export default async function FeatureDetailPage({
     moduleId: string | null;
     moduleName: string | null;
   }> = [];
+  let modulePathById: Record<string, string> = {};
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
       sort: "sortOrder",
     });
+    modulePathById = buildModulePathMap(structure.modules, project.name);
     const chain = findModulePath(structure.modules, feature.moduleId);
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
@@ -244,6 +246,7 @@ export default async function FeatureDetailPage({
         canManageQa={canManageQa}
         initialLinkedFeatures={linkedFeatures}
         linkableFeatures={linkableFeatures}
+        modulePathById={modulePathById}
         projectId={projectId}
         linkedFeaturesCount={linkedFeaturesCount}
         testCasesCount={testCasesCount ?? 0}
@@ -285,6 +288,28 @@ function extractFeatureOptions(
   modules.forEach((module) => visitModule(module));
 
   return result;
+}
+
+function buildModulePathMap(
+  modules: StructureModuleNode[],
+  projectName: string
+): Record<string, string> {
+  const map: Record<string, string> = {};
+
+  const visit = (node: StructureModuleNode, parents: string[]) => {
+    const nextParents = [...parents, node.name].filter(Boolean);
+    const modulePath = nextParents.join(" > ");
+    map[node.id] = `${projectName}${modulePath ? ` > ${modulePath}` : ""}`;
+    node.items.forEach((item) => {
+      if (item.type === "module") {
+        visit(item, nextParents);
+      }
+    });
+  };
+
+  modules.forEach((module) => visit(module, []));
+
+  return map;
 }
 
 // … tus badges se mantienen igual …

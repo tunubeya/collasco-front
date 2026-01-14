@@ -484,7 +484,7 @@
       "manual": {
         "noDescription": "Geen beschrijving beschikbaar.",
         "labelsNavbar": {
-          "title": "Labels zichtbaar in de handleiding",
+          "title": "Manual preferences",
           "subtitle": "Kies welke labels de handleiding toont.",
           "loading": "Labels laden...",
           "empty": "Dit project heeft nog geen zichtbare labels.",

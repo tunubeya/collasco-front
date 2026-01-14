@@ -559,7 +559,7 @@
       "manual": {
         "noDescription": "No description available.",
         "labelsNavbar": {
-          "title": "Manual label visibility",
+          "title": "Manual preferences",
           "subtitle": "Choose the labels shown in the manual tree.",
           "loading": "Loading labels...",
           "empty": "This project doesn't have visible labels yet.",

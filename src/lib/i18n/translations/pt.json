@@ -559,7 +559,7 @@
       "manual": {
         "noDescription": "Nenhuma descrição disponível.",
         "labelsNavbar": {
-          "title": "Rótulos exibidos no manual",
+          "title": "Manual preferences",
           "subtitle": "Escolha quais rótulos aparecem no manual.",
           "loading": "Carregando rótulos...",
           "empty": "Este projeto ainda não tem rótulos visíveis.",

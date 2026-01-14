@@ -559,7 +559,7 @@
       "manual": {
         "noDescription": "Sin descripción disponible.",
         "labelsNavbar": {
-          "title": "Etiquetas visibles en el manual",
+          "title": "Manual preferences",
           "subtitle": "Elige qué etiquetas se ven en el manual.",
           "loading": "Cargando etiquetas...",
           "empty": "Este proyecto aún no tiene etiquetas visibles.",

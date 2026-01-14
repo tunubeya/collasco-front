@@ -505,7 +505,7 @@
       "manual": {
         "noDescription": "Aucune description disponible.",
         "labelsNavbar": {
-          "title": "Visibilité des étiquettes du manuel",
+          "title": "Manual preferences",
           "subtitle": "Choisissez les étiquettes visibles dans le manuel.",
           "loading": "Chargement des étiquettes...",
           "empty": "Ce projet n'a pas encore d'étiquettes visibles.",

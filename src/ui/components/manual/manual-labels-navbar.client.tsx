@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Loader2, Star } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
@@ -70,15 +70,6 @@ export function ManualLabelsNavbar({
     () => [...labels].sort((a, b) => a.displayOrder - b.displayOrder),
     [labels],
   );
-  const selectedLabels = useMemo(
-    () => orderedLabels.filter((label) => selectedIds.includes(label.id)),
-    [orderedLabels, selectedIds],
-  );
-  const availableLabels = useMemo(
-    () => orderedLabels.filter((label) => !selectedIds.includes(label.id)),
-    [orderedLabels, selectedIds],
-  );
-
   const handleToggle = useCallback(
     async (labelId: string) => {
       if (savingId) return;
@@ -117,94 +108,42 @@ export function ManualLabelsNavbar({
 
   return (
     <section className="rounded-xl border bg-background p-4">
-      <div className="flex items-start gap-2">
-        <Star className="h-4 w-4 text-primary" aria-hidden />
-        <div>
-          <h3 className="text-sm font-semibold">{t("title")}</h3>
-          <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
-        </div>
-      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <h3 className="text-sm font-semibold">{t("title")}</h3>
 
-      {isLoading ? (
-        <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          <span>{t("loading")}</span>
-        </div>
-      ) : orderedLabels.length === 0 ? (
-        <p className="mt-3 text-sm text-muted-foreground">{t("empty")}</p>
-      ) : (
-        <div className="mt-4 space-y-4">
-          <div>
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {t("sections.selected")}
-              </p>
-              <span className="text-[11px] text-muted-foreground">
-                {t("sections.visibleCount", { count: selectedLabels.length })}
-              </span>
-            </div>
-            {selectedLabels.length === 0 ? (
-              <p className="mt-2 text-xs text-muted-foreground">
-                {t("selectedEmpty")}
-              </p>
-            ) : (
-              <div className="mt-2 flex flex-wrap gap-2">
-              {selectedLabels.map((label) => (
+        {isLoading ? (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            <span>{t("loading")}</span>
+          </div>
+        ) : orderedLabels.length === 0 ? (
+          <p className="text-sm text-muted-foreground">{t("empty")}</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {orderedLabels.map((label) => {
+              const isSelected = selectedIds.includes(label.id);
+              return (
                 <button
                   key={label.id}
-                    type="button"
-                    className={cn(
-                      "rounded-full border px-3 py-1 text-xs font-medium transition",
-                      "border-primary bg-primary/90 text-primary-foreground shadow-sm",
-                      savingId === label.id && "opacity-70",
-                    )}
-                    onClick={() => void handleToggle(label.id)}
-                    disabled={Boolean(savingId)}
-                    aria-pressed={true}
+                  type="button"
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-xs font-medium transition",
+                    isSelected
+                      ? "border-primary bg-primary/90 text-primary-foreground shadow-sm"
+                      : "border-border bg-muted/30 text-muted-foreground hover:bg-background",
+                    savingId === label.id && "opacity-70",
+                  )}
+                  onClick={() => void handleToggle(label.id)}
+                  disabled={Boolean(savingId)}
+                  aria-pressed={isSelected}
                 >
                   <span>{label.name}</span>
                 </button>
-              ))}
-            </div>
-            )}
+              );
+            })}
           </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {t("sections.available")}
-              </p>
-              <span className="text-[11px] text-muted-foreground">
-                {t("sections.hiddenCount", { count: availableLabels.length })}
-              </span>
-            </div>
-            {availableLabels.length === 0 ? (
-              <p className="mt-2 text-xs text-muted-foreground">
-                {t("availableEmpty")}
-              </p>
-            ) : (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {availableLabels.map((label) => (
-                  <button
-                    key={label.id}
-                    type="button"
-                    className={cn(
-                      "rounded-full border px-3 py-1 text-xs font-medium transition",
-                      "border-border bg-muted/30 text-muted-foreground hover:bg-background",
-                      savingId === label.id && "opacity-70",
-                    )}
-                    onClick={() => void handleToggle(label.id)}
-                    disabled={Boolean(savingId)}
-                    aria-pressed={false}
-                  >
-                    <span>{label.name}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }

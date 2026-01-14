@@ -251,142 +251,166 @@ export function EntityDocumentationPanel({
             const isEditing = editingLabelId === entry.label.id;
             const isSaving = savingLabelId === entry.label.id;
             const isNotApplicable = Boolean(entry.field?.isNotApplicable);
+            const isCompactNotApplicable = isNotApplicable && !isEditing;
             return (
               <article
                 key={entry.label.id}
                 className={cn(
-                  "rounded-xl border px-4 py-3 shadow-sm transition-colors",
+                  "rounded-xl border px-4 shadow-sm transition-colors",
+                  isCompactNotApplicable ? "py-2" : "py-3",
                   isNotApplicable
-                    ? "border-muted-foreground/20 bg-muted/60 text-muted-foreground"
+                    ? "border-gray-200 bg-gray-50 text-gray-400"
                     : "border-border bg-background",
                 )}
               >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
+                {isCompactNotApplicable ? (
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="font-semibold">{entry.label.name}</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-                      {entry.label.isMandatory && (
-                        <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
-                          {t("badges.mandatory")}
-                        </span>
-                      )}
-                      {!entry.canEdit && (
-                        <span className="rounded-full bg-muted px-2 py-0.5 font-medium text-muted-foreground">
-                          {t("badges.readOnly")}
-                        </span>
-                      )}
-                      {isNotApplicable && (
-                        <span className="rounded-full bg-muted/80 px-2 py-0.5 font-medium text-muted-foreground">
-                          {t("badges.notApplicable")}
-                        </span>
+                    {entry.canEdit && (
+                      <button
+                        type="button"
+                        className={actionButtonClass({ size: "xs" })}
+                        onClick={() => void handleMarkApplicable(entry.label.id)}
+                        disabled={isSaving}
+                      >
+                        {isSaving ? (
+                          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                        ) : (
+                          t("actions.markApplicable")
+                        )}
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <p className="font-semibold">{entry.label.name}</p>
+                        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                          {entry.label.isMandatory && (
+                            <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
+                              {t("badges.mandatory")}
+                            </span>
+                          )}
+                          {!entry.canEdit && (
+                            <span className="rounded-full bg-muted px-2 py-0.5 font-medium text-muted-foreground">
+                              {t("badges.readOnly")}
+                            </span>
+                          )}
+                          {isNotApplicable && (
+                            <span className="rounded-full bg-muted/80 px-2 py-0.5 font-medium text-muted-foreground">
+                              {t("badges.notApplicable")}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {lastUpdated && (
+                        <p className="text-xs text-muted-foreground">
+                          {t("labels.updatedAt", { date: lastUpdated })}
+                        </p>
                       )}
                     </div>
-                  </div>
-                  {lastUpdated && (
-                    <p className="text-xs text-muted-foreground">
-                      {t("labels.updatedAt", { date: lastUpdated })}
-                    </p>
-                  )}
-                </div>
 
-                <div className="mt-3 text-sm">
-                  {isEditing ? (
-                    <div className="space-y-4">
-                      <RichTextEditor
-                        name={`documentation-${entry.label.id}`}
-                        label={t("fields.editorLabel")}
-                        placeholder={t("fields.editorPlaceholder")}
-                        defaultValue={entry.field?.content ?? ""}
-                        helperText={t("fields.editorHelper")}
-                        labels={toolbarLabels}
-                        onValueChange={setDraftContent}
-                        hideLabel
-                      />
-                      {error && (
-                        <p className="text-sm text-red-600">{error}</p>
+                    <div className="mt-3 text-sm">
+                      {isEditing ? (
+                        <div className="space-y-4">
+                          <RichTextEditor
+                            name={`documentation-${entry.label.id}`}
+                            label={t("fields.editorLabel")}
+                            placeholder={t("fields.editorPlaceholder")}
+                            defaultValue={entry.field?.content ?? ""}
+                            helperText={t("fields.editorHelper")}
+                            labels={toolbarLabels}
+                            onValueChange={setDraftContent}
+                            hideLabel
+                          />
+                          {error && (
+                            <p className="text-sm text-red-600">{error}</p>
+                          )}
+                          <div className="flex justify-end gap-2">
+                            <button
+                              type="button"
+                              className={actionButtonClass({ variant: "neutral", size: "xs" })}
+                              onClick={handleCancel}
+                              disabled={isSaving}
+                            >
+                              {t("actions.cancel")}
+                            </button>
+                            <button
+                              type="button"
+                              className={actionButtonClass({
+                                variant: "primary",
+                                size: "xs",
+                              })}
+                              onClick={() => void handleSave(entry.label.id)}
+                              disabled={isSaving}
+                            >
+                              {isSaving ? (
+                                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                              ) : (
+                                t("actions.save")
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      ) : entry.field?.isNotApplicable ? (
+                        <p className="text-xs italic text-muted-foreground">
+                          {t("states.notApplicable")}
+                        </p>
+                      ) : entry.field?.content ? (
+                        <RichTextContent
+                          content={entry.field.content}
+                          className="prose prose-sm max-w-none text-muted-foreground"
+                        />
+                      ) : (
+                        <p className="text-muted-foreground">{t("states.empty")}</p>
                       )}
-                      <div className="flex justify-end gap-2">
+                    </div>
+
+                    {entry.canEdit && entry.field?.isNotApplicable && (
+                      <div className="mt-3 flex gap-2">
                         <button
                           type="button"
-                          className={actionButtonClass({ variant: "neutral", size: "xs" })}
-                          onClick={handleCancel}
-                          disabled={isSaving}
-                        >
-                          {t("actions.cancel")}
-                        </button>
-                        <button
-                          type="button"
-                          className={actionButtonClass({
-                            variant: "primary",
-                            size: "xs",
-                          })}
-                          onClick={() => void handleSave(entry.label.id)}
+                          className={actionButtonClass({ size: "xs" })}
+                          onClick={() => void handleMarkApplicable(entry.label.id)}
                           disabled={isSaving}
                         >
                           {isSaving ? (
                             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
                           ) : (
-                            t("actions.save")
+                            t("actions.markApplicable")
                           )}
                         </button>
                       </div>
-                    </div>
-                  ) : entry.field?.isNotApplicable ? (
-                    <p className="text-xs italic text-muted-foreground">
-                      {t("states.notApplicable")}
-                    </p>
-                  ) : entry.field?.content ? (
-                    <RichTextContent
-                      content={entry.field.content}
-                      className="prose prose-sm max-w-none text-muted-foreground"
-                    />
-                  ) : (
-                    <p className="text-muted-foreground">{t("states.empty")}</p>
-                  )}
-                </div>
+                    )}
 
-                {entry.canEdit && entry.field?.isNotApplicable && (
-                  <div className="mt-3 flex gap-2">
-                    <button
-                      type="button"
-                      className={actionButtonClass({ size: "xs" })}
-                      onClick={() => void handleMarkApplicable(entry.label.id)}
-                      disabled={isSaving}
-                    >
-                      {isSaving ? (
-                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                      ) : (
-                        t("actions.markApplicable")
-                      )}
-                    </button>
-                  </div>
-                )}
-
-                {entry.canEdit && !entry.field?.isNotApplicable && !isEditing && (
-                  <div className="mt-3 flex gap-2">
-                    <button
-                      type="button"
-                      className={actionButtonClass({ size: "xs" })}
-                      onClick={() => handleEdit(entry)}
-                    >
-                      {t("actions.edit")}
-                    </button>
-                    <button
-                      type="button"
-                      className={actionButtonClass({
-                        variant: "neutral",
-                        size: "xs",
-                      })}
-                      onClick={() => void handleMarkNotApplicable(entry.label.id)}
-                      disabled={isSaving}
-                    >
-                      {isSaving ? (
-                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                      ) : (
-                        t("actions.markNotApplicable")
-                      )}
-                    </button>
-                  </div>
+                    {entry.canEdit && !entry.field?.isNotApplicable && !isEditing && (
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          type="button"
+                          className={actionButtonClass({ size: "xs" })}
+                          onClick={() => handleEdit(entry)}
+                        >
+                          {t("actions.edit")}
+                        </button>
+                        <button
+                          type="button"
+                          className={actionButtonClass({
+                            variant: "neutral",
+                            size: "xs",
+                          })}
+                          onClick={() => void handleMarkNotApplicable(entry.label.id)}
+                          disabled={isSaving}
+                        >
+                          {isSaving ? (
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                          ) : (
+                            t("actions.markNotApplicable")
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
               </article>
             );

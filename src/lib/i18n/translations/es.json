@@ -700,6 +700,7 @@
           "name": "Nombre",
           "namePlaceholder": "Ej. Documentación requerida",
           "isMandatory": "Campo obligatorio",
+          "isNotApplicableByDefault": "Marcar como no aplicable por defecto",
           "visibleToRoles": "Roles con acceso",
           "visibleToRolesHint": "Selecciona quién verá elementos con esta etiqueta.",
           "readOnlyRoles": "Roles en modo lectura",

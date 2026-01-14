@@ -700,6 +700,7 @@
           "name": "Name",
           "namePlaceholder": "e.g. Privacy approval",
           "isMandatory": "Mandatory field",
+          "isNotApplicableByDefault": "Make not applicable by default",
           "visibleToRoles": "Roles with access",
           "visibleToRolesHint": "Choose who can see items tagged with this label.",
           "readOnlyRoles": "Read-only roles",

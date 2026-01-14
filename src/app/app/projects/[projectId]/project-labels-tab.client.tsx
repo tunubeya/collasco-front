@@ -41,6 +41,7 @@ type ProjectLabelsTabProps = {
 type LabelFormValues = {
   name: string;
   isMandatory: boolean;
+  isNotApplicableByDefault: boolean;
   visibleToRoles: QaLabelRole[];
   readOnlyRoles: QaLabelRole[];
 };
@@ -48,6 +49,7 @@ type LabelFormValues = {
 const DEFAULT_FORM_VALUES: LabelFormValues = {
   name: "",
   isMandatory: false,
+  isNotApplicableByDefault: false,
   visibleToRoles: [],
   readOnlyRoles: [],
 };
@@ -57,7 +59,6 @@ const DEFAULT_ROLE_OPTIONS: QaLabelRole[] = [
   "MAINTAINER",
   "DEVELOPER",
   "VIEWER",
-  "TESTER",
 ];
 
 export function ProjectLabelsTab({
@@ -130,6 +131,7 @@ export function ProjectLabelsTab({
     setFormValues({
       name: label.name ?? "",
       isMandatory: Boolean(label.isMandatory),
+      isNotApplicableByDefault: Boolean(label.defaultNotApplicable),
       visibleToRoles: label.visibleToRoles ?? [],
       readOnlyRoles: label.readOnlyRoles ?? [],
     });
@@ -198,6 +200,7 @@ export function ProjectLabelsTab({
         await updateProjectLabel(token, projectId, editingLabel.id, payload);
         toast.success(t("messages.updated"));
       } else {
+        payload.defaultNotApplicable = formValues.isNotApplicableByDefault;
         await createProjectLabel(token, projectId, payload);
         toast.success(t("messages.created"));
       }
@@ -563,6 +566,24 @@ function LabelFormDialog({
             />
             {t("fields.isMandatory")}
           </label>
+
+          {!isEditing && (
+            <label className="flex items-center gap-2 text-sm font-medium">
+              <input
+                type="checkbox"
+                checked={values.isNotApplicableByDefault}
+                onChange={(event) =>
+                  setValues({
+                    ...values,
+                    isNotApplicableByDefault: event.target.checked,
+                  })
+                }
+                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                disabled={!canManageLabels}
+              />
+              {t("fields.isNotApplicableByDefault")}
+            </label>
+          )}
 
           <RoleCheckboxGroup
             title={t("fields.visibleToRoles")}

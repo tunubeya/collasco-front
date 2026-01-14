@@ -256,6 +256,7 @@ export type QaProjectLabel = {
   isMandatory: boolean;
   visibleToRoles: QaLabelRole[];
   readOnlyRoles: QaLabelRole[];
+  defaultNotApplicable?: boolean;
 };
 
 export type ProjectDocumentationLabelOption = {
@@ -275,6 +276,7 @@ export type CreateQaProjectLabelDto = {
   isMandatory?: boolean;
   visibleToRoles?: QaLabelRole[];
   readOnlyRoles?: QaLabelRole[];
+  defaultNotApplicable?: boolean;
 };
 
 export type UpdateQaProjectLabelDto = Partial<CreateQaProjectLabelDto>;
@@ -987,7 +989,8 @@ export async function createProjectLabel(
       },
       token
     );
-    if (!res.ok) throw res;
+    if (!res.ok){console.log(res);
+    };
     return await parseJsonResponse<QaProjectLabel>(res);
   } catch (error) {
     await handleUnauthorized(error);

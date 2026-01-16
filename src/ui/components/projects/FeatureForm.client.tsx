@@ -123,8 +123,7 @@ export function FeatureForm({
           orderedList: t("richText.orderedList"),
           clear: t("richText.clear"),
         }}
-      />por
-
+      />
       <div className="space-y-2">
         <label
           htmlFor="feature-module"
@@ -159,7 +158,7 @@ export function FeatureForm({
             htmlFor="feature-status"
             className="text-sm font-medium text-foreground"
           >
-            {t("fields.status.label")}
+            asdfasdf{t("fields.status.label")}
           </label>
           <select
             id="feature-status"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 
 import type { Feature } from "@/lib/model-definitions/feature";
@@ -63,8 +63,18 @@ export function FeatureTabs({
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
   const [activeTab, setActiveTab] = useState<FeatureTab>("documentation");
+  const [linkedFeatures, setLinkedFeatures] =
+    useState<QaLinkedFeature[]>(initialLinkedFeatures);
+
+  useEffect(() => {
+    setLinkedFeatures(initialLinkedFeatures);
+  }, [initialLinkedFeatures]);
+
   const linkedBadgeCount =
-    linkedFeaturesCount ?? feature.linkedFeaturesCount ?? initialLinkedFeatures.length ?? 0;
+    linkedFeatures.length ??
+    linkedFeaturesCount ??
+    feature.linkedFeaturesCount ??
+    0;
   const qaBadgeCount = testCasesCount ?? feature.testCasesCount ?? 0;
   return (
     <section className="space-y-4">
@@ -199,7 +209,8 @@ export function FeatureTabs({
         <LinkedFeaturesPanel
           token={token}
           featureId={featureId}
-          initialLinks={initialLinkedFeatures}
+          links={linkedFeatures}
+          onLinksChange={setLinkedFeatures}
           options={linkableFeatures}
           modulePathById={modulePathById}
           projectId={projectId}

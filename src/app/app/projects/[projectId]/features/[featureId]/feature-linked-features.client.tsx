@@ -24,7 +24,8 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 type LinkedFeaturesPanelProps = {
   token: string;
   featureId: string;
-  initialLinks: QaLinkedFeature[];
+  links: QaLinkedFeature[];
+  onLinksChange: (links: QaLinkedFeature[]) => void;
   projectId: string;
   modulePathById: Record<string, string>;
   options: Array<{
@@ -38,13 +39,13 @@ type LinkedFeaturesPanelProps = {
 export function LinkedFeaturesPanel({
   token,
   featureId,
-  initialLinks,
+  links,
+  onLinksChange,
   projectId,
   modulePathById,
   options,
 }: LinkedFeaturesPanelProps) {
   const t = useTranslations("app.projects.feature.linked");
-  const [links, setLinks] = useState<QaLinkedFeature[]>(initialLinks);
   const [selectedId, setSelectedId] = useState("");
   const [reason, setReason] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -84,7 +85,7 @@ export function LinkedFeaturesPanel({
         reason: reason.trim() || undefined,
       })
         .then((updated) => {
-          setLinks(updated);
+          onLinksChange(updated);
           setSelectedId("");
           setReason("");
           setDialogOpen(false);
@@ -140,7 +141,7 @@ export function LinkedFeaturesPanel({
     startTransition(() => {
       updateLinkedFeature(token, featureId, editingLink.id, payload)
         .then((updated) => {
-          setLinks(updated);
+          onLinksChange(updated);
           closeEditDialog();
           toast.success(t("messages.updated"));
         })
@@ -156,7 +157,7 @@ export function LinkedFeaturesPanel({
     startTransition(() => {
       deleteLinkedFeature(token, featureId, linkedId)
         .then((updated) => {
-          setLinks(updated);
+          onLinksChange(updated);
           toast.success(t("messages.removed"));
         })
         .catch((error) => {

@@ -559,7 +559,7 @@
       "manual": {
         "noDescription": "Sin descripción disponible.",
         "labelsNavbar": {
-          "title": "Manual preferences",
+          "title": "Preferencias del manual",
           "subtitle": "Elige qué etiquetas se ven en el manual.",
           "loading": "Cargando etiquetas...",
           "empty": "Este proyecto aún no tiene etiquetas visibles.",
@@ -631,7 +631,7 @@
         },
         "roles": {
           "owner": "Propietario",
-          "maintainer": "Maintainer",
+          "maintainer": "Mantenedor",
           "developer": "Desarrollador",
           "viewer": "Lector"
         },
@@ -716,7 +716,7 @@
         },
         "roleNames": {
           "OWNER": "Propietario",
-          "MAINTAINER": "Maintainer",
+          "MAINTAINER": "Mantenedor",
           "DEVELOPER": "Desarrollador",
           "VIEWER": "Lector",
           "TESTER": "Tester"
@@ -1245,7 +1245,7 @@
           "featuresWithRuns": "Con ejecuciones",
             "testCoverageRatio": "Cobertura",
             "openRuns": "Ejecuciones abiertas",
-            "runsWithFullPass": "Full pass",
+            "runsWithFullPass": "Aprobación total",
             "averagePassRate": "Tasa de aprobación"
           },
           "coverage": {

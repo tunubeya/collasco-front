@@ -767,6 +767,9 @@
         "retry": "Retry",
         "backToList": "Back to projects"
       },
+      "description": {
+        "empty": "No description available."
+      },
       "form": {
         "fields": {
           "name": {
@@ -1383,6 +1386,7 @@
   "ui": {
     "i18n": {
       "langSelector": {
+        "label": "Language",
         "en": "English",
         "es": "Spanish",
         "pt": "Portuguese",

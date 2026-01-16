@@ -83,7 +83,7 @@
       ]
     },
     "capa": {
-      "title": "Audits & CAPA",
+      "title": "Audits et CAPA",
       "subtitle": "Identifiez, corrigez et prévenez les problèmes—rapidement.",
       "description": "Créez des constats d’audit, assignez des responsables, fixez des délais et automatisez les actions correctives et préventives.",
       "highlights": [
@@ -293,7 +293,7 @@
     "sendButton": "Envoyer le message"
   },
   "plans": {
-    "metadata_title": "Plans | Collasco",
+    "metadata_title": "Forfaits | Collasco",
     "title": "Choisissez votre plan Collasco",
     "description": "Sélectionnez le plan qui correspond le mieux à vos besoins. Commencez gratuitement et évoluez en fonction de votre croissance.",
     "planPeriodMonth": "/mois",
@@ -317,10 +317,62 @@
     }
   },
   "privacy-policies": {
-    "title": "Politiques de confidentialité"
+    "title": "Politiques de confidentialité",
+    "policies": [
+      {
+        "title": "1. Responsable du traitement",
+        "description": "Collasco SRL\n* Adresse : Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail : Collasco@gmail.com"
+      },
+      {
+        "title": "2. Données personnelles que nous collectons",
+        "description": "Nous collectons les types d'informations suivants :\n* Données d'inscription : nom, e-mail, téléphone et mot de passe.\n* Données de facturation : numéro d'identification fiscale (NIT), adresse fiscale.\n* Données d'utilisation : informations sur la façon dont vous interagissez avec notre plateforme.\n* Données facultatives : que vous choisissez de nous fournir, comme des références de contact."
+      },
+      {
+        "title": "3. Finalités du traitement des données",
+        "description": "Vos données personnelles seront utilisées pour :\n* Fournir les services contractés sur notre plateforme.\n* Gérer la facturation et le respect des obligations légales.\n* Améliorer votre expérience utilisateur grâce à la personnalisation.\n* Envoyer des informations sur les promotions, toujours avec votre consentement préalable."
+      },
+      {
+        "title": "4. Base légale du traitement des données",
+        "description": "Le traitement de vos données personnelles est effectué sur la base de :\n* Consentement exprès : accordé lors de l'inscription ou de l'utilisation de notre service.\n* Respect des obligations légales : conformément à la réglementation bolivienne en vigueur.\n* Exécution d'un contrat : nécessaire pour fournir nos services."
+      },
+      {
+        "title": "5. Partage des données",
+        "description": "Nous pouvons partager vos données personnelles avec des tiers, tels que :\n* Fournisseurs de services technologiques et de stockage cloud.\n* Entités gouvernementales lorsque la loi l'exige.\n* Dans tous les cas, nous garantissons que ces tiers respectent des normes élevées de protection des données."
+      },
+      {
+        "title": "6. Transferts internationaux de données",
+        "description": "Bien que notre base principale soit en Bolivie, certains fournisseurs peuvent être situés dans d'autres pays. Lorsque des transferts internationaux de données sont effectués, nous garantissons que des mesures de protection adéquates sont mises en place conformément à la réglementation applicable."
+      },
+      {
+        "title": "7. Sécurité des données",
+        "description": "Nous mettons en œuvre des mesures techniques et organisationnelles pour protéger vos données contre l'accès non autorisé, la perte ou la divulgation inappropriée. Cependant, aucune mesure de sécurité n'est infaillible, nous vous recommandons donc de protéger votre mot de passe et de ne pas partager d'informations sensibles inutilement."
+      },
+      {
+        "title": "8. Vos droits",
+        "description": "Conformément à la législation bolivienne, vous avez le droit de :\n* Accès : demander des informations sur les données que nous conservons à votre sujet.\n* Rectification : corriger des données incorrectes ou incomplètes.\n* Suppression : demander la suppression de vos données, sauf lorsqu'une obligation légale impose de les conserver.\n* Opposition : refuser le traitement de vos données à certaines fins.\n* Vous pouvez exercer ces droits en nous contactant à Collasco@gmail.com, en indiquant votre nom complet, votre document d'identité et le droit que vous souhaitez exercer."
+      },
+      {
+        "title": "9. Conservation des données",
+        "description": "Nous conservons vos données personnelles uniquement le temps nécessaire pour atteindre les finalités décrites, ou comme l'exige la législation en vigueur."
+      },
+      {
+        "title": "10. Modifications de cette politique",
+        "description": "Nous nous réservons le droit de mettre à jour cette politique de confidentialité à tout moment. Nous notifierons tout changement via notre plateforme ou par e-mail.\nMerci de faire confiance à Collasco. Votre confidentialité est essentielle pour nous."
+      }
+    ]
   },
   "terms-and-conditions": {
-    "title": "Conditions générales"
+    "title": "Conditions générales",
+    "conditions": [
+      {
+        "title": "Conditions d'utilisation",
+        "description": "Le contenu suivant ne peut pas être publié sur la plateforme web de Collasco.\n\n* La publication de tout matériel illégal selon les lois en vigueur dans l'État plurinational de Bolivie n'est pas autorisée.\n* La diffusion de nudité ou de matériel pornographique sur ce site web est strictement interdite.\n* L'échange, la promotion ou la vente de substances narcotiques illégales est strictement interdite.\n* Aucun contenu explicite illégal ne sera toléré, y compris, mais sans s'y limiter, l'incitation à la violence, la haine, le harcèlement ou la discrimination.\n* Il n'est pas permis d'offrir ou de demander tout type d'armes à feu ou d'armes blanches via ce service web.\n* Tous les utilisateurs doivent respecter les droits d'auteur et ne pas téléverser, partager ou distribuer du contenu numérique qui n'est pas autorisé par ses titulaires.\n* Il est strictement interdit d'utiliser ce service web à des fins frauduleuses, y compris, mais sans s'y limiter, le phishing, la fraude à l'identité ou toute autre activité trompeuse.\n* En plus des restrictions mentionnées ci-dessus, les utilisateurs doivent se conformer à toutes les lois et réglementations locales, nationales et internationales applicables lors de l'utilisation de ce service web.\n* Le non-respect de l'une de ces conditions d'utilisation peut entraîner la suspension ou la suppression de votre compte ainsi que la prise de mesures légales appropriées.\n* Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment et recommandons de les consulter périodiquement afin d'être informé des changements."
+      },
+      {
+        "title": "Interdictions",
+        "description": "Les interdictions suivantes s'appliquent à l'utilisation de la plateforme Collasco.\n\n* Interdiction de la fraude : l'utilisation des boutiques web Mercagi pour toute activité frauduleuse sur internet est strictement interdite. Les affiliés doivent gérer leurs boutiques en toute transparence et honnêteté.\n* Responsabilité de l'affilié : les affiliés sont entièrement responsables de tout dommage ou préjudice causé par leur boutique web. Mercagi décline toute responsabilité découlant des actions ou du contenu des boutiques affiliées.\n* Interdiction de la revente de cours protégés par le droit d'auteur : l'utilisation des boutiques pour revendre des cours en ligne protégés par le droit d'auteur n'est pas autorisée, sauf autorisation expresse.\n* Vente de produits illégaux : la vente d'articles volés ou de contrebande est interdite. Mercagi se réserve le droit d'engager des actions en justice contre tout affilié se livrant à ces pratiques.\n* Conséquences des plaintes et réclamations : en cas de réception de multiples plaintes ou réclamations vérifiées concernant des fraudes ou des activités illégales dans une boutique, Mercagi se réserve le droit de supprimer la boutique de l'affilié sans possibilité de réactivation."
+      }
+    ]
   },
   "who-we-are": {
     "metadata_title": "Qui sommes-nous ? | Collasco",
@@ -361,7 +413,7 @@
       "breadcrumbs": {
         "projects": "Projets",
         "modules": "Modules",
-        "features": "Features",
+        "features": "Fonctionnalités",
         "dashboard": "Tableau de bord"
       }
     },
@@ -480,7 +532,7 @@
           "dashboard": "Tableau de bord",
           "qa": "Campagnes QA",
           "members": "Membres",
-          "labels": "Labels",
+          "labels": "Étiquettes",
           "manual": "Manuel"
         },
         "actions": {
@@ -505,7 +557,7 @@
       "manual": {
         "noDescription": "Aucune description disponible.",
         "labelsNavbar": {
-          "title": "Manual preferences",
+          "title": "Préférences du manuel",
           "subtitle": "Choisissez les étiquettes visibles dans le manuel.",
           "loading": "Chargement des étiquettes...",
           "empty": "Ce projet n'a pas encore d'étiquettes visibles.",
@@ -577,7 +629,7 @@
         },
         "roles": {
           "owner": "Propriétaire",
-          "maintainer": "Maintainer",
+          "maintainer": "Mainteneur",
           "developer": "Développeur",
           "viewer": "Lecteur"
         },
@@ -601,34 +653,34 @@
         }
       },
       "labels": {
-        "title": "Custom labels",
-        "subtitle": "Configure QA labels and decide who can see or edit the tagged content.",
+        "title": "Étiquettes personnalisées",
+        "subtitle": "Configurez les étiquettes QA et définissez qui peut voir ou modifier le contenu associé.",
         "actions": {
-          "add": "New label",
-          "edit": "Edit",
-          "delete": "Delete",
-          "save": "Save",
-          "saving": "Saving...",
-          "cancel": "Cancel"
+          "add": "Nouvelle étiquette",
+          "edit": "Modifier",
+          "delete": "Supprimer",
+          "save": "Enregistrer",
+          "saving": "Enregistrement...",
+          "cancel": "Annuler"
         },
         "messages": {
-          "loadError": "We couldn't load the labels.",
-          "saveError": "We couldn't save the label.",
-          "created": "Label created.",
-          "updated": "Label updated.",
-          "deleted": "Label deleted.",
-          "deleteError": "We couldn't delete the label.",
-          "deleteConfirm": "Delete the \"{name}\" label?",
-          "ownerOnly": "Only the owner can modify labels."
+          "loadError": "Impossible de charger les étiquettes.",
+          "saveError": "Impossible d’enregistrer l’étiquette.",
+          "created": "Étiquette créée.",
+          "updated": "Étiquette mise à jour.",
+          "deleted": "Étiquette supprimée.",
+          "deleteError": "Impossible de supprimer l’étiquette.",
+          "deleteConfirm": "Supprimer l’étiquette \"{name}\" ?",
+          "ownerOnly": "Seul le propriétaire peut modifier les étiquettes."
         },
         "table": {
-          "name": "Label",
-          "mandatory": "Mandatory",
-          "mandatoryYes": "Yes",
-          "mandatoryNo": "No",
-          "visibleToRoles": "Visible to",
-          "readOnlyRoles": "Read only",
-          "noReadOnly": "All visible roles can edit.",
+          "name": "Étiquette",
+          "mandatory": "Obligatoire",
+          "mandatoryYes": "Oui",
+          "mandatoryNo": "Non",
+          "visibleToRoles": "Visible pour",
+          "readOnlyRoles": "Lecture seule",
+          "noReadOnly": "Tous les rôles visibles peuvent modifier.",
           "actions": "Actions"
         },
         "reorder": {
@@ -638,73 +690,73 @@
           "error": "Impossible de réorganiser cette étiquette."
         },
         "empty": {
-          "title": "No labels yet",
-          "description": "Create labels to organize your QA flows and runs.",
-          "action": "Create label"
+          "title": "Aucune étiquette pour le moment",
+          "description": "Créez des étiquettes pour organiser vos flux et exécutions QA.",
+          "action": "Créer une étiquette"
         },
         "fields": {
-          "name": "Name",
-          "namePlaceholder": "e.g. Privacy approval",
-          "isMandatory": "Mandatory field",
-          "isNotApplicableByDefault": "Make not applicable by default",
-          "visibleToRoles": "Roles with access",
-          "visibleToRolesHint": "Choose who can see items tagged with this label.",
-          "readOnlyRoles": "Read-only roles",
-          "readOnlyRolesHint": "They will see the label but cannot edit the content."
+          "name": "Nom",
+          "namePlaceholder": "Ex. Validation confidentialité",
+          "isMandatory": "Champ obligatoire",
+          "isNotApplicableByDefault": "Définir comme non applicable par défaut",
+          "visibleToRoles": "Rôles avec accès",
+          "visibleToRolesHint": "Choisissez qui peut voir les éléments associés à cette étiquette.",
+          "readOnlyRoles": "Rôles en lecture seule",
+          "readOnlyRolesHint": "Ils verront l’étiquette mais ne pourront pas modifier le contenu."
         },
         "dialog": {
-          "createTitle": "New label",
-          "editTitle": "Edit label",
-          "description": "Define visibility and permissions for this label."
+          "createTitle": "Nouvelle étiquette",
+          "editTitle": "Modifier l’étiquette",
+          "description": "Définissez la visibilité et les permissions pour cette étiquette."
         },
         "validation": {
-          "name": "Enter a name."
+          "name": "Saisissez un nom."
         },
         "roleNames": {
-          "OWNER": "Owner",
-          "MAINTAINER": "Maintainer",
-          "DEVELOPER": "Developer",
-          "VIEWER": "Viewer",
-          "TESTER": "Tester"
+          "OWNER": "Propriétaire",
+          "MAINTAINER": "Mainteneur",
+          "DEVELOPER": "Développeur",
+          "VIEWER": "Lecteur",
+          "TESTER": "Testeur"
         }
       },
       "documentation": {
-        "title": "Documentation by label",
-        "subtitle": "Capture the rich-text evidence that each role can see or edit.",
-        "empty": "No sections available for your role.",
+        "title": "Documentation par étiquette",
+        "subtitle": "Capturez les preuves en texte riche que chaque rôle peut voir ou modifier.",
+        "empty": "Aucune section disponible pour votre rôle.",
         "badges": {
-          "mandatory": "Mandatory",
-          "readOnly": "Read only",
-          "notApplicable": "Not applicable"
+          "mandatory": "Obligatoire",
+          "readOnly": "Lecture seule",
+          "notApplicable": "Non applicable"
         },
         "labels": {
-          "updatedAt": "Updated {date}"
+          "updatedAt": "Mis à jour {date}"
         },
         "fields": {
-          "notApplicable": "Marked as not applicable",
-          "notApplicableHint": "Hide this label for this feature or module.",
-          "editorLabel": "Content",
-          "editorPlaceholder": "Document the context, validations, or decisions.",
-          "editorHelper": "Use rich text to keep your evidence readable."
+          "notApplicable": "Marqué comme non applicable",
+          "notApplicableHint": "Masquez cette étiquette pour cette fonctionnalité ou ce module.",
+          "editorLabel": "Contenu",
+          "editorPlaceholder": "Documentez le contexte, les validations ou les décisions.",
+          "editorHelper": "Utilisez le texte riche pour garder vos preuves lisibles."
         },
         "states": {
-          "notApplicable": "This label is marked as not applicable.",
-          "empty": "No content yet."
+          "notApplicable": "Cette étiquette est marquée comme non applicable.",
+          "empty": "Pas encore de contenu."
         },
         "messages": {
-          "loadError": "We couldn't load the documentation.",
-          "saved": "Documentation saved.",
-          "saveError": "We couldn't save this label."
+          "loadError": "Impossible de charger la documentation.",
+          "saved": "Documentation enregistrée.",
+          "saveError": "Impossible d’enregistrer cette étiquette."
         },
         "actions": {
-          "edit": "Edit content",
-          "save": "Save",
-          "cancel": "Cancel",
-          "markNotApplicable": "Mark as N/A",
-          "markApplicable": "Mark as applicable"
+          "edit": "Modifier le contenu",
+          "save": "Enregistrer",
+          "cancel": "Annuler",
+          "markNotApplicable": "Marquer comme N/A",
+          "markApplicable": "Marquer comme applicable"
         },
         "validation": {
-          "content": "Enter some content or mark it as not applicable."
+          "content": "Saisissez du contenu ou marquez l’étiquette comme non applicable."
         }
       },
       "detailErrors": {
@@ -860,7 +912,7 @@
           "issues": "Issues liées",
           "versions": "Versions",
           "qa": "Tests",
-          "linked": "Features liées",
+          "linked": "Fonctionnalités liées",
           "manual": "Manuel"
         },
         "description": {
@@ -869,36 +921,36 @@
         },
         "issues": {
           "title": "Issues et PR liées",
-          "issueLink": "Issue",
+          "issueLink": "Ticket",
           "pullRequestLink": "Pull request",
           "empty": "Aucune issue liée."
         },
         "linked": {
-          "title": "Features liées",
+          "title": "Fonctionnalités liées",
           "description": "Gérez les dépendances avec des liens bidirectionnels.",
-          "empty": "Cette feature n’a pas encore de liens.",
+          "empty": "Cette fonctionnalité n’a pas encore de liens.",
           "actions": {
-            "add": "Feature",
+            "add": "Fonctionnalité",
             "cancel": "Annuler",
             "edit": "Modifier le lien"
           },
           "form": {
-            "title": "Lier une feature",
-            "subtitle": "Sélectionnez une feature existante du projet.",
-            "feature": "Feature",
-            "featurePlaceholder": "Sélectionnez une feature",
+            "title": "Lier une fonctionnalité",
+            "subtitle": "Sélectionnez une fonctionnalité existante du projet.",
+            "feature": "Fonctionnalité",
+            "featurePlaceholder": "Sélectionnez une fonctionnalité",
             "reason": "Motif (optionnel)",
             "reasonPlaceholder": "Pourquoi sont-elles liées ?",
             "reasonHelp": "500 caractères maximum.",
-            "submit": "Lier la feature",
+            "submit": "Lier la fonctionnalité",
             "errors": {
-              "targetRequired": "Choisissez une autre feature pour créer le lien."
+              "targetRequired": "Choisissez une autre fonctionnalité pour créer le lien."
             }
           },
           "editForm": {
             "title": "Modifier le lien",
             "subtitle": "Mettez à jour la note ou changez de fonctionnalité liée.",
-            "featurePlaceholder": "Conserver la feature actuelle",
+            "featurePlaceholder": "Conserver la fonctionnalité actuelle",
             "submit": "Enregistrer"
           },
           "list": {
@@ -911,11 +963,11 @@
             }
           },
           "messages": {
-            "linked": "Feature liée.",
+            "linked": "Fonctionnalité liée.",
             "updated": "Lien mis à jour.",
             "removed": "Lien supprimé.",
             "noChanges": "Aucun changement à enregistrer.",
-            "error": "Impossible de mettre à jour les features liées."
+            "error": "Impossible de mettre à jour les fonctionnalités liées."
           }
         },
         "versions": {
@@ -1084,7 +1136,7 @@
           "label": "Type",
           "all": "Toutes",
           "project": "Campagnes projet",
-          "feature": "Campagnes feature"
+          "feature": "Campagnes fonctionnalité"
         },
         "empty": {
           "title": "Aucune campagne enregistrée",
@@ -1178,34 +1230,34 @@
         }
       },
       "dashboard": {
-        "title": "QA dashboard",
-        "subtitle": "Track coverage, feature health and open runs.",
+        "title": "Tableau de bord QA",
+        "subtitle": "Suivez la couverture, la santé des fonctionnalités et les exécutions en cours.",
         "errors": {
-          "load": "We couldn't load the QA dashboard.",
-          "detail": "We couldn't load the selected dataset."
+          "load": "Impossible de charger le tableau de bord QA.",
+          "detail": "Impossible de charger l’ensemble de données sélectionné."
         },
         "metrics": {
-          "totalFeatures": "Total features",
-          "featuresMissingDescription": "Missing description",
+          "totalFeatures": "Total des fonctionnalités",
+          "featuresMissingDescription": "Description manquante",
           "featuresWithoutTestCases": "Sans cas de test",
-          "featuresWithRuns": "With runs",
-          "testCoverageRatio": "Coverage",
-          "openRuns": "Open runs",
-          "runsWithFullPass": "Full pass",
-          "averagePassRate": "Pass rate"
+          "featuresWithRuns": "Avec exécutions",
+          "testCoverageRatio": "Couverture",
+          "openRuns": "Exécutions en cours",
+          "runsWithFullPass": "Succès complet",
+          "averagePassRate": "Taux de réussite"
         },
         "coverage": {
-          "title": "Project coverage",
-          "description": "Latest recorded coverage for this project.",
-          "caption": "{executed} of {total} features with recorded runs.",
-          "coveredBadge": "{value} coverage",
-          "pendingBadge": "{count} missing docs"
+          "title": "Couverture du projet",
+          "description": "Dernière couverture enregistrée pour ce projet.",
+          "caption": "{executed} sur {total} fonctionnalités avec des exécutions enregistrées.",
+          "coveredBadge": "{value} de couverture",
+          "pendingBadge": "{count} docs manquantes"
         },
         "featureHealth": {
-          "title": "Feature health",
-          "description": "Most recent pass rate per feature.",
-          "empty": "No health data yet.",
-          "noRuns": "No runs",
+          "title": "Santé des fonctionnalités",
+          "description": "Dernier taux de réussite par fonctionnalité.",
+          "empty": "Pas encore de données de santé.",
+          "noRuns": "Aucune exécution",
           "notAvailable": "N/D",
           "lastRunLabel": "Dernière exécution",
           "stats": {
@@ -1221,22 +1273,22 @@
           "missingAlert": "{count, plural, =0 {Certains cas n'ont pas été exécutés lors de la dernière campagne} one {{count} cas n'a pas été exécuté lors de la dernière campagne} other {{count} cas n'ont pas été exécutés lors de la dernière campagne}}"
         },
         "featureCoverage": {
-          "title": "Coverage by feature",
-          "description": "Executed vs pending test cases per feature.",
-          "empty": "No runs yet to compute coverage.",
-          "latestRun": "Last run {date}",
-          "coverageLabel": "{executed} of {total} cases executed",
-          "missingLabel": "{count} cases pending",
-          "noRuns": "No recorded runs",
+          "title": "Couverture par fonctionnalité",
+          "description": "Cas de test exécutés vs en attente par fonctionnalité.",
+          "empty": "Aucune exécution pour calculer la couverture.",
+          "latestRun": "Dernière exécution {date}",
+          "coverageLabel": "{executed} sur {total} cas exécutés",
+          "missingLabel": "{count} cas en attente",
+          "noRuns": "Aucune exécution enregistrée",
           "cta": "Voir la couverture par fonctionnalité",
           "noCases": "Aucun cas actif"
         },
         "missingDescription": {
-          "title": "Features without description",
-          "description": "Identify what needs documentation.",
-          "empty": "All features have a description.",
-          "caption": "Document the functional scope to unblock QA.",
-          "badge": "Missing description",
+          "title": "Fonctionnalités sans description",
+          "description": "Identifiez ce qui doit être documenté.",
+          "empty": "Toutes les fonctionnalités ont une description.",
+          "caption": "Documentez le périmètre fonctionnel pour débloquer la QA.",
+          "badge": "Description manquante",
           "filter": {
             "label": "Afficher",
             "all": "Tout",
@@ -1244,52 +1296,52 @@
             "modules": "Modules"
           },
           "entityType": {
-            "FEATURE": "Feature",
+            "FEATURE": "Fonctionnalité",
             "MODULE": "Module"
           }
         },
         "featuresWithoutTestCases": {
-          "title": "Features sans cas de test",
+          "title": "Fonctionnalités sans cas de test",
           "description": "Repérez les fonctionnalités encore sans validation.",
-          "empty": "Toutes les features ont des cas de test.",
+          "empty": "Toutes les fonctionnalités ont des cas de test.",
           "caption": "Ajoutez au moins un cas pour assurer la traçabilité.",
           "badge": "Aucun test"
         },
         "openRuns": {
-          "title": "Open runs",
-          "description": "In-flight executions that need attention.",
-          "empty": "No open runs right now."
+          "title": "Exécutions en cours",
+          "description": "Exécutions en cours nécessitant votre attention.",
+          "empty": "Aucune exécution en cours."
         },
         "runsWithFullPass": {
-          "title": "Runs with full pass",
-          "description": "Executions with 100% approval.",
-          "empty": "No full-pass runs yet.",
-          "badge": "100% passed"
+          "title": "Exécutions avec succès complet",
+          "description": "Exécutions avec 100 % d’approbation.",
+          "empty": "Aucune exécution 100 % pour l’instant.",
+          "badge": "100 % réussi"
         },
         "runs": {
-          "coverageLabel": "{executed} of {total} cases executed"
+          "coverageLabel": "{executed} sur {total} cas exécutés"
         },
         "detail": {
-          "title": "Metric details",
-          "subtitle": "Select a metric to inspect the underlying data.",
-          "empty": "Choose any metric above to load its list.",
-          "cta": "Show details",
-          "showPanel": "Expand details",
+          "title": "Détails de la métrique",
+          "subtitle": "Sélectionnez une métrique pour inspecter les données sous-jacentes.",
+          "empty": "Choisissez une métrique ci-dessus pour charger sa liste.",
+          "cta": "Afficher les détails",
+          "showPanel": "Déplier les détails",
           "openInNewTab": "Ouvrir dans un nouvel onglet",
           "openFeature": "Aller à la fonctionnalité",
           "back": "Retour au tableau de bord",
-          "sortLabel": "Sort by coverage",
-          "sortDesc": "High → Low",
-          "sortAsc": "Low → High",
+          "sortLabel": "Trier par couverture",
+          "sortDesc": "Élevée → Faible",
+          "sortAsc": "Faible → Élevée",
           "pagination": {
-            "previous": "Previous",
-            "next": "Next"
+            "previous": "Précédent",
+            "next": "Suivant"
           }
         },
         "empty": {
-          "title": "No QA data yet",
-          "description": "Create at least one run to unlock the dashboard.",
-          "retry": "Try again"
+          "title": "Aucune donnée QA pour le moment",
+          "description": "Créez au moins une exécution pour débloquer le tableau de bord.",
+          "retry": "Réessayer"
         }
       },
       "health": {
@@ -1367,7 +1419,7 @@
       },
       "landing": {
         "whoWeAre": "Qui sommes-nous ?",
-        "plans": "Plans",
+        "plans": "Forfaits",
         "support": "Support"
       },
       "profile-menu-client": {

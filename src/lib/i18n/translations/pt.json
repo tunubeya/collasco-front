@@ -559,7 +559,7 @@
       "manual": {
         "noDescription": "Nenhuma descrição disponível.",
         "labelsNavbar": {
-          "title": "Manual preferences",
+          "title": "Preferências do manual",
           "subtitle": "Escolha quais rótulos aparecem no manual.",
           "loading": "Carregando rótulos...",
           "empty": "Este projeto ainda não tem rótulos visíveis.",
@@ -631,7 +631,7 @@
         },
         "roles": {
           "owner": "Proprietário",
-          "maintainer": "Maintainer",
+          "maintainer": "Mantenedor",
           "developer": "Desenvolvedor",
           "viewer": "Leitor"
         },
@@ -655,35 +655,35 @@
         }
       },
       "labels": {
-        "title": "Custom labels",
-        "subtitle": "Configure QA labels and decide who can see or edit the tagged content.",
+        "title": "Etiquetas personalizadas",
+        "subtitle": "Configure as etiquetas de QA e defina quem pode ver ou editar o conteúdo marcado.",
         "actions": {
-          "add": "New label",
-          "edit": "Edit",
-          "delete": "Delete",
-          "save": "Save",
-          "saving": "Saving...",
-          "cancel": "Cancel"
+          "add": "Nova etiqueta",
+          "edit": "Editar",
+          "delete": "Excluir",
+          "save": "Salvar",
+          "saving": "Salvando...",
+          "cancel": "Cancelar"
         },
         "messages": {
-          "loadError": "We couldn't load the labels.",
-          "saveError": "We couldn't save the label.",
-          "created": "Label created.",
-          "updated": "Label updated.",
-          "deleted": "Label deleted.",
-          "deleteError": "We couldn't delete the label.",
-          "deleteConfirm": "Delete the \"{name}\" label?",
-          "ownerOnly": "Only the owner can modify labels."
+          "loadError": "Não foi possível carregar as etiquetas.",
+          "saveError": "Não foi possível salvar a etiqueta.",
+          "created": "Etiqueta criada.",
+          "updated": "Etiqueta atualizada.",
+          "deleted": "Etiqueta excluída.",
+          "deleteError": "Não foi possível excluir a etiqueta.",
+          "deleteConfirm": "Excluir a etiqueta \"{name}\"?",
+          "ownerOnly": "Somente o proprietário pode modificar as etiquetas."
         },
         "table": {
-          "name": "Label",
-          "mandatory": "Mandatory",
-          "mandatoryYes": "Yes",
-          "mandatoryNo": "No",
-          "visibleToRoles": "Visible to",
-          "readOnlyRoles": "Read only",
-          "noReadOnly": "All visible roles can edit.",
-          "actions": "Actions"
+          "name": "Etiqueta",
+          "mandatory": "Obrigatória",
+          "mandatoryYes": "Sim",
+          "mandatoryNo": "Não",
+          "visibleToRoles": "Visível para",
+          "readOnlyRoles": "Somente leitura",
+          "noReadOnly": "Todos os papéis visíveis podem editar.",
+          "actions": "Ações"
         },
         "reorder": {
           "moveUp": "Mover para cima",
@@ -692,73 +692,73 @@
           "error": "Não foi possível reordenar esta etiqueta."
         },
         "empty": {
-          "title": "No labels yet",
-          "description": "Create labels to organize your QA flows and runs.",
-          "action": "Create label"
+          "title": "Ainda não há etiquetas",
+          "description": "Crie etiquetas para organizar seus fluxos e execuções de QA.",
+          "action": "Criar etiqueta"
         },
         "fields": {
-          "name": "Name",
-          "namePlaceholder": "e.g. Privacy approval",
-          "isMandatory": "Mandatory field",
-          "isNotApplicableByDefault": "Make not applicable by default",
-          "visibleToRoles": "Roles with access",
-          "visibleToRolesHint": "Choose who can see items tagged with this label.",
-          "readOnlyRoles": "Read-only roles",
-          "readOnlyRolesHint": "They will see the label but cannot edit the content."
+          "name": "Nome",
+          "namePlaceholder": "ex. Aprovação de privacidade",
+          "isMandatory": "Campo obrigatório",
+          "isNotApplicableByDefault": "Marcar como não aplicável por padrão",
+          "visibleToRoles": "Papéis com acesso",
+          "visibleToRolesHint": "Escolha quem pode ver itens com esta etiqueta.",
+          "readOnlyRoles": "Papéis somente leitura",
+          "readOnlyRolesHint": "Eles verão a etiqueta, mas não poderão editar o conteúdo."
         },
         "dialog": {
-          "createTitle": "New label",
-          "editTitle": "Edit label",
-          "description": "Define visibility and permissions for this label."
+          "createTitle": "Nova etiqueta",
+          "editTitle": "Editar etiqueta",
+          "description": "Defina visibilidade e permissões para esta etiqueta."
         },
         "validation": {
-          "name": "Enter a name."
+          "name": "Informe um nome."
         },
         "roleNames": {
-          "OWNER": "Owner",
-          "MAINTAINER": "Maintainer",
-          "DEVELOPER": "Developer",
-          "VIEWER": "Viewer",
-          "TESTER": "Tester"
+          "OWNER": "Proprietário",
+          "MAINTAINER": "Mantenedor",
+          "DEVELOPER": "Desenvolvedor",
+          "VIEWER": "Leitor",
+          "TESTER": "Testador"
         }
       },
       "documentation": {
-        "title": "Documentation by label",
-        "subtitle": "Capture the rich-text evidence that each role can see or edit.",
-        "empty": "No sections available for your role.",
+        "title": "Documentação por etiqueta",
+        "subtitle": "Registre as evidências em rich text que cada papel pode ver ou editar.",
+        "empty": "Nenhuma seção disponível para o seu papel.",
         "badges": {
-          "mandatory": "Mandatory",
-          "readOnly": "Read only",
-          "notApplicable": "Not applicable"
+          "mandatory": "Obrigatória",
+          "readOnly": "Somente leitura",
+          "notApplicable": "Não aplicável"
         },
         "labels": {
-          "updatedAt": "Updated {date}"
+          "updatedAt": "Atualizado {date}"
         },
         "fields": {
-          "notApplicable": "Marked as not applicable",
-          "notApplicableHint": "Hide this label for this feature or module.",
-          "editorLabel": "Content",
-          "editorPlaceholder": "Document the context, validations, or decisions.",
-          "editorHelper": "Use rich text to keep your evidence readable."
+          "notApplicable": "Marcado como não aplicável",
+          "notApplicableHint": "Oculte esta etiqueta para esta feature ou módulo.",
+          "editorLabel": "Conteúdo",
+          "editorPlaceholder": "Documente o contexto, validações ou decisões.",
+          "editorHelper": "Use rich text para manter suas evidências legíveis."
         },
         "states": {
-          "notApplicable": "This label is marked as not applicable.",
-          "empty": "No content yet."
+          "notApplicable": "Esta etiqueta está marcada como não aplicável.",
+          "empty": "Ainda não há conteúdo."
         },
         "messages": {
-          "loadError": "We couldn't load the documentation.",
-          "saved": "Documentation saved.",
-          "saveError": "We couldn't save this label."
+          "loadError": "Não foi possível carregar a documentação.",
+          "saved": "Documentação salva.",
+          "saveError": "Não foi possível salvar esta etiqueta."
         },
         "actions": {
-          "edit": "Edit content",
-          "save": "Save",
-          "cancel": "Cancel",
-          "markNotApplicable": "Mark as N/A",
-          "markApplicable": "Mark as applicable"
+          "edit": "Editar conteúdo",
+          "save": "Salvar",
+          "cancel": "Cancelar",
+          "markNotApplicable": "Marcar como N/A",
+          "markApplicable": "Marcar como aplicável"
         },
         "validation": {
-          "content": "Enter some content or mark it as not applicable."
+          "content": "Informe algum conteúdo ou marque como não aplicável."
         }
       },
       "detailErrors": {
@@ -766,6 +766,9 @@
         "description": "Não foi possível obter o projeto. Tente novamente.",
         "retry": "Tentar novamente",
         "backToList": "Voltar aos projetos"
+      },
+      "description": {
+        "empty": "Nenhuma descrição disponível."
       },
       "form": {
         "fields": {
@@ -1229,34 +1232,34 @@
         }
       },
       "dashboard": {
-        "title": "QA dashboard",
-        "subtitle": "Track coverage, feature health and open runs.",
+        "title": "Dashboard de QA",
+        "subtitle": "Acompanhe a cobertura, a saúde das features e as execuções abertas.",
         "errors": {
-          "load": "We couldn't load the QA dashboard.",
-          "detail": "We couldn't load the selected dataset."
+          "load": "Não foi possível carregar o dashboard de QA.",
+          "detail": "Não foi possível carregar o conjunto de dados selecionado."
         },
         "metrics": {
-          "totalFeatures": "Total features",
-          "featuresMissingDescription": "Missing description",
+          "totalFeatures": "Total de features",
+          "featuresMissingDescription": "Descrição ausente",
           "featuresWithoutTestCases": "Sem casos de teste",
-          "featuresWithRuns": "With runs",
-          "testCoverageRatio": "Coverage",
-          "openRuns": "Open runs",
-          "runsWithFullPass": "Full pass",
-          "averagePassRate": "Pass rate"
+          "featuresWithRuns": "Com execuções",
+          "testCoverageRatio": "Cobertura",
+          "openRuns": "Execuções abertas",
+          "runsWithFullPass": "Aprovação total",
+          "averagePassRate": "Taxa de aprovação"
         },
         "coverage": {
-          "title": "Project coverage",
-          "description": "Latest recorded coverage for this project.",
-          "caption": "{executed} of {total} features with recorded runs.",
-          "coveredBadge": "{value} coverage",
-          "pendingBadge": "{count} missing docs"
+          "title": "Cobertura do projeto",
+          "description": "Última cobertura registrada para este projeto.",
+          "caption": "{executed} de {total} features com execuções registradas.",
+          "coveredBadge": "{value} de cobertura",
+          "pendingBadge": "{count} docs pendentes"
         },
         "featureHealth": {
-          "title": "Feature health",
-          "description": "Most recent pass rate per feature.",
-          "empty": "No health data yet.",
-          "noRuns": "No runs",
+          "title": "Saúde da feature",
+          "description": "Taxa de aprovação mais recente por feature.",
+          "empty": "Ainda não há dados de saúde.",
+          "noRuns": "Sem execuções",
           "notAvailable": "N/D",
           "lastRunLabel": "Última execução",
           "stats": {
@@ -1272,22 +1275,22 @@
           "missingAlert": "{count, plural, =0 {Existem casos não executados na última execução} one {{count} caso não foi executado na última execução} other {{count} casos não foram executados na última execução}}"
         },
         "featureCoverage": {
-          "title": "Coverage by feature",
-          "description": "Executed vs pending test cases per feature.",
-          "empty": "No runs yet to compute coverage.",
-          "latestRun": "Last run {date}",
-          "coverageLabel": "{executed} of {total} cases executed",
-          "missingLabel": "{count} cases pending",
-          "noRuns": "No recorded runs",
+          "title": "Cobertura por feature",
+          "description": "Casos executados vs pendentes por feature.",
+          "empty": "Ainda não há execuções para calcular a cobertura.",
+          "latestRun": "Última execução {date}",
+          "coverageLabel": "{executed} de {total} casos executados",
+          "missingLabel": "{count} casos pendentes",
+          "noRuns": "Sem execuções registradas",
           "cta": "Ver cobertura por feature",
           "noCases": "Sem casos ativos"
         },
         "missingDescription": {
-          "title": "Features without description",
-          "description": "Identify what needs documentation.",
-          "empty": "All features have a description.",
-          "caption": "Document the functional scope to unblock QA.",
-          "badge": "Missing description",
+          "title": "Features sem descrição",
+          "description": "Identifique o que precisa de documentação.",
+          "empty": "Todas as features têm descrição.",
+          "caption": "Documente o escopo funcional para destravar o QA.",
+          "badge": "Descrição ausente",
           "filter": {
             "label": "Mostrar",
             "all": "Todos",
@@ -1307,40 +1310,40 @@
           "badge": "Sem testes"
         },
         "openRuns": {
-          "title": "Open runs",
-          "description": "In-flight executions that need attention.",
-          "empty": "No open runs right now."
+          "title": "Execuções abertas",
+          "description": "Execuções em andamento que precisam de atenção.",
+          "empty": "Nenhuma execução aberta no momento."
         },
         "runsWithFullPass": {
-          "title": "Runs with full pass",
-          "description": "Executions with 100% approval.",
-          "empty": "No full-pass runs yet.",
-          "badge": "100% passed"
+          "title": "Execuções com aprovação total",
+          "description": "Execuções com 100% de aprovação.",
+          "empty": "Ainda não há execuções com aprovação total.",
+          "badge": "100% aprovadas"
         },
         "runs": {
-          "coverageLabel": "{executed} of {total} cases executed"
+          "coverageLabel": "{executed} de {total} casos executados"
         },
         "detail": {
-          "title": "Metric details",
-          "subtitle": "Select a metric to inspect the underlying data.",
-          "empty": "Choose any metric above to load its list.",
-          "cta": "Show details",
-          "showPanel": "Expand details",
+          "title": "Detalhes da métrica",
+          "subtitle": "Selecione uma métrica para inspecionar os dados.",
+          "empty": "Escolha uma métrica acima para carregar a lista.",
+          "cta": "Ver detalhes",
+          "showPanel": "Expandir detalhes",
           "openInNewTab": "Abrir em uma nova aba",
           "openFeature": "Ir para a feature",
           "back": "Voltar ao dashboard",
-          "sortLabel": "Sort by coverage",
-          "sortDesc": "High → Low",
-          "sortAsc": "Low → High",
+          "sortLabel": "Ordenar por cobertura",
+          "sortDesc": "Alta → Baixa",
+          "sortAsc": "Baixa → Alta",
           "pagination": {
-            "previous": "Previous",
-            "next": "Next"
+            "previous": "Anterior",
+            "next": "Próximo"
           }
         },
         "empty": {
-          "title": "No QA data yet",
-          "description": "Create at least one run to unlock the dashboard.",
-          "retry": "Try again"
+          "title": "Ainda não há dados de QA",
+          "description": "Crie pelo menos uma execução para liberar o dashboard.",
+          "retry": "Tentar novamente"
         }
       },
       "health": {

@@ -41,7 +41,7 @@
       "tagline": "Collasco — Collaboratieve kwaliteit",
       "title": "Bouw betere software, samen.",
       "description": "Collasco helpt teams, klanten en ontwikkelaars om met helderheid samen te creëren—van idee tot oplevering. We maken van softwareontwikkeling een gestructureerd, transparant en kwaliteitsgedreven proces.",
-      "nodeLabel": "Node",
+      "nodeLabel": "Knooppunt",
       "nodes": {
         "team": "Team",
         "qa": "QA",
@@ -83,7 +83,7 @@
       ]
     },
     "capa": {
-      "title": "Audits & CAPA",
+      "title": "Audits en CAPA",
       "subtitle": "Vind, los op en voorkom problemen—snel.",
       "description": "Maak bevindingen van audits, wijs verantwoordelijken toe, stel deadlines in en automatiseer corrigerende en preventieve acties.",
       "highlights": [
@@ -161,7 +161,7 @@
           "description": "Bespreek wijzigingen in context zodat feedback onderdeel van het proces wordt."
         },
         "changeControl": {
-          "title": "Change capture & control",
+          "title": "Wijzigingen vastleggen en beheren",
           "description": "Detecteer elke codewijziging en laat die het volledige validatietraject doorlopen."
         },
         "aiSupport": {
@@ -317,10 +317,62 @@
     }
   },
   "privacy-policies": {
-    "title": "Privacybeleid"
+    "title": "Privacybeleid",
+    "policies": [
+      {
+        "title": "1. Verwerkingsverantwoordelijke",
+        "description": "Collasco SRL\n* Adres: Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail: Collasco@gmail.com"
+      },
+      {
+        "title": "2. Persoonsgegevens die we verzamelen",
+        "description": "We verzamelen de volgende soorten informatie:\n* Registratiegegevens: naam, e-mail, telefoon en wachtwoord.\n* Facturatiegegevens: fiscaal identificatienummer (NIT), fiscaal adres.\n* Gebruiksgegevens: informatie over hoe u met ons platform omgaat.\n* Optionele gegevens: die u ervoor kiest te verstrekken, zoals contactreferenties."
+      },
+      {
+        "title": "3. Doeleinden van de gegevensverwerking",
+        "description": "Uw persoonsgegevens worden gebruikt om:\n* De diensten te leveren die via ons platform zijn gecontracteerd.\n* Facturatie en naleving van wettelijke verplichtingen te beheren.\n* Uw gebruikerservaring te verbeteren via personalisatie.\n* Informatie over promoties te sturen, altijd met uw voorafgaande toestemming."
+      },
+      {
+        "title": "4. Rechtsgrondslag voor gegevensverwerking",
+        "description": "De verwerking van uw persoonsgegevens gebeurt op basis van:\n* Uitdrukkelijke toestemming: gegeven bij registratie of gebruik van onze dienst.\n* Naleving van wettelijke verplichtingen: in overeenstemming met de geldende Boliviaanse regelgeving.\n* Uitvoering van een contract: noodzakelijk om onze diensten te leveren."
+      },
+      {
+        "title": "5. Delen van gegevens",
+        "description": "We kunnen uw persoonsgegevens delen met derden, zoals:\n* Technologie- en cloudopslagdienstverleners.\n* Overheidsinstanties wanneer dit wettelijk vereist is.\n* In alle gevallen garanderen we dat deze derden voldoen aan hoge normen voor gegevensbescherming."
+      },
+      {
+        "title": "6. Internationale gegevensoverdrachten",
+        "description": "Hoewel onze hoofdvestiging in Bolivia is, kunnen sommige leveranciers in andere landen gevestigd zijn. Bij internationale gegevensoverdrachten zorgen we ervoor dat passende beschermingsmaatregelen worden toegepast in overeenstemming met de toepasselijke regelgeving."
+      },
+      {
+        "title": "7. Gegevensbeveiliging",
+        "description": "We nemen technische en organisatorische maatregelen om uw gegevens te beschermen tegen ongeoorloofde toegang, verlies of onjuiste openbaarmaking. Geen enkele beveiligingsmaatregel is echter volledig waterdicht, dus raden we aan uw wachtwoord te beschermen en geen gevoelige informatie onnodig te delen."
+      },
+      {
+        "title": "8. Uw rechten",
+        "description": "Volgens de Boliviaanse wetgeving heeft u het recht om:\n* Inzage: informatie op te vragen over de gegevens die wij over u bewaren.\n* Rectificatie: onjuiste of onvolledige gegevens te corrigeren.\n* Verwijdering: verwijdering van uw gegevens te verzoeken, behalve wanneer er een wettelijke verplichting is om deze te bewaren.\n* Bezwaar: de verwerking van uw gegevens voor bepaalde doeleinden te weigeren.\n* U kunt deze rechten uitoefenen door contact met ons op te nemen via Collasco@gmail.com, met vermelding van uw volledige naam, identiteitsdocument en het recht dat u wilt uitoefenen."
+      },
+      {
+        "title": "9. Bewaartermijn van gegevens",
+        "description": "We bewaren uw persoonsgegevens alleen zolang dit nodig is om de beschreven doeleinden te bereiken, of zolang dit vereist is volgens de geldende wetgeving."
+      },
+      {
+        "title": "10. Wijzigingen in dit beleid",
+        "description": "We behouden ons het recht voor om dit privacybeleid op elk moment te wijzigen. We zullen wijzigingen via ons platform of per e-mail communiceren.\nBedankt voor uw vertrouwen in Collasco. Uw privacy is essentieel voor ons."
+      }
+    ]
   },
   "terms-and-conditions": {
-    "title": "Algemene voorwaarden"
+    "title": "Algemene voorwaarden",
+    "conditions": [
+      {
+        "title": "Gebruiksvoorwaarden",
+        "description": "De volgende inhoud mag niet worden gepubliceerd op het Collasco-webplatform.\n\n* Het publiceren van illegaal materiaal volgens de geldende wetten in de Plurinationale Staat Bolivia is niet toegestaan.\n* De verspreiding van naaktheid of pornografisch materiaal op deze website is strikt verboden.\n* Het uitwisselen, promoten of verkopen van illegale verdovende middelen is strikt verboden.\n* Illegale expliciete inhoud wordt niet getolereerd, inclusief maar niet beperkt tot het aanzetten tot geweld, haat, intimidatie of discriminatie.\n* Het is niet toegestaan om via deze webdienst vuurwapens of steek-/snijwapens aan te bieden of te vragen.\n* Alle gebruikers moeten auteursrechten respecteren en geen digitale content uploaden, delen of verspreiden die niet door de rechthebbenden is toegestaan.\n* Het is strikt verboden om deze webdienst te gebruiken voor frauduleuze doeleinden, waaronder, maar niet beperkt tot, phishing, identiteitsfraude of andere misleidende activiteiten.\n* Naast de hierboven genoemde beperkingen moeten gebruikers alle toepasselijke lokale, nationale en internationale wetten en regels naleven bij het gebruik van deze webdienst.\n* Het niet naleven van een van deze gebruiksvoorwaarden kan leiden tot schorsing of verwijdering van uw account en het nemen van passende juridische stappen.\n* We behouden ons het recht voor om deze gebruiksvoorwaarden op elk moment te wijzigen en raden aan ze periodiek te bekijken om op de hoogte te blijven van wijzigingen."
+      },
+      {
+        "title": "Verboden",
+        "description": "De volgende verboden zijn van toepassing op het gebruik van het Collasco-platform.\n\n* Verbod op fraude: het gebruik van Mercagi-webwinkels voor frauduleuze activiteiten op internet is strikt verboden. Affiliates moeten hun winkels volledig transparant en eerlijk beheren.\n* Verantwoordelijkheid van de affiliate: affiliates zijn volledig verantwoordelijk voor schade of verlies veroorzaakt door hun webwinkel. Mercagi wijst elke verantwoordelijkheid af die voortvloeit uit de acties of inhoud van de winkels van affiliates.\n* Verbod op verkoop van auteursrechtelijk beschermde cursussen: het is niet toegestaan winkels te gebruiken om online cursussen die door auteursrecht zijn beschermd door te verkopen, tenzij uitdrukkelijke toestemming is verkregen.\n* Verkoop van illegale producten: de verkoop van gestolen of gesmokkelde goederen is verboden. Mercagi behoudt zich het recht voor om juridische stappen te ondernemen tegen affiliates die zich hieraan schuldig maken.\n* Gevolgen van klachten en claims: bij meerdere geverifieerde klachten of claims over fraude of illegale activiteiten in een winkel behoudt Mercagi zich het recht voor de winkel van de affiliate te verwijderen zonder mogelijkheid tot heractivering."
+      }
+    ]
   },
   "who-we-are": {
     "metadata_title": "Wie zijn wij? | Collasco",
@@ -375,6 +427,14 @@
         "title": "Persoonlijke gegevens",
         "save": "Wijzigingen opslaan",
         "hint": "Deze wijzigingen zijn binnenkort beschikbaar.",
+        "alerts": {
+          "success": "Profiel succesvol bijgewerkt.",
+          "error": "We konden je profiel niet bijwerken."
+        },
+        "errors": {
+          "nameRequired": "Vul je naam in.",
+          "emailInvalid": "Voer een geldig e-mailadres in."
+        },
         "name": { "title": "Naam" },
         "email": { "title": "E-mail" },
         "password": {
@@ -384,7 +444,20 @@
           "confirm": "Bevestig wachtwoord",
           "rules": "Minstens 8 tekens, met letters en cijfers",
           "save": "Wachtwoord bijwerken",
-          "hint": "Het bijwerken van het wachtwoord wordt binnenkort ingeschakeld."
+          "hint": "Het bijwerken van het wachtwoord wordt binnenkort ingeschakeld.",
+          "alerts": {
+            "success": "Wachtwoord succesvol bijgewerkt.",
+            "validation": "Controleer de gemarkeerde velden.",
+            "invalidPassword": "We konden het wachtwoord niet bijwerken.",
+            "invalidCurrentPassword": "Huidig wachtwoord is onjuist.",
+            "serverError": "Er ging iets mis bij het bijwerken van het wachtwoord.",
+            "error": "We konden het wachtwoord niet bijwerken."
+          },
+          "errors": {
+            "current": "Vul je huidige wachtwoord in.",
+            "new": "Gebruik minstens 8 tekens voor het nieuwe wachtwoord.",
+            "confirm": "Wachtwoorden moeten overeenkomen."
+          }
         }
       },
       "general": {
@@ -484,7 +557,7 @@
       "manual": {
         "noDescription": "Geen beschrijving beschikbaar.",
         "labelsNavbar": {
-          "title": "Manual preferences",
+          "title": "Handleidingvoorkeuren",
           "subtitle": "Kies welke labels de handleiding toont.",
           "loading": "Labels laden...",
           "empty": "Dit project heeft nog geen zichtbare labels.",
@@ -556,8 +629,8 @@
         },
         "roles": {
           "owner": "Eigenaar",
-          "maintainer": "Maintainer",
-          "developer": "Developer",
+          "maintainer": "Beheerder",
+          "developer": "Ontwikkelaar",
           "viewer": "Lezer"
         },
         "messages": {
@@ -580,35 +653,35 @@
         }
       },
       "labels": {
-        "title": "Custom labels",
-        "subtitle": "Configure QA labels and decide who can see or edit the tagged content.",
+        "title": "Aangepaste labels",
+        "subtitle": "Configureer QA-labels en bepaal wie de gelabelde content kan zien of bewerken.",
         "actions": {
-          "add": "New label",
-          "edit": "Edit",
-          "delete": "Delete",
-          "save": "Save",
-          "saving": "Saving...",
-          "cancel": "Cancel"
+          "add": "Nieuw label",
+          "edit": "Bewerken",
+          "delete": "Verwijderen",
+          "save": "Opslaan",
+          "saving": "Opslaan...",
+          "cancel": "Annuleren"
         },
         "messages": {
-          "loadError": "We couldn't load the labels.",
-          "saveError": "We couldn't save the label.",
-          "created": "Label created.",
-          "updated": "Label updated.",
-          "deleted": "Label deleted.",
-          "deleteError": "We couldn't delete the label.",
-          "deleteConfirm": "Delete the \"{name}\" label?",
-          "ownerOnly": "Only the owner can modify labels."
+          "loadError": "We konden de labels niet laden.",
+          "saveError": "We konden het label niet opslaan.",
+          "created": "Label aangemaakt.",
+          "updated": "Label bijgewerkt.",
+          "deleted": "Label verwijderd.",
+          "deleteError": "We konden het label niet verwijderen.",
+          "deleteConfirm": "Label \"{name}\" verwijderen?",
+          "ownerOnly": "Alleen de eigenaar kan labels wijzigen."
         },
         "table": {
           "name": "Label",
-          "mandatory": "Mandatory",
-          "mandatoryYes": "Yes",
-          "mandatoryNo": "No",
-          "visibleToRoles": "Visible to",
-          "readOnlyRoles": "Read only",
-          "noReadOnly": "All visible roles can edit.",
-          "actions": "Actions"
+          "mandatory": "Verplicht",
+          "mandatoryYes": "Ja",
+          "mandatoryNo": "Nee",
+          "visibleToRoles": "Zichtbaar voor",
+          "readOnlyRoles": "Alleen-lezen",
+          "noReadOnly": "Alle zichtbare rollen kunnen bewerken.",
+          "actions": "Acties"
         },
         "reorder": {
           "moveUp": "Omhoog",
@@ -617,73 +690,73 @@
           "error": "Label kon niet worden verplaatst."
         },
         "empty": {
-          "title": "No labels yet",
-          "description": "Create labels to organize your QA flows and runs.",
-          "action": "Create label"
+          "title": "Nog geen labels",
+          "description": "Maak labels om je QA-flows en runs te organiseren.",
+          "action": "Label aanmaken"
         },
         "fields": {
-          "name": "Name",
-          "namePlaceholder": "e.g. Privacy approval",
-          "isMandatory": "Mandatory field",
-          "isNotApplicableByDefault": "Make not applicable by default",
-          "visibleToRoles": "Roles with access",
-          "visibleToRolesHint": "Choose who can see items tagged with this label.",
-          "readOnlyRoles": "Read-only roles",
-          "readOnlyRolesHint": "They will see the label but cannot edit the content."
+          "name": "Naam",
+          "namePlaceholder": "bijv. Privacygoedkeuring",
+          "isMandatory": "Verplicht veld",
+          "isNotApplicableByDefault": "Standaard als niet van toepassing markeren",
+          "visibleToRoles": "Rollen met toegang",
+          "visibleToRolesHint": "Kies wie items met dit label kan zien.",
+          "readOnlyRoles": "Alleen-lezen rollen",
+          "readOnlyRolesHint": "Zij zien het label maar kunnen de content niet bewerken."
         },
         "dialog": {
-          "createTitle": "New label",
-          "editTitle": "Edit label",
-          "description": "Define visibility and permissions for this label."
+          "createTitle": "Nieuw label",
+          "editTitle": "Label bewerken",
+          "description": "Bepaal zichtbaarheid en rechten voor dit label."
         },
         "validation": {
-          "name": "Enter a name."
+          "name": "Vul een naam in."
         },
         "roleNames": {
-          "OWNER": "Owner",
-          "MAINTAINER": "Maintainer",
-          "DEVELOPER": "Developer",
-          "VIEWER": "Viewer",
+          "OWNER": "Eigenaar",
+          "MAINTAINER": "Beheerder",
+          "DEVELOPER": "Ontwikkelaar",
+          "VIEWER": "Lezer",
           "TESTER": "Tester"
         }
       },
       "documentation": {
-        "title": "Documentation by label",
-        "subtitle": "Capture the rich-text evidence that each role can see or edit.",
-        "empty": "No sections available for your role.",
+        "title": "Documentatie per label",
+        "subtitle": "Leg de rich-text-evidentie vast die elke rol kan zien of bewerken.",
+        "empty": "Geen secties beschikbaar voor jouw rol.",
         "badges": {
-          "mandatory": "Mandatory",
-          "readOnly": "Read only",
-          "notApplicable": "Not applicable"
+          "mandatory": "Verplicht",
+          "readOnly": "Alleen-lezen",
+          "notApplicable": "Niet van toepassing"
         },
         "labels": {
-          "updatedAt": "Updated {date}"
+          "updatedAt": "Bijgewerkt {date}"
         },
         "fields": {
-          "notApplicable": "Marked as not applicable",
-          "notApplicableHint": "Hide this label for this feature or module.",
-          "editorLabel": "Content",
-          "editorPlaceholder": "Document the context, validations, or decisions.",
-          "editorHelper": "Use rich text to keep your evidence readable."
+          "notApplicable": "Gemarkeerd als niet van toepassing",
+          "notApplicableHint": "Verberg dit label voor deze feature of module.",
+          "editorLabel": "Inhoud",
+          "editorPlaceholder": "Documenteer de context, validaties of beslissingen.",
+          "editorHelper": "Gebruik rich text om je bewijs leesbaar te houden."
         },
         "states": {
-          "notApplicable": "This label is marked as not applicable.",
-          "empty": "No content yet."
+          "notApplicable": "Dit label is gemarkeerd als niet van toepassing.",
+          "empty": "Nog geen inhoud."
         },
         "messages": {
-          "loadError": "We couldn't load the documentation.",
-          "saved": "Documentation saved.",
-          "saveError": "We couldn't save this label."
+          "loadError": "We konden de documentatie niet laden.",
+          "saved": "Documentatie opgeslagen.",
+          "saveError": "We konden dit label niet opslaan."
         },
         "actions": {
-          "edit": "Edit content",
-          "save": "Save",
-          "cancel": "Cancel",
-          "markNotApplicable": "Mark as N/A",
-          "markApplicable": "Mark as applicable"
+          "edit": "Inhoud bewerken",
+          "save": "Opslaan",
+          "cancel": "Annuleren",
+          "markNotApplicable": "Markeer als n.v.t.",
+          "markApplicable": "Markeer als van toepassing"
         },
         "validation": {
-          "content": "Enter some content or mark it as not applicable."
+          "content": "Vul inhoud in of markeer het label als niet van toepassing."
         }
       },
       "detailErrors": {
@@ -691,6 +764,9 @@
         "description": "We konden het project niet ophalen. Probeer het opnieuw.",
         "retry": "Opnieuw proberen",
         "backToList": "Terug naar projecten"
+      },
+      "description": {
+        "empty": "Geen beschrijving beschikbaar."
       },
       "form": {
         "fields": {
@@ -758,7 +834,7 @@
           "error": "Ordening wijzigen is mislukt."
         },
         "children": {
-          "title": "Submodules & Features",
+          "title": "Submodules en features",
           "empty": "Nog geen submodules.",
           "sortOrder": "Volgorde #{order}"
         },
@@ -965,7 +1041,7 @@
         "ariaLabel": "QA-secties",
         "cases": "Testcases",
         "runs": "Runs",
-        "health": "Health"
+        "health": "Gezondheid"
       },
       "cases": {
         "errors": {
@@ -1154,34 +1230,34 @@
         }
       },
       "dashboard": {
-        "title": "QA dashboard",
-        "subtitle": "Track coverage, feature health and open runs.",
+        "title": "QA-dashboard",
+        "subtitle": "Volg dekking, feature-gezondheid en lopende runs.",
         "errors": {
-          "load": "We couldn't load the QA dashboard.",
-          "detail": "We couldn't load the selected dataset."
+          "load": "We konden het QA-dashboard niet laden.",
+          "detail": "We konden de geselecteerde dataset niet laden."
         },
         "metrics": {
-          "totalFeatures": "Total features",
-          "featuresMissingDescription": "Missing description",
+          "totalFeatures": "Totaal aantal features",
+          "featuresMissingDescription": "Ontbrekende beschrijving",
           "featuresWithoutTestCases": "Geen testcases",
-          "featuresWithRuns": "With runs",
-          "testCoverageRatio": "Coverage",
-          "openRuns": "Open runs",
-          "runsWithFullPass": "Full pass",
-          "averagePassRate": "Pass rate"
+          "featuresWithRuns": "Met runs",
+          "testCoverageRatio": "Dekking",
+          "openRuns": "Lopende runs",
+          "runsWithFullPass": "Volledig geslaagd",
+          "averagePassRate": "Slaagpercentage"
         },
         "coverage": {
-          "title": "Project coverage",
-          "description": "Latest recorded coverage for this project.",
-          "caption": "{executed} of {total} features with recorded runs.",
-          "coveredBadge": "{value} coverage",
-          "pendingBadge": "{count} missing docs"
+          "title": "Projectdekking",
+          "description": "Laatste geregistreerde dekking voor dit project.",
+          "caption": "{executed} van {total} features met geregistreerde runs.",
+          "coveredBadge": "{value} dekking",
+          "pendingBadge": "{count} ontbrekende docs"
         },
         "featureHealth": {
-          "title": "Feature health",
-          "description": "Most recent pass rate per feature.",
-          "empty": "No health data yet.",
-          "noRuns": "No runs",
+          "title": "Feature-gezondheid",
+          "description": "Meest recente slaagpercentage per feature.",
+          "empty": "Nog geen health-data.",
+          "noRuns": "Geen runs",
           "notAvailable": "N/B",
           "lastRunLabel": "Laatste run",
           "stats": {
@@ -1197,22 +1273,22 @@
           "missingAlert": "{count, plural, =0 {Er ontbreken testcases in de laatste run} one {{count} testcase is niet uitgevoerd in de laatste run} other {{count} testcases zijn niet uitgevoerd in de laatste run}}"
         },
         "featureCoverage": {
-          "title": "Coverage by feature",
-          "description": "Executed vs pending test cases per feature.",
-          "empty": "No runs yet to compute coverage.",
-          "latestRun": "Last run {date}",
-          "coverageLabel": "{executed} of {total} cases executed",
-          "missingLabel": "{count} cases pending",
-          "noRuns": "No recorded runs",
+          "title": "Dekking per feature",
+          "description": "Uitgevoerde vs. openstaande testcases per feature.",
+          "empty": "Nog geen runs om dekking te berekenen.",
+          "latestRun": "Laatste run {date}",
+          "coverageLabel": "{executed} van {total} cases uitgevoerd",
+          "missingLabel": "{count} cases in afwachting",
+          "noRuns": "Geen geregistreerde runs",
           "cta": "Bekijk coverage per feature",
           "noCases": "Geen actieve testcases"
         },
         "missingDescription": {
-          "title": "Features without description",
-          "description": "Identify what needs documentation.",
-          "empty": "All features have a description.",
-          "caption": "Document the functional scope to unblock QA.",
-          "badge": "Missing description",
+          "title": "Features zonder beschrijving",
+          "description": "Bepaal wat nog documentatie nodig heeft.",
+          "empty": "Alle features hebben een beschrijving.",
+          "caption": "Documenteer de functionele scope om QA te ontgrendelen.",
+          "badge": "Ontbrekende beschrijving",
           "filter": {
             "label": "Weergeven",
             "all": "Alle",
@@ -1232,40 +1308,40 @@
           "badge": "Geen testcases"
         },
         "openRuns": {
-          "title": "Open runs",
-          "description": "In-flight executions that need attention.",
-          "empty": "No open runs right now."
+          "title": "Lopende runs",
+          "description": "Lopende uitvoeringen die aandacht nodig hebben.",
+          "empty": "Geen open runs op dit moment."
         },
         "runsWithFullPass": {
-          "title": "Runs with full pass",
-          "description": "Executions with 100% approval.",
-          "empty": "No full-pass runs yet.",
-          "badge": "100% passed"
+          "title": "Runs met volledige score",
+          "description": "Uitvoeringen met 100% goedkeuring.",
+          "empty": "Nog geen runs met volledige score.",
+          "badge": "100% geslaagd"
         },
         "runs": {
-          "coverageLabel": "{executed} of {total} cases executed"
+          "coverageLabel": "{executed} van {total} cases uitgevoerd"
         },
         "detail": {
-          "title": "Metric details",
-          "subtitle": "Select a metric to inspect the underlying data.",
-          "empty": "Choose any metric above to load its list.",
-          "cta": "Show details",
-          "showPanel": "Expand details",
+          "title": "Metriekdetails",
+          "subtitle": "Selecteer een metriek om de onderliggende data te bekijken.",
+          "empty": "Kies een metriek hierboven om de lijst te laden.",
+          "cta": "Details tonen",
+          "showPanel": "Details uitklappen",
           "openInNewTab": "Openen in een nieuw tabblad",
           "openFeature": "Ga naar feature",
           "back": "Terug naar dashboard",
-          "sortLabel": "Sort by coverage",
-          "sortDesc": "High → Low",
-          "sortAsc": "Low → High",
+          "sortLabel": "Sorteer op dekking",
+          "sortDesc": "Hoog → Laag",
+          "sortAsc": "Laag → Hoog",
           "pagination": {
-            "previous": "Previous",
-            "next": "Next"
+            "previous": "Vorige",
+            "next": "Volgende"
           }
         },
         "empty": {
-          "title": "No QA data yet",
-          "description": "Create at least one run to unlock the dashboard.",
-          "retry": "Try again"
+          "title": "Nog geen QA-data",
+          "description": "Maak minstens één run om het dashboard te ontgrendelen.",
+          "retry": "Opnieuw proberen"
         }
       },
       "health": {
@@ -1284,8 +1360,8 @@
           "passRateHint": "Gebaseerd op {executed} van {total} cases uitgevoerd in de laatste run.",
           "coverageComplete": "Alle testcases zijn uitgevoerd in de laatste run.",
           "coverageIncomplete": "{remaining, plural, one {{remaining} case werd niet uitgevoerd} other {{remaining} cases werden niet uitgevoerd}}",
-          "flaky": "Flaky cases",
-          "flakyValue": "{count} flaky cases",
+          "flaky": "Instabiele cases",
+          "flakyValue": "{count} instabiele cases",
           "notAvailable": "N/B"
         },
         "trend": {
@@ -1296,7 +1372,7 @@
     },
     "sidebar": {
       "menuAdmin": "Beheer Menu",
-      "home": "Home",
+      "home": "Start",
       "projectSection": "Projecten",
       "settingSection": "Instellingen",
       "logout": "Uitloggen",
@@ -1344,7 +1420,7 @@
       "landing": {
         "whoWeAre": "Wie zijn wij?",
         "plans": "Plannen",
-        "support": "Support"
+        "support": "Ondersteuning"
       },
       "profile-menu-client": {
         "logout": "Uitloggen"

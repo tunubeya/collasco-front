@@ -224,11 +224,6 @@ export default auth(async (req) => {
       return NextResponse.next();
     }
 
-    // Handle initial public/login checks and redirects
-    if (!isLoggedIn && !isPublicRoute) {
-      const newUrl = new URL(RoutesEnum.LOGIN, req.nextUrl.origin);
-      return Response.redirect(newUrl);
-    }
     // If on an unauthorized route, allow access to display the page
     if (isUnauthorizedRoute) {
       return NextResponse.next();
@@ -256,6 +251,11 @@ export default auth(async (req) => {
       if (refreshResult.newToken) {
         collectedCookieData.newToken = refreshResult.newToken;
       }
+    }
+    // Handle initial public/login checks and redirects
+    if (!isLoggedIn && !isPublicRoute) {
+      const newUrl = new URL(RoutesEnum.LOGIN, req.nextUrl.origin);
+      return Response.redirect(newUrl);
     }
     console.log("after settings the collected cookies");
     response = await applyCookiesAndRespond(response, collectedCookieData);

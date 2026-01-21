@@ -957,6 +957,16 @@
             "edit": "Link bewerken",
             "remove": "Link verwijderen",
             "unknownModule": "Onbekende module",
+            "filters": {
+              "label": "Toon",
+              "all": "Alles",
+              "references": "Verwijzingen",
+              "referencedBy": "Wordt gelinkt door"
+            },
+            "groups": {
+              "references": "Verwijzingen ({count})",
+              "referencedBy": "Wordt gelinkt door ({count})"
+            },
             "direction": {
               "references": "Verwijst naar {name}",
               "referencedBy": "Wordt gelinkt door {name}"

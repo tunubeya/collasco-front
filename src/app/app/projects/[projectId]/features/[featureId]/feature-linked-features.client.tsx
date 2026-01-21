@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import {
   QaLinkedFeature,
   createLinkedFeature,
   deleteLinkedFeature,
+  listLinkedFeatures,
   updateLinkedFeature,
 } from "@/lib/api/qa";
 import { Button } from "@/ui/components/button";
@@ -36,6 +37,8 @@ type LinkedFeaturesPanelProps = {
   }>;
 };
 
+type LinkedFilter = "all" | "references" | "referenced_by";
+
 export function LinkedFeaturesPanel({
   token,
   featureId,
@@ -54,6 +57,37 @@ export function LinkedFeaturesPanel({
   const [editingLink, setEditingLink] = useState<QaLinkedFeature | null>(null);
   const [editTargetId, setEditTargetId] = useState("");
   const [editReason, setEditReason] = useState("");
+  const [filter, setFilter] = useState<LinkedFilter>("all");
+  const initialLoadRef = useRef(true);
+  const latestLinksRef = useRef<QaLinkedFeature[]>(links);
+
+  useEffect(() => {
+    latestLinksRef.current = links;
+  }, [links]);
+
+  useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+    if (filter === "all") return;
+    startTransition(() => {
+      listLinkedFeatures(token, featureId, { direction: filter })
+        .then((updated) => {
+          const merged = mergeLinkedFeatures(
+            latestLinksRef.current,
+            updated,
+            filter
+          );
+          onLinksChange(merged);
+        })
+        .catch((error) => {
+          const description =
+            error instanceof Error ? error.message : undefined;
+          toast.error(t("messages.error"), { description });
+        });
+    });
+  }, [featureId, filter, onLinksChange, startTransition, t, token]);
 
   const selectableOptions = useMemo(() => {
     return options
@@ -72,6 +106,24 @@ export function LinkedFeaturesPanel({
     if (!editingLink) return selectableOptions;
     return selectableOptions.filter((option) => option.value !== editingLink.id);
   }, [selectableOptions, editingLink]);
+
+  const displayLinks = useMemo(
+    () => applyLinkedFilter(links, filter),
+    [links, filter]
+  );
+  const references = useMemo(
+    () => displayLinks.filter((link) => link.direction === "references"),
+    [displayLinks]
+  );
+  const referencedBy = useMemo(
+    () => displayLinks.filter((link) => link.direction === "referenced_by"),
+    [displayLinks]
+  );
+  const showReferences =
+    filter === "all" ? references.length > 0 : filter === "references";
+  const showReferencedBy =
+    filter === "all" ? referencedBy.length > 0 : filter === "referenced_by";
+  const hasVisibleLinks = showReferences || showReferencedBy;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -192,64 +244,169 @@ export function LinkedFeaturesPanel({
         </div>
 
         <div className="rounded-2xl border bg-background p-4 shadow-sm">
-          {links.length === 0 ? (
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-3">
+            <p className="text-xs font-medium text-muted-foreground">
+              {t("list.filters.label")}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                variant={filter === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilter("all")}
+                disabled={isPending}
+              >
+                {t("list.filters.all")}
+              </Button>
+              <Button
+                type="button"
+                variant={filter === "references" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilter("references")}
+                disabled={isPending}
+              >
+                {t("list.filters.references")}
+              </Button>
+              <Button
+                type="button"
+                variant={filter === "referenced_by" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilter("referenced_by")}
+                disabled={isPending}
+              >
+                {t("list.filters.referencedBy")}
+              </Button>
+            </div>
+          </div>
+          {!hasVisibleLinks ? (
             <p className="text-sm text-muted-foreground">{t("empty")}</p>
           ) : (
-            <ul className="space-y-3">
-              {links.map((link) => (
-                <li
-                  key={link.id}
-                  className="flex flex-col gap-2 rounded-xl border bg-muted/20 px-4 py-3 text-sm md:flex-row md:items-center md:justify-between"
-                >
-                  <Link
-                    href={`/app/projects/${projectId}/features/${link.id}`}
-                    className="group flex-1"
-                    prefetch={false}
-                  >
-                    <p className="font-semibold text-primary transition group-hover:underline">
-                      {link.name}
-                    </p>
-                    <p className="text-2xs text-muted-foreground">
-                      {link.moduleId
-                        ? modulePathById[link.moduleId] ??
-                          link.moduleName ??
-                          t("list.unknownModule")
-                        : link.moduleName ?? t("list.unknownModule")}
-                    </p>
-                    <p className="text-2xs text-muted-foreground">
-                      {link.direction === "references"
-                        ? t("list.direction.references", { name: link.name })
-                        : t("list.direction.referencedBy", { name: link.name })}
-                    </p>
-                    {link.reason ? (
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {link.reason}
-                      </p>
-                    ) : null}
-                  </Link>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => openEditDialog(link)}
-                    disabled={isPending}
-                    className="w-full md:w-auto"
-                  >
-                    {t("list.edit")}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleRemove(link.id)}
-                    disabled={isPending}
-                    className="w-full md:w-auto"
-                  >
-                    {t("list.remove")}
-                  </Button>
-                </li>
-              ))}
-            </ul>
+            <div className="space-y-4">
+              {showReferences && (
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {t("list.groups.references", { count: references.length })}
+                  </p>
+                  <ul className="space-y-3">
+                    {references.map((link) => (
+                      <li
+                        key={link.id}
+                        className="flex flex-col gap-2 rounded-xl border bg-muted/20 px-4 py-3 text-sm md:flex-row md:items-center md:justify-between"
+                      >
+                        <Link
+                          href={`/app/projects/${projectId}/features/${link.id}`}
+                          className="group flex-1"
+                          prefetch={false}
+                        >
+                          <p className="font-semibold text-primary transition group-hover:underline">
+                            {link.name}
+                          </p>
+                          <p className="text-2xs text-muted-foreground">
+                            {link.moduleId
+                              ? modulePathById[link.moduleId] ??
+                                link.moduleName ??
+                                t("list.unknownModule")
+                              : link.moduleName ?? t("list.unknownModule")}
+                          </p>
+                          <p className="text-2xs text-muted-foreground">
+                            {t("list.direction.references", { name: link.name })}
+                          </p>
+                          {link.reason ? (
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {link.reason}
+                            </p>
+                          ) : null}
+                        </Link>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditDialog(link)}
+                          disabled={isPending}
+                          className="w-full md:w-auto"
+                        >
+                          {t("list.edit")}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleRemove(link.id)}
+                          disabled={isPending}
+                          className="w-full md:w-auto"
+                        >
+                          {t("list.remove")}
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {showReferencedBy && (
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {t("list.groups.referencedBy", {
+                      count: referencedBy.length,
+                    })}
+                  </p>
+                  <ul className="space-y-3">
+                    {referencedBy.map((link) => (
+                      <li
+                        key={link.id}
+                        className="flex flex-col gap-2 rounded-xl border bg-muted/20 px-4 py-3 text-sm md:flex-row md:items-center md:justify-between"
+                      >
+                        <Link
+                          href={`/app/projects/${projectId}/features/${link.id}`}
+                          className="group flex-1"
+                          prefetch={false}
+                        >
+                          <p className="font-semibold text-primary transition group-hover:underline">
+                            {link.name}
+                          </p>
+                          <p className="text-2xs text-muted-foreground">
+                            {link.moduleId
+                              ? modulePathById[link.moduleId] ??
+                                link.moduleName ??
+                                t("list.unknownModule")
+                              : link.moduleName ?? t("list.unknownModule")}
+                          </p>
+                          <p className="text-2xs text-muted-foreground">
+                            {t("list.direction.referencedBy", {
+                              name: link.name,
+                            })}
+                          </p>
+                          {link.reason ? (
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {link.reason}
+                            </p>
+                          ) : null}
+                        </Link>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditDialog(link)}
+                          disabled={isPending}
+                          className="w-full md:w-auto"
+                        >
+                          {t("list.edit")}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleRemove(link.id)}
+                          disabled={isPending}
+                          className="w-full md:w-auto"
+                        >
+                          {t("list.remove")}
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </section>
@@ -375,4 +532,27 @@ export function LinkedFeaturesPanel({
       </Dialog>
     </>
   );
+}
+
+function applyLinkedFilter(links: QaLinkedFeature[], filter: LinkedFilter) {
+  if (filter === "references") {
+    return links.filter((link) => link.direction === "references");
+  }
+  if (filter === "referenced_by") {
+    return links.filter((link) => link.direction === "referenced_by");
+  }
+  return links;
+}
+
+function mergeLinkedFeatures(
+  current: QaLinkedFeature[],
+  updated: QaLinkedFeature[],
+  direction: Exclude<LinkedFilter, "all">
+) {
+  const normalized = updated.map((link) => ({
+    ...link,
+    direction: link.direction ?? direction,
+  }));
+  const remaining = current.filter((link) => link.direction !== direction);
+  return [...remaining, ...normalized];
 }

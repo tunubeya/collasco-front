@@ -959,6 +959,16 @@
             "edit": "Editar vínculo",
             "remove": "Quitar vínculo",
             "unknownModule": "Módulo desconocido",
+            "filters": {
+              "label": "Mostrar",
+              "all": "Todas",
+              "references": "Referencias",
+              "referencedBy": "Referenciadas por"
+            },
+            "groups": {
+              "references": "Referencias ({count})",
+              "referencedBy": "Referenciadas por ({count})"
+            },
             "direction": {
               "references": "Referencia a {name}",
               "referencedBy": "Referenciado por {name}"

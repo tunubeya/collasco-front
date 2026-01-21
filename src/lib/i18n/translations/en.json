@@ -959,6 +959,16 @@
             "edit": "Edit link",
             "remove": "Remove link",
             "unknownModule": "Unknown module",
+            "filters": {
+              "label": "Show",
+              "all": "All",
+              "references": "References",
+              "referencedBy": "Referenced by"
+            },
+            "groups": {
+              "references": "References ({count})",
+              "referencedBy": "Referenced by ({count})"
+            },
             "direction": {
               "references": "References {name}",
               "referencedBy": "Referenced by {name}"

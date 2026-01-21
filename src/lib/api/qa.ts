@@ -243,6 +243,12 @@ export type QaLinkedFeature = {
   direction: "references" | "referenced_by";
 };
 
+type QaLinkedFeatureListResponse = {
+  references?: QaLinkedFeature[];
+  referencedBy?: QaLinkedFeature[];
+  referenced_by?: QaLinkedFeature[];
+};
+
 export type QaLabelRole =
   | "OWNER"
   | "MAINTAINER"
@@ -739,25 +745,71 @@ export function getProjectDashboardFeatureHealth(
   );
 }
 
+function normalizeLinkedFeaturesResponse(
+  payload:
+    | QaLinkedFeature[]
+    | { items?: QaLinkedFeature[] }
+    | QaLinkedFeatureListResponse
+    | null
+    | undefined
+): QaLinkedFeature[] {
+  if (!payload) return [];
+  if (Array.isArray(payload)) {
+    return payload.map((item) => ({
+      ...item,
+      direction: item.direction ?? "references",
+    }));
+  }
+  if ("items" in payload && Array.isArray(payload.items)) {
+    return payload.items.map((item) => ({
+      ...item,
+      direction: item.direction ?? "references",
+    }));
+  }
+  if (
+    "references" in payload ||
+    "referencedBy" in payload ||
+    "referenced_by" in payload
+  ) {
+    const references = payload.references ?? [];
+    const referencedBy =
+      payload.referencedBy ?? payload.referenced_by ?? [];
+    return [
+      ...references.map((item) => ({
+        ...item,
+        direction: item.direction ?? "references",
+      })),
+      ...referencedBy.map((item) => ({
+        ...item,
+        direction: item.direction ?? "referenced_by",
+      })),
+    ];
+  }
+  return [];
+}
+
 export async function listLinkedFeatures(
   token: string,
-  featureId: string
+  featureId: string,
+  params?: { direction?: "references" | "referenced_by" }
 ): Promise<QaLinkedFeature[]> {
   try {
+    const query = new URLSearchParams();
+    if (params?.direction) {
+      query.set("direction", params.direction);
+    }
     const res = await fetchWithAuth(
-      `${apiUrl}/qa/features/${featureId}/linked-features`,
+      `${apiUrl}/qa/features/${featureId}/linked-features${
+        query.size ? `?${query.toString()}` : ""
+      }`,
       { method: "GET" },
       token
     );
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<
-      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] } | QaLinkedFeatureListResponse
     >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return normalizeLinkedFeaturesResponse(payload);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -781,13 +833,9 @@ export async function createLinkedFeature(
     );
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<
-      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] } | QaLinkedFeatureListResponse
     >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return normalizeLinkedFeaturesResponse(payload);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -807,13 +855,9 @@ export async function deleteLinkedFeature(
     );
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<
-      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] } | QaLinkedFeatureListResponse
     >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return normalizeLinkedFeaturesResponse(payload);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -838,13 +882,9 @@ export async function updateLinkedFeature(
     );
     if (!res.ok) throw res;
     const payload = await parseJsonResponse<
-      QaLinkedFeature[] | { items?: QaLinkedFeature[] }
+      QaLinkedFeature[] | { items?: QaLinkedFeature[] } | QaLinkedFeatureListResponse
     >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return normalizeLinkedFeaturesResponse(payload);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

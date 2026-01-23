@@ -572,6 +572,10 @@
           "selectedEmpty": "Todavía no hay etiquetas visibles.",
           "availableEmpty": "Todas las etiquetas ya son visibles.",
           "mandatory": "Obligatoria",
+          "actions": {
+            "selectAll": "Seleccionar todo",
+            "selectNone": "Seleccionar ninguno"
+          },
           "messages": {
             "loadError": "No pudimos cargar las etiquetas.",
             "saveError": "No pudimos actualizar tus preferencias.",

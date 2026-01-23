@@ -70,27 +70,38 @@ export function ManualLabelsNavbar({
     () => [...labels].sort((a, b) => a.displayOrder - b.displayOrder),
     [labels],
   );
-  const handleToggle = useCallback(
-    async (labelId: string) => {
+  const allLabelIds = useMemo(() => labels.map((label) => label.id), [labels]);
+  const isAllSelected = useMemo(
+    () =>
+      allLabelIds.length > 0 &&
+      allLabelIds.every((labelId) => selectedIds.includes(labelId)),
+    [allLabelIds, selectedIds],
+  );
+  const isNoneSelected = selectedIds.length === 0;
+
+  const applySelection = useCallback(
+    async (nextIds: string[], savingKey: string) => {
       if (savingId) return;
       const previous = selectedIds;
-      const next = previous.includes(labelId)
-        ? previous.filter((id) => id !== labelId)
-        : [...previous, labelId];
+      const nextSet = new Set(nextIds);
+      const isSame =
+        previous.length === nextIds.length &&
+        previous.every((id) => nextSet.has(id));
+      if (isSame) return;
 
-      setSelectedIds(next);
-      setSavingId(labelId);
+      setSelectedIds(nextIds);
+      setSavingId(savingKey);
 
       try {
         const updated = await updateDocumentationLabelPreferences(
           token,
           projectId,
-          next,
+          nextIds,
         );
         if (updated?.availableLabels) {
           setLabels(updated.availableLabels);
         }
-        const resolved = updated?.selectedLabelIds ?? next;
+        const resolved = updated?.selectedLabelIds ?? nextIds;
         setSelectedIds(resolved);
         notifyManualRefresh(resolved);
         toast.success(t("messages.saved"));
@@ -106,11 +117,50 @@ export function ManualLabelsNavbar({
     [notifyManualRefresh, projectId, savingId, selectedIds, t, token],
   );
 
+  const handleToggle = useCallback(
+    async (labelId: string) => {
+      const previous = selectedIds;
+      const next = previous.includes(labelId)
+        ? previous.filter((id) => id !== labelId)
+        : [...previous, labelId];
+      void applySelection(next, labelId);
+    },
+    [applySelection, selectedIds],
+  );
+
+  const handleSelectAll = useCallback(() => {
+    void applySelection(allLabelIds, "bulk");
+  }, [allLabelIds, applySelection]);
+
+  const handleSelectNone = useCallback(() => {
+    void applySelection([], "bulk");
+  }, [applySelection]);
+
   return (
     <section className="rounded-xl border bg-background p-4">
       <div className="flex flex-wrap items-center gap-3">
         <h3 className="text-sm font-semibold">{t("title")}</h3>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            type="button"
+            className="rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted"
+            onClick={handleSelectAll}
+            disabled={isLoading || Boolean(savingId) || isAllSelected}
+          >
+            {t("actions.selectAll")}
+          </button>
+          <button
+            type="button"
+            className="rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted"
+            onClick={handleSelectNone}
+            disabled={isLoading || Boolean(savingId) || isNoneSelected}
+          >
+            {t("actions.selectNone")}
+          </button>
+        </div>
+      </div>
 
+      <div className="mt-3">
         {isLoading ? (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />

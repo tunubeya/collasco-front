@@ -572,6 +572,10 @@
           "selectedEmpty": "No labels are visible yet.",
           "availableEmpty": "All labels are already visible.",
           "mandatory": "Mandatory",
+          "actions": {
+            "selectAll": "Select all",
+            "selectNone": "Select none"
+          },
           "messages": {
             "loadError": "We couldn't load your labels.",
             "saveError": "We couldn't update your preferences.",

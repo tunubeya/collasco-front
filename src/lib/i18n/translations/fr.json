@@ -570,6 +570,10 @@
           "selectedEmpty": "Aucune étiquette n'est visible pour le moment.",
           "availableEmpty": "Toutes les étiquettes sont déjà visibles.",
           "mandatory": "Obligatoire",
+          "actions": {
+            "selectAll": "Tout sélectionner",
+            "selectNone": "Tout désélectionner"
+          },
           "messages": {
             "loadError": "Impossible de charger les étiquettes.",
             "saveError": "Impossible de mettre à jour vos préférences.",

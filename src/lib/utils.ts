@@ -13,8 +13,6 @@ export enum RoutesEnum {
   FORGOT_PASSWORD = '/forgot-password',
   RESET_PASSWORD = '/reset-password',
 
-  AUTH_ALL = '/api/auth/**',
-
   // Miscellaneous pages
   PLANS = '/plans',
   PRIVACY_POLICIES = '/privacy-policies',
@@ -35,7 +33,7 @@ export enum RoutesEnum {
   APP_SETTINGS_PROFILE = '/app/settings/profile',
   APP_SETTINGS_GENERAL = '/app/settings/general',
   // Google callback
-  GOOGLE_CALLBACK = '/api/auth/callback/google'
+  GOOGLE_CALLBACK = '/auth/callback/google'
 }
 export function generatePagination(currentPage: number, totalPages: number) {
   // If the total number of pages is 7 or less,
@@ -229,21 +227,21 @@ export async function fetchWithAuth(
     }
 
     if (!refreshingPromise) {
-      console.warn('[fetchWithAuth] 401 detectado. Iniciando refresh...');
-      refreshingPromise = fetch('/api/auth/refresh', { method: 'POST' })
+      console.log('[fetchWithAuth] 401 detectado. Iniciando refresh...');
+      refreshingPromise = fetch('/auth/refresh', { method: 'POST' })
         .then((refreshResp) => {
           if (!refreshResp.ok) throw new Error('No se pudo refrescar el token');
           return refreshResp.json();
         })
         .then((data) => {
-          console.info(
+          console.log(
             '[fetchWithAuth] Nuevo accessToken recibido:',
             data.newAccessToken
           );
           return data.newAccessToken;
         })
         .catch((err) => {
-          console.error('[fetchWithAuth] Error al refrescar:', err);
+          console.log('[fetchWithAuth] Error al refrescar:', err);
           return undefined;
         })
         .finally(() => {

@@ -570,6 +570,10 @@
           "selectedEmpty": "Er zijn nog geen zichtbare labels.",
           "availableEmpty": "Alle labels worden al getoond.",
           "mandatory": "Verplicht",
+          "actions": {
+            "selectAll": "Alles selecteren",
+            "selectNone": "Niets selecteren"
+          },
           "messages": {
             "loadError": "De labels konden niet worden geladen.",
             "saveError": "We konden je voorkeuren niet opslaan.",

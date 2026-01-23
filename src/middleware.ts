@@ -25,7 +25,6 @@ const publicRoutes = [
   RoutesEnum.WHO_WE_ARE,
   RoutesEnum.SUPPORT,
   RoutesEnum.REDIRECT,
-  RoutesEnum.AUTH_ALL,
   "/404",
   "/500",
 ];

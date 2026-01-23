@@ -572,6 +572,10 @@
           "selectedEmpty": "Nenhum rótulo está visível ainda.",
           "availableEmpty": "Todos os rótulos já estão visíveis.",
           "mandatory": "Obrigatória",
+          "actions": {
+            "selectAll": "Selecionar tudo",
+            "selectNone": "Selecionar nenhum"
+          },
           "messages": {
             "loadError": "Não conseguimos carregar os rótulos.",
             "saveError": "Não foi possível atualizar suas preferências.",

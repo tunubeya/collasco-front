@@ -1131,6 +1131,31 @@ export async function listModuleDocumentation(
   }
 }
 
+export async function listProjectDocumentation(
+  token: string,
+  projectId: string
+): Promise<QaDocumentationEntry[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/documentation`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function updateFeatureDocumentationEntry(
   token: string,
   featureId: string,
@@ -1171,6 +1196,37 @@ export async function updateModuleDocumentationEntry(
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/modules/${moduleId}/documentation/${labelId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function updateProjectDocumentationEntry(
+  token: string,
+  projectId: string,
+  labelId: string,
+  dto: UpdateQaDocumentationEntryDto
+): Promise<QaDocumentationEntry[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/documentation/${labelId}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

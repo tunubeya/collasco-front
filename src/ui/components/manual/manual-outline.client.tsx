@@ -370,13 +370,17 @@ type ManualBuildOptions = {
 export function buildProjectManualTree(
   project: Project,
   structureModules: StructureModuleNode[],
-  options?: ManualBuildOptions
+  options?: ManualBuildOptions,
+  projectDocumentationLabels?: StructureModuleNode["documentationLabels"]
 ): ManualNode {
+  const documentationDescription = projectDocumentationLabels
+    ? buildDocumentationDescription(projectDocumentationLabels, options)
+    : null;
   const manualRoot: ManualNode = {
     id: project.id,
     type: "project",
     name: project.name,
-    description: project.description,
+    description: documentationDescription ?? project.description,
     children: structureModules.map((moduleNode) =>
       convertModuleNode(moduleNode, options)
     ),

@@ -531,6 +531,7 @@
         "updated": "Última atualização: {date}",
         "tabs": {
           "structure": "Estrutura",
+          "documentation": "Documentação",
           "dashboard": "Painel",
           "qa": "Execuções QA",
           "members": "Membros",

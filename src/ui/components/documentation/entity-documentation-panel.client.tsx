@@ -8,9 +8,11 @@ import {
   type UpdateQaDocumentationEntryDto,
   listFeatureDocumentation,
   listModuleDocumentation,
+  listProjectDocumentation,
   listProjectDocumentationLabels,
   updateFeatureDocumentationEntry,
   updateModuleDocumentationEntry,
+  updateProjectDocumentationEntry,
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Loader2 } from "lucide-react";
@@ -21,7 +23,7 @@ import { RichTextContent } from "@/ui/components/rich-text-content";
 type EntityDocumentationPanelProps = {
   token: string;
   entityId: string;
-  entityType: "feature" | "module";
+  entityType: "feature" | "module" | "project";
   projectId: string;
 };
 
@@ -59,7 +61,9 @@ export function EntityDocumentationPanel({
     () =>
       entityType === "feature"
         ? listFeatureDocumentation
-        : listModuleDocumentation,
+        : entityType === "module"
+          ? listModuleDocumentation
+          : listProjectDocumentation,
     [entityType],
   );
 
@@ -67,7 +71,9 @@ export function EntityDocumentationPanel({
     () =>
       entityType === "feature"
         ? updateFeatureDocumentationEntry
-        : updateModuleDocumentationEntry,
+        : entityType === "module"
+          ? updateModuleDocumentationEntry
+          : updateProjectDocumentationEntry,
     [entityType],
   );
 

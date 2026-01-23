@@ -529,6 +529,7 @@
         "updated": "Dernière mise à jour : {date}",
         "tabs": {
           "structure": "Structure",
+          "documentation": "Documentation",
           "dashboard": "Tableau de bord",
           "qa": "Campagnes QA",
           "members": "Membres",

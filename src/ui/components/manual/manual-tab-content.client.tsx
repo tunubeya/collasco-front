@@ -44,6 +44,9 @@ export function ManualTabContent({
   const [projectDescription, setProjectDescription] = useState<string | null>(
     project.description ?? null,
   );
+  const [projectDocumentationLabels, setProjectDocumentationLabels] = useState<
+    StructureModuleNode["documentationLabels"] | null
+  >(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"content" | "all">("content");
@@ -78,6 +81,7 @@ export function ManualTabContent({
       if (!isMountedRef.current) return;
       setModules(payload.modules ?? []);
       setProjectDescription(payload.description ?? project.description ?? null);
+      setProjectDocumentationLabels(payload.documentationLabels ?? null);
     } catch (err) {
       console.error("Failed to load manual structure", err);
       if (isMountedRef.current) {
@@ -144,8 +148,8 @@ export function ManualTabContent({
     return buildProjectManualTree(manualProject, modules, {
       mode: viewMode,
       statuses: manualStates,
-    });
-  }, [manualProject, manualStates, modules, viewMode]);
+    }, projectDocumentationLabels ?? undefined);
+  }, [manualProject, manualStates, modules, projectDocumentationLabels, viewMode]);
 
   const outlineRoot = useMemo(() => {
     if (!manualTree) return null;

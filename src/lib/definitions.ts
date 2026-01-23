@@ -183,5 +183,6 @@ export type StructureModuleNode = {
 export type ProjectStructureResponse = {
   projectId: string;
   description?: string | null;
+  documentationLabels?: StructureDocumentationLabel[];
   modules: StructureModuleNode[];
 };

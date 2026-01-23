@@ -17,6 +17,7 @@ import { Plus } from "lucide-react";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 import { ProjectLabelsTab } from "./project-labels-tab.client";
+import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -28,7 +29,13 @@ type ProjectTabsProps = {
   membershipRole?: ProjectMemberRole | null;
 };
 
-type ProjectTab = "structure" | "qa" | "members" | "labels" | "manual";
+type ProjectTab =
+  | "structure"
+  | "documentation"
+  | "qa"
+  | "members"
+  | "labels"
+  | "manual";
 
 export function ProjectTabs({
   project,
@@ -61,6 +68,11 @@ export function ProjectTabs({
           label={tTabs("structure")}
           isActive={activeTab === "structure"}
           onClick={() => setActiveTab("structure")}
+        />
+        <TabButton
+          label={tTabs("documentation")}
+          isActive={activeTab === "documentation"}
+          onClick={() => setActiveTab("documentation")}
         />
         <TabButton
           label={tTabs("qa")}
@@ -116,6 +128,15 @@ export function ProjectTabs({
           featureOptions={featureOptions}
           currentUserId={currentUserId}
           canManageQa={canManageQa}
+        />
+      )}
+
+      {activeTab === "documentation" && (
+        <EntityDocumentationPanel
+          token={token}
+          entityId={projectId}
+          entityType="project"
+          projectId={projectId}
         />
       )}
       {activeTab === "members" && (

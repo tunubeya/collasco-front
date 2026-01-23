@@ -529,6 +529,7 @@
         "updated": "Laatste update: {date}",
         "tabs": {
           "structure": "Structuur",
+          "documentation": "Documentatie",
           "dashboard": "Dashboard",
           "qa": "QA-runs",
           "members": "Leden",

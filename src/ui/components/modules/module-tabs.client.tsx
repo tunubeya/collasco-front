@@ -126,6 +126,7 @@ export function ModuleTabs({
               default: "Collapse all",
             })}
             title={manualLabel}
+            canShareManual={canManageStructure}
           />
         </div>
       )}

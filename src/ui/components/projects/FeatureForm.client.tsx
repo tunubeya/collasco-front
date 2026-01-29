@@ -158,7 +158,7 @@ export function FeatureForm({
             htmlFor="feature-status"
             className="text-sm font-medium text-foreground"
           >
-            asdfasdf{t("fields.status.label")}
+            {t("fields.status.label")}
           </label>
           <select
             id="feature-status"

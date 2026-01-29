@@ -13,6 +13,7 @@ import {
   findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
 import { MANUAL_LABELS_EVENT } from "@/ui/components/manual/manual-events";
+import { ManualShareDialog } from "@/ui/components/manual/manual-share-dialog.client";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -26,6 +27,11 @@ type ManualTabContentProps = {
   title: string;
   focusId?: string;
   subtreeRootId?: string;
+  shareAction?: {
+    label: string;
+    onClick: () => void;
+  };
+  canShareManual?: boolean;
 };
 
 export function ManualTabContent({
@@ -38,8 +44,11 @@ export function ManualTabContent({
   title,
   focusId,
   subtreeRootId,
+  shareAction,
+  canShareManual = false,
 }: ManualTabContentProps) {
   const tManual = useTranslations("app.projects.manual");
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const [modules, setModules] = useState<StructureModuleNode[] | null>(null);
   const [projectDescription, setProjectDescription] = useState<string | null>(
     project.description ?? null,
@@ -142,7 +151,6 @@ export function ManualTabContent({
     }),
     [tManual],
   );
-
   const manualTree = useMemo(() => {
     if (!modules) return null;
     return buildProjectManualTree(manualProject, modules, {
@@ -161,6 +169,14 @@ export function ManualTabContent({
 
   return (
     <div className="space-y-3">
+      {canShareManual && (
+        <ManualShareDialog
+          token={token}
+          projectId={projectId}
+          open={isShareOpen}
+          onOpenChange={setIsShareOpen}
+        />
+      )}
       {isLoading && (
         <div className="flex items-center gap-2 rounded-lg border border-dashed border-muted-foreground/30 bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -195,6 +211,14 @@ export function ManualTabContent({
           onViewModeChange={setViewMode}
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
+          shareAction={
+            canShareManual
+              ? {
+                  label: tManual("share.label"),
+                  onClick: () => setIsShareOpen(true),
+                }
+              : shareAction
+          }
         />
       )}
     </div>

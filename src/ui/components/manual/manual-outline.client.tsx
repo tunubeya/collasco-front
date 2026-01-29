@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Share2 } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type {
@@ -44,6 +44,10 @@ type ManualOutlineProps = {
     references?: string;
     referencedBy?: string;
   } | string;
+  shareAction?: {
+    label: string;
+    onClick: () => void;
+  };
 };
 
 const TITLE_CLASSES = [
@@ -73,6 +77,7 @@ export function ManualOutline({
   onViewModeChange,
   filterLabel,
   linkedLabel,
+  shareAction,
 }: ManualOutlineProps) {
   const focusPath = useMemo(() => {
     if (!focusId) return [];
@@ -137,7 +142,6 @@ export function ManualOutline({
     setExpanded(Object.fromEntries(allNodeIds.map((id) => [id, true])));
   const handleCollapseAll = () => setExpanded({ [root.id]: false });
   const hasChildren = root.children.length > 0;
-
   return (
     <div className={cn("rounded-xl border bg-background p-4", className)}>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -161,6 +165,16 @@ export function ManualOutline({
                 ))}
               </select>
             </label>
+          )}
+          {shareAction && (
+            <button
+              type="button"
+              onClick={shareAction.onClick}
+              className="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted"
+            >
+              <Share2 className="h-3.5 w-3.5" aria-hidden />
+              {shareAction.label}
+            </button>
           )}
           {hasChildren && (
             <div className="flex flex-wrap items-center gap-2">

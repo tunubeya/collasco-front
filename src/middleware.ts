@@ -29,6 +29,8 @@ const publicRoutes = [
   "/500",
 ];
 
+const publicRoutePrefixes = ["/public/manual/shared"];
+
 // Set session cookie to expire later than the token to allow refresh
 // Define a type for the results returned by the helper functions
 type SessionResult = {
@@ -208,9 +210,11 @@ export default auth(async (req) => {
       req.nextUrl.pathname.includes(".ico") ||
       req.nextUrl.pathname.includes(".css") ||
       req.nextUrl.pathname.includes(".js");
-    const isPublicRoute = publicRoutes.includes(
-      req.nextUrl.pathname as RoutesEnum
-    );
+    const isPublicRoute =
+      publicRoutes.includes(req.nextUrl.pathname as RoutesEnum) ||
+      publicRoutePrefixes.some((prefix) =>
+        req.nextUrl.pathname.startsWith(prefix)
+      );
     const isGoogleAuthCallback = req.nextUrl.pathname.includes(
       RoutesEnum.GOOGLE_CALLBACK
     );

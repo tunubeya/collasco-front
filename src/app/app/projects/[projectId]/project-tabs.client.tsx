@@ -173,6 +173,7 @@ export function ProjectTabs({
               default: "Collapse all",
             })}
             title={tTabs("manual")}
+            canShareManual={canManageStructure}
           />
         </div>
       )}

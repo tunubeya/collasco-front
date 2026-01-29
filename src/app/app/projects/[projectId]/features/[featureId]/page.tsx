@@ -244,6 +244,7 @@ export default async function FeatureDetailPage({
         token={session.token}
         currentUserId={currentUserId ?? undefined}
         canManageQa={canManageQa}
+        canShareManual={canManageFeature}
         initialLinkedFeatures={linkedFeatures}
         linkableFeatures={linkableFeatures}
         modulePathById={modulePathById}

@@ -9,7 +9,6 @@ import type {
 } from "@/app/app/projects/actions";
 import {
   ProjectStatus,
-  Visibility,
 } from "@/lib/definitions";
 import { RichTextEditor } from "./RichTextEditor";
 
@@ -24,7 +23,6 @@ type ProjectFormProps = {
     description?: string | null;
     repositoryUrl?: string | null;
     status?: ProjectStatus;
-    visibility?: Visibility;
   };
 };
 
@@ -48,12 +46,10 @@ export function ProjectForm({
   const t = useTranslations("app.projects.form");
   const tCommon = useTranslations("app.common");
   const tStatus = useTranslations("app.common.projectStatus");
-  const tVisibility = useTranslations("app.common.visibility");
 
   const [state, dispatch] = useActionState(action, INITIAL_PROJECT_FORM_STATE);
 
   const statusOptions = useMemo(() => Object.values(ProjectStatus), []);
-  const visibilityOptions = useMemo(() => Object.values(Visibility), []);
 
   const nameErrorKey =
     state.fieldErrors?.name &&
@@ -140,27 +136,6 @@ export function ProjectForm({
             {statusOptions.map((status) => (
               <option key={status} value={status}>
                 {tStatus(status)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="space-y-2">
-          <label
-            htmlFor="project-visibility"
-            className="text-sm font-medium text-foreground"
-          >
-            {t("fields.visibility.label")}
-          </label>
-          <select
-            id="project-visibility"
-            name="visibility"
-            defaultValue={defaultValues?.visibility ?? Visibility.PRIVATE}
-            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            {visibilityOptions.map((visibility) => (
-              <option key={visibility} value={visibility}>
-                {tVisibility(visibility)}
               </option>
             ))}
           </select>

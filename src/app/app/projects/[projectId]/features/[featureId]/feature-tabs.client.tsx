@@ -27,6 +27,7 @@ type FeatureTabsProps = {
   token: string;
   currentUserId?: string;
   canManageQa?: boolean;
+  canShareManual?: boolean;
   initialLinkedFeatures: QaLinkedFeature[];
   linkableFeatures: LinkedOption[];
   modulePathById: Record<string, string>;
@@ -50,6 +51,7 @@ export function FeatureTabs({
   token,
   currentUserId,
   canManageQa = false,
+  canShareManual = false,
   initialLinkedFeatures,
   linkableFeatures,
   modulePathById,
@@ -233,6 +235,7 @@ export function FeatureTabs({
               default: "Collapse all",
             })}
             title={tTabs("manual")}
+            canShareManual={canShareManual}
           />
         </div>
       )}

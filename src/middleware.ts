@@ -25,6 +25,7 @@ const publicRoutes = [
   RoutesEnum.WHO_WE_ARE,
   RoutesEnum.SUPPORT,
   RoutesEnum.REDIRECT,
+  "/auth/refresh",
   "/404",
   "/500",
 ];

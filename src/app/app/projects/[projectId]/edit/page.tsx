@@ -57,7 +57,6 @@ export default async function EditProjectPage({ params }: Props) {
           description: project.description,
           repositoryUrl: project.repositoryUrl,
           status: project.status,
-          visibility: project.visibility,
         }}
       />
 

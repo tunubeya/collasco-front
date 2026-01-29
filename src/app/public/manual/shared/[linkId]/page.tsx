@@ -1,14 +1,10 @@
 import { PublicManualClient } from "./public-manual.client";
 
 type PublicManualPageProps = {
-  params: { linkId: string } | Promise<{ linkId: string }>;
-  searchParams?:
-    | {
-        labels?: string | string[];
-      }
-    | Promise<{
-        labels?: string | string[];
-      }>;
+  params: Promise<{ linkId: string }>;
+  searchParams?: Promise<{
+    labels?: string | string[];
+  }>;
 };
 
 function parseLabelIds(input?: string | string[]): string[] {

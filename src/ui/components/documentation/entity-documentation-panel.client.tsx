@@ -18,7 +18,7 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
-import { RichTextContent } from "@/ui/components/rich-text-content";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 type EntityDocumentationPanelProps = {
   token: string;
@@ -365,13 +365,12 @@ export function EntityDocumentationPanel({
                         <p className="text-xs italic text-muted-foreground">
                           {t("states.notApplicable")}
                         </p>
-                      ) : entry.field?.content ? (
-                        <RichTextContent
-                          content={entry.field.content}
-                          className="prose prose-sm max-w-none text-muted-foreground"
-                        />
                       ) : (
-                        <p className="text-muted-foreground">{t("states.empty")}</p>
+                        <RichTextPreview
+                          value={entry.field?.content ?? ""}
+                          emptyLabel={t("states.empty")}
+                          className="text-muted-foreground"
+                        />
                       )}
                     </div>
 

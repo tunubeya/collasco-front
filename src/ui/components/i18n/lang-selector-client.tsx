@@ -1,5 +1,6 @@
 'use client';
 import { useTransition } from 'react';
+import { usePathname } from 'next/navigation';
 import { Locale } from '@/lib/i18n/config';
 import { setUserLocale } from '@/lib/i18n/locale.service';
 import { Menu, MenuItem } from '@/ui/components/dropdown/dropdown';
@@ -18,6 +19,8 @@ export default function LangSelectorClient({
   label
 }: Readonly<Props>) {
   const startTransition = useTransition()[1];
+  const pathname = usePathname();
+  const shouldHide = pathname?.startsWith('/app');
 
   function onChange(value: string) {
     const locale = value as Locale;
@@ -25,13 +28,22 @@ export default function LangSelectorClient({
       setUserLocale(locale);
     });
   }
+  if (shouldHide) {
+    return null;
+  }
+
   return (
     <div className="relative">
       <Menu
         label={label}
         trigger={
-          <Button variant={'outline'} aria-label={label}>
-            <Languages className="h-6 w-6 text-slate-600 transition-colors group-hover:text-slate-900" />
+          <Button
+            variant={'outline'}
+            size="sm"
+            className="h-8 gap-1 px-2 text-xs"
+            aria-label={label}
+          >
+            <Languages className="h-4 w-4 text-slate-600 transition-colors group-hover:text-slate-900" />
             <span className="text-slate-900">{defaultValue}</span>
           </Button>
         }

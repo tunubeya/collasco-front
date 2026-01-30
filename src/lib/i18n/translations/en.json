@@ -727,7 +727,6 @@
         },
         "empty": {
           "title": "No labels yet",
-          "description": "Create labels to organize your QA flows and runs.",
           "action": "Create label"
         },
         "fields": {

@@ -725,7 +725,6 @@
         },
         "empty": {
           "title": "Nog geen labels",
-          "description": "Maak labels om je QA-flows en runs te organiseren.",
           "action": "Label aanmaken"
         },
         "fields": {

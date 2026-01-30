@@ -289,9 +289,6 @@ export function ProjectLabelsTab({
       ) : labels.length === 0 ? (
         <div className="rounded-xl border border-dashed border-muted-foreground/40 bg-muted/30 px-6 py-10 text-center">
           <p className="font-semibold">{t("empty.title")}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {t("empty.description")}
-          </p>
           {canManageLabels && (
             <button
               type="button"

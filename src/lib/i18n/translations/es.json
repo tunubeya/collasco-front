@@ -727,7 +727,6 @@
         },
         "empty": {
           "title": "Aún no definiste etiquetas",
-          "description": "Crea etiquetas para organizar tus formularios y ejecuciones de QA.",
           "action": "Crear etiqueta"
         },
         "fields": {

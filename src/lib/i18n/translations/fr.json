@@ -725,7 +725,6 @@
         },
         "empty": {
           "title": "Aucune étiquette pour le moment",
-          "description": "Créez des étiquettes pour organiser vos flux et exécutions QA.",
           "action": "Créer une étiquette"
         },
         "fields": {

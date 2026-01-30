@@ -727,7 +727,6 @@
         },
         "empty": {
           "title": "Ainda não há etiquetas",
-          "description": "Crie etiquetas para organizar seus fluxos e execuções de QA.",
           "action": "Criar etiqueta"
         },
         "fields": {

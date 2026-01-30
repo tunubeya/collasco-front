@@ -291,13 +291,15 @@ export function EntityDocumentationPanel({
                   <>
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <p className="font-semibold">{entry.label.name}</p>
-                        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="font-semibold">{entry.label.name}</p>
                           {entry.label.isMandatory && (
-                            <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
+                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                               {t("badges.mandatory")}
                             </span>
                           )}
+                        </div>
+                        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
                           {!entry.canEdit && (
                             <span className="rounded-full bg-muted px-2 py-0.5 font-medium text-muted-foreground">
                               {t("badges.readOnly")}

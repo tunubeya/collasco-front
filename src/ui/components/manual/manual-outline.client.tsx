@@ -198,7 +198,7 @@ export function ManualOutline({
       </div>
       <ManualNodeItem
         node={root}
-        numbering={root.numbering ?? "1"}
+        numbering={root.numbering ?? ""}
         level={0}
         expandedMap={expanded}
         onToggle={(id) =>
@@ -280,7 +280,9 @@ function ManualNodeItem({
       >
         <div className="flex flex-1 flex-col">
           <span className={cn(titleClass, "leading-tight")}>
-            <span className="mr-2 font-mono">{currentNumbering}</span>
+            {currentNumbering ? (
+              <span className="mr-2 font-mono">{currentNumbering}</span>
+            ) : null}
             {node.name}
           </span>
         </div>
@@ -400,7 +402,9 @@ export function buildProjectManualTree(
     ),
   };
 
-  assignNumbering(manualRoot, "1");
+  manualRoot.children.forEach((child, index) => {
+    assignNumbering(child, `${index + 1}`);
+  });
 
   return manualRoot;
 }

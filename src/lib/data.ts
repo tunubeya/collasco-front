@@ -237,8 +237,22 @@ export async function fetchRefreshToken(
     };
   } catch (error) {
     if (error instanceof Response) {
-      const errorBody = await error.json();
+      let errorBody: Record<string, unknown> | null = null;
+      try {
+        errorBody = (await error.json()) as Record<string, unknown>;
+      } catch {
+        errorBody = null;
+      }
       console.log("error on refresh token >> ", errorBody);
+      const refreshError = new Error(
+        typeof errorBody?.message === "string"
+          ? errorBody.message
+          : "Refresh token failed"
+      );
+      (refreshError as { status?: number }).status = error.status;
+      (refreshError as { code?: string }).code =
+        typeof errorBody?.code === "string" ? errorBody.code : undefined;
+      throw refreshError;
     }
     throw error;
   }

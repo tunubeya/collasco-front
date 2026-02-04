@@ -31,6 +31,48 @@ const publicRoutes = [
 ];
 
 const publicRoutePrefixes = ["/public/manual/shared"];
+const refreshInFlightByToken = new Map<string, Promise<SessionResult>>();
+const REFRESH_LOCK_COOKIE = "refresh-lock";
+const REFRESH_LOCK_TTL_SECONDS = 5;
+
+type RefreshError = Error & { code?: string; status?: number };
+
+function isRetryableRefreshError(error: unknown): boolean {
+  const err = error as RefreshError | null;
+  const code = err?.code ?? "";
+  const message = err?.message ?? "";
+  return (
+    code === "P2025" ||
+    message.toLowerCase().includes("token already used") ||
+    message.toLowerCase().includes("p2025")
+  );
+}
+
+async function runRefreshSingleFlight<T>(
+  refreshToken: string,
+  attempt: () => Promise<T>
+): Promise<T> {
+  if (refreshInFlightByToken.has(refreshToken)) {
+    return refreshInFlightByToken.get(refreshToken)! as Promise<T>;
+  }
+  const promise = attempt().finally(() => {
+    refreshInFlightByToken.delete(refreshToken);
+  });
+  refreshInFlightByToken.set(refreshToken, promise as Promise<SessionResult>);
+  return promise;
+}
+
+async function fetchRefreshTokenWithRetry(refreshToken: string) {
+  try {
+    return await fetchRefreshToken(refreshToken);
+  } catch (error) {
+    if (isRetryableRefreshError(error)) {
+      console.log("⚠ Refresh retryable error, reintentando una vez...");
+      return await fetchRefreshToken(refreshToken);
+    }
+    throw error;
+  }
+}
 
 // Set session cookie to expire later than the token to allow refresh
 // Define a type for the results returned by the helper functions
@@ -107,7 +149,10 @@ async function refreshSession(request: NextRequest): Promise<SessionResult> {
   if (needsRefresh) {
     console.log("⚙ Ejecutando fetchRefreshToken...");
     try {
-      const resp = await fetchRefreshToken(refreshInfo.refreshToken);
+      const resp = await runRefreshSingleFlight(
+        refreshInfo.refreshToken,
+        () => fetchRefreshTokenWithRetry(refreshInfo.refreshToken)
+      );
       if (resp && resp.accessToken) {
         console.log("✅ Refresh exitoso, nuevos tokens generados.");
         const newSession: Session = {
@@ -190,6 +235,17 @@ async function applyCookiesAndRespond(
       path: "/",
     });
   }
+  if (collectedData.encryptedSessionData && collectedData.newSessionExpiresAt) {
+    response.cookies.set({
+      name: REFRESH_LOCK_COOKIE,
+      value: "1",
+      httpOnly: true,
+      secure: isProduction,
+      maxAge: REFRESH_LOCK_TTL_SECONDS,
+      sameSite: "lax",
+      path: "/",
+    });
+  }
   return response;
 }
 
@@ -234,26 +290,31 @@ export default auth(async (req) => {
     }
     let response = NextResponse.next();
 
+    const hasRefreshLock = req.cookies.get(REFRESH_LOCK_COOKIE)?.value === "1";
     if (isLoggedIn || req.cookies.get("refresh-info")) {
-      const refreshResult = await refreshSession(req);
-      if (refreshResult.redirect) {
-        return refreshResult.redirect;
-      }
-      // Collect potential new session data
-      if (refreshResult.encryptedSessionData) {
-        collectedCookieData.encryptedSessionData =
-          refreshResult.encryptedSessionData;
-        collectedCookieData.newSessionExpiresAt =
-          refreshResult.newSessionExpiresAt;
-      }
-      if (refreshResult.encryptedRefreshInfo) {
-        collectedCookieData.encryptedRefreshInfo =
-          refreshResult.encryptedRefreshInfo;
-        collectedCookieData.newRefreshInfoExpiresAt =
-          refreshResult.newRefreshInfoExpiresAt;
-      }
-      if (refreshResult.newToken) {
-        collectedCookieData.newToken = refreshResult.newToken;
+      if (hasRefreshLock) {
+        console.log("⏭ Refresh omitido: cookies recién seteadas.");
+      } else {
+        const refreshResult = await refreshSession(req);
+        if (refreshResult.redirect) {
+          return refreshResult.redirect;
+        }
+        // Collect potential new session data
+        if (refreshResult.encryptedSessionData) {
+          collectedCookieData.encryptedSessionData =
+            refreshResult.encryptedSessionData;
+          collectedCookieData.newSessionExpiresAt =
+            refreshResult.newSessionExpiresAt;
+        }
+        if (refreshResult.encryptedRefreshInfo) {
+          collectedCookieData.encryptedRefreshInfo =
+            refreshResult.encryptedRefreshInfo;
+          collectedCookieData.newRefreshInfoExpiresAt =
+            refreshResult.newRefreshInfoExpiresAt;
+        }
+        if (refreshResult.newToken) {
+          collectedCookieData.newToken = refreshResult.newToken;
+        }
       }
     }
     // Handle initial public/login checks and redirects

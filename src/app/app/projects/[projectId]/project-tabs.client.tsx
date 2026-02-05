@@ -18,6 +18,7 @@ import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 import { ProjectLabelsTab } from "./project-labels-tab.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
+import { ProjectTrashTab } from "./project-trash-tab.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -35,7 +36,8 @@ type ProjectTab =
   | "qa"
   | "members"
   | "labels"
-  | "manual";
+  | "manual"
+  | "trash";
 
 export function ProjectTabs({
   project,
@@ -60,6 +62,7 @@ export function ProjectTabs({
     membershipRole === ProjectMemberRole.DEVELOPER;
 
   const canManageLabels = membershipRole === ProjectMemberRole.OWNER;
+  const canManageTrash = membershipRole === ProjectMemberRole.OWNER;
 
   return (
     <section className="space-y-4">
@@ -94,6 +97,13 @@ export function ProjectTabs({
           isActive={activeTab === "manual"}
           onClick={() => setActiveTab("manual")}
         />
+        {canManageTrash && (
+          <TabButton
+            label={tTabs("trash", { default: "Trash" })}
+            isActive={activeTab === "trash"}
+            onClick={() => setActiveTab("trash")}
+          />
+        )}
         <TabButton
           label={tTabs("dashboard")}
           href={`/app/projects/${projectId}/dashboard`}
@@ -176,6 +186,10 @@ export function ProjectTabs({
             canShareManual={canManageStructure}
           />
         </div>
+      )}
+
+      {activeTab === "trash" && canManageTrash && (
+        <ProjectTrashTab token={token} projectId={projectId} />
       )}
     </section>
   );

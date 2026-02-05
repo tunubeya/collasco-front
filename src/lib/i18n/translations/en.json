@@ -536,7 +536,8 @@
           "qa": "Test runs",
           "members": "Members",
           "labels": "Labels",
-          "manual": "Manual"
+          "manual": "Manual",
+          "trash": "Trash"
         },
         "actions": {
           "edit": "Edit",
@@ -555,6 +556,37 @@
         },
         "description": {
           "empty": "No description provided."
+        }
+      },
+      "trash": {
+        "tabs": {
+          "projects": "Projects",
+          "modules": "Modules",
+          "features": "Features",
+          "labels": "Labels"
+        },
+        "actions": {
+          "reload": "Reload",
+          "restore": "Restore",
+          "restoring": "Restoring..."
+        },
+        "messages": {
+          "loading": "Loading...",
+          "loadError": "We couldn't load deleted items.",
+          "restoreSuccess": "Item restored.",
+          "restoreError": "We couldn't restore the item.",
+          "unnamed": "Unnamed"
+        },
+        "empty": {
+          "projects": "No deleted projects.",
+          "modules": "No deleted modules.",
+          "features": "No deleted features.",
+          "labels": "No deleted labels."
+        },
+        "meta": {
+          "deletedByAt": "Deleted by {name} · {date}",
+          "deletedBy": "Deleted by {name}",
+          "deletedAt": "Deleted {date}"
         }
       },
       "manual": {

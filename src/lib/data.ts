@@ -598,6 +598,49 @@ export async function fetchDeleteProject(
   }
 }
 
+export async function fetchDeletedProjects(
+  token: string,
+  params?: { page?: number; limit?: number; sort?: string; q?: string }
+): Promise<PaginatedResponse<Project>> {
+  const query = new URLSearchParams();
+  if (params?.page) query.set("page", String(params.page));
+  if (params?.limit) query.set("limit", String(params.limit));
+  if (params?.sort) query.set("sort", params.sort);
+  if (params?.q) query.set("q", params.q);
+
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/deleted?${query.toString()}`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await res.json();
+    return normalizePaginated<Project>(payload);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function fetchRestoreProject(
+  token: string,
+  projectId: string
+): Promise<{ ok: boolean; restoredProjectId?: string }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/${projectId}/restore`,
+      { method: "PATCH" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await res.json();
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 
 //MODULES
 
@@ -700,6 +743,52 @@ export async function fetchDeleteModule(
     return await res.json();
   } catch (error) {
     await handlePageError(error);
+    throw error;
+  }
+}
+
+export async function fetchDeletedModules(
+  token: string,
+  projectId: string,
+  params?: { parent?: string | null; page?: number; limit?: number; sort?: string; q?: string }
+): Promise<PaginatedResponse<Module>> {
+  const query = new URLSearchParams();
+  if (params?.parent === null) query.set("parent", "null");
+  else if (typeof params?.parent === "string") query.set("parent", params.parent);
+  if (params?.page) query.set("page", String(params.page));
+  if (params?.limit) query.set("limit", String(params.limit));
+  if (params?.sort) query.set("sort", params.sort);
+  if (params?.q) query.set("q", params.q);
+
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/${projectId}/modules/deleted?${query.toString()}`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await res.json();
+    return normalizePaginated<Module>(payload);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function fetchRestoreModule(
+  token: string,
+  moduleId: string
+): Promise<{ ok: boolean; restoredModuleIds?: string[] }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/modules/${moduleId}/restore`,
+      { method: "PATCH" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await res.json();
+  } catch (error) {
+    await handleUnauthorized(error);
     throw error;
   }
 }
@@ -825,6 +914,50 @@ export async function fetchDeleteFeature(
     const res = await fetchWithAuth(
       `${apiUrl}/features/${featureId}`,
       { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await res.json();
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function fetchDeletedFeatures(
+  token: string,
+  projectId: string,
+  params?: { page?: number; limit?: number; sort?: string; q?: string }
+): Promise<PaginatedResponse<Feature>> {
+  const query = new URLSearchParams();
+  if (params?.page) query.set("page", String(params.page));
+  if (params?.limit) query.set("limit", String(params.limit));
+  if (params?.sort) query.set("sort", params.sort);
+  if (params?.q) query.set("q", params.q);
+
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/projects/${projectId}/features/deleted?${query.toString()}`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await res.json();
+    return normalizePaginated<Feature>(payload);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function fetchRestoreFeature(
+  token: string,
+  featureId: string
+): Promise<{ ok: boolean; restoredFeatureId?: string }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/features/${featureId}/restore`,
+      { method: "PATCH" },
       token
     );
     if (!res.ok) throw res;

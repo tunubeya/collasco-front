@@ -536,7 +536,8 @@
           "qa": "Execuções QA",
           "members": "Membros",
           "labels": "Etiquetas",
-          "manual": "Manual"
+          "manual": "Manual",
+          "trash": "Lixeira"
         },
         "actions": {
           "edit": "Editar",
@@ -555,6 +556,37 @@
         },
         "description": {
           "empty": "Nenhuma descrição disponível."
+        }
+      },
+      "trash": {
+        "tabs": {
+          "projects": "Projetos",
+          "modules": "Módulos",
+          "features": "Features",
+          "labels": "Etiquetas"
+        },
+        "actions": {
+          "reload": "Recarregar",
+          "restore": "Restaurar",
+          "restoring": "Restaurando..."
+        },
+        "messages": {
+          "loading": "Carregando...",
+          "loadError": "Não foi possível carregar os itens excluídos.",
+          "restoreSuccess": "Item restaurado.",
+          "restoreError": "Não foi possível restaurar o item.",
+          "unnamed": "Sem nome"
+        },
+        "empty": {
+          "projects": "Nenhum projeto excluído.",
+          "modules": "Nenhum módulo excluído.",
+          "features": "Nenhuma feature excluída.",
+          "labels": "Nenhuma etiqueta excluída."
+        },
+        "meta": {
+          "deletedByAt": "Excluído por {name} · {date}",
+          "deletedBy": "Excluído por {name}",
+          "deletedAt": "Excluído {date}"
         }
       },
       "manual": {

@@ -534,7 +534,8 @@
           "qa": "QA-runs",
           "members": "Leden",
           "labels": "Labels",
-          "manual": "Handleiding"
+          "manual": "Handleiding",
+          "trash": "Prullenbak"
         },
         "actions": {
           "edit": "Bewerken",
@@ -553,6 +554,37 @@
         },
         "description": {
           "empty": "Geen beschrijving beschikbaar."
+        }
+      },
+      "trash": {
+        "tabs": {
+          "projects": "Projecten",
+          "modules": "Modules",
+          "features": "Features",
+          "labels": "Labels"
+        },
+        "actions": {
+          "reload": "Herladen",
+          "restore": "Herstellen",
+          "restoring": "Herstellen..."
+        },
+        "messages": {
+          "loading": "Laden...",
+          "loadError": "We konden de verwijderde items niet laden.",
+          "restoreSuccess": "Item hersteld.",
+          "restoreError": "We konden het item niet herstellen.",
+          "unnamed": "Naamloos"
+        },
+        "empty": {
+          "projects": "Geen verwijderde projecten.",
+          "modules": "Geen verwijderde modules.",
+          "features": "Geen verwijderde features.",
+          "labels": "Geen verwijderde labels."
+        },
+        "meta": {
+          "deletedByAt": "Verwijderd door {name} · {date}",
+          "deletedBy": "Verwijderd door {name}",
+          "deletedAt": "Verwijderd {date}"
         }
       },
       "manual": {

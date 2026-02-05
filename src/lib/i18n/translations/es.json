@@ -536,7 +536,8 @@
           "qa": "Ejecuciones QA",
           "members": "Miembros",
           "labels": "Etiquetas",
-          "manual": "Manual"
+          "manual": "Manual",
+          "trash": "Papelera"
         },
         "actions": {
           "edit": "Editar",
@@ -555,6 +556,37 @@
         },
         "description": {
           "empty": "Sin descripción disponible."
+        }
+      },
+      "trash": {
+        "tabs": {
+          "projects": "Proyectos",
+          "modules": "Módulos",
+          "features": "Features",
+          "labels": "Etiquetas"
+        },
+        "actions": {
+          "reload": "Recargar",
+          "restore": "Restaurar",
+          "restoring": "Restaurando..."
+        },
+        "messages": {
+          "loading": "Cargando...",
+          "loadError": "No pudimos cargar los eliminados.",
+          "restoreSuccess": "Elemento restaurado.",
+          "restoreError": "No pudimos restaurar el elemento.",
+          "unnamed": "Sin nombre"
+        },
+        "empty": {
+          "projects": "No hay proyectos eliminados.",
+          "modules": "No hay módulos eliminados.",
+          "features": "No hay features eliminadas.",
+          "labels": "No hay etiquetas eliminadas."
+        },
+        "meta": {
+          "deletedByAt": "Eliminado por {name} · {date}",
+          "deletedBy": "Eliminado por {name}",
+          "deletedAt": "Eliminado {date}"
         }
       },
       "manual": {

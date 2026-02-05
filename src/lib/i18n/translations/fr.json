@@ -534,7 +534,8 @@
           "qa": "Campagnes QA",
           "members": "Membres",
           "labels": "Étiquettes",
-          "manual": "Manuel"
+          "manual": "Manuel",
+          "trash": "Corbeille"
         },
         "actions": {
           "edit": "Modifier",
@@ -553,6 +554,37 @@
         },
         "description": {
           "empty": "Aucune description disponible."
+        }
+      },
+      "trash": {
+        "tabs": {
+          "projects": "Projets",
+          "modules": "Modules",
+          "features": "Features",
+          "labels": "Étiquettes"
+        },
+        "actions": {
+          "reload": "Recharger",
+          "restore": "Restaurer",
+          "restoring": "Restauration..."
+        },
+        "messages": {
+          "loading": "Chargement...",
+          "loadError": "Impossible de charger les éléments supprimés.",
+          "restoreSuccess": "Élément restauré.",
+          "restoreError": "Impossible de restaurer l'élément.",
+          "unnamed": "Sans nom"
+        },
+        "empty": {
+          "projects": "Aucun projet supprimé.",
+          "modules": "Aucun module supprimé.",
+          "features": "Aucune feature supprimée.",
+          "labels": "Aucune étiquette supprimée."
+        },
+        "meta": {
+          "deletedByAt": "Supprimé par {name} · {date}",
+          "deletedBy": "Supprimé par {name}",
+          "deletedAt": "Supprimé {date}"
         }
       },
       "manual": {

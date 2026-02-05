@@ -916,6 +916,50 @@ export async function listProjectLabels(
   }
 }
 
+export async function listDeletedProjectLabels(
+  token: string,
+  projectId: string
+): Promise<QaProjectLabel[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels/deleted`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<
+      QaProjectLabel[] | { items?: QaProjectLabel[] }
+    >(res);
+    if (Array.isArray(payload)) return payload;
+    if (payload?.items && Array.isArray(payload.items)) {
+      return payload.items;
+    }
+    return [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function restoreProjectLabel(
+  token: string,
+  projectId: string,
+  labelId: string
+): Promise<QaProjectLabel> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/projects/${projectId}/labels/${labelId}/restore`,
+      { method: "PATCH" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaProjectLabel>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function listProjectDocumentationLabels(
   token: string,
   projectId: string

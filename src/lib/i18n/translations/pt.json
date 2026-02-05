@@ -575,6 +575,7 @@
           "loadError": "Não foi possível carregar os itens excluídos.",
           "restoreSuccess": "Item restaurado.",
           "restoreError": "Não foi possível restaurar o item.",
+          "restoreParentFirst": "Restaure o módulo pai primeiro.",
           "unnamed": "Sem nome"
         },
         "empty": {
@@ -587,6 +588,9 @@
           "deletedByAt": "Excluído por {name} · {date}",
           "deletedBy": "Excluído por {name}",
           "deletedAt": "Excluído {date}"
+        },
+        "badges": {
+          "requiresModule": "Requer módulo restaurado"
         }
       },
       "manual": {

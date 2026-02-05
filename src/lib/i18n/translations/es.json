@@ -575,6 +575,7 @@
           "loadError": "No pudimos cargar los eliminados.",
           "restoreSuccess": "Elemento restaurado.",
           "restoreError": "No pudimos restaurar el elemento.",
+          "restoreParentFirst": "Primero debes restaurar el módulo padre.",
           "unnamed": "Sin nombre"
         },
         "empty": {
@@ -587,6 +588,9 @@
           "deletedByAt": "Eliminado por {name} · {date}",
           "deletedBy": "Eliminado por {name}",
           "deletedAt": "Eliminado {date}"
+        },
+        "badges": {
+          "requiresModule": "Requiere módulo restaurado"
         }
       },
       "manual": {

@@ -33,6 +33,7 @@ type TrashItem = {
   deletedAt?: string | null;
   deletedByName?: string | null;
   deletedBy?: { name?: string | null } | null;
+  moduleId?: string | null;
 };
 
 export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
@@ -47,6 +48,9 @@ export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
   const [modules, setModules] = useState<Module[]>([]);
   const [features, setFeatures] = useState<Feature[]>([]);
   const [labels, setLabels] = useState<QaProjectLabel[]>([]);
+  const [deletedModuleIds, setDeletedModuleIds] = useState<Set<string>>(
+    new Set()
+  );
 
   const loadTab = useCallback(
     async (tab: TrashTab) => {
@@ -67,6 +71,16 @@ export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
             limit: 50,
           });
           setFeatures(data.items ?? []);
+          const deletedModules = await fetchDeletedModules(token, projectId, {
+            page: 1,
+            limit: 100,
+          });
+          const moduleIds = new Set(
+            (deletedModules.items ?? [])
+              .map((item) => item.id)
+              .filter(Boolean)
+          );
+          setDeletedModuleIds(moduleIds);
         } else if (tab === "labels") {
           const data = await listDeletedProjectLabels(token, projectId);
           setLabels(data ?? []);
@@ -103,9 +117,31 @@ export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
         router.refresh();
         await loadTab(tab);
       } catch (error) {
-        toast.error(t("messages.restoreError"), {
-          description: error instanceof Error ? error.message : undefined,
-        });
+        let description: string | undefined;
+        let message = "";
+        if (error instanceof Response) {
+          try {
+            const payload = (await error.json()) as { message?: string };
+            message = payload?.message ?? "";
+          } catch {
+            message = "";
+          }
+        } else if (error instanceof Error) {
+          message = error.message;
+        }
+
+        if (
+          message.toLowerCase().includes("restore parent first") ||
+          (message.toLowerCase().includes("parent") &&
+            message.toLowerCase().includes("deleted")) ||
+          (message.toLowerCase().includes("module") &&
+            message.toLowerCase().includes("deleted"))
+        ) {
+          toast.error(t("messages.restoreParentFirst"));
+        } else {
+          description = message || undefined;
+          toast.error(t("messages.restoreError"), { description });
+        }
       } finally {
         setRestoringId(null);
       }
@@ -222,6 +258,11 @@ export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
               restoreLabel={t("actions.restore")}
               restoringLabel={t("actions.restoring")}
               unnamedLabel={t("messages.unnamed")}
+              getDisabledReason={(item) =>
+                item.moduleId && deletedModuleIds.has(item.moduleId)
+                  ? t("badges.requiresModule")
+                  : ""
+              }
               onRestore={(id) => handleRestore("features", id)}
               restoringId={restoringId}
             />
@@ -254,6 +295,7 @@ function TrashList({
   restoreLabel,
   restoringLabel,
   unnamedLabel,
+  getDisabledReason,
 }: {
   items: TrashItem[];
   emptyLabel: string;
@@ -263,6 +305,7 @@ function TrashList({
   restoreLabel: string;
   restoringLabel: string;
   unnamedLabel: string;
+  getDisabledReason?: (item: TrashItem) => string;
 }) {
   if (!items.length) {
     return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
@@ -271,6 +314,10 @@ function TrashList({
   return (
     <div className="space-y-2">
       {items.map((item) => (
+        (() => {
+          const disabledReason = getDisabledReason?.(item) ?? "";
+          const isDisabled = Boolean(disabledReason);
+          return (
         <div
           key={item.id}
           className="flex items-center justify-between rounded-lg border px-3 py-2"
@@ -279,6 +326,11 @@ function TrashList({
             <p className="text-sm font-medium truncate">
               {item.name?.trim() || unnamedLabel}
             </p>
+            {disabledReason ? (
+              <p className="text-xs font-medium text-amber-600 truncate">
+                {disabledReason}
+              </p>
+            ) : null}
             {getMeta(item) ? (
               <p className="text-xs text-muted-foreground truncate">{getMeta(item)}</p>
             ) : null}
@@ -287,12 +339,14 @@ function TrashList({
             type="button"
             className="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs text-muted-foreground hover:bg-muted"
             onClick={() => onRestore(item.id)}
-            disabled={restoringId === item.id}
+            disabled={restoringId === item.id || isDisabled}
           >
             <Trash2 className="h-3 w-3" />
             {restoringId === item.id ? restoringLabel : restoreLabel}
           </button>
         </div>
+          );
+        })()
       ))}
     </div>
   );

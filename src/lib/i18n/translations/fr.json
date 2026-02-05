@@ -573,6 +573,7 @@
           "loadError": "Impossible de charger les éléments supprimés.",
           "restoreSuccess": "Élément restauré.",
           "restoreError": "Impossible de restaurer l'élément.",
+          "restoreParentFirst": "Restaurez d'abord le module parent.",
           "unnamed": "Sans nom"
         },
         "empty": {
@@ -585,6 +586,9 @@
           "deletedByAt": "Supprimé par {name} · {date}",
           "deletedBy": "Supprimé par {name}",
           "deletedAt": "Supprimé {date}"
+        },
+        "badges": {
+          "requiresModule": "Requiert le module restauré"
         }
       },
       "manual": {

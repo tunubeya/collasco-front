@@ -263,6 +263,9 @@ export type QaProjectLabel = {
   visibleToRoles: QaLabelRole[];
   readOnlyRoles: QaLabelRole[];
   defaultNotApplicable?: boolean;
+  deletedAt?: string | null;
+  deletedById?: string | null;
+  deletedBy?: { id: string; name?: string | null; email?: string | null } | null;
 };
 
 export type ProjectDocumentationLabelOption = {

@@ -573,6 +573,7 @@
           "loadError": "We konden de verwijderde items niet laden.",
           "restoreSuccess": "Item hersteld.",
           "restoreError": "We konden het item niet herstellen.",
+          "restoreParentFirst": "Herstel eerst de bovenliggende module.",
           "unnamed": "Naamloos"
         },
         "empty": {
@@ -585,6 +586,9 @@
           "deletedByAt": "Verwijderd door {name} · {date}",
           "deletedBy": "Verwijderd door {name}",
           "deletedAt": "Verwijderd {date}"
+        },
+        "badges": {
+          "requiresModule": "Vereist herstelde module"
         }
       },
       "manual": {

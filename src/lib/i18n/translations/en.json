@@ -575,6 +575,7 @@
           "loadError": "We couldn't load deleted items.",
           "restoreSuccess": "Item restored.",
           "restoreError": "We couldn't restore the item.",
+          "restoreParentFirst": "Restore the parent module first.",
           "unnamed": "Unnamed"
         },
         "empty": {
@@ -587,6 +588,9 @@
           "deletedByAt": "Deleted by {name} · {date}",
           "deletedBy": "Deleted by {name}",
           "deletedAt": "Deleted {date}"
+        },
+        "badges": {
+          "requiresModule": "Requires restored module"
         }
       },
       "manual": {

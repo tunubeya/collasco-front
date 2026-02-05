@@ -13,6 +13,9 @@ export type Module = {
   depth: number | null;
   createdAt: ISODateString;
   updatedAt: ISODateString;
+  deletedAt?: ISODateString | null;
+  deletedById?: string | null;
+  deletedBy?: { id: string; name?: string | null; email?: string | null } | null;
   lastModifiedById: string | null;
   publishedVersionId: string | null;
   childrens: Module[]|null;

@@ -297,48 +297,65 @@ function ManualNodeItem({
         ) : null}
       </button>
       {node.linkedFeatures?.length ? (
-        <div className="flex flex-wrap items-center gap-2 px-3 text-xs text-muted-foreground">
-          {node.linkedFeatures.map((linked) => {
-            const hasReason = Boolean(linked.reason && linked.reason.trim().length);
-            const reasonId = hasReason ? `reason-${node.id}-${linked.id}` : undefined;
-            const descriptor =
-              linked.direction === "referenced_by"
-                ? referencedByLabel
-                : referencesLabel;
-            return (
-              <div key={linked.id} className="relative">
-                <button
-                  type="button"
-                  className="rounded-full border border-border px-2 py-0.5 text-[11px] transition hover:border-primary hover:text-primary"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onNavigateTo?.(linked.id);
-                  }}
-                  onMouseEnter={() => {
-                    if (reasonId) {
-                      document.getElementById(reasonId)?.classList.remove("hidden");
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    if (reasonId) {
-                      document.getElementById(reasonId)?.classList.add("hidden");
-                    }
-                  }}
-                >
-                  <span className="font-semibold">{descriptor}</span>{" "}
-                  <span>{linked.name}</span>
-                </button>
-                {hasReason ? (
-                  <div
-                    id={reasonId}
-                    className="hidden absolute left-0 top-full z-10 mt-1 w-64 rounded-md border border-border bg-background p-2 text-[11px] text-muted-foreground shadow-lg"
-                  >
-                    {linked.reason}
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
+        <div className="px-3 text-xs text-muted-foreground">
+          {node.linkedFeatures.some((linked) => linked.direction !== "referenced_by") && (
+            <>
+              <p className="font-semibold">{referencesLabel}</p>
+              <ul className="mt-1 space-y-1">
+                {node.linkedFeatures
+                  .filter((linked) => linked.direction !== "referenced_by")
+                  .map((linked) => (
+                    <li key={`ref-${linked.id}`} className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground" />
+                      <button
+                        type="button"
+                        className="text-left hover:text-primary"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onNavigateTo?.(linked.id);
+                        }}
+                      >
+                        {linked.name}
+                      </button>
+                      {linked.reason ? (
+                        <span className="text-muted-foreground/80">
+                          — {linked.reason}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+              </ul>
+            </>
+          )}
+          {node.linkedFeatures.some((linked) => linked.direction === "referenced_by") && (
+            <>
+              <p className="mt-3 font-semibold">{referencedByLabel}</p>
+              <ul className="mt-1 space-y-1">
+                {node.linkedFeatures
+                  .filter((linked) => linked.direction === "referenced_by")
+                  .map((linked) => (
+                    <li key={`refby-${linked.id}`} className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground" />
+                      <button
+                        type="button"
+                        className="text-left hover:text-primary"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onNavigateTo?.(linked.id);
+                        }}
+                      >
+                        {linked.name}
+                      </button>
+                      {linked.reason ? (
+                        <span className="text-muted-foreground/80">
+                          — {linked.reason}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+              </ul>
+            </>
+          )}
         </div>
       ) : null}
       <div className="px-3">

@@ -36,6 +36,7 @@ type ManualOutlineProps = {
   collapseLabel: string;
   title?: string;
   className?: string;
+  hideRootTitle?: boolean;
   filterOptions?: Array<{ value: "all" | "content"; label: string }>;
   viewMode?: "all" | "content";
   onViewModeChange?: (mode: "all" | "content") => void;
@@ -72,6 +73,7 @@ export function ManualOutline({
   collapseLabel,
   title,
   className,
+  hideRootTitle = false,
   filterOptions,
   viewMode,
   onViewModeChange,
@@ -209,6 +211,7 @@ export function ManualOutline({
         rootId={root.id}
         onNavigateTo={handleNavigateTo}
         linkedLabel={resolvedLinkedLabels}
+        hideRootTitle={hideRootTitle}
       />
     </div>
   );
@@ -228,6 +231,7 @@ type ManualNodeItemProps = {
     references: string;
     referencedBy: string;
   };
+  hideRootTitle?: boolean;
 };
 
 function ManualNodeItem({
@@ -241,6 +245,7 @@ function ManualNodeItem({
   rootId,
   onNavigateTo,
   linkedLabel,
+  hideRootTitle = false,
 }: ManualNodeItemProps) {
   const hasChildren = node.children.length > 0;
   const isExpanded =
@@ -262,6 +267,36 @@ function ManualNodeItem({
       : numbering;
   const referencesLabel = linkedLabel?.references ?? "References";
   const referencedByLabel = linkedLabel?.referencedBy ?? "Referenced by";
+
+  if (hideRootTitle && level === 0) {
+    return (
+      <div className="space-y-2" id={getNodeDomId(node.id)}>
+        {hasChildren && isExpanded && (
+          <div className="space-y-4">
+            {node.children.map((child, index) => (
+              <ManualNodeItem
+                key={child.id}
+                node={child}
+                numbering={
+                  child.numbering && child.numbering.trim().length > 0
+                    ? child.numbering
+                    : `${index + 1}`
+                }
+                level={level}
+                expandedMap={expandedMap}
+                onToggle={onToggle}
+                fallbackDescription={fallbackDescription}
+                focusId={focusId}
+                rootId={rootId}
+                onNavigateTo={onNavigateTo}
+                linkedLabel={linkedLabel}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-2" id={getNodeDomId(node.id)}>

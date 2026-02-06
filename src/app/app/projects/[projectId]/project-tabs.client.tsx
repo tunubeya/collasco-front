@@ -182,7 +182,8 @@ export function ProjectTabs({
             collapseLabel={tProjectDetail("modules.collapseAll", {
               default: "Collapse all",
             })}
-            title={tTabs("manual")}
+            title={""}
+            hideProjectTitle
             canShareManual={canManageStructure}
           />
         </div>

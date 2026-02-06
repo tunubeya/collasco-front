@@ -234,7 +234,8 @@ export function FeatureTabs({
             collapseLabel={tProjectDetail("modules.collapseAll", {
               default: "Collapse all",
             })}
-            title={tTabs("manual")}
+            title={""}
+            hideProjectTitle
             canShareManual={canShareManual}
           />
         </div>

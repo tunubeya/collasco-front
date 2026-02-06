@@ -25,6 +25,7 @@ type ManualTabContentProps = {
   expandLabel: string;
   collapseLabel: string;
   title: string;
+  hideProjectTitle?: boolean;
   focusId?: string;
   subtreeRootId?: string;
   shareAction?: {
@@ -42,6 +43,7 @@ export function ManualTabContent({
   expandLabel,
   collapseLabel,
   title,
+  hideProjectTitle = false,
   focusId,
   subtreeRootId,
   shareAction,
@@ -211,6 +213,7 @@ export function ManualTabContent({
           onViewModeChange={setViewMode}
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
+          hideRootTitle={hideProjectTitle}
           shareAction={
             canShareManual
               ? {

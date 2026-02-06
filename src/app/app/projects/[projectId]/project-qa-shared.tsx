@@ -11,11 +11,13 @@ export function SummaryBadge({
   tone = "default",
 }: {
   label: string;
-  tone?: "default" | "success";
+  tone?: "default" | "success" | "danger";
 }) {
   const colors =
     tone === "success"
       ? "border-emerald-200 bg-emerald-100 text-emerald-800"
+      : tone === "danger"
+      ? "border-red-200 bg-red-100 text-red-800"
       : "border-muted bg-muted/60 text-foreground";
   return (
     <span className={cn("rounded-full border px-2 py-0.5 text-xs font-medium", colors)}>

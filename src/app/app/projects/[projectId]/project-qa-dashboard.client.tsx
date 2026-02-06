@@ -74,6 +74,12 @@ export function ProjectQaDashboard({
 
   const [metrics, setMetrics] = useState<QaDashboardMetrics | null>(null);
   const [isLoadingMetrics, setIsLoadingMetrics] = useState(true);
+  const [featureHealthSummary, setFeatureHealthSummary] = useState<{
+    passed: number;
+    failed: number;
+    missing: number;
+  } | null>(null);
+  const [isLoadingHealthSummary, setIsLoadingHealthSummary] = useState(false);
   const [detailState, setDetailState] = useState<DetailState>({
     type: null,
     items: [],
@@ -218,6 +224,58 @@ export function ProjectQaDashboard({
     [t]
   );
 
+  const summarizeFeatureHealth = useCallback(
+    (items: QaDashboardFeatureHealth[]) => {
+      let passed = 0;
+      let failed = 0;
+      let missing = 0;
+      items.forEach((feature) => {
+        const hasMissing = Boolean(feature.hasMissingTestCases);
+        const hasFailures =
+          typeof feature.failedTestCases === "number" &&
+          feature.failedTestCases > 0;
+        const hasFullPass =
+          !hasMissing &&
+          typeof feature.executedTestCases === "number" &&
+          feature.executedTestCases > 0 &&
+          !hasFailures;
+        if (hasMissing) missing += 1;
+        if (hasFailures) failed += 1;
+        if (hasFullPass) passed += 1;
+      });
+      return { passed, failed, missing };
+    },
+    [],
+  );
+
+  const loadFeatureHealthSummary = useCallback(async () => {
+    setIsLoadingHealthSummary(true);
+    try {
+      const pageSize = 200;
+      const maxPages = 5;
+      let page = 1;
+      let allItems: QaDashboardFeatureHealth[] = [];
+      let total = 0;
+      while (page <= maxPages) {
+        const result = await getProjectDashboardFeatureHealth(
+          token,
+          projectId,
+          page,
+          pageSize,
+        );
+        allItems = allItems.concat(result.items ?? []);
+        total = result.total ?? allItems.length;
+        if (allItems.length >= total || result.items.length === 0) break;
+        page += 1;
+      }
+      setFeatureHealthSummary(summarizeFeatureHealth(allItems));
+    } catch {
+      setFeatureHealthSummary(null);
+    } finally {
+      setIsLoadingHealthSummary(false);
+    }
+  }, [projectId, summarizeFeatureHealth, token]);
+
   const loadDashboard = useCallback(async () => {
     setIsLoadingMetrics(true);
     try {
@@ -229,6 +287,7 @@ export function ProjectQaDashboard({
           payload.metrics.featuresWithoutTestCases ??
           0,
       });
+      void loadFeatureHealthSummary();
     } catch (error) {
       toast.error(t("errors.load"), {
         description: error instanceof Error ? error.message : undefined,
@@ -237,7 +296,7 @@ export function ProjectQaDashboard({
     } finally {
       setIsLoadingMetrics(false);
     }
-  }, [projectId, t, token]);
+  }, [loadFeatureHealthSummary, projectId, t, token]);
 
   useEffect(() => {
     void loadDashboard();
@@ -423,6 +482,7 @@ export function ProjectQaDashboard({
       format?: (value: number | null | undefined) => string;
       detailType?: DashboardDetailType;
       slug?: string;
+      badges?: ReactNode;
     }> = [
       { key: "totalFeatures", label: t("metrics.totalFeatures") },
       {
@@ -442,6 +502,24 @@ export function ProjectQaDashboard({
         label: t("metrics.featuresWithRuns"),
         detailType: "featureHealth",
         slug: "with-runs",
+        badges:
+          !isLoadingHealthSummary && featureHealthSummary
+            ? (
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  <SummaryBadge
+                    label={`${t("featureHealth.labels.passed")}: ${featureHealthSummary.passed}`}
+                    tone="success"
+                  />
+                  <SummaryBadge
+                    label={`${t("featureHealth.labels.failed")}: ${featureHealthSummary.failed}`}
+                    tone="danger"
+                  />
+                  <SummaryBadge
+                    label={`${t("featureHealth.labels.missing")}: ${featureHealthSummary.missing}`}
+                  />
+                </div>
+              )
+            : null,
       },
       {
         key: "openRuns",
@@ -636,6 +714,7 @@ export function ProjectQaDashboard({
                 value={value}
                 href={detailHref}
                 ctaLabel={ctaLabel}
+                badges={metric.badges}
               />
             );
           })}
@@ -1570,11 +1649,13 @@ function DashboardMetricCard({
   value,
   href,
   ctaLabel,
+  badges,
 }: {
   label: string;
   value: string;
   href?: string;
   ctaLabel?: string;
+  badges?: ReactNode;
 }) {
   const content = (
     <>
@@ -1582,6 +1663,7 @@ function DashboardMetricCard({
         {label}
       </p>
       <p className="mt-3 text-2xl font-semibold">{value}</p>
+      {badges}
       {ctaLabel && (
         <span className="mt-2 inline-flex text-2xs font-medium text-primary">
           {ctaLabel}

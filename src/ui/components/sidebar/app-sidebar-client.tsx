@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FolderTree, Home, Settings } from 'lucide-react';
@@ -16,9 +17,11 @@ export type AppSidebarItem = {
 export default function AppSidebarClient({
   items,
   footerOnly = false,
+  footerExtra,
 }: {
   items?: AppSidebarItem[];
   footerOnly?: boolean;
+  footerExtra?: ReactNode;
 }) {
   const pathname = usePathname();
 
@@ -26,13 +29,10 @@ export default function AppSidebarClient({
 
   if (footerOnly) {
     return (
-      <div className="mt-auto space-y-2 px-2">
-        <div className="w-full">
-          <div className="w-full flex items-center gap-2 text-sm px-2 py-2 rounded-md
-                          hover:bg-[color:var(--color-cream-100)]
-                          text-[color:var(--color-foreground)]">
-            <LogoutButton />
-          </div>
+      <div className="mt-auto px-2">
+        <div className="w-full flex items-center justify-between gap-2 text-sm px-2 py-2 rounded-md text-[color:var(--color-foreground)]">
+          <LogoutButton />
+          {footerExtra}
         </div>
       </div>
     );

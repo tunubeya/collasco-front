@@ -11,16 +11,18 @@ type Props = {
   defaultValue: string;
   items: Array<{ value: string; label: string }>;
   label: string;
+  allowInApp?: boolean;
 };
 
 export default function LangSelectorClient({
   defaultValue,
   items,
-  label
+  label,
+  allowInApp = false
 }: Readonly<Props>) {
   const startTransition = useTransition()[1];
   const pathname = usePathname();
-  const shouldHide = pathname?.startsWith('/app');
+  const shouldHide = pathname?.startsWith('/app') && !allowInApp;
 
   function onChange(value: string) {
     const locale = value as Locale;

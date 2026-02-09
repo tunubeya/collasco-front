@@ -5,6 +5,7 @@ import ResponsiveMenu from '@/ui/components/navbar/responsive-menu';
 import { getSession } from '@/lib/session';
 import { fetchGetUserProfile } from '@/lib/data';
 import type { User } from '@/lib/model-definitions/user';
+import LangSelector from '@/ui/components/i18n/lang-selector';
 
 export default async function AppSidebar() {
   const t = await getTranslations('app.sidebar');
@@ -63,7 +64,10 @@ export default async function AppSidebar() {
         <AppSidebarClient items={items} />
 
         {/* Footer */}
-        <AppSidebarClient footerOnly />
+        <AppSidebarClient
+          footerOnly
+          footerExtra={<LangSelector allowInApp />}
+        />
       </aside>
 
       {/* Mobile Drawer trigger (usa tu ResponsiveMenu) */}
@@ -88,7 +92,10 @@ export default async function AppSidebar() {
             </div>
 
             <AppSidebarClient items={items} />
-            <AppSidebarClient footerOnly />
+            <div className="mt-3 space-y-3">
+              <LangSelector allowInApp />
+              <AppSidebarClient footerOnly />
+            </div>
           </div>
         </ResponsiveMenu>
       </div>

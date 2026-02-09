@@ -12,6 +12,7 @@ import {
   type QaDashboardFeatureMissingDescription,
   type QaDashboardFeatureWithoutTestCases,
   type QaDashboardFeatureHealth,
+  type QaDashboardMandatoryDocumentationMissing,
   type QaDashboardMetrics,
   type QaDashboardRunSummary,
   getProjectDashboard,
@@ -21,6 +22,7 @@ import {
   getProjectDashboardFeatureHealth,
   getProjectDashboardOpenRuns,
   getProjectDashboardRunsWithFullPass,
+  getProjectDashboardMandatoryDocumentationMissing,
 } from "@/lib/api/qa";
 import { cn, generatePagination } from "@/lib/utils";
 import { EmptyState, Skeleton, SummaryBadge } from "./project-qa-shared";
@@ -37,6 +39,7 @@ type ProjectQaDashboardProps = {
 export type DashboardDetailType =
   | "featuresMissingDescription"
   | "featuresWithoutTestCases"
+  | "mandatoryDocumentationMissing"
   | "featureCoverage"
   | "openRuns"
   | "runsWithFullPass"
@@ -53,7 +56,8 @@ type DetailState = {
   params?: Record<string, string>;
 };
 
-type MissingDescriptionTypeFilter = "ALL" | "FEATURE" | "MODULE";
+type MissingDescriptionTypeFilter = "ALL" | "FEATURE" | "MODULE" | "PROJECT";
+type MandatoryDocumentationTypeFilter = MissingDescriptionTypeFilter;
 
 const DETAIL_PAGE_SIZE = 10;
 
@@ -95,6 +99,8 @@ export function ProjectQaDashboard({
   >("asc");
   const [missingDescriptionType, setMissingDescriptionType] =
     useState<MissingDescriptionTypeFilter>("ALL");
+  const [mandatoryDocumentationType, setMandatoryDocumentationType] =
+    useState<MandatoryDocumentationTypeFilter>("ALL");
 
   const formatPercent = useCallback(
     (value: number | null | undefined) =>
@@ -143,6 +149,18 @@ export function ProjectQaDashboard({
           pageSize
         );
       },
+      mandatoryDocumentationMissing: (
+        page: number,
+        pageSize: number,
+        params?: Record<string, string>
+      ) =>
+        getProjectDashboardMandatoryDocumentationMissing(
+          token,
+          projectId,
+          page,
+          pageSize,
+          params ?? {}
+        ),
       featureCoverage: (
         page: number,
         pageSize: number,
@@ -199,6 +217,11 @@ export function ProjectQaDashboard({
         title: t("featuresWithoutTestCases.title"),
         description: t("featuresWithoutTestCases.description"),
         empty: t("featuresWithoutTestCases.empty"),
+      },
+      mandatoryDocumentationMissing: {
+        title: t("mandatoryDocumentationMissing.title"),
+        description: t("mandatoryDocumentationMissing.description"),
+        empty: t("mandatoryDocumentationMissing.empty"),
       },
       featureCoverage: {
         title: t("featureCoverage.title"),
@@ -378,6 +401,10 @@ export function ProjectQaDashboard({
         ? missingDescriptionType === "ALL"
           ? undefined
           : { type: missingDescriptionType }
+        : initialDetail === "mandatoryDocumentationMissing"
+        ? mandatoryDocumentationType === "ALL"
+          ? undefined
+          : { type: mandatoryDocumentationType }
         : undefined;
     const params = mergeDetailParams(initialDetail, override);
     void loadDetail(initialDetail, 1, params);
@@ -387,12 +414,22 @@ export function ProjectQaDashboard({
     loadDetail,
     mergeDetailParams,
     missingDescriptionType,
+    mandatoryDocumentationType,
   ]);
 
   useEffect(() => {
     const initialType = detailParams?.featuresMissingDescription?.type;
     if (initialType === "FEATURE" || initialType === "MODULE") {
       setMissingDescriptionType((prev) =>
+        prev === "ALL" ? initialType : prev
+      );
+    }
+  }, [detailParams]);
+
+  useEffect(() => {
+    const initialType = detailParams?.mandatoryDocumentationMissing?.type;
+    if (initialType === "FEATURE" || initialType === "MODULE" || initialType === "PROJECT") {
+      setMandatoryDocumentationType((prev) =>
         prev === "ALL" ? initialType : prev
       );
     }
@@ -434,6 +471,20 @@ export function ProjectQaDashboard({
     [loadDetail, mergeDetailParams]
   );
 
+  const handleMandatoryDocumentationFilterChange = useCallback(
+    (next: MandatoryDocumentationTypeFilter) => {
+      setMandatoryDocumentationType(next);
+      const override =
+        next === "ALL" ? { type: undefined } : { type: next };
+      const params = mergeDetailParams(
+        "mandatoryDocumentationMissing",
+        override
+      );
+      void loadDetail("mandatoryDocumentationMissing", 1, params);
+    },
+    [loadDetail, mergeDetailParams]
+  );
+
   const getFeatureHref = useCallback(
     (featureId: string) => `/app/projects/${projectId}/features/${featureId}`,
     [projectId]
@@ -454,10 +505,30 @@ export function ProjectQaDashboard({
     [t]
   );
 
+  const mandatoryDocumentationFilterLabels = useMemo(
+    () => ({
+      label: t("mandatoryDocumentationMissing.filter.label"),
+      all: t("mandatoryDocumentationMissing.filter.all"),
+      features: t("mandatoryDocumentationMissing.filter.features"),
+      modules: t("mandatoryDocumentationMissing.filter.modules"),
+      projects: t("mandatoryDocumentationMissing.filter.projects"),
+    }),
+    [t]
+  );
+
   const missingDescriptionEntityLabels = useMemo(
     () => ({
       FEATURE: t("missingDescription.entityType.FEATURE"),
       MODULE: t("missingDescription.entityType.MODULE"),
+    }),
+    [t]
+  );
+
+  const mandatoryDocumentationEntityLabels = useMemo(
+    () => ({
+      FEATURE: t("mandatoryDocumentationMissing.entityType.FEATURE"),
+      MODULE: t("mandatoryDocumentationMissing.entityType.MODULE"),
+      PROJECT: t("mandatoryDocumentationMissing.entityType.PROJECT"),
     }),
     [t]
   );
@@ -490,6 +561,12 @@ export function ProjectQaDashboard({
         label: t("metrics.featuresMissingDescription"),
         detailType: "featuresMissingDescription",
         slug: "no-description",
+      },
+      {
+        key: "entitiesMissingMandatoryDocumentation",
+        label: t("metrics.entitiesMissingMandatoryDocumentation"),
+        detailType: "mandatoryDocumentationMissing",
+        slug: "mandatory-missing",
       },
       {
         key: "featuresWithoutTestCases",
@@ -582,6 +659,23 @@ export function ProjectQaDashboard({
               getFeatureHref={getFeatureHref}
               openExternalLabel={openExternalLabel}
             />
+          );
+          break;
+        case "mandatoryDocumentationMissing":
+          detailContent = (
+            <>
+              <MandatoryDocumentationList
+                items={
+                  detailState.items as QaDashboardMandatoryDocumentationMissing[]
+                }
+                t={{
+                  missingLabels: t("mandatoryDocumentationMissing.labels.missing"),
+                }}
+                entityLabels={mandatoryDocumentationEntityLabels}
+                openExternalLabel={openExternalLabel}
+                getFeatureHref={getFeatureHref}
+              />
+            </>
           );
           break;
         case "featureCoverage": {
@@ -748,7 +842,7 @@ export function ProjectQaDashboard({
     ) : null;
 
   const detailSection = (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm">
+    <div className="rounded-2xl bg-card p-5 shadow-sm">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-semibold">
@@ -766,6 +860,14 @@ export function ProjectQaDashboard({
               labels={missingDescriptionFilterLabels}
               onChange={handleMissingDescriptionFilterChange}
             />
+          )}
+          {activeDetail === "mandatoryDocumentationMissing" && (
+              <MissingDescriptionFilter
+                value={mandatoryDocumentationType}
+                labels={mandatoryDocumentationFilterLabels}
+                onChange={handleMandatoryDocumentationFilterChange}
+                includeProjects
+              />
           )}
         </div>
         <div className="space-y-4">{detailContent}</div>
@@ -1356,6 +1458,82 @@ function MissingDescriptionList({
   );
 }
 
+function MandatoryDocumentationList({
+  items,
+  t,
+  entityLabels,
+  openExternalLabel,
+  getFeatureHref,
+}: {
+  items: QaDashboardMandatoryDocumentationMissing[];
+  t: {
+    missingLabels: string;
+  };
+  entityLabels: Record<string, string>;
+  openExternalLabel: string;
+  getFeatureHref?: (featureId: string) => string;
+}) {
+  return (
+    <ul className="space-y-3">
+      {items.map((entity) => {
+        const featureLink =
+          entity.entityType === "FEATURE" && getFeatureHref
+            ? getFeatureHref(entity.id)
+            : null;
+        const externalLink =
+          featureLink && openExternalLabel ? (
+            <Link
+              href={featureLink}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={openExternalLabel}
+              title={openExternalLabel}
+              className="text-muted-foreground transition hover:text-primary"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">{openExternalLabel}</span>
+            </Link>
+          ) : null;
+        return (
+          <li key={entity.id}>
+            <div className="rounded-xl border bg-background/70 px-4 py-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-sm font-semibold">{entity.name}</p>
+                    <span
+                      className={cn(
+                        "inline-flex rounded-full border px-2 py-0.5 text-2xs font-medium",
+                        entity.entityType === "FEATURE"
+                          ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                          : entity.entityType === "MODULE"
+                          ? "border-blue-200 bg-blue-50 text-blue-800"
+                          : "border-amber-200 bg-amber-50 text-amber-800"
+                      )}
+                    >
+                      {entityLabels[entity.entityType] ?? entity.entityType}
+                    </span>
+                    {externalLink}
+                  </div>
+                  <p className="text-[11px] text-blue-700">
+                    <span className="inline-flex rounded-md border border-blue-200 bg-blue-50/70 px-2 py-0.5">
+                      {t.missingLabels}:{" "}
+                      <span className="font-medium text-blue-900">
+                        {entity.missingLabels.map((label) => label.name).join(", ")}
+                      </span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 function RunList({
   runs,
   formatter,
@@ -1611,10 +1789,18 @@ function MissingDescriptionFilter({
   value,
   labels,
   onChange,
+  includeProjects = false,
 }: {
   value: MissingDescriptionTypeFilter;
-  labels: { label: string; all: string; features: string; modules: string };
+  labels: {
+    label: string;
+    all: string;
+    features: string;
+    modules: string;
+    projects?: string;
+  };
   onChange: (next: MissingDescriptionTypeFilter) => void;
+  includeProjects?: boolean;
 }) {
   const options: Array<{ value: MissingDescriptionTypeFilter; label: string }> =
     [

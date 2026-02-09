@@ -189,6 +189,7 @@ export type QaDashboardMetrics = {
   testCoverageRatio: number;
   openRuns: number;
   runsWithFullPass: number;
+  entitiesMissingMandatoryDocumentation?: number;
 };
 
 export type QaDescriptionEntityType = "FEATURE" | "MODULE";
@@ -197,6 +198,13 @@ export type QaDashboardFeatureMissingDescription = {
   id: string;
   name: string;
   entityType: QaDescriptionEntityType;
+};
+
+export type QaDashboardMandatoryDocumentationMissing = {
+  id: string;
+  name: string;
+  entityType: QaDescriptionEntityType | "PROJECT";
+  missingLabels: Array<{ id: string; name: string }>;
 };
 
 export type QaDashboardFeatureWithoutTestCases = {
@@ -1323,5 +1331,22 @@ export function getProjectDashboardRunsWithFullPass(
     "runs-with-full-pass",
     page,
     pageSize
+  );
+}
+
+export function getProjectDashboardMandatoryDocumentationMissing(
+  token: string,
+  projectId: string,
+  page: number,
+  pageSize: number,
+  params?: { type?: QaDescriptionEntityType | "PROJECT" }
+) {
+  return fetchProjectDashboardList<QaDashboardMandatoryDocumentationMissing>(
+    token,
+    projectId,
+    "mandatory-documentation-missing",
+    page,
+    pageSize,
+    params
   );
 }

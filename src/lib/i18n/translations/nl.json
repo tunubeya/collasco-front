@@ -1318,6 +1318,7 @@
         "metrics": {
           "totalFeatures": "Totaal aantal features",
           "featuresMissingDescription": "Ontbrekende beschrijving",
+          "entitiesMissingMandatoryDocumentation": "Verplichte docs ontbreken",
           "featuresWithoutTestCases": "Geen testcases",
           "featuresWithRuns": "Met runs",
           "testCoverageRatio": "Dekking",
@@ -1377,6 +1378,28 @@
           "entityType": {
             "FEATURE": "Feature",
             "MODULE": "Module"
+          }
+        },
+        "mandatoryDocumentationMissing": {
+          "title": "Verplichte documentatie ontbreekt",
+          "description": "Entiteiten met verplichte labels zonder inhoud.",
+          "empty": "Alle verplichte documentatie is compleet.",
+          "caption": "Vul de verplichte documentatie aan om verder te gaan.",
+          "filter": {
+            "label": "Weergeven",
+            "all": "Alle",
+            "features": "Features",
+            "modules": "Modules",
+            "projects": "Projecten"
+          },
+          "labels": {
+            "missing": "Ontbrekende labels",
+            "labelPrefix": "#"
+          },
+          "entityType": {
+            "FEATURE": "Feature",
+            "MODULE": "Module",
+            "PROJECT": "Project"
           }
         },
         "featuresWithoutTestCases": {

@@ -30,6 +30,11 @@ const VIEW_CONFIG: Record<
     titleKey: "featuresWithoutTestCases.title",
     descriptionKey: "featuresWithoutTestCases.description",
   },
+  "mandatory-missing": {
+    type: "mandatoryDocumentationMissing",
+    titleKey: "mandatoryDocumentationMissing.title",
+    descriptionKey: "mandatoryDocumentationMissing.description",
+  },
   "with-runs": {
     type: "featureHealth",
     titleKey: "metrics.featuresWithRuns",

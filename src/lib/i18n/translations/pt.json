@@ -1320,6 +1320,7 @@
         "metrics": {
           "totalFeatures": "Total de features",
           "featuresMissingDescription": "Descrição ausente",
+          "entitiesMissingMandatoryDocumentation": "Doc. obrigatória faltando",
           "featuresWithoutTestCases": "Sem casos de teste",
           "featuresWithRuns": "Com execuções",
           "testCoverageRatio": "Cobertura",
@@ -1379,6 +1380,28 @@
           "entityType": {
             "FEATURE": "Feature",
             "MODULE": "Módulo"
+          }
+        },
+        "mandatoryDocumentationMissing": {
+          "title": "Documentação obrigatória faltando",
+          "description": "Entidades com etiquetas obrigatórias sem conteúdo.",
+          "empty": "Toda a documentação obrigatória está completa.",
+          "caption": "Complete a documentação obrigatória para seguir.",
+          "filter": {
+            "label": "Mostrar",
+            "all": "Todos",
+            "features": "Features",
+            "modules": "Módulos",
+            "projects": "Projetos"
+          },
+          "labels": {
+            "missing": "Etiquetas faltantes",
+            "labelPrefix": "#"
+          },
+          "entityType": {
+            "FEATURE": "Feature",
+            "MODULE": "Módulo",
+            "PROJECT": "Projeto"
           }
         },
         "featuresWithoutTestCases": {

@@ -690,14 +690,14 @@
           "description": "Invite teammates to collaborate on this project."
         },
         "fields": {
-          "userId": "User ID",
+          "email": "Email",
           "role": "Role"
         },
         "placeholders": {
-          "userId": "usr_123456789"
+          "email": "user@mail.com"
         },
         "hints": {
-          "userId": "Paste the user's ID. They must already exist in the workspace."
+          "email": "Enter the user's email. They must already exist in the workspace."
         },
         "roles": {
           "owner": "Owner",
@@ -718,10 +718,10 @@
         },
         "addDialog": {
           "title": "Invite member",
-          "description": "Grant access by specifying the user ID and role."
+          "description": "Grant access by specifying the email and role."
         },
         "validation": {
-          "userId": "Please provide the user's ID."
+          "email": "Please provide the user's email."
         }
       },
       "labels": {

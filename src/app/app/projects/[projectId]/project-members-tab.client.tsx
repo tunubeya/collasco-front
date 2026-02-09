@@ -88,9 +88,9 @@ export function ProjectMembersTab({
   }, [members]);
 
   const handleAddMember = useCallback(
-    async (userId: string, role?: ProjectMemberRole) => {
+    async (email: string, role?: ProjectMemberRole) => {
       try {
-        await addProjectMember(token, projectId, { userId, role });
+        await addProjectMember(token, projectId, { email, role });
         toast.success(t("messages.added"));
         void fetchMembers();
       } catch (error) {
@@ -287,17 +287,17 @@ function AddMemberDialog({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (userId: string, role?: ProjectMemberRole) => Promise<void>;
+  onSubmit: (email: string, role?: ProjectMemberRole) => Promise<void>;
 }) {
   const t = useTranslations("app.projects.members");
-  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
   const [role, setRole] = useState<ProjectMemberRole>(ProjectMemberRole.DEVELOPER);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!open) {
-      setUserId("");
+      setEmail("");
       setRole(ProjectMemberRole.DEVELOPER);
       setError(null);
       setIsSubmitting(false);
@@ -305,20 +305,20 @@ function AddMemberDialog({
   }, [open]);
 
   const handleSubmit = useCallback(async () => {
-    if (!userId.trim()) {
-      setError(t("validation.userId"));
+    if (!email.trim()) {
+      setError(t("validation.email"));
       return;
     }
     setIsSubmitting(true);
     try {
-      await onSubmit(userId.trim(), role);
+      await onSubmit(email.trim(), role);
       onOpenChange(false);
     } catch {
       // handled upstream
     } finally {
       setIsSubmitting(false);
     }
-  }, [onSubmit, onOpenChange, role, t, userId]);
+  }, [email, onOpenChange, onSubmit, role, t]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLFormElement>) => {
@@ -350,16 +350,16 @@ function AddMemberDialog({
         >
           <div className="space-y-1.5">
             <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {t("fields.userId")}
+              {t("fields.email")}
             </label>
             <input
-              type="text"
-              value={userId}
-              onChange={(event) => setUserId(event.target.value)}
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder={t("placeholders.userId")}
+              placeholder={t("placeholders.email")}
             />
-            <p className="text-[11px] text-muted-foreground">{t("hints.userId")}</p>
+            <p className="text-[11px] text-muted-foreground">{t("hints.email")}</p>
           </div>
 
           <div className="space-y-1.5">

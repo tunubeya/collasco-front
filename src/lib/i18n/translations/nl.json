@@ -688,14 +688,14 @@
           "description": "Nodig je team uit om samen te werken aan dit project."
         },
         "fields": {
-          "userId": "Gebruikers-ID",
+          "email": "Email",
           "role": "Rol"
         },
         "placeholders": {
-          "userId": "usr_123456789"
+          "email": "user@mail.com"
         },
         "hints": {
-          "userId": "Vul het ID in van een gebruiker die al toegang heeft tot het platform."
+          "email": "Vul het e-mailadres in van een gebruiker die al toegang heeft tot het platform."
         },
         "roles": {
           "owner": "Eigenaar",
@@ -716,10 +716,10 @@
         },
         "addDialog": {
           "title": "Lid uitnodigen",
-          "description": "Geef het gebruikers-ID en de gewenste rol op."
+          "description": "Geef het e-mailadres en de gewenste rol op."
         },
         "validation": {
-          "userId": "Vul het gebruikers-ID in."
+          "email": "Vul het e-mailadres in."
         }
       },
       "labels": {

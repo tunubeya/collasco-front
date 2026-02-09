@@ -6,7 +6,7 @@ import { handleUnauthorized } from "@/lib/server-auth-helpers";
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export type AddProjectMemberDto = {
-  userId: string;
+  email: string;
   role?: ProjectMemberRole;
 };
 

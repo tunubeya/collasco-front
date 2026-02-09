@@ -688,14 +688,14 @@
           "description": "Invitez votre équipe pour collaborer sur ce projet."
         },
         "fields": {
-          "userId": "ID utilisateur",
+          "email": "Email",
           "role": "Rôle"
         },
         "placeholders": {
-          "userId": "usr_123456789"
+          "email": "user@mail.com"
         },
         "hints": {
-          "userId": "Renseignez l’ID d’un utilisateur déjà présent dans la plateforme."
+          "email": "Renseignez l’email d’un utilisateur déjà présent dans la plateforme."
         },
         "roles": {
           "owner": "Propriétaire",
@@ -716,10 +716,10 @@
         },
         "addDialog": {
           "title": "Inviter un membre",
-          "description": "Spécifiez l’ID de l’utilisateur et le rôle attribué."
+          "description": "Spécifiez l’email de l’utilisateur et le rôle attribué."
         },
         "validation": {
-          "userId": "Veuillez renseigner l’ID utilisateur."
+          "email": "Veuillez renseigner l’email de l’utilisateur."
         }
       },
       "labels": {

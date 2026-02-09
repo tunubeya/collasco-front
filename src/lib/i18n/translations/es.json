@@ -690,14 +690,14 @@
           "description": "Invita a tu equipo para colaborar en este proyecto."
         },
         "fields": {
-          "userId": "ID de usuario",
+          "email": "Email",
           "role": "Rol"
         },
         "placeholders": {
-          "userId": "usr_123456789"
+          "email": "user@mail.com"
         },
         "hints": {
-          "userId": "Pega el ID del usuario. Debe existir previamente en la plataforma."
+          "email": "Ingresa el email del usuario. Debe existir previamente en la plataforma."
         },
         "roles": {
           "owner": "Propietario",
@@ -718,10 +718,10 @@
         },
         "addDialog": {
           "title": "Invitar miembro",
-          "description": "Especifica el ID del usuario y el rol que tendrá."
+          "description": "Especifica el email del usuario y el rol que tendrá."
         },
         "validation": {
-          "userId": "Ingresa el ID del usuario."
+          "email": "Ingresa el email del usuario."
         }
       },
       "labels": {

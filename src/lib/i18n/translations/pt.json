@@ -690,14 +690,14 @@
           "description": "Convide sua equipe para colaborar neste projeto."
         },
         "fields": {
-          "userId": "ID do usuário",
+          "email": "Email",
           "role": "Papel"
         },
         "placeholders": {
-          "userId": "usr_123456789"
+          "email": "user@mail.com"
         },
         "hints": {
-          "userId": "Informe o ID do usuário já existente na plataforma."
+          "email": "Digite o email do usuário já existente na plataforma."
         },
         "roles": {
           "owner": "Proprietário",
@@ -718,10 +718,10 @@
         },
         "addDialog": {
           "title": "Convidar membro",
-          "description": "Informe o ID do usuário e o papel que ele terá."
+          "description": "Informe o email do usuário e o papel que ele terá."
         },
         "validation": {
-          "userId": "Informe o ID do usuário."
+          "email": "Informe o email do usuário."
         }
       },
       "labels": {

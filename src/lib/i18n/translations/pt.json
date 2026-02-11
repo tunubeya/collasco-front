@@ -826,6 +826,34 @@
           "markNotApplicable": "Marcar como N/A",
           "markApplicable": "Marcar como aplicável"
         },
+        "images": {
+          "toggle": "Mostrar imagens",
+          "title": "Anexar imagem",
+          "sectionTitle": "Imagens",
+          "tagHint": "Referencie uma imagem no texto usando [nome].",
+          "fields": {
+            "name": "Nome da imagem",
+            "file": "Arquivo"
+          },
+          "placeholders": {
+            "name": "fluxo-login"
+          },
+          "actions": {
+            "upload": "Enviar",
+            "delete": "Excluir"
+          },
+          "messages": {
+            "uploaded": "Imagem enviada.",
+            "uploadError": "Não foi possível enviar a imagem.",
+            "deleted": "Imagem excluída.",
+            "deleteError": "Não foi possível excluir a imagem."
+          },
+          "validation": {
+            "name": "Informe um nome para a imagem.",
+            "file": "Selecione uma imagem."
+          },
+          "loadError": "Não foi possível carregar as imagens."
+        },
         "validation": {
           "content": "Informe algum conteúdo ou marque como não aplicável."
         }

@@ -824,6 +824,34 @@
           "markNotApplicable": "Marquer comme N/A",
           "markApplicable": "Marquer comme applicable"
         },
+        "images": {
+          "toggle": "Afficher les images",
+          "title": "Joindre une image",
+          "sectionTitle": "Images",
+          "tagHint": "Référencez une image dans le texte avec [nom].",
+          "fields": {
+            "name": "Nom de l’image",
+            "file": "Fichier"
+          },
+          "placeholders": {
+            "name": "flux-login"
+          },
+          "actions": {
+            "upload": "Téléverser",
+            "delete": "Supprimer"
+          },
+          "messages": {
+            "uploaded": "Image téléversée.",
+            "uploadError": "Impossible de téléverser l’image.",
+            "deleted": "Image supprimée.",
+            "deleteError": "Impossible de supprimer l’image."
+          },
+          "validation": {
+            "name": "Renseignez un nom pour l’image.",
+            "file": "Sélectionnez une image."
+          },
+          "loadError": "Impossible de charger les images."
+        },
         "validation": {
           "content": "Saisissez du contenu ou marquez l’étiquette comme non applicable."
         }

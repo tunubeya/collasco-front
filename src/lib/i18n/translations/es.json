@@ -826,6 +826,34 @@
           "markNotApplicable": "Marcar como N/A",
           "markApplicable": "Volver a aplicar"
         },
+        "images": {
+          "toggle": "Mostrar imágenes",
+          "title": "Adjuntar imagen",
+          "sectionTitle": "Imágenes",
+          "tagHint": "Referencia una imagen en el texto usando [nombre].",
+          "fields": {
+            "name": "Nombre de imagen",
+            "file": "Archivo"
+          },
+          "placeholders": {
+            "name": "flujo-login"
+          },
+          "actions": {
+            "upload": "Subir",
+            "delete": "Eliminar"
+          },
+          "messages": {
+            "uploaded": "Imagen subida.",
+            "uploadError": "No pudimos subir la imagen.",
+            "deleted": "Imagen eliminada.",
+            "deleteError": "No pudimos eliminar la imagen."
+          },
+          "validation": {
+            "name": "Ingresa un nombre para la imagen.",
+            "file": "Selecciona una imagen."
+          },
+          "loadError": "No pudimos cargar las imágenes."
+        },
         "validation": {
           "content": "Ingresa contenido o marca la etiqueta como no aplicable."
         }

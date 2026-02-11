@@ -824,6 +824,34 @@
           "markNotApplicable": "Markeer als n.v.t.",
           "markApplicable": "Markeer als van toepassing"
         },
+        "images": {
+          "toggle": "Afbeeldingen tonen",
+          "title": "Afbeelding toevoegen",
+          "sectionTitle": "Afbeeldingen",
+          "tagHint": "Verwijs in de tekst naar een afbeelding met [naam].",
+          "fields": {
+            "name": "Afbeeldingsnaam",
+            "file": "Bestand"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Uploaden",
+            "delete": "Verwijderen"
+          },
+          "messages": {
+            "uploaded": "Afbeelding geüpload.",
+            "uploadError": "We konden de afbeelding niet uploaden.",
+            "deleted": "Afbeelding verwijderd.",
+            "deleteError": "We konden de afbeelding niet verwijderen."
+          },
+          "validation": {
+            "name": "Vul een naam in voor de afbeelding.",
+            "file": "Selecteer een afbeelding."
+          },
+          "loadError": "We konden de afbeeldingen niet laden."
+        },
         "validation": {
           "content": "Vul inhoud in of markeer het label als niet van toepassing."
         }

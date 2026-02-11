@@ -826,6 +826,34 @@
           "markNotApplicable": "Mark as N/A",
           "markApplicable": "Mark as applicable"
         },
+        "images": {
+          "toggle": "Show images",
+          "title": "Attach image",
+          "sectionTitle": "Images",
+          "tagHint": "Reference an image in the text using [name].",
+          "fields": {
+            "name": "Image name",
+            "file": "File"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Upload",
+            "delete": "Delete"
+          },
+          "messages": {
+            "uploaded": "Image uploaded.",
+            "uploadError": "We couldn't upload the image.",
+            "deleted": "Image deleted.",
+            "deleteError": "We couldn't delete the image."
+          },
+          "validation": {
+            "name": "Enter a name for the image.",
+            "file": "Select an image file."
+          },
+          "loadError": "We couldn't load the images."
+        },
         "validation": {
           "content": "Enter some content or mark it as not applicable."
         }

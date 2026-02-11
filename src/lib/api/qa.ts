@@ -309,6 +309,19 @@ export type QaDocumentationField = {
   updatedAt?: string | null;
 };
 
+export type DocumentationImage = {
+  id: string;
+  name: string;
+  url: string;
+  createdAt: string;
+  createdBy?: { id: string; name?: string | null; email?: string | null } | null;
+};
+
+export type DocumentationImagesByLabel = {
+  labelId: string;
+  images: DocumentationImage[];
+};
+
 export type QaDocumentationEntry = {
   label: QaProjectLabel;
   field: QaDocumentationField | null;
@@ -352,6 +365,79 @@ async function parseJsonResponse<T>(res: Response): Promise<T> {
     return (await res.json()) as T;
   }
   return {} as T;
+}
+
+function documentationEntityPath(entityType: "project" | "module" | "feature") {
+  if (entityType === "project") return "projects";
+  if (entityType === "module") return "modules";
+  return "features";
+}
+
+export async function listDocumentationImages(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  labelId?: string
+): Promise<DocumentationImagesByLabel[]> {
+  try {
+    const url = new URL(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/images`
+    );
+    if (labelId) url.searchParams.set("labelId", labelId);
+    const res = await fetchWithAuth(url.toString(), { method: "GET" }, token);
+    if (!res.ok) throw res;
+    const payload = await parseJsonResponse<{ items?: DocumentationImagesByLabel[] } | DocumentationImagesByLabel[]>(res);
+    if (Array.isArray(payload)) return payload;
+    return payload.items ?? [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function uploadDocumentationImage(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  labelId: string,
+  name: string,
+  file: File
+): Promise<DocumentationImage> {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/${labelId}/images`,
+      { method: "POST", body: formData },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<DocumentationImage>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function deleteDocumentationImage(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  imageId: string
+): Promise<{ ok: boolean }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/images/${imageId}`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<{ ok: boolean }>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
 }
 
 export async function listTestCases(

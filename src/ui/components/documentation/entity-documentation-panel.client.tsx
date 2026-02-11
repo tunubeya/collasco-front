@@ -5,6 +5,10 @@ import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   type QaDocumentationEntry,
+  type DocumentationImage,
+  listDocumentationImages,
+  uploadDocumentationImage,
+  deleteDocumentationImage,
   type UpdateQaDocumentationEntryDto,
   listFeatureDocumentation,
   listModuleDocumentation,
@@ -19,6 +23,7 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
+import { Switch } from "@/ui/components/form/switch";
 
 type EntityDocumentationPanelProps = {
   token: string;
@@ -45,6 +50,11 @@ export function EntityDocumentationPanel({
   const [draftContent, setDraftContent] = useState<string>("");
   const [savingLabelId, setSavingLabelId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showImages, setShowImages] = useState(false);
+  const [imagesByLabel, setImagesByLabel] = useState<Record<string, DocumentationImage[]>>({});
+  const [imageNameByLabel, setImageNameByLabel] = useState<Record<string, string>>({});
+  const [imageFileByLabel, setImageFileByLabel] = useState<Record<string, File | null>>({});
+  const [imageLoadingLabelId, setImageLoadingLabelId] = useState<string | null>(null);
   const toolbarLabels = useMemo(
     () => ({
       bold: tRichText("bold"),
@@ -109,6 +119,31 @@ export function EntityDocumentationPanel({
   useEffect(() => {
     void fetchLabelOptions();
   }, [fetchLabelOptions]);
+
+  const fetchImages = useCallback(
+    async (labelId?: string) => {
+      try {
+        const items = await listDocumentationImages(token, entityType, entityId, labelId);
+        setImagesByLabel((prev) => {
+          const next = { ...prev };
+          items.forEach((group) => {
+            next[group.labelId] = group.images ?? [];
+          });
+          return next;
+        });
+      } catch (err) {
+        toast.error(t("images.loadError"), {
+          description: err instanceof Error ? err.message : undefined,
+        });
+      }
+    },
+    [entityId, entityType, t, token],
+  );
+
+  useEffect(() => {
+    if (!showImages) return;
+    void fetchImages();
+  }, [fetchImages, showImages]);
 
   const displayEntries = useMemo(() => {
     if (!labelOptions.length) return entries;
@@ -232,11 +267,64 @@ export function EntityDocumentationPanel({
     [entityId, t, token, updater],
   );
 
+  const handleUploadImage = useCallback(
+    async (labelId: string) => {
+      const name = (imageNameByLabel[labelId] ?? "").trim();
+      const file = imageFileByLabel[labelId];
+      if (!name) {
+        toast.error(t("images.validation.name"));
+        return;
+      }
+      if (!file) {
+        toast.error(t("images.validation.file"));
+        return;
+      }
+      setImageLoadingLabelId(labelId);
+      try {
+        await uploadDocumentationImage(token, entityType, entityId, labelId, name, file);
+        toast.success(t("images.messages.uploaded"));
+        setImageNameByLabel((prev) => ({ ...prev, [labelId]: "" }));
+        setImageFileByLabel((prev) => ({ ...prev, [labelId]: null }));
+        setShowImages(true);
+        await fetchImages(labelId);
+      } catch (err) {
+        toast.error(t("images.messages.uploadError"), {
+          description: err instanceof Error ? err.message : undefined,
+        });
+      } finally {
+        setImageLoadingLabelId(null);
+      }
+    },
+    [entityId, entityType, fetchImages, imageFileByLabel, imageNameByLabel, t, token],
+  );
+
+  const handleDeleteImage = useCallback(
+    async (labelId: string, imageId: string) => {
+      try {
+        await deleteDocumentationImage(token, entityType, entityId, imageId);
+        toast.success(t("images.messages.deleted"));
+        await fetchImages(labelId);
+      } catch (err) {
+        toast.error(t("images.messages.deleteError"), {
+          description: err instanceof Error ? err.message : undefined,
+        });
+      }
+    },
+    [entityId, entityType, fetchImages, t, token],
+  );
+
   return (
     <section className="space-y-4 rounded-xl border bg-background p-4">
-      <div>
-        <h3 className="text-lg font-semibold">{t("title")}</h3>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-semibold">{t("title")}</h3>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+        </div>
+        <Switch
+          checked={showImages}
+          onChange={(event) => setShowImages(event.target.checked)}
+          label={t("images.toggle")}
+        />
       </div>
 
       {isLoading ? (
@@ -258,6 +346,7 @@ export function EntityDocumentationPanel({
             const isSaving = savingLabelId === entry.label.id;
             const isNotApplicable = Boolean(entry.field?.isNotApplicable);
             const isCompactNotApplicable = isNotApplicable && !isEditing;
+            const images = imagesByLabel[entry.label.id] ?? [];
             return (
               <article
                 key={entry.label.id}
@@ -360,6 +449,65 @@ export function EntityDocumentationPanel({
                               )}
                             </button>
                           </div>
+                          {entry.canEdit && (
+                            <div className="rounded-lg border border-dashed border-border bg-muted/20 p-3">
+                              <p className="text-xs font-semibold text-muted-foreground">
+                                {t("images.title")}
+                              </p>
+                              <p className="text-[11px] text-muted-foreground">
+                                {t("images.tagHint")}
+                              </p>
+                              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                                <div className="space-y-1">
+                                  <label className="text-xs font-medium text-muted-foreground">
+                                    {t("images.fields.name")}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={imageNameByLabel[entry.label.id] ?? ""}
+                                    onChange={(event) =>
+                                      setImageNameByLabel((prev) => ({
+                                        ...prev,
+                                        [entry.label.id]: event.target.value,
+                                      }))
+                                    }
+                                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                    placeholder={t("images.placeholders.name")}
+                                  />
+                                </div>
+                                <div className="space-y-1">
+                                  <label className="text-xs font-medium text-muted-foreground">
+                                    {t("images.fields.file")}
+                                  </label>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(event) =>
+                                      setImageFileByLabel((prev) => ({
+                                        ...prev,
+                                        [entry.label.id]: event.target.files?.[0] ?? null,
+                                      }))
+                                    }
+                                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-3 flex justify-end">
+                                <button
+                                  type="button"
+                                  className={actionButtonClass({ size: "xs" })}
+                                  onClick={() => void handleUploadImage(entry.label.id)}
+                                  disabled={imageLoadingLabelId === entry.label.id}
+                                >
+                                  {imageLoadingLabelId === entry.label.id ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                                  ) : (
+                                    t("images.actions.upload")
+                                  )}
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       ) : entry.field?.isNotApplicable ? (
                         <p className="text-xs italic text-muted-foreground">
@@ -373,6 +521,41 @@ export function EntityDocumentationPanel({
                         />
                       )}
                     </div>
+
+                    {showImages && images.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        <p className="text-xs font-semibold text-muted-foreground">
+                          {t("images.sectionTitle")}
+                        </p>
+                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                          {images.map((image) => (
+                            <div
+                              key={image.id}
+                              className="overflow-hidden rounded-lg border bg-background"
+                            >
+                              <img
+                                src={image.url}
+                                alt={image.name}
+                                className="h-32 w-full object-cover"
+                                loading="lazy"
+                              />
+                              <div className="flex items-center justify-between gap-2 px-2 py-1.5 text-xs">
+                                <span className="truncate font-medium">{image.name}</span>
+                                {entry.canEdit && (
+                                  <button
+                                    type="button"
+                                    className="text-muted-foreground hover:text-destructive"
+                                    onClick={() => void handleDeleteImage(entry.label.id, image.id)}
+                                  >
+                                    {t("images.actions.delete")}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {entry.canEdit && entry.field?.isNotApplicable && (
                       <div className="mt-3 flex gap-2">

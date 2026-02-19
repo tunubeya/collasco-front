@@ -862,12 +862,11 @@ export function ProjectQaDashboard({
             />
           )}
           {activeDetail === "mandatoryDocumentationMissing" && (
-              <MissingDescriptionFilter
-                value={mandatoryDocumentationType}
-                labels={mandatoryDocumentationFilterLabels}
-                onChange={handleMandatoryDocumentationFilterChange}
-                includeProjects
-              />
+            <MissingDescriptionFilter
+              value={mandatoryDocumentationType}
+              labels={mandatoryDocumentationFilterLabels}
+              onChange={handleMandatoryDocumentationFilterChange}
+            />
           )}
         </div>
         <div className="space-y-4">{detailContent}</div>
@@ -1789,7 +1788,6 @@ function MissingDescriptionFilter({
   value,
   labels,
   onChange,
-  includeProjects = false,
 }: {
   value: MissingDescriptionTypeFilter;
   labels: {
@@ -1797,10 +1795,8 @@ function MissingDescriptionFilter({
     all: string;
     features: string;
     modules: string;
-    projects?: string;
   };
   onChange: (next: MissingDescriptionTypeFilter) => void;
-  includeProjects?: boolean;
 }) {
   const options: Array<{ value: MissingDescriptionTypeFilter; label: string }> =
     [

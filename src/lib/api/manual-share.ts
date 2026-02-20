@@ -14,6 +14,7 @@ export type ManualShareLink = {
   projectId?: string;
   labelIds: string[];
   labels?: ManualShareLabel[];
+  comment?: string | null;
   createdAt: string;
   revokedAt?: string | null;
   isRevoked?: boolean;
@@ -29,13 +30,14 @@ export async function createManualShareLink(
   token: string,
   projectId: string,
   labelIds: string[],
+  comment?: string,
 ): Promise<CreateManualShareLinkResponse> {
   const res = await fetchWithAuth(
     `${apiUrl}/projects/${projectId}/manual/share-links`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ labelIds }),
+      body: JSON.stringify({ labelIds, comment: comment?.trim() || undefined }),
     },
     token,
   );

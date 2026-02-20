@@ -40,10 +40,12 @@ export function ManualShareDialog({
   const formatter = useFormatter();
   const [labels, setLabels] = useState<ProjectDocumentationLabelOption[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [comment, setComment] = useState("");
   const [links, setLinks] = useState<ManualShareLink[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [revokingId, setRevokingId] = useState<string | null>(null);
+  const [commentError, setCommentError] = useState<string | null>(null);
 
   const orderedLabels = useMemo(
     () => [...labels].sort((a, b) => a.displayOrder - b.displayOrder),
@@ -71,6 +73,8 @@ export function ManualShareDialog({
   useEffect(() => {
     if (open) {
       void loadData();
+      setComment("");
+      setCommentError(null);
     }
   }, [loadData, open]);
 
@@ -84,11 +88,17 @@ export function ManualShareDialog({
 
   const createLink = useCallback(async () => {
     if (selectedIds.length === 0 || isCreating) return;
+    if (comment.length > 500) {
+      setCommentError(tShare("commentError"));
+      return;
+    }
     setIsCreating(true);
     try {
-      await createManualShareLink(token, projectId, selectedIds);
+      await createManualShareLink(token, projectId, selectedIds, comment);
       toast.success(tShare("created"));
       setSelectedIds([]);
+      setComment("");
+      setCommentError(null);
       await loadData();
     } catch (error) {
       toast.error(tShare("createError"), {
@@ -97,7 +107,7 @@ export function ManualShareDialog({
     } finally {
       setIsCreating(false);
     }
-  }, [isCreating, loadData, projectId, selectedIds, tShare, token]);
+  }, [comment, isCreating, loadData, projectId, selectedIds, tShare, token]);
 
   const revokeLink = useCallback(
     async (linkId: string) => {
@@ -209,6 +219,27 @@ export function ManualShareDialog({
                   })}
                 </div>
               )}
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {tShare("commentLabel")}
+                </label>
+                <textarea
+                  value={comment}
+                  onChange={(event) => {
+                    setComment(event.target.value);
+                    if (commentError) setCommentError(null);
+                  }}
+                  rows={3}
+                  maxLength={500}
+                  placeholder={tShare("commentPlaceholder")}
+                  className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                  <span>{tShare("commentHint")}</span>
+                  <span>{comment.length}/500</span>
+                </div>
+                {commentError && <p className="text-xs text-red-600">{commentError}</p>}
+              </div>
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
@@ -261,6 +292,11 @@ export function ManualShareDialog({
                             <p className="text-xs text-muted-foreground">
                               {createdAt}
                             </p>
+                            {link.comment ? (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {link.comment}
+                              </p>
+                            ) : null}
                           </div>
                           <div className="flex items-center gap-2">
                             <button

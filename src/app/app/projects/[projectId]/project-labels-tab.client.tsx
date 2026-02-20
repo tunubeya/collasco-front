@@ -197,6 +197,7 @@ export function ProjectLabelsTab({
     };
     try {
       if (editingLabel) {
+        payload.defaultNotApplicable = formValues.isNotApplicableByDefault;
         await updateProjectLabel(token, projectId, editingLabel.id, payload);
         toast.success(t("messages.updated"));
       } else {
@@ -564,23 +565,21 @@ function LabelFormDialog({
             {t("fields.isMandatory")}
           </label>
 
-          {!isEditing && (
-            <label className="flex items-center gap-2 text-sm font-medium">
-              <input
-                type="checkbox"
-                checked={values.isNotApplicableByDefault}
-                onChange={(event) =>
-                  setValues({
-                    ...values,
-                    isNotApplicableByDefault: event.target.checked,
-                  })
-                }
-                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
-                disabled={!canManageLabels}
-              />
-              {t("fields.isNotApplicableByDefault")}
-            </label>
-          )}
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input
+              type="checkbox"
+              checked={values.isNotApplicableByDefault}
+              onChange={(event) =>
+                setValues({
+                  ...values,
+                  isNotApplicableByDefault: event.target.checked,
+                })
+              }
+              className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+              disabled={!canManageLabels}
+            />
+            {t("fields.isNotApplicableByDefault")}
+          </label>
 
           <RoleCheckboxGroup
             title={t("fields.visibleToRoles")}

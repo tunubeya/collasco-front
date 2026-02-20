@@ -1419,10 +1419,11 @@ export function TestRunPanel({
             run.targetTestCaseIds?.includes(testCase.id),
           )
         : undefined;
-    return buildCaseRows(run, initialAllowed);
+    return buildCaseRows(run, initialAllowed, {});
   });
   const [resultState, setResultState] = useState<Record<string, RunResultState>>(resultsToState(run));
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
+  const [missingCaseDetails, setMissingCaseDetails] = useState<Record<string, { steps?: string | null; expected?: string | null }>>({});
   const [isClosingRun, setIsClosingRun] = useState(false);
   const runStateRef = useRef<QaTestRunDetail>(run);
   const stableResultsRef = useRef<Record<string, RunResultState>>(resultsToState(run));
@@ -1445,7 +1446,8 @@ export function TestRunPanel({
             run.targetTestCaseIds?.includes(testCase.id),
           )
         : undefined;
-    setCaseRows(buildCaseRows(run, allowedMissing));
+    setMissingCaseDetails({});
+    setCaseRows(buildCaseRows(run, allowedMissing, {}));
     setCommentDrafts({});
   }, [run]);
 
@@ -1466,8 +1468,51 @@ export function TestRunPanel({
   }, [runState.coverage?.missingTestCases, targetCaseSet]);
 
   useEffect(() => {
-    setCaseRows(buildCaseRows(runState, filteredMissingCases));
-  }, [filteredMissingCases, runState]);
+    setCaseRows(buildCaseRows(runState, filteredMissingCases, missingCaseDetails));
+  }, [filteredMissingCases, missingCaseDetails, runState]);
+
+  useEffect(() => {
+    if (!filteredMissingCases.length) return;
+    let isMounted = true;
+    const missingByFeature = filteredMissingCases.reduce<Record<string, string[]>>((acc, testCase) => {
+      if (!acc[testCase.featureId]) {
+        acc[testCase.featureId] = [];
+      }
+      acc[testCase.featureId].push(testCase.id);
+      return acc;
+    }, {});
+    const missingIds = new Set(filteredMissingCases.map((testCase) => testCase.id));
+
+    (async () => {
+      const updates: Record<string, { steps?: string | null; expected?: string | null }> = {};
+      for (const [featureId, ids] of Object.entries(missingByFeature)) {
+        const needsFetch = ids.some((id) => !(id in missingCaseDetails));
+        if (!needsFetch) continue;
+        try {
+          const cases = await listTestCases(token, featureId);
+          cases.forEach((testCase) => {
+            if (missingIds.has(testCase.id)) {
+              updates[testCase.id] = {
+                steps: testCase.steps ?? null,
+                expected: testCase.expected ?? null,
+              };
+            }
+          });
+        } catch (error) {
+          toast.error(t("errors.load"), {
+            description: error instanceof Error ? error.message : undefined,
+          });
+        }
+      }
+      if (isMounted && Object.keys(updates).length) {
+        setMissingCaseDetails((prev) => ({ ...prev, ...updates }));
+      }
+    })();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [filteredMissingCases, missingCaseDetails, t, token]);
 
   useEffect(() => {
     resultStateRef.current = resultState;
@@ -2038,6 +2083,7 @@ function resultsToState(run: QaTestRunDetail): Record<string, RunResultState> {
 function buildCaseRows(
   run: QaTestRunDetail,
   allowedMissing?: QaRunCoverage["missingTestCases"],
+  missingDetails?: Record<string, { steps?: string | null; expected?: string | null }>,
 ): RunCaseRow[] {
   const seen = new Set<string>();
   const rows: RunCaseRow[] = [];
@@ -2056,11 +2102,12 @@ function buildCaseRows(
   for (const testCase of missing) {
     if (seen.has(testCase.id)) continue;
     seen.add(testCase.id);
+    const details = missingDetails?.[testCase.id];
     rows.push({
       testCaseId: testCase.id,
       name: testCase.name,
-      steps: null,
-      expected: null,
+      steps: details?.steps ?? null,
+      expected: details?.expected ?? null,
       featureName: testCase.featureName,
     });
   }

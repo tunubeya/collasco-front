@@ -682,7 +682,6 @@ export function ProjectQaDashboard({
                   missingLabels: t("mandatoryDocumentationMissing.labels.missing"),
                 }}
                 entityLabels={mandatoryDocumentationEntityLabels}
-                openExternalLabel={openExternalLabel}
                 getFeatureHref={getFeatureHref}
                 getModuleHref={getModuleHref}
                 getProjectHref={getProjectHref}
@@ -1473,7 +1472,6 @@ function MandatoryDocumentationList({
   items,
   t,
   entityLabels,
-  openExternalLabel,
   getFeatureHref,
   getModuleHref,
   getProjectHref,
@@ -1483,7 +1481,6 @@ function MandatoryDocumentationList({
     missingLabels: string;
   };
   entityLabels: Record<string, string>;
-  openExternalLabel: string;
   getFeatureHref?: (featureId: string) => string;
   getModuleHref?: (moduleId: string) => string;
   getProjectHref?: () => string;

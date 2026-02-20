@@ -490,6 +490,16 @@ export function ProjectQaDashboard({
     [projectId]
   );
 
+  const getModuleHref = useCallback(
+    (moduleId: string) => `/app/projects/${projectId}/modules/${moduleId}`,
+    [projectId]
+  );
+
+  const getProjectHref = useCallback(
+    () => `/app/projects/${projectId}`,
+    [projectId]
+  );
+
   const getRunHref = useCallback(
     (runId: string) => `/app/projects/${projectId}/test-runs/${runId}`,
     [projectId]
@@ -674,6 +684,8 @@ export function ProjectQaDashboard({
                 entityLabels={mandatoryDocumentationEntityLabels}
                 openExternalLabel={openExternalLabel}
                 getFeatureHref={getFeatureHref}
+                getModuleHref={getModuleHref}
+                getProjectHref={getProjectHref}
               />
             </>
           );
@@ -1463,6 +1475,8 @@ function MandatoryDocumentationList({
   entityLabels,
   openExternalLabel,
   getFeatureHref,
+  getModuleHref,
+  getProjectHref,
 }: {
   items: QaDashboardMandatoryDocumentationMissing[];
   t: {
@@ -1471,65 +1485,80 @@ function MandatoryDocumentationList({
   entityLabels: Record<string, string>;
   openExternalLabel: string;
   getFeatureHref?: (featureId: string) => string;
+  getModuleHref?: (moduleId: string) => string;
+  getProjectHref?: () => string;
 }) {
   return (
     <ul className="space-y-3">
       {items.map((entity) => {
-        const featureLink =
-          entity.entityType === "FEATURE" && getFeatureHref
-            ? getFeatureHref(entity.id)
-            : null;
-        const externalLink =
-          featureLink && openExternalLabel ? (
-            <Link
-              href={featureLink}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={openExternalLabel}
-              title={openExternalLabel}
-              className="text-muted-foreground transition hover:text-primary"
-              onClick={(event) => event.stopPropagation()}
-            >
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              <span className="sr-only">{openExternalLabel}</span>
-            </Link>
-          ) : null;
+        const entityHref =
+          entity.entityType === "FEATURE"
+            ? getFeatureHref?.(entity.id)
+            : entity.entityType === "MODULE"
+            ? getModuleHref?.(entity.id)
+            : getProjectHref?.();
         return (
           <li key={entity.id}>
-            <div className="rounded-xl border bg-background/70 px-4 py-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <p className="text-sm font-semibold">{entity.name}</p>
-                    <span
-                      className={cn(
-                        "inline-flex rounded-full border px-2 py-0.5 text-2xs font-medium",
-                        entity.entityType === "FEATURE"
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                          : entity.entityType === "MODULE"
-                          ? "border-blue-200 bg-blue-50 text-blue-800"
-                          : "border-amber-200 bg-amber-50 text-amber-800"
-                      )}
-                    >
-                      {entityLabels[entity.entityType] ?? entity.entityType}
-                    </span>
-                    {externalLink}
-                  </div>
-                  <p className="text-[11px] text-blue-700">
-                    <span className="inline-flex rounded-md border border-blue-200 bg-blue-50/70 px-2 py-0.5">
-                      {t.missingLabels}:{" "}
-                      <span className="font-medium text-blue-900">
-                        {entity.missingLabels.map((label) => label.name).join(", ")}
-                      </span>
-                    </span>
-                  </p>
-                </div>
+            {entityHref ? (
+              <Link
+                href={entityHref}
+                className="block rounded-xl border bg-background/70 px-4 py-3 transition hover:border-primary"
+              >
+                <MandatoryDocumentationRow
+                  entity={entity}
+                  entityLabels={entityLabels}
+                  t={t}
+                />
+              </Link>
+            ) : (
+              <div className="rounded-xl border bg-background/70 px-4 py-3">
+                <MandatoryDocumentationRow
+                  entity={entity}
+                  entityLabels={entityLabels}
+                  t={t}
+                />
               </div>
-            </div>
+            )}
           </li>
         );
       })}
     </ul>
+  );
+}
+
+function MandatoryDocumentationRow({
+  entity,
+  entityLabels,
+  t,
+}: {
+  entity: QaDashboardMandatoryDocumentationMissing;
+  entityLabels: Record<string, string>;
+  t: { missingLabels: string };
+}) {
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5">
+        <p className="text-sm font-semibold">{entity.name}</p>
+        <span
+          className={cn(
+            "inline-flex rounded-full border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+            entity.entityType === "FEATURE"
+              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+              : entity.entityType === "MODULE"
+              ? "border-blue-200 bg-blue-50 text-blue-700"
+              : "border-amber-200 bg-amber-50 text-amber-700"
+          )}
+        >
+          {entityLabels[entity.entityType] ?? entity.entityType}
+        </span>
+      </div>
+      <p className="text-2xs text-muted-foreground">
+        {t.missingLabels}:{" "}
+        <span className="font-medium text-foreground">
+          {entity.missingLabels.map((label) => label.name).join(", ")}
+        </span>
+      </p>
+    </div>
   );
 }
 

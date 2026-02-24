@@ -237,6 +237,8 @@ export function FeatureTabs({
             title={""}
             hideProjectTitle
             canShareManual={canShareManual}
+            shareRootType="FEATURE"
+            shareRootId={feature.id}
           />
         </div>
       )}

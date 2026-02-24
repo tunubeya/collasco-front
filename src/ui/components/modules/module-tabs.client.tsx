@@ -127,6 +127,8 @@ export function ModuleTabs({
             })}
             title={manualLabel}
             canShareManual={canManageStructure}
+            shareRootType="MODULE"
+            shareRootId={module.id}
           />
         </div>
       )}

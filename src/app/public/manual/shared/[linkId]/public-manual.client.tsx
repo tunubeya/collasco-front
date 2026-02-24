@@ -12,6 +12,7 @@ import { fetchPublicManual, PublicManualError } from "@/lib/api/public-manual";
 import {
   ManualOutline,
   buildProjectManualTree,
+  findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
 import { cn } from "@/lib/utils";
 import { locales } from "@/lib/i18n/config";
@@ -92,6 +93,8 @@ export function PublicManualClient({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"content" | "all">("content");
+  const [rootType, setRootType] = useState<"PROJECT" | "MODULE" | "FEATURE" | null>(null);
+  const [rootId, setRootId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!localeParam) return;
@@ -131,17 +134,21 @@ export function PublicManualClient({
       setResolvedProjectId(payload.projectId ?? null);
       setModules(payload.modules ?? []);
       setProjectDocumentationLabels(payload.documentationLabels ?? null);
+      setRootType(payload.rootType ?? "PROJECT");
+      setRootId(payload.rootId ?? null);
       const fromPayload =
-        payload.documentationLabels ??
-        collectLabelsFromModules(payload.modules ?? []);
+        payload.documentationLabels && payload.documentationLabels.length > 0
+          ? payload.documentationLabels
+          : collectLabelsFromModules(payload.modules ?? []);
       setAvailableLabels(fromPayload);
 
       if (labelIdsFromUrl.length > 0) {
         try {
           const allowed = await fetchPublicManual({ linkId });
           const allowedLabels =
-            allowed.documentationLabels ??
-            collectLabelsFromModules(allowed.modules ?? []);
+            allowed.documentationLabels && allowed.documentationLabels.length > 0
+              ? allowed.documentationLabels
+              : collectLabelsFromModules(allowed.modules ?? []);
           if (allowedLabels.length > 0) {
             setAvailableLabels(allowedLabels);
           }
@@ -288,6 +295,14 @@ export function PublicManualClient({
     viewMode,
   ]);
 
+  const outlineRoot = useMemo(() => {
+    if (!manualTree) return null;
+    if (rootType && rootType !== "PROJECT" && rootId) {
+      return findManualNode(manualTree, rootId) ?? manualTree;
+    }
+    return manualTree;
+  }, [manualTree, rootId, rootType]);
+
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10">
       {isLoading && (
@@ -361,9 +376,9 @@ export function PublicManualClient({
         </section>
       )}
 
-      {!isLoading && !error && manualTree && (
+      {!isLoading && !error && outlineRoot && (
         <ManualOutline
-          root={manualTree}
+          root={outlineRoot}
           fallbackDescription={tManual("noDescription")}
           expandLabel={tProjectDetail("modules.expandAll", {
             default: "Expand all",

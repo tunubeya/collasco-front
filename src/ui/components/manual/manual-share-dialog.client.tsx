@@ -6,6 +6,7 @@ import { Loader2, Link2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import type { ProjectDocumentationLabelOption } from "@/lib/api/qa";
+import type { ProjectStructureResponse, StructureModuleNode } from "@/lib/definitions";
 import { listProjectDocumentationLabels } from "@/lib/api/qa";
 import {
   createManualShareLink,
@@ -13,6 +14,7 @@ import {
   revokeManualShareLink,
   type ManualShareLink,
 } from "@/lib/api/manual-share";
+import { fetchWithAuth } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -27,13 +29,24 @@ type ManualShareDialogProps = {
   projectId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialRootType?: RootType;
+  initialRootId?: string | null;
+  lockRoot?: boolean;
 };
+
+type RootType = "PROJECT" | "MODULE" | "FEATURE";
+type RootOption = { id: string; name: string; path: string };
+
+const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export function ManualShareDialog({
   token,
   projectId,
   open,
   onOpenChange,
+  initialRootType = "PROJECT",
+  initialRootId,
+  lockRoot = true,
 }: ManualShareDialogProps) {
   const tManual = useTranslations("app.projects.manual");
   const tShare = useTranslations("app.projects.manual.share");
@@ -46,21 +59,76 @@ export function ManualShareDialog({
   const [isCreating, setIsCreating] = useState(false);
   const [revokingId, setRevokingId] = useState<string | null>(null);
   const [commentError, setCommentError] = useState<string | null>(null);
+  const [rootType, setRootType] = useState<RootType>(initialRootType);
+  const [rootId, setRootId] = useState("");
+  const [rootError, setRootError] = useState<string | null>(null);
+  const [moduleOptions, setModuleOptions] = useState<RootOption[]>([]);
+  const [featureOptions, setFeatureOptions] = useState<RootOption[]>([]);
 
   const orderedLabels = useMemo(
     () => [...labels].sort((a, b) => a.displayOrder - b.displayOrder),
     [labels],
   );
 
+  const moduleNameById = useMemo(
+    () => new Map(moduleOptions.map((option) => [option.id, option.path])),
+    [moduleOptions],
+  );
+  const featureNameById = useMemo(
+    () => new Map(featureOptions.map((option) => [option.id, option.path])),
+    [featureOptions],
+  );
+
+  const buildModuleOptions = useCallback((nodes: StructureModuleNode[]) => {
+    const options: RootOption[] = [];
+    const walk = (node: StructureModuleNode, prefix: string[]) => {
+      const path = [...prefix, node.name].join(" / ");
+      options.push({ id: node.id, name: node.name, path });
+      node.items
+        .filter((item): item is StructureModuleNode => item.type === "module")
+        .forEach((child) => walk(child, [...prefix, node.name]));
+    };
+    nodes.forEach((node) => walk(node, []));
+    return options;
+  }, []);
+
+  const buildFeatureOptions = useCallback((nodes: StructureModuleNode[]) => {
+    const options: RootOption[] = [];
+    const walk = (node: StructureModuleNode, prefix: string[]) => {
+      const modulePath = [...prefix, node.name];
+      node.items.forEach((item) => {
+        if (item.type === "feature") {
+          const path = [...modulePath, item.name].join(" / ");
+          options.push({ id: item.id, name: item.name, path });
+        } else {
+          walk(item, modulePath);
+        }
+      });
+    };
+    nodes.forEach((node) => walk(node, []));
+    return options;
+  }, []);
+
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [labelOptions, linkResponse] = await Promise.all([
+      const [labelOptions, linkResponse, structureRes] = await Promise.all([
         listProjectDocumentationLabels(token, projectId),
         listManualShareLinks(token, projectId),
+        fetchWithAuth(
+          `${apiUrl}/projects/${projectId}/structure?limit=2000&sort=sortOrder`,
+          { method: "GET" },
+          token,
+        ),
       ]);
       setLabels(labelOptions ?? []);
       setLinks(linkResponse.items ?? []);
+      if (structureRes.ok) {
+        const payload = (await structureRes.json()) as ProjectStructureResponse;
+        const modules = payload.modules ?? [];
+        setModuleOptions(buildModuleOptions(modules));
+        setFeatureOptions(buildFeatureOptions(modules));
+      }
     } catch (error) {
       toast.error(tShare("loadError"), {
         description: error instanceof Error ? error.message : undefined,
@@ -73,10 +141,13 @@ export function ManualShareDialog({
   useEffect(() => {
     if (open) {
       void loadData();
+      setRootType(initialRootType);
+      setRootId(initialRootType === "PROJECT" ? "" : initialRootId ?? "");
+      setRootError(null);
       setComment("");
       setCommentError(null);
     }
-  }, [loadData, open]);
+  }, [initialRootId, initialRootType, loadData, open]);
 
   const toggleLabel = useCallback((labelId: string) => {
     setSelectedIds((prev) =>
@@ -92,13 +163,27 @@ export function ManualShareDialog({
       setCommentError(tShare("commentError"));
       return;
     }
+    if (rootType !== "PROJECT" && !rootId) {
+      setRootError(tShare("rootError"));
+      return;
+    }
     setIsCreating(true);
     try {
-      await createManualShareLink(token, projectId, selectedIds, comment);
+      await createManualShareLink(
+        token,
+        projectId,
+        selectedIds,
+        comment,
+        rootType,
+        rootType === "PROJECT" ? undefined : rootId,
+      );
       toast.success(tShare("created"));
       setSelectedIds([]);
       setComment("");
       setCommentError(null);
+      setRootType(initialRootType);
+      setRootId(initialRootType === "PROJECT" ? "" : initialRootId ?? "");
+      setRootError(null);
       await loadData();
     } catch (error) {
       toast.error(tShare("createError"), {
@@ -182,6 +267,44 @@ export function ManualShareDialog({
                 <p className="text-xs text-muted-foreground">
                   {tShare("labelsHint")}
                 </p>
+              </div>
+              <div className="rounded-md border border-border/70 bg-muted/10 px-3 py-2">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="font-semibold uppercase tracking-wide text-muted-foreground">
+                    {tShare("rootTitle")}
+                  </span>
+                  <span className="text-muted-foreground">
+                    {tShare("rootHint")}
+                  </span>
+                </div>
+                <div className="mt-1 text-sm">
+                  {rootType === "PROJECT"
+                    ? tShare("rootLabelProject")
+                    : rootType === "MODULE"
+                    ? tShare("rootLabelModule", {
+                        name:
+                          (rootId && moduleNameById.get(rootId)) ??
+                          tShare("rootUnknown"),
+                      })
+                    : tShare("rootLabelFeature", {
+                        name:
+                          (rootId && featureNameById.get(rootId)) ??
+                          tShare("rootUnknown"),
+                      })}
+                </div>
+                {!lockRoot && rootType === "MODULE" && moduleOptions.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">
+                    {tShare("rootEmptyModules")}
+                  </p>
+                ) : null}
+                {!lockRoot && rootType === "FEATURE" && featureOptions.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">
+                    {tShare("rootEmptyFeatures")}
+                  </p>
+                ) : null}
+                {rootError ? (
+                  <p className="text-xs text-red-600">{rootError}</p>
+                ) : null}
               </div>
               {orderedLabels.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
@@ -274,6 +397,20 @@ export function ManualShareDialog({
                       dateStyle: "medium",
                       timeStyle: "short",
                     });
+                    const rootTypeValue = link.rootType ?? "PROJECT";
+                    let rootScope = tShare("rootLabelProject");
+                    if (rootTypeValue === "MODULE") {
+                      const name =
+                        (link.rootId && moduleNameById.get(link.rootId)) ??
+                        tShare("rootUnknown");
+                      rootScope = tShare("rootLabelModule", { name });
+                    }
+                    if (rootTypeValue === "FEATURE") {
+                      const name =
+                        (link.rootId && featureNameById.get(link.rootId)) ??
+                        tShare("rootUnknown");
+                      rootScope = tShare("rootLabelFeature", { name });
+                    }
                     return (
                       <div
                         key={link.id}
@@ -291,6 +428,9 @@ export function ManualShareDialog({
                             </p>
                             <p className="text-xs text-muted-foreground">
                               {createdAt}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {tShare("rootLabel", { scope: rootScope })}
                             </p>
                             {link.comment ? (
                               <p className="mt-1 text-xs text-muted-foreground">

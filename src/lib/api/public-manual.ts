@@ -10,6 +10,8 @@ export type PublicManualResponse = ProjectStructureResponse & {
   };
   projectName?: string;
   name?: string;
+  rootType?: "PROJECT" | "MODULE" | "FEATURE";
+  rootId?: string | null;
 };
 
 export class PublicManualError extends Error {

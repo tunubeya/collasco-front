@@ -886,7 +886,8 @@
           },
           "validation": {
             "name": "Vul een naam in voor de afbeelding.",
-            "file": "Selecteer een afbeelding."
+            "file": "Selecteer een afbeelding.",
+            "fileTooLarge": "De afbeelding moet 2MB of kleiner zijn."
           },
           "loadError": "We konden de afbeeldingen niet laden."
         },

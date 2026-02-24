@@ -279,6 +279,10 @@ export function EntityDocumentationPanel({
         toast.error(t("images.validation.file"));
         return;
       }
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error(t("images.validation.fileTooLarge"));
+        return;
+      }
       setImageLoadingLabelId(labelId);
       try {
         await uploadDocumentationImage(token, entityType, entityId, labelId, name, file);

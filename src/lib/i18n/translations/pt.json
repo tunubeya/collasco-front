@@ -888,7 +888,8 @@
           },
           "validation": {
             "name": "Informe um nome para a imagem.",
-            "file": "Selecione uma imagem."
+            "file": "Selecione uma imagem.",
+            "fileTooLarge": "A imagem deve ter 2MB ou menos."
           },
           "loadError": "Não foi possível carregar as imagens."
         },

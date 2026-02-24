@@ -421,8 +421,12 @@
     },
     "home": {
       "title": "Bem-vindo de volta, {role} 👋",
-      "subtitle": "Este é o seu espaço principal. Daqui você pode gerenciar seus {projects} e {settings}.",
+      "subtitlePrefix": "Este é o seu espaço principal. Daqui você pode gerenciar seus",
+      "subtitleBetween": "e",
+      "subtitleSuffix": ".",
       "roleFallback": "Usuário",
+      "projectsInline": "projetos",
+      "settingsInline": "configurações",
       "projects": {
         "title": "📂 Projetos",
         "description": "Veja, organize e gerencie seus projetos e módulos."

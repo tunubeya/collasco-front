@@ -21,10 +21,11 @@ export default async function AppHome() {
         {t("title", { role: roleLabel })}
       </h1>
       <p className="text-muted-foreground">
-        {t.rich("subtitle", {
-          projects: (chunks) => <span className="font-medium">{chunks}</span>,
-          settings: (chunks) => <span className="font-medium">{chunks}</span>,
-        })}
+        {t("subtitlePrefix")}{" "}
+        <span className="font-medium">{t("projectsInline")}</span>{" "}
+        {t("subtitleBetween")}{" "}
+        <span className="font-medium">{t("settingsInline")}</span>
+        {t("subtitleSuffix")}
       </p>
 
       <div className="grid md:grid-cols-2 gap-6 mt-8">

@@ -419,8 +419,12 @@
     },
     "home": {
       "title": "Welkom terug, {role} 👋",
-      "subtitle": "Dit is je hoofdwerkruimte. Vanuit hier kun je je {projects} en {settings} beheren.",
+      "subtitlePrefix": "Dit is je hoofdwerkruimte. Vanuit hier kun je je",
+      "subtitleBetween": "en",
+      "subtitleSuffix": "beheren.",
       "roleFallback": "Gebruiker",
+      "projectsInline": "projecten",
+      "settingsInline": "instellingen",
       "projects": {
         "title": "📂 Projecten",
         "description": "Bekijk, organiseer en beheer je projecten en modules."

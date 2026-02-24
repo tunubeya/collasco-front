@@ -421,8 +421,12 @@
     },
     "home": {
       "title": "Welcome back, {role} 👋",
-      "subtitle": "This is your main workspace. From here you can manage your {projects} and {settings}.",
+      "subtitlePrefix": "This is your main workspace. From here you can manage your",
+      "subtitleBetween": "and",
+      "subtitleSuffix": ".",
       "roleFallback": "User",
+      "projectsInline": "projects",
+      "settingsInline": "settings",
       "projects": {
         "title": "📂 Projects",
         "description": "View, organize and manage your projects and modules."

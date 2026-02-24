@@ -879,6 +879,7 @@
           },
           "messages": {
             "uploaded": "Afbeelding geüpload.",
+            "duplicateName": "Er bestaat al een afbeelding met deze naam voor dit label. Kies een andere naam.",
             "uploadError": "We konden de afbeelding niet uploaden.",
             "deleted": "Afbeelding verwijderd.",
             "deleteError": "We konden de afbeelding niet verwijderen."

@@ -881,6 +881,7 @@
           },
           "messages": {
             "uploaded": "Image uploaded.",
+            "duplicateName": "An image with that name already exists for this label. Please choose a different name.",
             "uploadError": "We couldn't upload the image.",
             "deleted": "Image deleted.",
             "deleteError": "We couldn't delete the image."

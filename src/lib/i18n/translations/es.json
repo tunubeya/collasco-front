@@ -881,6 +881,7 @@
           },
           "messages": {
             "uploaded": "Imagen subida.",
+            "duplicateName": "Ya existe una imagen con ese nombre para este label. Cambia el nombre.",
             "uploadError": "No pudimos subir la imagen.",
             "deleted": "Imagen eliminada.",
             "deleteError": "No pudimos eliminar la imagen."

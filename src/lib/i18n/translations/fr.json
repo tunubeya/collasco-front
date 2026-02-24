@@ -879,6 +879,7 @@
           },
           "messages": {
             "uploaded": "Image téléversée.",
+            "duplicateName": "Une image avec ce nom existe déjà pour ce label. Choisissez un autre nom.",
             "uploadError": "Impossible de téléverser l’image.",
             "deleted": "Image supprimée.",
             "deleteError": "Impossible de supprimer l’image."

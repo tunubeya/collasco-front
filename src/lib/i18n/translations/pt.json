@@ -881,6 +881,7 @@
           },
           "messages": {
             "uploaded": "Imagem enviada.",
+            "duplicateName": "Já existe uma imagem com esse nome para este rótulo. Escolha outro nome.",
             "uploadError": "Não foi possível enviar a imagem.",
             "deleted": "Imagem excluída.",
             "deleteError": "Não foi possível excluir a imagem."

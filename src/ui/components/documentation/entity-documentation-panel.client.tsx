@@ -288,9 +288,42 @@ export function EntityDocumentationPanel({
         setShowImages(true);
         await fetchImages(labelId);
       } catch (err) {
-        toast.error(t("images.messages.uploadError"), {
-          description: err instanceof Error ? err.message : undefined,
-        });
+        let description: string | undefined;
+        let isDuplicate = false;
+        if (err instanceof Response) {
+          const contentType = err.headers.get("content-type") ?? "";
+          let message = "";
+          try {
+            if (contentType.includes("application/json")) {
+              const data = (await err.json()) as { message?: string; error?: string };
+              message = data?.message ?? data?.error ?? "";
+            } else {
+              message = (await err.text()).trim();
+            }
+          } catch {
+            message = "";
+          }
+          const normalized = message.toLowerCase();
+          isDuplicate =
+            err.status === 409 ||
+            normalized.includes("already exists") ||
+            normalized.includes("duplicate") ||
+            normalized.includes("unique");
+          description = message || undefined;
+        } else if (err instanceof Error) {
+          const normalized = err.message.toLowerCase();
+          isDuplicate =
+            normalized.includes("already exists") ||
+            normalized.includes("duplicate") ||
+            normalized.includes("unique");
+          description = err.message;
+        }
+
+        if (isDuplicate) {
+          toast.error(t("images.messages.duplicateName"));
+        } else {
+          toast.error(t("images.messages.uploadError"), { description });
+        }
       } finally {
         setImageLoadingLabelId(null);
       }
@@ -536,7 +569,7 @@ export function EntityDocumentationPanel({
                               <img
                                 src={image.url}
                                 alt={image.name}
-                                className="h-32 w-full object-cover"
+                                className="h-32 w-full object-contain"
                                 loading="lazy"
                               />
                               <div className="flex items-center justify-between gap-2 px-2 py-1.5 text-xs">

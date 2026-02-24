@@ -419,6 +419,19 @@
         "dashboard": "Dashboard"
       }
     },
+    "home": {
+      "title": "Welcome back, {role} 👋",
+      "subtitle": "This is your main workspace. From here you can manage your {projects} and {settings}.",
+      "roleFallback": "User",
+      "projects": {
+        "title": "📂 Projects",
+        "description": "View, organize and manage your projects and modules."
+      },
+      "settings": {
+        "title": "⚙️ Settings",
+        "description": "Update your profile, password and API preferences."
+      }
+    },
     "settings": {
       "nav": {
         "profile": "Profile",
@@ -593,7 +606,7 @@
           "requiresModule": "Requires restored module"
         }
       },
-      "manual": {
+    "manual": {
         "noDescription": "No description available.",
         "labelsNavbar": {
           "title": "Manual preferences",
@@ -681,11 +694,11 @@
     "loading": "Loading manual...",
     "publicNotFound": "This link doesn't exist or has been revoked.",
     "publicRevoked": "This link was revoked and no longer has access.",
-    "publicForbidden": "You don't have access to this manual.",
-    "error": "We couldn't load the manual.",
-    "retry": "Retry"
-  },
-      "members": {
+      "publicForbidden": "You don't have access to this manual.",
+      "error": "We couldn't load the manual.",
+      "retry": "Retry"
+    },
+    "members": {
         "title": "Project members",
         "subtitle": "Invite collaborators, adjust roles, and manage access.",
         "actions": {

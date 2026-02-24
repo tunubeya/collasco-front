@@ -419,6 +419,19 @@
         "dashboard": "Dashboard"
       }
     },
+    "home": {
+      "title": "Bienvenido de nuevo, {role} 👋",
+      "subtitle": "Este es tu espacio principal. Desde aquí puedes gestionar tus {projects} y {settings}.",
+      "roleFallback": "Usuario",
+      "projects": {
+        "title": "📂 Proyectos",
+        "description": "Consulta, organiza y gestiona tus proyectos y módulos."
+      },
+      "settings": {
+        "title": "⚙️ Configuración",
+        "description": "Actualiza tu perfil, contraseña y preferencias de API."
+      }
+    },
     "settings": {
       "nav": {
         "profile": "Perfil",
@@ -593,7 +606,7 @@
           "requiresModule": "Requiere módulo restaurado"
         }
       },
-      "manual": {
+    "manual": {
         "noDescription": "Sin descripción disponible.",
         "labelsNavbar": {
           "title": "Preferencias del manual",
@@ -685,7 +698,7 @@
     "error": "No pudimos cargar el manual.",
     "retry": "Reintentar"
   },
-      "members": {
+    "members": {
         "title": "Miembros del proyecto",
         "subtitle": "Gestiona quién tiene acceso al proyecto y qué rol cumple.",
         "actions": {

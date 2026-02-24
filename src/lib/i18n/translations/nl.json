@@ -417,6 +417,19 @@
         "dashboard": "Dashboard"
       }
     },
+    "home": {
+      "title": "Welkom terug, {role} 👋",
+      "subtitle": "Dit is je hoofdwerkruimte. Vanuit hier kun je je {projects} en {settings} beheren.",
+      "roleFallback": "Gebruiker",
+      "projects": {
+        "title": "📂 Projecten",
+        "description": "Bekijk, organiseer en beheer je projecten en modules."
+      },
+      "settings": {
+        "title": "⚙️ Instellingen",
+        "description": "Werk je profiel, wachtwoord en API-voorkeuren bij."
+      }
+    },
     "settings": {
       "nav": {
         "profile": "Profiel",

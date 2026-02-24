@@ -419,6 +419,19 @@
         "dashboard": "Dashboard"
       }
     },
+    "home": {
+      "title": "Bem-vindo de volta, {role} 👋",
+      "subtitle": "Este é o seu espaço principal. Daqui você pode gerenciar seus {projects} e {settings}.",
+      "roleFallback": "Usuário",
+      "projects": {
+        "title": "📂 Projetos",
+        "description": "Veja, organize e gerencie seus projetos e módulos."
+      },
+      "settings": {
+        "title": "⚙️ Configurações",
+        "description": "Atualize seu perfil, senha e preferências de API."
+      }
+    },
     "settings": {
       "nav": {
         "profile": "Perfil",

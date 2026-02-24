@@ -417,6 +417,19 @@
         "dashboard": "Tableau de bord"
       }
     },
+    "home": {
+      "title": "Bon retour, {role} 👋",
+      "subtitle": "Voici votre espace principal. D'ici, vous pouvez gérer vos {projects} et {settings}.",
+      "roleFallback": "Utilisateur",
+      "projects": {
+        "title": "📂 Projets",
+        "description": "Consultez, organisez et gérez vos projets et modules."
+      },
+      "settings": {
+        "title": "⚙️ Paramètres",
+        "description": "Mettez à jour votre profil, mot de passe et préférences API."
+      }
+    },
     "settings": {
       "nav": {
         "profile": "Profil",

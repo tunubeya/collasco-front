@@ -55,6 +55,7 @@ export function sanitizeRichTextClient(value: string): string {
     "ul",
     "ol",
     "li",
+    "img",
   ]);
 
   const walk = (node: Node) => {
@@ -68,8 +69,26 @@ export function sanitizeRichTextClient(value: string): string {
         element.replaceWith(fragment);
         return;
       }
-      while (element.attributes.length > 0) {
-        element.removeAttribute(element.attributes[0].name);
+      if (element.tagName.toLowerCase() === "img") {
+        const src = element.getAttribute("src") ?? "";
+        if (!isSafeImageSrc(src)) {
+          element.remove();
+          return;
+        }
+        const alt = element.getAttribute("alt");
+        const title = element.getAttribute("title");
+        Array.from(element.attributes).forEach((attr) => {
+          const name = attr.name.toLowerCase();
+          if (name !== "src" && name !== "alt" && name !== "title") {
+            element.removeAttribute(attr.name);
+          }
+        });
+        if (alt === null) element.setAttribute("alt", "");
+        if (title === null) element.removeAttribute("title");
+      } else {
+        while (element.attributes.length > 0) {
+          element.removeAttribute(element.attributes[0].name);
+        }
       }
     } else if (node.nodeType === Node.COMMENT_NODE) {
       node.parentNode?.removeChild(node);
@@ -138,4 +157,9 @@ function convertLeadingWhitespace(value: string): string {
     .map((char) => (char === "\t" ? "\u00a0".repeat(4) : "\u00a0"))
     .join("");
   return `${breaks}${nbsp}${value.slice(match[0].length)}`;
+}
+
+function isSafeImageSrc(src: string): boolean {
+  if (!src) return false;
+  return /^https?:\/\//i.test(src);
 }

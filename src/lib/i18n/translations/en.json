@@ -549,6 +549,7 @@
         "tabs": {
           "structure": "Structure",
           "documentation": "Documentation",
+          "images": "Images",
           "dashboard": "Dashboard",
           "qa": "Test runs",
           "members": "Members",
@@ -608,6 +609,33 @@
         },
         "badges": {
           "requiresModule": "Requires restored module"
+        }
+      },
+      "images": {
+        "title": "Project images",
+        "subtitle": "All documentation images grouped by label.",
+        "actions": {
+          "reload": "Reload",
+          "loading": "Loading...",
+          "viewEntity": "View item"
+        },
+        "messages": {
+          "loading": "Loading images...",
+          "empty": "No images available yet.",
+          "loadError": "We couldn't load the images."
+        },
+        "labels": {
+          "unknown": "Unknown label",
+          "count": "{count, plural, one {# image} other {# images}}"
+        },
+        "meta": {
+          "createdByAt": "Uploaded by {name} · {date}",
+          "createdAt": "Uploaded {date}"
+        },
+        "entity": {
+          "project": "Project",
+          "module": "Module",
+          "feature": "Feature"
         }
       },
     "manual": {

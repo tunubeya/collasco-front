@@ -547,6 +547,7 @@
         "tabs": {
           "structure": "Structuur",
           "documentation": "Documentatie",
+          "images": "Afbeeldingen",
           "dashboard": "Dashboard",
           "qa": "QA-runs",
           "members": "Leden",
@@ -606,6 +607,33 @@
         },
         "badges": {
           "requiresModule": "Vereist herstelde module"
+        }
+      },
+      "images": {
+        "title": "Projectafbeeldingen",
+        "subtitle": "Alle documentatie-afbeeldingen gegroepeerd per label.",
+        "actions": {
+          "reload": "Herladen",
+          "loading": "Bezig...",
+          "viewEntity": "Bekijk item"
+        },
+        "messages": {
+          "loading": "Afbeeldingen laden...",
+          "empty": "Nog geen afbeeldingen.",
+          "loadError": "We konden de afbeeldingen niet laden."
+        },
+        "labels": {
+          "unknown": "Onbekend label",
+          "count": "{count, plural, one {# afbeelding} other {# afbeeldingen}}"
+        },
+        "meta": {
+          "createdByAt": "Geüpload door {name} · {date}",
+          "createdAt": "Geüpload {date}"
+        },
+        "entity": {
+          "project": "Project",
+          "module": "Module",
+          "feature": "Feature"
         }
       },
       "manual": {

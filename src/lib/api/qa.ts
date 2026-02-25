@@ -322,6 +322,18 @@ export type DocumentationImagesByLabel = {
   images: DocumentationImage[];
 };
 
+export type ProjectDocumentationImage = DocumentationImage & {
+  entityType: "PROJECT" | "MODULE" | "FEATURE";
+  entityId: string;
+};
+
+export type ProjectDocumentationImagesAllResponse = {
+  items: Array<{
+    labelId: string;
+    images: ProjectDocumentationImage[];
+  }>;
+};
+
 export type QaDocumentationEntry = {
   label: QaProjectLabel;
   field: QaDocumentationField | null;
@@ -389,6 +401,27 @@ export async function listDocumentationImages(
     const payload = await parseJsonResponse<{ items?: DocumentationImagesByLabel[] } | DocumentationImagesByLabel[]>(res);
     if (Array.isArray(payload)) return payload;
     return payload.items ?? [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listProjectDocumentationImagesAll(
+  token: string,
+  projectId: string,
+  labelId?: string
+): Promise<ProjectDocumentationImagesAllResponse> {
+  try {
+    const url = new URL(
+      `${apiUrl}/qa/projects/${projectId}/documentation/images/all`
+    );
+    if (labelId) {
+      url.searchParams.set("labelId", labelId);
+    }
+    const res = await fetchWithAuth(url.toString(), { method: "GET" }, token);
+    if (!res.ok) throw res;
+    return await parseJsonResponse<ProjectDocumentationImagesAllResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

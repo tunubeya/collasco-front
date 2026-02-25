@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -8,7 +8,11 @@ import { useTranslations } from "next-intl";
 import { ProjectStatus, Visibility } from "@/lib/definitions";
 import type { StructureDocumentationLabel, StructureModuleNode } from "@/lib/definitions";
 import type { Project } from "@/lib/model-definitions/project";
-import { fetchPublicManual, PublicManualError } from "@/lib/api/public-manual";
+import {
+  fetchPublicManual,
+  fetchPublicManualImages,
+  PublicManualError,
+} from "@/lib/api/public-manual";
 import {
   ManualOutline,
   buildProjectManualTree,
@@ -95,6 +99,8 @@ export function PublicManualClient({
   const [viewMode, setViewMode] = useState<"content" | "all">("content");
   const [rootType, setRootType] = useState<"PROJECT" | "MODULE" | "FEATURE" | null>(null);
   const [rootId, setRootId] = useState<string | null>(null);
+  const imagesCacheRef = useRef<Record<string, string> | null>(null);
+  const imagesPromiseRef = useRef<Promise<Record<string, string>> | null>(null);
 
   useEffect(() => {
     if (!localeParam) return;
@@ -391,6 +397,32 @@ export function PublicManualClient({
           onViewModeChange={setViewMode}
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
+          imageLoader={async () => {
+            if (imagesCacheRef.current) return imagesCacheRef.current;
+            if (imagesPromiseRef.current) return imagesPromiseRef.current;
+            const promise = fetchPublicManualImages(linkId)
+              .then((payload) => {
+                const map: Record<string, string> = {};
+                payload.items.forEach((group) => {
+                  group.images.forEach((image) => {
+                    map[image.name] = image.url;
+                    map[image.name.toLowerCase()] = image.url;
+                  });
+                });
+                imagesCacheRef.current = map;
+                return map;
+              })
+              .catch((err) => {
+                console.warn("Failed to load public manual images", err);
+                imagesCacheRef.current = {};
+                return {};
+              })
+              .finally(() => {
+                imagesPromiseRef.current = null;
+              });
+            imagesPromiseRef.current = promise;
+            return promise;
+          }}
         />
       )}
     </main>

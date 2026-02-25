@@ -555,6 +555,16 @@ export function EntityDocumentationPanel({
                           value={entry.field?.content ?? ""}
                           emptyLabel={t("states.empty")}
                           className="text-muted-foreground"
+                          imageMap={
+                            showImages
+                              ? Object.fromEntries(
+                                  (images ?? []).map((image) => [
+                                    image.name,
+                                    image.url,
+                                  ]),
+                                )
+                              : undefined
+                          }
                         />
                       )}
                     </div>

@@ -19,6 +19,7 @@ import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.clie
 import { ProjectLabelsTab } from "./project-labels-tab.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 import { ProjectTrashTab } from "./project-trash-tab.client";
+import { ProjectImagesTab } from "./project-images-tab.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -33,6 +34,7 @@ type ProjectTabsProps = {
 type ProjectTab =
   | "structure"
   | "documentation"
+  | "images"
   | "qa"
   | "members"
   | "labels"
@@ -76,6 +78,11 @@ export function ProjectTabs({
           label={tTabs("documentation")}
           isActive={activeTab === "documentation"}
           onClick={() => setActiveTab("documentation")}
+        />
+        <TabButton
+          label={tTabs("images")}
+          isActive={activeTab === "images"}
+          onClick={() => setActiveTab("images")}
         />
         <TabButton
           label={tTabs("qa")}
@@ -148,6 +155,10 @@ export function ProjectTabs({
           entityType="project"
           projectId={projectId}
         />
+      )}
+
+      {activeTab === "images" && (
+        <ProjectImagesTab token={token} projectId={projectId} />
       )}
       {activeTab === "members" && (
         <ProjectMembersTab

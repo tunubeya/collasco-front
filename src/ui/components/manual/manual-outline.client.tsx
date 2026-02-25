@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronRight, Share2 } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
@@ -49,6 +49,10 @@ type ManualOutlineProps = {
     label: string;
     onClick: () => void;
   };
+  imageLoader?: (
+    entityType: "project" | "module" | "feature",
+    entityId: string
+  ) => Promise<Record<string, string>>;
 };
 
 const TITLE_CLASSES = [
@@ -80,6 +84,7 @@ export function ManualOutline({
   filterLabel,
   linkedLabel,
   shareAction,
+  imageLoader,
 }: ManualOutlineProps) {
   const focusPath = useMemo(() => {
     if (!focusId) return [];
@@ -97,6 +102,20 @@ export function ManualOutline({
   }, [root.id, focusPath]);
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>(defaultExpanded);
+  const imageCacheRef = useRef(new Map<string, Record<string, string>>());
+
+  const resolveImages = useCallback(
+    async (entityType: "project" | "module" | "feature", entityId: string) => {
+      if (!imageLoader) return null;
+      const key = `${entityType}:${entityId}`;
+      const cached = imageCacheRef.current.get(key);
+      if (cached) return cached;
+      const map = await imageLoader(entityType, entityId);
+      imageCacheRef.current.set(key, map);
+      return map;
+    },
+    [imageLoader],
+  );
 
   useEffect(() => {
     setExpanded(defaultExpanded);
@@ -212,6 +231,7 @@ export function ManualOutline({
         onNavigateTo={handleNavigateTo}
         linkedLabel={resolvedLinkedLabels}
         hideRootTitle={hideRootTitle}
+        imageResolver={resolveImages}
       />
     </div>
   );
@@ -232,6 +252,10 @@ type ManualNodeItemProps = {
     referencedBy: string;
   };
   hideRootTitle?: boolean;
+  imageResolver?: (
+    entityType: "project" | "module" | "feature",
+    entityId: string
+  ) => Promise<Record<string, string> | null>;
 };
 
 function ManualNodeItem({
@@ -246,6 +270,7 @@ function ManualNodeItem({
   onNavigateTo,
   linkedLabel,
   hideRootTitle = false,
+  imageResolver,
 }: ManualNodeItemProps) {
   const hasChildren = node.children.length > 0;
   const isExpanded =
@@ -260,6 +285,11 @@ function ManualNodeItem({
     node.description && node.description.trim().length > 0
       ? node.description
       : null;
+  const [imageMap, setImageMap] = useState<Record<string, string> | null>(null);
+  const hasImageTokens =
+    typeof richTextValue === "string" &&
+    richTextValue.includes("[") &&
+    richTextValue.includes("]");
   const isFocused = focusId === node.id;
   const currentNumbering =
     node.numbering && node.numbering.trim().length > 0
@@ -267,6 +297,18 @@ function ManualNodeItem({
       : numbering;
   const referencesLabel = linkedLabel?.references ?? "References";
   const referencedByLabel = linkedLabel?.referencedBy ?? "Referenced by";
+
+  useEffect(() => {
+    let isActive = true;
+    if (!imageResolver || !hasImageTokens) return;
+    void imageResolver(node.type, node.id).then((map) => {
+      if (!isActive) return;
+      setImageMap(map);
+    });
+    return () => {
+      isActive = false;
+    };
+  }, [hasImageTokens, imageResolver, node.id, node.type]);
 
   if (hideRootTitle && level === 0) {
     return (
@@ -290,6 +332,7 @@ function ManualNodeItem({
                 rootId={rootId}
                 onNavigateTo={onNavigateTo}
                 linkedLabel={linkedLabel}
+                imageResolver={imageResolver}
               />
             ))}
           </div>
@@ -398,6 +441,7 @@ function ManualNodeItem({
           value={richTextValue}
           emptyLabel={fallbackDescription}
           className={cn(descriptionClass)}
+          imageMap={imageMap ?? undefined}
         />
       </div>
       {hasChildren && isExpanded && (
@@ -419,6 +463,7 @@ function ManualNodeItem({
               rootId={rootId}
               onNavigateTo={onNavigateTo}
               linkedLabel={linkedLabel}
+              imageResolver={imageResolver}
             />
           ))}
         </div>

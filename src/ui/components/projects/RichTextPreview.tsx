@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo} from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import {
   normalizeRichTextInput,
@@ -11,19 +11,22 @@ type RichTextPreviewProps = {
   value?: string | null;
   emptyLabel: string;
   className?: string;
+  imageMap?: Record<string, string> | null;
 };
 
 export function RichTextPreview({
   value,
   emptyLabel,
   className,
+  imageMap,
 }: RichTextPreviewProps) {
   const [sanitized, setSanitized] = useState<string | null>(null);
   const hasContent = Boolean(value && value.trim().length);
-  const normalized = useMemo(
-    () => (hasContent ? normalizeRichTextInput(value) : null),
-    [hasContent, value]
-  );
+  const normalized = useMemo(() => {
+    if (!hasContent) return null;
+    const base = normalizeRichTextInput(value);
+    return imageMap ? injectImages(base, imageMap) : base;
+  }, [hasContent, imageMap, value]);
 
   useEffect(() => {
     if (!normalized) {
@@ -69,6 +72,12 @@ export function RichTextPreview({
         .rich-text-preview :global(li) {
           margin-bottom: 0.25rem;
         }
+        .rich-text-preview :global(img) {
+          display: block;
+          max-width: 100%;
+          height: auto;
+          object-fit: contain;
+        }
       `}</style>
     </div>
   );
@@ -80,4 +89,36 @@ function stripTags(value: string): string {
 
 function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
+}
+
+function injectImages(value: string, imageMap: Record<string, string>): string {
+  const hasPlaceholders = value.includes("[") && value.includes("]");
+  if (!hasPlaceholders) return value;
+  return value.replace(/\[([^\]]+)\]/g, (match, rawName: string) => {
+    const key = rawName.trim();
+    if (!key) return match;
+    const url = imageMap[key] ?? imageMap[key.toLowerCase()];
+    if (!url) return match;
+    const escapedAlt = escapeAttribute(key);
+    return `<img src="${escapeAttribute(url)}" alt="${escapedAlt}" />`;
+  });
+}
+
+function escapeAttribute(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => {
+    switch (char) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&#39;";
+      default:
+        return char;
+    }
+  });
 }

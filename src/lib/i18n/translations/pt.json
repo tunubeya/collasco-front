@@ -549,6 +549,7 @@
         "tabs": {
           "structure": "Estrutura",
           "documentation": "Documentação",
+          "images": "Imagens",
           "dashboard": "Painel",
           "qa": "Execuções QA",
           "members": "Membros",
@@ -608,6 +609,33 @@
         },
         "badges": {
           "requiresModule": "Requer módulo restaurado"
+        }
+      },
+      "images": {
+        "title": "Imagens do projeto",
+        "subtitle": "Todas as imagens de documentação agrupadas por etiqueta.",
+        "actions": {
+          "reload": "Recarregar",
+          "loading": "Carregando...",
+          "viewEntity": "Ver item"
+        },
+        "messages": {
+          "loading": "Carregando imagens...",
+          "empty": "Ainda não há imagens.",
+          "loadError": "Não foi possível carregar as imagens."
+        },
+        "labels": {
+          "unknown": "Etiqueta desconhecida",
+          "count": "{count, plural, one {# imagem} other {# imagens}}"
+        },
+        "meta": {
+          "createdByAt": "Enviado por {name} · {date}",
+          "createdAt": "Enviado {date}"
+        },
+        "entity": {
+          "project": "Projeto",
+          "module": "Módulo",
+          "feature": "Feature"
         }
       },
       "manual": {

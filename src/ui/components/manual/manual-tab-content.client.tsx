@@ -14,6 +14,7 @@ import {
 } from "@/ui/components/manual/manual-outline.client";
 import { MANUAL_LABELS_EVENT } from "@/ui/components/manual/manual-events";
 import { ManualShareDialog } from "@/ui/components/manual/manual-share-dialog.client";
+import { listDocumentationImages } from "@/lib/api/qa";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -221,6 +222,26 @@ export function ManualTabContent({
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
           hideRootTitle={hideProjectTitle}
+          imageLoader={async (entityType, entityId) => {
+            try {
+              const groups = await listDocumentationImages(
+                token,
+                entityType,
+                entityId,
+              );
+              const map: Record<string, string> = {};
+              groups.forEach((group) => {
+                group.images.forEach((image) => {
+                  map[image.name] = image.url;
+                  map[image.name.toLowerCase()] = image.url;
+                });
+              });
+              return map;
+            } catch (err) {
+              console.warn("Failed to load documentation images", err);
+              return {};
+            }
+          }}
           shareAction={
             canShareManual
               ? {

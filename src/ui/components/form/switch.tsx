@@ -5,12 +5,12 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const switchVariants = cva(
-  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-gray-200 has-checked:bg-primary-orange',
-        error: 'bg-red-200 has-checked:bg-red-500'
+        default: '',
+        error: ''
       }
     },
     defaultVariants: {
@@ -39,7 +39,14 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
               ref={ref}
               {...props}
             />
-            <span className="pointer-events-none absolute left-0 top-0 h-6 w-11 rounded-full bg-transparent transition-colors" />
+            <span
+              className={cn(
+                'pointer-events-none absolute left-0 top-0 h-6 w-11 rounded-full transition-colors',
+                variant === 'error'
+                  ? 'bg-destructive/20 peer-checked:bg-destructive'
+                  : 'bg-muted peer-checked:bg-primary'
+              )}
+            />
             <span className="pointer-events-none absolute left-[2px] top-[2px] block h-5 w-5 rounded-full bg-background shadow-lg transition-transform peer-checked:translate-x-5" />
           </div>
           {label && (

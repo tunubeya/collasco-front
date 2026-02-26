@@ -1535,7 +1535,7 @@ function MandatoryDocumentationRow({
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-1.5">
-        <p className="text-sm font-semibold">{entity.name}</p>
+        <p className="text-base font-semibold">{entity.name}</p>
         <span
           className={cn(
             "inline-flex rounded-full border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
@@ -1549,7 +1549,7 @@ function MandatoryDocumentationRow({
           {entityLabels[entity.entityType] ?? entity.entityType}
         </span>
       </div>
-      <p className="text-2xs text-muted-foreground">
+      <p className="text-sm text-muted-foreground">
         {t.missingLabels}:{" "}
         <span className="font-medium text-foreground">
           {entity.missingLabels.map((label) => label.name).join(", ")}

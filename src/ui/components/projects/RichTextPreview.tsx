@@ -25,7 +25,8 @@ export function RichTextPreview({
   const normalized = useMemo(() => {
     if (!hasContent) return null;
     const base = normalizeRichTextInput(value);
-    return imageMap ? injectImages(base, imageMap) : base;
+    const withLinks = autolinkUrls(base);
+    return imageMap ? injectImages(withLinks, imageMap) : withLinks;
   }, [hasContent, imageMap, value]);
 
   useEffect(() => {
@@ -77,6 +78,10 @@ export function RichTextPreview({
           max-width: 100%;
           object-fit: contain;
           vertical-align: middle;
+        }
+        .rich-text-preview :global(a) {
+          color: inherit;
+          text-decoration: underline;
         }
       `}</style>
     </div>
@@ -171,4 +176,16 @@ function splitOnce(value: string, delimiter: string): [string, string | null] {
   const idx = value.indexOf(delimiter);
   if (idx === -1) return [value, null];
   return [value.slice(0, idx), value.slice(idx + delimiter.length)];
+}
+
+function autolinkUrls(value: string): string {
+  const urlPattern = /\bhttps?:\/\/[^\s<]+/gi;
+  return value.replace(urlPattern, (raw) => {
+    const match = raw.match(/^(.*?)([),.;:!?]+)?$/);
+    const href = match?.[1] ?? raw;
+    const trailing = match?.[2] ?? "";
+    return `<a href="${escapeAttribute(href)}" target="_blank" rel="noreferrer">${escapeAttribute(
+      href
+    )}</a>${escapeAttribute(trailing)}`;
+  });
 }

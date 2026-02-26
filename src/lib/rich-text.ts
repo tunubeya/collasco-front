@@ -56,6 +56,7 @@ export function sanitizeRichTextClient(value: string): string {
     "ol",
     "li",
     "img",
+    "a",
   ]);
 
   const walk = (node: Node) => {
@@ -104,6 +105,22 @@ export function sanitizeRichTextClient(value: string): string {
         }
         if (alt === null) element.setAttribute("alt", "");
         if (title === null) element.removeAttribute("title");
+      } else if (element.tagName.toLowerCase() === "a") {
+        const href = element.getAttribute("href") ?? "";
+        if (!isSafeLinkHref(href)) {
+          element.replaceWith(...Array.from(element.childNodes));
+          return;
+        }
+        const target = element.getAttribute("target");
+        const rel = element.getAttribute("rel");
+        Array.from(element.attributes).forEach((attr) => {
+          const name = attr.name.toLowerCase();
+          if (name !== "href" && name !== "target" && name !== "rel") {
+            element.removeAttribute(attr.name);
+          }
+        });
+        if (!target) element.setAttribute("target", "_blank");
+        if (!rel) element.setAttribute("rel", "noreferrer");
       } else {
         while (element.attributes.length > 0) {
           element.removeAttribute(element.attributes[0].name);
@@ -188,4 +205,9 @@ function isSafeImageStyle(style: string): boolean {
   return /^((width:\d+px;)?(height:\d+px;)?(object-fit:cover;)?)+$/.test(
     normalized
   );
+}
+
+function isSafeLinkHref(href: string): boolean {
+  if (!href) return false;
+  return /^https?:\/\//i.test(href);
 }

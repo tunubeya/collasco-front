@@ -73,9 +73,10 @@ export function RichTextPreview({
           margin-bottom: 0.25rem;
         }
         .rich-text-preview :global(img) {
-          display: block;
+          display: inline-block;
           max-width: 100%;
           object-fit: contain;
+          vertical-align: middle;
         }
       `}</style>
     </div>

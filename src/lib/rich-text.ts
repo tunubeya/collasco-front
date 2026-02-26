@@ -77,12 +77,31 @@ export function sanitizeRichTextClient(value: string): string {
         }
         const alt = element.getAttribute("alt");
         const title = element.getAttribute("title");
+        const width = element.getAttribute("width");
+        const height = element.getAttribute("height");
+        const style = element.getAttribute("style");
         Array.from(element.attributes).forEach((attr) => {
           const name = attr.name.toLowerCase();
-          if (name !== "src" && name !== "alt" && name !== "title") {
+          if (
+            name !== "src" &&
+            name !== "alt" &&
+            name !== "title" &&
+            name !== "width" &&
+            name !== "height" &&
+            name !== "style"
+          ) {
             element.removeAttribute(attr.name);
           }
         });
+        if (width && !/^\d+$/.test(width)) {
+          element.removeAttribute("width");
+        }
+        if (height && !/^\d+$/.test(height)) {
+          element.removeAttribute("height");
+        }
+        if (style && !isSafeImageStyle(style)) {
+          element.removeAttribute("style");
+        }
         if (alt === null) element.setAttribute("alt", "");
         if (title === null) element.removeAttribute("title");
       } else {
@@ -162,4 +181,11 @@ function convertLeadingWhitespace(value: string): string {
 function isSafeImageSrc(src: string): boolean {
   if (!src) return false;
   return /^https?:\/\//i.test(src);
+}
+
+function isSafeImageStyle(style: string): boolean {
+  const normalized = style.toLowerCase().replace(/\s+/g, "");
+  return /^((width:\d+px;)?(height:\d+px;)?(object-fit:cover;)?)+$/.test(
+    normalized
+  );
 }

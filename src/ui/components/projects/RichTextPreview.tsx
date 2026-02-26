@@ -75,7 +75,6 @@ export function RichTextPreview({
         .rich-text-preview :global(img) {
           display: block;
           max-width: 100%;
-          height: auto;
           object-fit: contain;
         }
       `}</style>
@@ -95,12 +94,23 @@ function injectImages(value: string, imageMap: Record<string, string>): string {
   const hasPlaceholders = value.includes("[") && value.includes("]");
   if (!hasPlaceholders) return value;
   return value.replace(/\[([^\]]+)\]/g, (match, rawName: string) => {
-    const key = rawName.trim();
-    if (!key) return match;
-    const url = imageMap[key] ?? imageMap[key.toLowerCase()];
+    const parsed = parseImageToken(rawName);
+    if (!parsed) return match;
+    const url = imageMap[parsed.name] ?? imageMap[parsed.name.toLowerCase()];
     if (!url) return match;
-    const escapedAlt = escapeAttribute(key);
-    return `<img src="${escapeAttribute(url)}" alt="${escapedAlt}" />`;
+    const escapedAlt = escapeAttribute(parsed.name);
+    const widthStyle =
+      typeof parsed.width === "number"
+        ? `width:${Math.round(parsed.width)}px;`
+        : "";
+    const heightStyle =
+      typeof parsed.height === "number"
+        ? `height:${Math.round(parsed.height)}px;`
+        : "";
+    const style = `${widthStyle}${heightStyle}object-fit:cover;`;
+    return `<img src="${escapeAttribute(url)}" alt="${escapedAlt}" style="${escapeAttribute(
+      style
+    )}" />`;
   });
 }
 
@@ -121,4 +131,43 @@ function escapeAttribute(value: string): string {
         return char;
     }
   });
+}
+
+type ImageTokenSize = {
+  name: string;
+  width?: number;
+  height?: number;
+};
+
+function parseImageToken(raw: string): ImageTokenSize | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  const [namePart, sizePart] = splitOnce(trimmed, ":");
+  const name = namePart.trim();
+  if (!name) return null;
+  if (!sizePart) return { name };
+
+  const size = sizePart.trim().toLowerCase();
+  if (!size) return { name };
+
+  if (size === "small" || size === "medium" || size === "big") {
+    const width =
+      size === "small" ? 240 : size === "medium" ? 480 : 720;
+    return { name, width };
+  }
+
+  const match = size.match(/^(\d+|auto)x(\d+|auto)$/i);
+  if (!match) {
+    return { name };
+  }
+  const [, rawW, rawH] = match;
+  const width = rawW.toLowerCase() === "auto" ? undefined : Number(rawW);
+  const height = rawH.toLowerCase() === "auto" ? undefined : Number(rawH);
+  return { name, width, height };
+}
+
+function splitOnce(value: string, delimiter: string): [string, string | null] {
+  const idx = value.indexOf(delimiter);
+  if (idx === -1) return [value, null];
+  return [value.slice(0, idx), value.slice(idx + delimiter.length)];
 }

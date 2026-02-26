@@ -14,7 +14,7 @@ import {
 } from "@/ui/components/manual/manual-outline.client";
 import { MANUAL_LABELS_EVENT } from "@/ui/components/manual/manual-events";
 import { ManualShareDialog } from "@/ui/components/manual/manual-share-dialog.client";
-import { listDocumentationImages } from "@/lib/api/qa";
+import { listProjectDocumentationImagesAll } from "@/lib/api/qa";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -222,15 +222,14 @@ export function ManualTabContent({
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
           hideRootTitle={hideProjectTitle}
-          imageLoader={async (entityType, entityId) => {
+          imageLoader={async () => {
             try {
-              const groups = await listDocumentationImages(
+              const payload = await listProjectDocumentationImagesAll(
                 token,
-                entityType,
-                entityId,
+                projectId,
               );
               const map: Record<string, string> = {};
-              groups.forEach((group) => {
+              payload.items.forEach((group) => {
                 group.images.forEach((image) => {
                   map[image.name] = image.url;
                   map[image.name.toLowerCase()] = image.url;

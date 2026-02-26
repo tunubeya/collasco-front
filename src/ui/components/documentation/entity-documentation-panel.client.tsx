@@ -148,7 +148,6 @@ export function EntityDocumentationPanel({
   }, [fetchImages, showImages]);
 
   const fetchProjectImagesMap = useCallback(async () => {
-    if (entityType !== "project") return;
     try {
       const payload = await listProjectDocumentationImagesAll(token, projectId);
       const map: Record<string, string> = {};
@@ -167,7 +166,6 @@ export function EntityDocumentationPanel({
 
   useEffect(() => {
     if (!showImages) return;
-    if (entityType !== "project") return;
     void fetchProjectImagesMap();
   }, [entityType, fetchProjectImagesMap, showImages]);
 
@@ -583,14 +581,13 @@ export function EntityDocumentationPanel({
                           className="text-muted-foreground"
                           imageMap={
                             showImages
-                              ? entityType === "project"
-                                ? projectImagesMap ?? undefined
-                                : Object.fromEntries(
-                                    (images ?? []).map((image) => [
-                                      image.name,
-                                      image.url,
-                                    ]),
-                                  )
+                              ? projectImagesMap ??
+                                Object.fromEntries(
+                                  (images ?? []).map((image) => [
+                                    image.name,
+                                    image.url,
+                                  ]),
+                                )
                               : undefined
                           }
                         />

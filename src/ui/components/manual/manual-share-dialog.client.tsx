@@ -13,6 +13,7 @@ import {
   listManualShareLinks,
   revokeManualShareLink,
   type ManualShareLink,
+  type ManualShareScope,
 } from "@/lib/api/manual-share";
 import { fetchWithAuth } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -112,9 +113,16 @@ export function ManualShareDialog({
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
+      const scope: ManualShareScope = rootType;
+      const canLoadLinks = scope === "PROJECT" || Boolean(rootId);
       const [labelOptions, linkResponse, structureRes] = await Promise.all([
         listProjectDocumentationLabels(token, projectId),
-        listManualShareLinks(token, projectId),
+        canLoadLinks
+          ? listManualShareLinks(token, projectId, {
+              scope,
+              rootId: scope === "PROJECT" ? undefined : rootId || undefined,
+            })
+          : Promise.resolve({ items: [] }),
         fetchWithAuth(
           `${apiUrl}/projects/${projectId}/structure?limit=2000&sort=sortOrder`,
           { method: "GET" },
@@ -136,7 +144,7 @@ export function ManualShareDialog({
     } finally {
       setIsLoading(false);
     }
-  }, [projectId, tShare, token]);
+  }, [projectId, rootId, rootType, tShare, token]);
 
   useEffect(() => {
     if (open) {

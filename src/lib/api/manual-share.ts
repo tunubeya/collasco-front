@@ -28,6 +28,8 @@ export type ListManualShareLinksResponse = {
   items: ManualShareLink[];
 };
 
+export type ManualShareScope = "PROJECT" | "MODULE" | "FEATURE";
+
 export async function createManualShareLink(
   token: string,
   projectId: string,
@@ -60,9 +62,20 @@ export async function createManualShareLink(
 export async function listManualShareLinks(
   token: string,
   projectId: string,
+  options?: {
+    scope?: ManualShareScope;
+    rootId?: string;
+  },
 ): Promise<ListManualShareLinksResponse> {
+  const url = new URL(`${apiUrl}/projects/${projectId}/manual/share-links`);
+  if (options?.scope) {
+    url.searchParams.set("scope", options.scope);
+  }
+  if (options?.rootId) {
+    url.searchParams.set("rootId", options.rootId);
+  }
   const res = await fetchWithAuth(
-    `${apiUrl}/projects/${projectId}/manual/share-links`,
+    url.toString(),
     { method: "GET" },
     token,
   );

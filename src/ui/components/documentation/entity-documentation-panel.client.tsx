@@ -10,6 +10,7 @@ import {
   listProjectDocumentationImagesAll,
   uploadDocumentationImage,
   deleteDocumentationImage,
+  updateDocumentationImageName,
   type UpdateQaDocumentationEntryDto,
   listFeatureDocumentation,
   listModuleDocumentation,
@@ -20,11 +21,17 @@ import {
   updateProjectDocumentationEntry,
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2, Pencil, Trash2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { Switch } from "@/ui/components/form/switch";
+import {
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/ui/components/popover/popover";
 
 type EntityDocumentationPanelProps = {
   token: string;
@@ -57,6 +64,9 @@ export function EntityDocumentationPanel({
   const [imageNameByLabel, setImageNameByLabel] = useState<Record<string, string>>({});
   const [imageFileByLabel, setImageFileByLabel] = useState<Record<string, File | null>>({});
   const [imageLoadingLabelId, setImageLoadingLabelId] = useState<string | null>(null);
+  const [editingImageId, setEditingImageId] = useState<string | null>(null);
+  const [imageDraftNameById, setImageDraftNameById] = useState<Record<string, string>>({});
+  const [savingImageId, setSavingImageId] = useState<string | null>(null);
   const toolbarLabels = useMemo(
     () => ({
       bold: tRichText("bold"),
@@ -143,9 +153,8 @@ export function EntityDocumentationPanel({
   );
 
   useEffect(() => {
-    if (!showImages) return;
     void fetchImages();
-  }, [fetchImages, showImages]);
+  }, [fetchImages]);
 
   const fetchProjectImagesMap = useCallback(async () => {
     try {
@@ -374,6 +383,88 @@ export function EntityDocumentationPanel({
     [entityId, entityType, fetchImages, t, token],
   );
 
+  const handleStartEditImage = useCallback((image: DocumentationImage) => {
+    setEditingImageId(image.id);
+    setImageDraftNameById((prev) => ({
+      ...prev,
+      [image.id]: image.name,
+    }));
+  }, []);
+
+  const handleCancelEditImage = useCallback(() => {
+    setEditingImageId(null);
+    setSavingImageId(null);
+  }, []);
+
+  const handleSaveImageName = useCallback(
+    async (labelId: string, imageId: string) => {
+      const name = (imageDraftNameById[imageId] ?? "").trim();
+      if (!name) {
+        toast.error(t("images.validation.name"));
+        return;
+      }
+      setSavingImageId(imageId);
+      try {
+        await updateDocumentationImageName(token, entityType, entityId, imageId, { name });
+        toast.success(t("images.messages.renamed"));
+        setEditingImageId(null);
+        await fetchImages(labelId);
+        if (showImages) {
+          await fetchProjectImagesMap();
+        }
+      } catch (err) {
+        let description: string | undefined;
+        let isDuplicate = false;
+        if (err instanceof Response) {
+          const contentType = err.headers.get("content-type") ?? "";
+          let message = "";
+          try {
+            if (contentType.includes("application/json")) {
+              const data = (await err.json()) as { message?: string; error?: string };
+              message = data?.message ?? data?.error ?? "";
+            } else {
+              message = (await err.text()).trim();
+            }
+          } catch {
+            message = "";
+          }
+          const normalized = message.toLowerCase();
+          isDuplicate =
+            err.status === 409 ||
+            normalized.includes("already exists") ||
+            normalized.includes("duplicate") ||
+            normalized.includes("unique");
+          description = message || undefined;
+        } else if (err instanceof Error) {
+          const normalized = err.message.toLowerCase();
+          isDuplicate =
+            normalized.includes("already exists") ||
+            normalized.includes("duplicate") ||
+            normalized.includes("unique");
+          description = err.message;
+        }
+
+        if (isDuplicate) {
+          toast.error(t("images.messages.duplicateName"));
+        } else {
+          toast.error(t("images.messages.renameError"), { description });
+        }
+      } finally {
+        setSavingImageId(null);
+      }
+    },
+    [
+      entityId,
+      entityType,
+      fetchImages,
+      fetchProjectImagesMap,
+      imageDraftNameById,
+      showImages,
+      t,
+      token,
+    ],
+  );
+
   return (
     <section className="space-y-4 rounded-xl border bg-background p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -477,7 +568,6 @@ export function EntityDocumentationPanel({
                             label={t("fields.editorLabel")}
                             placeholder={t("fields.editorPlaceholder")}
                             defaultValue={entry.field?.content ?? ""}
-                            helperText={t("fields.editorHelper")}
                             labels={toolbarLabels}
                             onValueChange={setDraftContent}
                             hideLabel
@@ -511,16 +601,16 @@ export function EntityDocumentationPanel({
                             </button>
                           </div>
                           {entry.canEdit && (
-                            <div className="rounded-lg border border-dashed border-border bg-muted/20 p-3">
-                              <p className="text-xs font-semibold text-muted-foreground">
+                            <div className="rounded-md border border-dashed border-border/80 bg-muted/10 p-2">
+                              <p className="text-[11px] font-semibold text-muted-foreground">
                                 {t("images.title")}
                               </p>
-                              <p className="text-[11px] text-muted-foreground">
+                              <p className="text-[10px] text-muted-foreground">
                                 {t("images.tagHint")}
                               </p>
-                              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                              <div className="mt-2 grid gap-2 sm:grid-cols-2">
                                 <div className="space-y-1">
-                                  <label className="text-xs font-medium text-muted-foreground">
+                                  <label className="text-[11px] font-medium text-muted-foreground">
                                     {t("images.fields.name")}
                                   </label>
                                   <input
@@ -532,12 +622,12 @@ export function EntityDocumentationPanel({
                                         [entry.label.id]: event.target.value,
                                       }))
                                     }
-                                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                    className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder={t("images.placeholders.name")}
                                   />
                                 </div>
                                 <div className="space-y-1">
-                                  <label className="text-xs font-medium text-muted-foreground">
+                                  <label className="text-[11px] font-medium text-muted-foreground">
                                     {t("images.fields.file")}
                                   </label>
                                   <input
@@ -549,11 +639,11 @@ export function EntityDocumentationPanel({
                                         [entry.label.id]: event.target.files?.[0] ?? null,
                                       }))
                                     }
-                                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                    className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
                                   />
                                 </div>
                               </div>
-                              <div className="mt-3 flex justify-end">
+                              <div className="mt-2 flex justify-end">
                                 <button
                                   type="button"
                                   className={actionButtonClass({ size: "xs" })}
@@ -594,40 +684,118 @@ export function EntityDocumentationPanel({
                       )}
                     </div>
 
-                    {showImages && images.length > 0 && (
-                      <div className="mt-4 space-y-2">
-                        <p className="text-xs font-semibold text-muted-foreground">
-                          {t("images.sectionTitle")}
+                    <div className="mt-4 space-y-2">
+                      <p className="text-xs font-semibold text-muted-foreground">
+                        {t("images.sectionTitle")}
+                      </p>
+                      {images.length === 0 ? (
+                        <p className="text-xs text-muted-foreground">
+                          {t("images.empty")}
                         </p>
-                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                          {images.map((image) => (
-                            <div
-                              key={image.id}
-                              className="overflow-hidden rounded-lg border bg-background"
-                            >
-                              <img
-                                src={image.url}
-                                alt={image.name}
-                                className="h-32 w-full object-contain"
-                                loading="lazy"
-                              />
-                              <div className="flex items-center justify-between gap-2 px-2 py-1.5 text-xs">
-                                <span className="truncate font-medium">{image.name}</span>
+                      ) : (
+                        <div className="space-y-2">
+                          {images.map((image) => {
+                            const isEditingImage = editingImageId === image.id;
+                            return (
+                              <div
+                                key={image.id}
+                                className="flex items-center justify-between gap-2 rounded-md border bg-muted/10 px-3 py-2 text-xs"
+                              >
+                                <div className="min-w-0 flex-1">
+                                  {isEditingImage ? (
+                                    <input
+                                      type="text"
+                                      value={imageDraftNameById[image.id] ?? ""}
+                                      onChange={(event) =>
+                                        setImageDraftNameById((prev) => ({
+                                          ...prev,
+                                          [image.id]: event.target.value,
+                                        }))
+                                      }
+                                      className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                                      placeholder={t("images.placeholders.name")}
+                                    />
+                                  ) : (
+                                    <span className="truncate font-medium">{image.name}</span>
+                                  )}
+                                </div>
                                 {entry.canEdit && (
-                                  <button
-                                    type="button"
-                                    className="text-muted-foreground hover:text-destructive"
-                                    onClick={() => void handleDeleteImage(entry.label.id, image.id)}
-                                  >
-                                    {t("images.actions.delete")}
-                                  </button>
+                                  <div className="flex items-center gap-2">
+                                    {isEditingImage ? (
+                                      <>
+                                        <button
+                                          type="button"
+                                          className="rounded-md p-1 text-muted-foreground hover:text-primary"
+                                          onClick={() => void handleSaveImageName(entry.label.id, image.id)}
+                                          disabled={savingImageId === image.id}
+                                          aria-label={t("images.actions.saveName")}
+                                        >
+                                          {savingImageId === image.id ? (
+                                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                                          ) : (
+                                            <Check className="h-4 w-4" aria-hidden />
+                                          )}
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className="rounded-md p-1 text-muted-foreground hover:text-foreground"
+                                          onClick={handleCancelEditImage}
+                                          aria-label={t("images.actions.cancelEdit")}
+                                        >
+                                          <X className="h-4 w-4" aria-hidden />
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <button
+                                          type="button"
+                                          className="rounded-md p-1 text-muted-foreground hover:text-foreground"
+                                          onClick={() => handleStartEditImage(image)}
+                                          aria-label={t("images.actions.editName")}
+                                        >
+                                          <Pencil className="h-4 w-4" aria-hidden />
+                                        </button>
+                                        <Popover placement="bottom-end">
+                                          <PopoverTrigger asChild>
+                                            <button
+                                              type="button"
+                                              className="rounded-md p-1 text-muted-foreground hover:text-destructive"
+                                              aria-label={t("images.actions.delete")}
+                                            >
+                                              <Trash2 className="h-4 w-4" aria-hidden />
+                                            </button>
+                                          </PopoverTrigger>
+                                          <PopoverContent className="z-50 w-56 rounded-md border bg-background p-3 text-xs shadow-md">
+                                            <p className="font-semibold">
+                                              {t("images.confirm.title")}
+                                            </p>
+                                            <p className="mt-1 text-muted-foreground">
+                                              {t("images.confirm.description")}
+                                            </p>
+                                            <div className="mt-3 flex justify-end gap-2">
+                                              <PopoverClose className="rounded-md border px-2 py-1 text-xs">
+                                                {t("images.actions.cancelDelete")}
+                                              </PopoverClose>
+                                              <PopoverClose
+                                                className="rounded-md bg-destructive px-2 py-1 text-xs text-destructive-foreground"
+                                                onClick={() => void handleDeleteImage(entry.label.id, image.id)}
+                                              >
+                                                {t("images.actions.confirmDelete")}
+                                              </PopoverClose>
+                                            </div>
+                                          </PopoverContent>
+                                        </Popover>
+                                      </>
+                                    )}
+                                  </div>
                                 )}
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
+
 
                     {entry.canEdit && entry.field?.isNotApplicable && (
                       <div className="mt-3 flex gap-2">

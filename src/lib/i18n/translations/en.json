@@ -895,6 +895,7 @@
           "toggle": "Show images",
           "title": "Attach image",
           "sectionTitle": "Images",
+          "empty": "No images added yet.",
           "tagHint": "Reference an image in the text using [name].",
           "fields": {
             "name": "Image name",
@@ -905,12 +906,23 @@
           },
           "actions": {
             "upload": "Upload",
-            "delete": "Delete"
+            "delete": "Delete",
+            "editName": "Edit image name",
+            "saveName": "Save image name",
+            "cancelEdit": "Cancel edit",
+            "confirmDelete": "Delete image",
+            "cancelDelete": "Cancel"
+          },
+          "confirm": {
+            "title": "Delete this image?",
+            "description": "This action cannot be undone."
           },
           "messages": {
             "uploaded": "Image uploaded.",
             "duplicateName": "An image with that name already exists for this project. Please choose a different name.",
             "uploadError": "We couldn't upload the image.",
+            "renamed": "Image name updated.",
+            "renameError": "We couldn't update the image name.",
             "deleted": "Image deleted.",
             "deleteError": "We couldn't delete the image."
           },

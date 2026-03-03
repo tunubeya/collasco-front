@@ -893,6 +893,7 @@
           "toggle": "Afbeeldingen tonen",
           "title": "Afbeelding toevoegen",
           "sectionTitle": "Afbeeldingen",
+          "empty": "Nog geen afbeeldingen toegevoegd.",
           "tagHint": "Verwijs in de tekst naar een afbeelding met [naam].",
           "fields": {
             "name": "Afbeeldingsnaam",
@@ -903,12 +904,23 @@
           },
           "actions": {
             "upload": "Uploaden",
-            "delete": "Verwijderen"
+            "delete": "Verwijderen",
+            "editName": "Afbeeldingsnaam bewerken",
+            "saveName": "Naam opslaan",
+            "cancelEdit": "Bewerking annuleren",
+            "confirmDelete": "Afbeelding verwijderen",
+            "cancelDelete": "Annuleren"
+          },
+          "confirm": {
+            "title": "Deze afbeelding verwijderen?",
+            "description": "Deze actie kan niet ongedaan worden gemaakt."
           },
           "messages": {
             "uploaded": "Afbeelding geüpload.",
             "duplicateName": "Er bestaat al een afbeelding met deze naam voor dit label. Kies een andere naam.",
             "uploadError": "We konden de afbeelding niet uploaden.",
+            "renamed": "Afbeeldingsnaam bijgewerkt.",
+            "renameError": "We konden de afbeeldingsnaam niet bijwerken.",
             "deleted": "Afbeelding verwijderd.",
             "deleteError": "We konden de afbeelding niet verwijderen."
           },

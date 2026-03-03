@@ -317,6 +317,12 @@ export type DocumentationImage = {
   createdBy?: { id: string; name?: string | null; email?: string | null } | null;
 };
 
+export type DocumentationImageDetail = DocumentationImage & {
+  labelId: string;
+  entityType: "PROJECT" | "MODULE" | "FEATURE";
+  entityId: string;
+};
+
 export type DocumentationImagesByLabel = {
   labelId: string;
   images: DocumentationImage[];
@@ -343,6 +349,10 @@ export type QaDocumentationEntry = {
 export type UpdateQaDocumentationEntryDto = {
   content?: string | null;
   isNotApplicable?: boolean;
+};
+
+export type UpdateDocumentationImageDto = {
+  name: string;
 };
 
 export type QaDashboardRunSummary = {
@@ -467,6 +477,31 @@ export async function deleteDocumentationImage(
     );
     if (!res.ok) throw res;
     return await parseJsonResponse<{ ok: boolean }>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function updateDocumentationImageName(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  imageId: string,
+  dto: UpdateDocumentationImageDto
+): Promise<DocumentationImageDetail> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/images/${imageId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJsonResponse<DocumentationImageDetail>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

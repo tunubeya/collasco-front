@@ -895,6 +895,7 @@
           "toggle": "Mostrar imágenes",
           "title": "Adjuntar imagen",
           "sectionTitle": "Imágenes",
+          "empty": "Todavía no hay imágenes.",
           "tagHint": "Referencia una imagen en el texto usando [nombre].",
           "fields": {
             "name": "Nombre de imagen",
@@ -905,12 +906,23 @@
           },
           "actions": {
             "upload": "Subir",
-            "delete": "Eliminar"
+            "delete": "Eliminar",
+            "editName": "Editar nombre de imagen",
+            "saveName": "Guardar nombre",
+            "cancelEdit": "Cancelar edición",
+            "confirmDelete": "Eliminar imagen",
+            "cancelDelete": "Cancelar"
+          },
+          "confirm": {
+            "title": "¿Eliminar esta imagen?",
+            "description": "Esta acción no se puede deshacer."
           },
           "messages": {
             "uploaded": "Imagen subida.",
             "duplicateName": "Ya existe una imagen con ese nombre para este label. Cambia el nombre.",
             "uploadError": "No pudimos subir la imagen.",
+            "renamed": "Nombre de la imagen actualizado.",
+            "renameError": "No pudimos actualizar el nombre de la imagen.",
             "deleted": "Imagen eliminada.",
             "deleteError": "No pudimos eliminar la imagen."
           },

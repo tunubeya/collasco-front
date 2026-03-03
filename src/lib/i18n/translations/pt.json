@@ -895,6 +895,7 @@
           "toggle": "Mostrar imagens",
           "title": "Anexar imagem",
           "sectionTitle": "Imagens",
+          "empty": "Nenhuma imagem adicionada ainda.",
           "tagHint": "Referencie uma imagem no texto usando [nome].",
           "fields": {
             "name": "Nome da imagem",
@@ -905,12 +906,23 @@
           },
           "actions": {
             "upload": "Enviar",
-            "delete": "Excluir"
+            "delete": "Excluir",
+            "editName": "Editar nome da imagem",
+            "saveName": "Salvar nome",
+            "cancelEdit": "Cancelar edição",
+            "confirmDelete": "Excluir imagem",
+            "cancelDelete": "Cancelar"
+          },
+          "confirm": {
+            "title": "Excluir esta imagem?",
+            "description": "Esta ação não pode ser desfeita."
           },
           "messages": {
             "uploaded": "Imagem enviada.",
             "duplicateName": "Já existe uma imagem com esse nome para este rótulo. Escolha outro nome.",
             "uploadError": "Não foi possível enviar a imagem.",
+            "renamed": "Nome da imagem atualizado.",
+            "renameError": "Não foi possível atualizar o nome da imagem.",
             "deleted": "Imagem excluída.",
             "deleteError": "Não foi possível excluir a imagem."
           },

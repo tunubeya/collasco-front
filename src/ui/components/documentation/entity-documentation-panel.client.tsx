@@ -138,6 +138,9 @@ export function EntityDocumentationPanel({
         const items = await listDocumentationImages(token, entityType, entityId, labelId);
         setImagesByLabel((prev) => {
           const next = { ...prev };
+          if (labelId) {
+            next[labelId] = [];
+          }
           items.forEach((group) => {
             next[group.labelId] = group.images ?? [];
           });
@@ -371,6 +374,10 @@ export function EntityDocumentationPanel({
   const handleDeleteImage = useCallback(
     async (labelId: string, imageId: string) => {
       try {
+        setImagesByLabel((prev) => ({
+          ...prev,
+          [labelId]: (prev[labelId] ?? []).filter((image) => image.id !== imageId),
+        }));
         await deleteDocumentationImage(token, entityType, entityId, imageId);
         toast.success(t("images.messages.deleted"));
         await fetchImages(labelId);

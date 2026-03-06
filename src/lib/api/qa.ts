@@ -257,19 +257,14 @@ type QaLinkedFeatureListResponse = {
   referenced_by?: QaLinkedFeature[];
 };
 
-export type QaLabelRole =
-  | "OWNER"
-  | "MAINTAINER"
-  | "DEVELOPER"
-  | "VIEWER"
-  | "TESTER";
+export type QaLabelRole = string;
 
 export type QaProjectLabel = {
   id: string;
   name: string;
   isMandatory: boolean;
-  visibleToRoles: QaLabelRole[];
-  readOnlyRoles: QaLabelRole[];
+  visibleRoleIds: QaLabelRole[];
+  readOnlyRoleIds: QaLabelRole[];
   defaultNotApplicable?: boolean;
   deletedAt?: string | null;
   deletedById?: string | null;
@@ -291,8 +286,8 @@ export type DocumentationLabelPreferences = {
 export type CreateQaProjectLabelDto = {
   name: string;
   isMandatory?: boolean;
-  visibleToRoles?: QaLabelRole[];
-  readOnlyRoles?: QaLabelRole[];
+  visibleRoleIds?: QaLabelRole[];
+  readOnlyRoleIds?: QaLabelRole[];
   defaultNotApplicable?: boolean;
 };
 

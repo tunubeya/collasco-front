@@ -5,7 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import type { ProjectMember } from "@/lib/model-definitions/project";
-import { ProjectMemberRole } from "@/lib/definitions";
+import type { ProjectPermission, ProjectRole } from "@/lib/api/project-roles";
 import {
   addProjectMember,
   listProjectMembers,
@@ -24,27 +24,29 @@ import {
 import { cn } from "@/lib/utils";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Plus } from "lucide-react";
+import { ProjectRolesPanel } from "./project-roles-panel.client";
 
 type ProjectMembersTabProps = {
   token: string;
   projectId: string;
   initialMembers: ProjectMember[];
   canManageMembers: boolean;
+  roles: ProjectRole[];
+  canManageRoles: boolean;
+  permissionsCatalog: ProjectPermission[];
+  onRolesChange: (roles: ProjectRole[]) => void;
   currentUserId?: string;
 };
-
-const ROLE_OPTIONS: ProjectMemberRole[] = [
-  ProjectMemberRole.OWNER,
-  ProjectMemberRole.MAINTAINER,
-  ProjectMemberRole.DEVELOPER,
-  ProjectMemberRole.VIEWER,
-];
 
 export function ProjectMembersTab({
   token,
   projectId,
   initialMembers,
   canManageMembers,
+  roles,
+  canManageRoles,
+  permissionsCatalog,
+  onRolesChange,
   currentUserId,
 }: ProjectMembersTabProps) {
   const t = useTranslations("app.projects.members");
@@ -52,12 +54,19 @@ export function ProjectMembersTab({
   const [members, setMembers] = useState<ProjectMember[]>(initialMembers ?? []);
   const [isLoading, setIsLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [activeView, setActiveView] = useState<"members" | "roles">("members");
 
   useEffect(() => {
     if (initialMembers?.length) {
       setMembers(initialMembers);
     }
   }, [initialMembers]);
+
+  useEffect(() => {
+    if (!canManageRoles && activeView === "roles") {
+      setActiveView("members");
+    }
+  }, [activeView, canManageRoles]);
 
   const fetchMembers = useCallback(async () => {
     setIsLoading(true);
@@ -77,20 +86,32 @@ export function ProjectMembersTab({
     void fetchMembers();
   }, [fetchMembers]);
 
+  const rolesById = useMemo(() => {
+    return new Map(roles.map((role) => [role.id, role]));
+  }, [roles]);
+
   const sortedMembers = useMemo(() => {
-    const order = {
-      [ProjectMemberRole.OWNER]: 0,
-      [ProjectMemberRole.MAINTAINER]: 1,
-      [ProjectMemberRole.DEVELOPER]: 2,
-      [ProjectMemberRole.VIEWER]: 3,
-    };
-    return [...members].sort((a, b) => order[a.role] - order[b.role]);
-  }, [members]);
+    const roleOrder = new Map(
+      roles
+        .slice()
+        .sort((a, b) => {
+          if (a.isOwner) return -1;
+          if (b.isOwner) return 1;
+          return a.name.localeCompare(b.name);
+        })
+        .map((role, index) => [role.id, index]),
+    );
+    return [...members].sort(
+      (a, b) =>
+        (roleOrder.get(a.roleId ?? a.role?.id ?? "") ?? 999) -
+        (roleOrder.get(b.roleId ?? b.role?.id ?? "") ?? 999),
+    );
+  }, [members, roles]);
 
   const handleAddMember = useCallback(
-    async (email: string, role?: ProjectMemberRole) => {
+    async (email: string, roleId?: string) => {
       try {
-        await addProjectMember(token, projectId, { email, role });
+        await addProjectMember(token, projectId, { email, roleId });
         toast.success(t("messages.added"));
         void fetchMembers();
       } catch (error) {
@@ -104,9 +125,9 @@ export function ProjectMembersTab({
   );
 
   const handleRoleChange = useCallback(
-    async (userId: string, role: ProjectMemberRole) => {
+    async (userId: string, roleId: string) => {
       try {
-        await updateProjectMemberRole(token, projectId, userId, { role });
+        await updateProjectMemberRole(token, projectId, userId, { roleId });
         toast.success(t("messages.roleUpdated"));
         void fetchMembers();
       } catch (error) {
@@ -135,118 +156,180 @@ export function ProjectMembersTab({
 
   return (
     <section className="space-y-4 rounded-xl border bg-background p-4 md:p-6">
-      <header className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+      <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 className="text-lg font-semibold">{t("title")}</h3>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        {canManageMembers && (
-          <button
-            type="button"
-            className={actionButtonClass()}
-            onClick={() => setAddDialogOpen(true)}
-          >
-            <Plus className="mr-2 h-4 w-4" aria-hidden />
-            {t("actions.add")}
-          </button>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {canManageRoles && (
+            <div className="inline-flex rounded-full border border-border bg-muted/30 p-1 text-xs">
+              <button
+                type="button"
+                className={cn(
+                  "rounded-full px-3 py-1 transition",
+                  activeView === "members"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+                onClick={() => setActiveView("members")}
+              >
+                {t("tabs.members")}
+              </button>
+              <button
+                type="button"
+                className={cn(
+                  "rounded-full px-3 py-1 transition",
+                  activeView === "roles"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+                onClick={() => setActiveView("roles")}
+              >
+                {t("tabs.roles")}
+              </button>
+            </div>
+          )}
+          {canManageMembers && activeView === "members" && (
+            <button
+              type="button"
+              className={actionButtonClass()}
+              onClick={() => setAddDialogOpen(true)}
+            >
+              <Plus className="mr-2 h-4 w-4" aria-hidden />
+              {t("actions.add")}
+            </button>
+          )}
+        </div>
       </header>
 
-      {!canManageMembers && (
-        <p className="text-xs text-muted-foreground">{t("messages.ownerOnly")}</p>
+      {activeView === "members" && (
+        <>
+          {!canManageMembers && (
+            <p className="text-xs text-muted-foreground">
+              {t("messages.manageOnly")}
+            </p>
+          )}
+
+          {isLoading ? (
+            <MembersSkeleton />
+          ) : members.length === 0 ? (
+            <EmptyMembersState />
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-border text-sm">
+                <thead className="bg-muted/30 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2">{t("table.member")}</th>
+                    <th className="px-3 py-2">{t("table.role")}</th>
+                    <th className="px-3 py-2">{t("table.joined")}</th>
+                    <th className="px-3 py-2 text-right">{t("table.actions")}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {sortedMembers.map((member) => {
+                    const user = member.user;
+                    const joinedAt = formatter.dateTime(
+                      new Date(member.joinedAt),
+                      {
+                        dateStyle: "medium",
+                      },
+                    );
+                    const memberRoleId = member.roleId ?? member.role?.id ?? "";
+                    const role =
+                      rolesById.get(memberRoleId) ?? member.role ?? null;
+                    const isCurrentUser = user?.id === currentUserId;
+                    const disableRoleChange =
+                      !canManageMembers || Boolean(role?.isOwner);
+                    return (
+                      <tr key={member.userId} className="align-top">
+                        <td className="px-3 py-3">
+                          <p className="font-semibold">
+                            {user?.name ?? t("table.unknown")}
+                            {isCurrentUser && (
+                              <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] uppercase tracking-wide text-muted-foreground">
+                                {t("badges.you")}
+                              </span>
+                            )}
+                            {role?.isOwner && (
+                              <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] uppercase tracking-wide text-primary">
+                                {t("roles.owner")}
+                              </span>
+                            )}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {user?.email}
+                          </p>
+                        </td>
+                        <td className="px-3 py-3">
+                          <select
+                            value={memberRoleId}
+                            onChange={(event) =>
+                              handleRoleChange(member.userId, event.target.value)
+                            }
+                            disabled={disableRoleChange}
+                            className={cn(
+                              "rounded-lg border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary",
+                              disableRoleChange &&
+                                "cursor-not-allowed bg-muted",
+                            )}
+                          >
+                            {roles.map((roleOption) => (
+                              <option
+                                key={roleOption.id}
+                                value={roleOption.id}
+                                disabled={roleOption.isOwner && !role?.isOwner}
+                              >
+                                {roleOption.name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td className="px-3 py-3 text-sm text-muted-foreground">
+                          {joinedAt}
+                        </td>
+                        <td className="px-3 py-3 text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={role?.isOwner || !canManageMembers}
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  t("messages.removeConfirm", {
+                                    name:
+                                      user?.name ??
+                                      user?.email ??
+                                      member.userId,
+                                  }),
+                                )
+                              ) {
+                                void handleRemove(member.userId);
+                              }
+                            }}
+                          >
+                            {t("actions.remove")}
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
 
-      {isLoading ? (
-        <MembersSkeleton />
-      ) : members.length === 0 ? (
-        <EmptyMembersState />
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-border text-sm">
-            <thead className="bg-muted/30 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              <tr>
-                <th className="px-3 py-2">{t("table.member")}</th>
-                <th className="px-3 py-2">{t("table.role")}</th>
-                <th className="px-3 py-2">{t("table.joined")}</th>
-                <th className="px-3 py-2 text-right">{t("table.actions")}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {sortedMembers.map((member) => {
-                const user = member.user;
-                const joinedAt = formatter.dateTime(new Date(member.joinedAt), {
-                  dateStyle: "medium",
-                });
-                const isCurrentUser = user?.id === currentUserId;
-                const disableRoleChange =
-                  !canManageMembers || member.role === ProjectMemberRole.OWNER;
-                return (
-                  <tr key={member.userId} className="align-top">
-                    <td className="px-3 py-3">
-                      <p className="font-semibold">
-                        {user?.name ?? t("table.unknown")}
-                        {isCurrentUser && (
-                          <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] uppercase tracking-wide text-muted-foreground">
-                            {t("badges.you")}
-                          </span>
-                        )}
-                        {member.role === ProjectMemberRole.OWNER && (
-                          <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] uppercase tracking-wide text-primary">
-                            {t("roles.owner")}
-                          </span>
-                        )}
-                      </p>
-                      <p className="text-xs text-muted-foreground">{user?.email}</p>
-                    </td>
-                    <td className="px-3 py-3">
-                      <select
-                        value={member.role}
-                        onChange={(event) =>
-                          handleRoleChange(member.userId, event.target.value as ProjectMemberRole)
-                        }
-                        disabled={disableRoleChange}
-                        className={cn(
-                          "rounded-lg border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary",
-                          disableRoleChange && "cursor-not-allowed bg-muted",
-                        )}
-                      >
-                        {ROLE_OPTIONS.map((role) => (
-                          <option key={role} value={role} disabled={role === ProjectMemberRole.OWNER && member.role !== ProjectMemberRole.OWNER}>
-                            {t(`roles.${role.toLowerCase() as Lowercase<ProjectMemberRole>}`)}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="px-3 py-3 text-sm text-muted-foreground">{joinedAt}</td>
-                    <td className="px-3 py-3 text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={
-                          member.role === ProjectMemberRole.OWNER ||
-                          !canManageMembers
-                        }
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              t("messages.removeConfirm", {
-                                name: user?.name ?? user?.email ?? member.userId,
-                              }),
-                            )
-                          ) {
-                            void handleRemove(member.userId);
-                          }
-                        }}
-                      >
-                        {t("actions.remove")}
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+      {activeView === "roles" && (
+        <ProjectRolesPanel
+          token={token}
+          projectId={projectId}
+          roles={roles}
+          permissionsCatalog={permissionsCatalog}
+          canManageRoles={canManageRoles}
+          onRolesChange={onRolesChange}
+        />
       )}
 
       {canManageMembers && (
@@ -254,6 +337,7 @@ export function ProjectMembersTab({
           open={addDialogOpen}
           onOpenChange={setAddDialogOpen}
           onSubmit={handleAddMember}
+          roles={roles}
         />
       )}
     </section>
@@ -284,25 +368,32 @@ function AddMemberDialog({
   open,
   onOpenChange,
   onSubmit,
+  roles,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (email: string, role?: ProjectMemberRole) => Promise<void>;
+  onSubmit: (email: string, roleId?: string) => Promise<void>;
+  roles: ProjectRole[];
 }) {
   const t = useTranslations("app.projects.members");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState<ProjectMemberRole>(ProjectMemberRole.DEVELOPER);
+  const defaultRoleId =
+    roles.find((item) => item.isDefault)?.id ??
+    roles.find((item) => !item.isOwner)?.id ??
+    roles[0]?.id ??
+    "";
+  const [roleId, setRoleId] = useState<string>(defaultRoleId);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!open) {
       setEmail("");
-      setRole(ProjectMemberRole.DEVELOPER);
+      setRoleId(defaultRoleId);
       setError(null);
       setIsSubmitting(false);
     }
-  }, [open]);
+  }, [defaultRoleId, open]);
 
   const handleSubmit = useCallback(async () => {
     if (!email.trim()) {
@@ -311,14 +402,14 @@ function AddMemberDialog({
     }
     setIsSubmitting(true);
     try {
-      await onSubmit(email.trim(), role);
+      await onSubmit(email.trim(), roleId || undefined);
       onOpenChange(false);
     } catch {
       // handled upstream
     } finally {
       setIsSubmitting(false);
     }
-  }, [email, onOpenChange, onSubmit, role, t]);
+  }, [email, onOpenChange, onSubmit, roleId, t]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLFormElement>) => {
@@ -367,13 +458,13 @@ function AddMemberDialog({
               {t("fields.role")}
             </label>
             <select
-              value={role}
-              onChange={(event) => setRole(event.target.value as ProjectMemberRole)}
+              value={roleId}
+              onChange={(event) => setRoleId(event.target.value)}
               className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              {ROLE_OPTIONS.map((option) => (
-                <option key={option} value={option}>
-                  {t(`roles.${option.toLowerCase() as Lowercase<ProjectMemberRole>}`)}
+              {roles.map((option) => (
+                <option key={option.id} value={option.id} disabled={option.isOwner}>
+                  {option.name}
                 </option>
               ))}
             </select>

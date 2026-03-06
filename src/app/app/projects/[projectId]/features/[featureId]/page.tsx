@@ -3,12 +3,7 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import {
-  FeaturePriority,
-  FeatureStatus,
-  ProjectMemberRole,
-  StructureModuleNode,
-} from "@/lib/definitions";
+import { FeaturePriority, FeatureStatus, StructureModuleNode } from "@/lib/definitions";
 import {
   fetchFeatureById,
   fetchGetUserProfile,
@@ -32,6 +27,13 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 import { FeatureTabs } from "./feature-tabs.client";
 import { Pencil, Trash2 } from "lucide-react";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
+import { listProjectMembers } from "@/lib/api/project-members";
+import { listProjectRoles } from "@/lib/api/project-roles";
+import {
+  hasPermission,
+  resolveMemberRoleId,
+  resolveRolePermissions,
+} from "@/lib/permissions";
 
 type Params = { projectId: string; featureId: string };
 
@@ -125,17 +127,32 @@ export default async function FeatureDetailPage({
     { label: feature.name },
   ];
 
-  const inferredRole =
-    project.members?.find((member) => member.userId === currentUserId)?.role ??
-    (project.ownerId === currentUserId ? ProjectMemberRole.OWNER : null);
-  const membershipRole = project.membershipRole ?? inferredRole ?? null;
-  const canManageFeature =
-    membershipRole === ProjectMemberRole.OWNER ||
-    membershipRole === ProjectMemberRole.MAINTAINER;
-  const canManageQa =
-    membershipRole === ProjectMemberRole.OWNER ||
-    membershipRole === ProjectMemberRole.MAINTAINER ||
-    membershipRole === ProjectMemberRole.DEVELOPER;
+  let roles = [];
+  let members = project.members ?? [];
+  try {
+    roles = await listProjectRoles(session.token, projectId);
+    if (!members.length) {
+      members = await listProjectMembers(session.token, projectId);
+    }
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  const roleId = resolveMemberRoleId({
+    project,
+    members,
+    currentUserId,
+    roles,
+  });
+  const permissionKeys = resolveRolePermissions(roles, roleId);
+  const permissionSet = new Set(permissionKeys);
+  const canManageFeature = hasPermission(permissionSet, "feature.write");
+  const canManageQa = hasPermission(permissionSet, "qa.write");
+  const canViewQa = hasPermission(permissionSet, "qa.read");
+  const canShareManual = hasPermission(
+    permissionSet,
+    "project.manage_share_links",
+  );
 
   let linkedFeatures: QaLinkedFeature[] = [];
   try {
@@ -244,7 +261,8 @@ export default async function FeatureDetailPage({
         token={session.token}
         currentUserId={currentUserId ?? undefined}
         canManageQa={canManageQa}
-        canShareManual={canManageFeature}
+        canViewQa={canViewQa}
+        canShareManual={canShareManual}
         initialLinkedFeatures={linkedFeatures}
         linkableFeatures={linkableFeatures}
         modulePathById={modulePathById}

@@ -1,4 +1,4 @@
-import { ISODateString, ProjectMemberRole, ProjectStatus, Visibility } from "../definitions";
+import { ISODateString, ProjectStatus, Visibility } from "../definitions";
 import { Module } from "./module";
 
 export type Project = {
@@ -18,18 +18,25 @@ export type Project = {
   ownerId: string;
   modules: Module[];
   members?: ProjectMember[];
-  membershipRole?: ProjectMemberRole | null;
+  membershipRoleId?: string | null;
+  membershipRole?: string | null;
 };
 
 export type ProjectMember = {
   projectId: string;
   userId: string;
-  role: ProjectMemberRole;
+  roleId: string;
   joinedAt: ISODateString;
   user?: {
     id: string;
     email: string;
     name?: string | null;
+  } | null;
+  role?: {
+    id: string;
+    name: string;
+    isOwner?: boolean;
+    isDefault?: boolean;
   } | null;
 };
 

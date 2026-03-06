@@ -733,6 +733,10 @@
     "members": {
         "title": "Project members",
         "subtitle": "Invite collaborators, adjust roles, and manage access.",
+        "tabs": {
+          "members": "Members",
+          "roles": "Roles"
+        },
         "actions": {
           "add": "Add member",
           "remove": "Remove",
@@ -779,7 +783,8 @@
           "removed": "Member removed.",
           "removeError": "We couldn't remove that member.",
           "removeConfirm": "Remove {name} from this project?",
-          "ownerOnly": "Only the project owner can manage members."
+          "ownerOnly": "Only the project owner can manage members.",
+          "manageOnly": "Only roles with permission can manage members."
         },
         "addDialog": {
           "title": "Invite member",
@@ -808,7 +813,8 @@
           "deleted": "Label deleted.",
           "deleteError": "We couldn't delete the label.",
           "deleteConfirm": "Delete the \"{name}\" label?",
-          "ownerOnly": "Only the owner can modify labels."
+          "ownerOnly": "Only the owner can modify labels.",
+          "manageOnly": "Only roles with permission can modify labels."
         },
         "table": {
           "name": "Label",
@@ -854,6 +860,61 @@
           "DEVELOPER": "Developer",
           "VIEWER": "Viewer",
           "TESTER": "Tester"
+        }
+      },
+      "roles": {
+        "title": "Project roles",
+        "subtitle": "Create roles and decide which permissions they have.",
+        "actions": {
+          "add": "New role",
+          "edit": "Edit",
+          "delete": "Delete",
+          "save": "Save",
+          "saving": "Saving...",
+          "cancel": "Cancel"
+        },
+        "table": {
+          "role": "Role",
+          "description": "Description",
+          "permissions": "Permissions",
+          "members": "Members",
+          "actions": "Actions"
+        },
+        "badges": {
+          "owner": "Owner",
+          "default": "Default"
+        },
+        "empty": {
+          "title": "No roles yet",
+          "description": "Create a role to start assigning permissions."
+        },
+        "messages": {
+          "loadError": "We couldn't load the roles.",
+          "saveError": "We couldn't save the role.",
+          "created": "Role created.",
+          "updated": "Role updated.",
+          "deleted": "Role deleted.",
+          "deleteError": "We couldn't delete the role.",
+          "deleteConfirm": "Delete the \"{name}\" role?",
+          "cannotDelete": "Owner roles or roles with members cannot be deleted.",
+          "manageOnly": "Only roles with permission can manage roles.",
+          "loading": "Loading roles..."
+        },
+        "dialog": {
+          "createTitle": "New role",
+          "editTitle": "Edit role",
+          "description": "Define the permissions for this role."
+        },
+        "form": {
+          "name": "Role name",
+          "namePlaceholder": "e.g. QA Lead",
+          "description": "Description",
+          "descriptionPlaceholder": "Optional",
+          "permissions": "Permissions",
+          "permissionsCount": "{count} selected"
+        },
+        "validation": {
+          "name": "Enter a role name."
         }
       },
       "documentation": {

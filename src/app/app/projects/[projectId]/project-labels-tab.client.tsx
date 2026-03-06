@@ -20,6 +20,7 @@ import {
   reorderProjectLabelOrder,
   updateProjectLabel,
 } from "@/lib/api/qa";
+import type { ProjectRole } from "@/lib/api/project-roles";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import {
   Dialog,
@@ -36,39 +37,33 @@ type ProjectLabelsTabProps = {
   token: string;
   projectId: string;
   canManageLabels: boolean;
+  roles: ProjectRole[];
 };
 
 type LabelFormValues = {
   name: string;
   isMandatory: boolean;
   isNotApplicableByDefault: boolean;
-  visibleToRoles: QaLabelRole[];
-  readOnlyRoles: QaLabelRole[];
+  visibleRoleIds: QaLabelRole[];
+  readOnlyRoleIds: QaLabelRole[];
 };
 
 const DEFAULT_FORM_VALUES: LabelFormValues = {
   name: "",
   isMandatory: false,
   isNotApplicableByDefault: false,
-  visibleToRoles: [],
-  readOnlyRoles: [],
+  visibleRoleIds: [],
+  readOnlyRoleIds: [],
 };
-
-const DEFAULT_ROLE_OPTIONS: QaLabelRole[] = [
-  "OWNER",
-  "MAINTAINER",
-  "DEVELOPER",
-  "VIEWER",
-];
 
 export function ProjectLabelsTab({
   token,
   projectId,
   canManageLabels,
+  roles,
 }: ProjectLabelsTabProps) {
   const t = useTranslations("app.projects.labels");
   const tReorder = useTranslations("app.projects.labels.reorder");
-  const tRoles = useTranslations("app.projects.labels.roleNames");
   const [labels, setLabels] = useState<QaProjectLabel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -82,23 +77,19 @@ export function ProjectLabelsTab({
   const [reorderingId, setReorderingId] = useState<string | null>(null);
 
   const roleOptions = useMemo(() => {
-    const roleSet = new Set<QaLabelRole>(DEFAULT_ROLE_OPTIONS);
+    const roleSet = new Set<QaLabelRole>(roles.map((role) => role.id));
     labels.forEach((label) => {
-      label.visibleToRoles?.forEach((role) => roleSet.add(role));
-      label.readOnlyRoles?.forEach((role) => roleSet.add(role));
+      label.visibleRoleIds?.forEach((role) => roleSet.add(role));
+      label.readOnlyRoleIds?.forEach((role) => roleSet.add(role));
     });
     return Array.from(roleSet);
-  }, [labels]);
+  }, [labels, roles]);
 
   const getRoleLabel = useCallback(
     (role: QaLabelRole) => {
-      try {
-        return tRoles(role);
-      } catch {
-        return role;
-      }
+      return roles.find((item) => item.id === role)?.name ?? role;
     },
-    [tRoles],
+    [roles],
   );
 
   const fetchLabels = useCallback(async () => {
@@ -132,8 +123,8 @@ export function ProjectLabelsTab({
       name: label.name ?? "",
       isMandatory: Boolean(label.isMandatory),
       isNotApplicableByDefault: Boolean(label.defaultNotApplicable),
-      visibleToRoles: label.visibleToRoles ?? [],
-      readOnlyRoles: label.readOnlyRoles ?? [],
+      visibleRoleIds: label.visibleRoleIds ?? [],
+      readOnlyRoleIds: label.readOnlyRoleIds ?? [],
     });
     setFormError(null);
     setFormOpen(true);
@@ -153,7 +144,7 @@ export function ProjectLabelsTab({
   );
 
   const toggleRole = useCallback(
-    (role: QaLabelRole, list: "visibleToRoles" | "readOnlyRoles") => {
+    (role: QaLabelRole, list: "visibleRoleIds" | "readOnlyRoleIds") => {
       setFormValues((prev) => {
         const current = new Set(prev[list]);
         if (current.has(role)) {
@@ -161,21 +152,21 @@ export function ProjectLabelsTab({
         } else {
           current.add(role);
         }
-        let nextVisible = prev.visibleToRoles;
-        let nextReadOnly = prev.readOnlyRoles;
-        if (list === "visibleToRoles") {
+        let nextVisible = prev.visibleRoleIds;
+        let nextReadOnly = prev.readOnlyRoleIds;
+        if (list === "visibleRoleIds") {
           nextVisible = Array.from(current);
-          nextReadOnly = prev.readOnlyRoles.filter((value) =>
+          nextReadOnly = prev.readOnlyRoleIds.filter((value) =>
             nextVisible.includes(value),
           );
         } else {
           nextReadOnly = Array.from(current);
-          nextVisible = Array.from(new Set([...prev.visibleToRoles, role]));
+          nextVisible = Array.from(new Set([...prev.visibleRoleIds, role]));
         }
         return {
           ...prev,
-          visibleToRoles: nextVisible,
-          readOnlyRoles: nextReadOnly,
+          visibleRoleIds: nextVisible,
+          readOnlyRoleIds: nextReadOnly,
         };
       });
     },
@@ -192,8 +183,8 @@ export function ProjectLabelsTab({
     const payload: CreateQaProjectLabelDto = {
       name: formValues.name.trim(),
       isMandatory: formValues.isMandatory,
-      visibleToRoles: formValues.visibleToRoles,
-      readOnlyRoles: formValues.readOnlyRoles,
+      visibleRoleIds: formValues.visibleRoleIds,
+      readOnlyRoleIds: formValues.readOnlyRoleIds,
     };
     try {
       if (editingLabel) {
@@ -282,7 +273,7 @@ export function ProjectLabelsTab({
       </header>
 
       {!canManageLabels && (
-        <p className="text-xs text-muted-foreground">{t("messages.ownerOnly")}</p>
+        <p className="text-xs text-muted-foreground">{t("messages.manageOnly")}</p>
       )}
 
       {isLoading ? (
@@ -334,14 +325,14 @@ export function ProjectLabelsTab({
                   </td>
                   <td className="px-3 py-3">
                     <RoleList
-                      values={label.visibleToRoles ?? []}
+                      values={label.visibleRoleIds ?? []}
                       getLabel={getRoleLabel}
                     />
                   </td>
                   <td className="px-3 py-3">
-                    {label.readOnlyRoles?.length ? (
+                    {label.readOnlyRoleIds?.length ? (
                       <RoleList
-                        values={label.readOnlyRoles ?? []}
+                        values={label.readOnlyRoleIds ?? []}
                         getLabel={getRoleLabel}
                         tone="warning"
                       />
@@ -510,7 +501,7 @@ function LabelFormDialog({
   error: string | null;
   canManageLabels: boolean;
   roleOptions: QaLabelRole[];
-  toggleRole: (role: QaLabelRole, list: "visibleToRoles" | "readOnlyRoles") => void;
+  toggleRole: (role: QaLabelRole, list: "visibleRoleIds" | "readOnlyRoleIds") => void;
   getRoleLabel: (role: QaLabelRole) => string;
 }) {
   const t = useTranslations("app.projects.labels");
@@ -584,9 +575,9 @@ function LabelFormDialog({
           <RoleCheckboxGroup
             title={t("fields.visibleToRoles")}
             helper={t("fields.visibleToRolesHint")}
-            values={values.visibleToRoles}
+            values={values.visibleRoleIds}
             roleOptions={roleOptions}
-            onToggle={(role) => toggleRole(role, "visibleToRoles")}
+            onToggle={(role) => toggleRole(role, "visibleRoleIds")}
             getRoleLabel={getRoleLabel}
             disabled={!canManageLabels}
           />
@@ -594,9 +585,9 @@ function LabelFormDialog({
           <RoleCheckboxGroup
             title={t("fields.readOnlyRoles")}
             helper={t("fields.readOnlyRolesHint")}
-            values={values.readOnlyRoles}
+            values={values.readOnlyRoleIds}
             roleOptions={roleOptions}
-            onToggle={(role) => toggleRole(role, "readOnlyRoles")}
+            onToggle={(role) => toggleRole(role, "readOnlyRoleIds")}
             getRoleLabel={getRoleLabel}
             disabled={!canManageLabels}
           />

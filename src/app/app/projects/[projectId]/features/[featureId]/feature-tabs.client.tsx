@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 
 import type { Feature } from "@/lib/model-definitions/feature";
@@ -27,6 +27,7 @@ type FeatureTabsProps = {
   token: string;
   currentUserId?: string;
   canManageQa?: boolean;
+  canViewQa?: boolean;
   canShareManual?: boolean;
   initialLinkedFeatures: QaLinkedFeature[];
   linkableFeatures: LinkedOption[];
@@ -51,6 +52,7 @@ export function FeatureTabs({
   token,
   currentUserId,
   canManageQa = false,
+  canViewQa = false,
   canShareManual = false,
   initialLinkedFeatures,
   linkableFeatures,
@@ -72,6 +74,22 @@ export function FeatureTabs({
     setLinkedFeatures(initialLinkedFeatures);
   }, [initialLinkedFeatures]);
 
+  const availableTabs = useMemo<FeatureTab[]>(() => {
+    const tabs: FeatureTab[] = [];
+    if (canViewQa) tabs.push("documentation");
+    tabs.push("issues", "versions");
+    if (canViewQa) tabs.push("qa");
+    tabs.push("linked");
+    if (canViewQa) tabs.push("manual");
+    return tabs;
+  }, [canViewQa]);
+
+  useEffect(() => {
+    if (!availableTabs.includes(activeTab)) {
+      setActiveTab(availableTabs[0] ?? "issues");
+    }
+  }, [activeTab, availableTabs]);
+
   const linkedBadgeCount =
     linkedFeatures.length ??
     linkedFeaturesCount ??
@@ -81,11 +99,13 @@ export function FeatureTabs({
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        <TabButton
-          label={tTabs("info")}
-          isActive={activeTab === "documentation"}
-          onClick={() => setActiveTab("documentation")}
-        />
+        {canViewQa && (
+          <TabButton
+            label={tTabs("info")}
+            isActive={activeTab === "documentation"}
+            onClick={() => setActiveTab("documentation")}
+          />
+        )}
         <TabButton
           label={tTabs("issues")}
           isActive={activeTab === "issues"}
@@ -96,26 +116,30 @@ export function FeatureTabs({
           isActive={activeTab === "versions"}
           onClick={() => setActiveTab("versions")}
         />
-        <TabButton
-          label={tTabs("qa")}
-          isActive={activeTab === "qa"}
-          onClick={() => setActiveTab("qa")}
-          badge={qaBadgeCount}
-        />
+        {canViewQa && (
+          <TabButton
+            label={tTabs("qa")}
+            isActive={activeTab === "qa"}
+            onClick={() => setActiveTab("qa")}
+            badge={qaBadgeCount}
+          />
+        )}
         <TabButton
           label={tTabs("linked")}
           isActive={activeTab === "linked"}
           onClick={() => setActiveTab("linked")}
           badge={linkedBadgeCount}
         />
-        <TabButton
-          label={tTabs("manual")}
-          isActive={activeTab === "manual"}
-          onClick={() => setActiveTab("manual")}
-        />
+        {canViewQa && (
+          <TabButton
+            label={tTabs("manual")}
+            isActive={activeTab === "manual"}
+            onClick={() => setActiveTab("manual")}
+          />
+        )}
       </div>
 
-      {activeTab === "documentation" && (
+      {activeTab === "documentation" && canViewQa && (
         <EntityDocumentationPanel
           token={token}
           entityId={featureId}
@@ -198,7 +222,7 @@ export function FeatureTabs({
         </section>
       )}
 
-      {activeTab === "qa" && (
+      {activeTab === "qa" && canViewQa && (
         <FeatureQA
           token={token}
           featureId={featureId}
@@ -219,7 +243,7 @@ export function FeatureTabs({
         />
       )}
 
-      {activeTab === "manual" && (
+      {activeTab === "manual" && canViewQa && (
         <div className="space-y-4">
           <ManualLabelsNavbar token={token} projectId={projectId} />
           <ManualTabContent

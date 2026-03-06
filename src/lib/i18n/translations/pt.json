@@ -733,6 +733,10 @@
       "members": {
         "title": "Membros do projeto",
         "subtitle": "Convide colaboradores, ajuste papéis e controle o acesso.",
+        "tabs": {
+          "members": "Membros",
+          "roles": "Papéis"
+        },
         "actions": {
           "add": "Adicionar membro",
           "remove": "Remover",
@@ -779,7 +783,8 @@
           "removed": "Membro removido.",
           "removeError": "Não foi possível remover o membro.",
           "removeConfirm": "Deseja remover {name} do projeto?",
-          "ownerOnly": "Somente o proprietário pode gerenciar os membros."
+          "ownerOnly": "Somente o proprietário pode gerenciar os membros.",
+          "manageOnly": "Somente papéis com permissão podem gerenciar membros."
         },
         "addDialog": {
           "title": "Convidar membro",
@@ -808,7 +813,8 @@
           "deleted": "Etiqueta excluída.",
           "deleteError": "Não foi possível excluir a etiqueta.",
           "deleteConfirm": "Excluir a etiqueta \"{name}\"?",
-          "ownerOnly": "Somente o proprietário pode modificar as etiquetas."
+          "ownerOnly": "Somente o proprietário pode modificar as etiquetas.",
+          "manageOnly": "Somente papéis com permissão podem modificar as etiquetas."
         },
         "table": {
           "name": "Etiqueta",
@@ -854,6 +860,61 @@
           "DEVELOPER": "Desenvolvedor",
           "VIEWER": "Leitor",
           "TESTER": "Testador"
+        }
+      },
+      "roles": {
+        "title": "Papéis do projeto",
+        "subtitle": "Crie papéis e defina quais permissões eles terão.",
+        "actions": {
+          "add": "Novo papel",
+          "edit": "Editar",
+          "delete": "Excluir",
+          "save": "Salvar",
+          "saving": "Salvando...",
+          "cancel": "Cancelar"
+        },
+        "table": {
+          "role": "Papel",
+          "description": "Descrição",
+          "permissions": "Permissões",
+          "members": "Membros",
+          "actions": "Ações"
+        },
+        "badges": {
+          "owner": "Owner",
+          "default": "Padrão"
+        },
+        "empty": {
+          "title": "Ainda não há papéis",
+          "description": "Crie um papel para começar a atribuir permissões."
+        },
+        "messages": {
+          "loadError": "Não foi possível carregar os papéis.",
+          "saveError": "Não foi possível salvar o papel.",
+          "created": "Papel criado.",
+          "updated": "Papel atualizado.",
+          "deleted": "Papel excluído.",
+          "deleteError": "Não foi possível excluir o papel.",
+          "deleteConfirm": "Excluir o papel \"{name}\"?",
+          "cannotDelete": "Papéis owner ou com membros não podem ser excluídos.",
+          "manageOnly": "Somente papéis com permissão podem gerenciar papéis.",
+          "loading": "Carregando papéis..."
+        },
+        "dialog": {
+          "createTitle": "Novo papel",
+          "editTitle": "Editar papel",
+          "description": "Defina as permissões deste papel."
+        },
+        "form": {
+          "name": "Nome do papel",
+          "namePlaceholder": "ex. QA Lead",
+          "description": "Descrição",
+          "descriptionPlaceholder": "Opcional",
+          "permissions": "Permissões",
+          "permissionsCount": "{count} selecionadas"
+        },
+        "validation": {
+          "name": "Informe o nome do papel."
         }
       },
       "documentation": {

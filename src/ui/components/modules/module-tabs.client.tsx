@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
@@ -13,12 +13,13 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
+import { hasPermission } from "@/lib/permissions";
 
 type ModuleTabsProps = {
   project: Project;
   module: Module;
   structureNode: StructureModuleNode;
-  canManageStructure: boolean;
+  permissions: string[];
   token: string;
 };
 
@@ -28,7 +29,7 @@ export function ModuleTabs({
   project,
   module,
   structureNode,
-  canManageStructure,
+  permissions,
   token,
 }: ModuleTabsProps) {
   const [activeTab, setActiveTab] = useState<ModuleTab>("structure");
@@ -38,6 +39,27 @@ export function ModuleTabs({
   const tFeatureTabs = useTranslations("app.projects.feature.tabs");
   const tManual = useTranslations("app.projects.manual");
 
+  const permissionSet = useMemo(() => new Set(permissions), [permissions]);
+  const canViewStructure = hasPermission(permissionSet, "module.read");
+  const canManageStructure = hasPermission(permissionSet, "module.write");
+  const canViewDocumentation = hasPermission(permissionSet, "qa.read");
+  const canViewManual = hasPermission(permissionSet, "qa.read");
+  const canShareManual = hasPermission(permissionSet, "project.manage_share_links");
+
+  const availableTabs = useMemo<ModuleTab[]>(() => {
+    const tabs: ModuleTab[] = [];
+    if (canViewStructure) tabs.push("structure");
+    if (canViewDocumentation) tabs.push("documentation");
+    if (canViewManual) tabs.push("manual");
+    return tabs;
+  }, [canViewDocumentation, canViewManual, canViewStructure]);
+
+  useEffect(() => {
+    if (!availableTabs.includes(activeTab)) {
+      setActiveTab(availableTabs[0] ?? "structure");
+    }
+  }, [activeTab, availableTabs]);
+
   const structureLabel = tProjectTabs("structure");
   const documentationLabel = tFeatureTabs("info");
   const manualLabel = tProjectTabs("manual");
@@ -45,24 +67,30 @@ export function ModuleTabs({
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        <TabButton
-          label={structureLabel}
-          isActive={activeTab === "structure"}
-          onClick={() => setActiveTab("structure")}
-        />
-        <TabButton
-          label={documentationLabel}
-          isActive={activeTab === "documentation"}
-          onClick={() => setActiveTab("documentation")}
-        />
-        <TabButton
-          label={manualLabel}
-          isActive={activeTab === "manual"}
-          onClick={() => setActiveTab("manual")}
-        />
+        {canViewStructure && (
+          <TabButton
+            label={structureLabel}
+            isActive={activeTab === "structure"}
+            onClick={() => setActiveTab("structure")}
+          />
+        )}
+        {canViewDocumentation && (
+          <TabButton
+            label={documentationLabel}
+            isActive={activeTab === "documentation"}
+            onClick={() => setActiveTab("documentation")}
+          />
+        )}
+        {canViewManual && (
+          <TabButton
+            label={manualLabel}
+            isActive={activeTab === "manual"}
+            onClick={() => setActiveTab("manual")}
+          />
+        )}
       </div>
 
-      {activeTab === "structure" && (
+      {activeTab === "structure" && canViewStructure && (
         <>
           <StructureTree
             projectId={project.id}
@@ -100,7 +128,7 @@ export function ModuleTabs({
         </>
       )}
 
-      {activeTab === "documentation" && (
+      {activeTab === "documentation" && canViewDocumentation && (
         <EntityDocumentationPanel
           token={token}
           entityId={module.id}
@@ -109,7 +137,7 @@ export function ModuleTabs({
         />
       )}
 
-      {activeTab === "manual" && (
+      {activeTab === "manual" && canViewManual && (
         <div className="space-y-4">
           <ManualLabelsNavbar token={token} projectId={project.id} />
           <ManualTabContent
@@ -126,7 +154,7 @@ export function ModuleTabs({
               default: "Collapse all",
             })}
             title={manualLabel}
-            canShareManual={canManageStructure}
+            canShareManual={canShareManual}
             shareRootType="MODULE"
             shareRootId={module.id}
           />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { ProjectMemberRole, ProjectStatus, ProjectStructureResponse, StructureModuleNode } from "@/lib/definitions";
+import { ProjectStatus, ProjectStructureResponse, StructureModuleNode } from "@/lib/definitions";
 import { fetchGetUserProfile, fetchProjectById, fetchProjectStructure } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
@@ -15,6 +15,12 @@ import { deleteProject } from "@/app/app/projects/actions";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Pencil, Trash2 } from "lucide-react";
+import { listProjectMembers } from "@/lib/api/project-members";
+import {
+  listProjectPermissions,
+  listProjectRoles,
+} from "@/lib/api/project-roles";
+import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 
 
 type Params = { projectId: string };
@@ -73,13 +79,29 @@ export default async function ProjectDetailPage({
     { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
     { label: project.name },
   ];
-  const inferredRole =
-    project.members?.find((member) => member.userId === currentUserId)?.role ??
-    (project.ownerId === currentUserId ? ProjectMemberRole.OWNER : null);
-  const membershipRole = project.membershipRole ?? inferredRole ?? null;
-  const canManageProject =
-    membershipRole === ProjectMemberRole.OWNER ||
-    membershipRole === ProjectMemberRole.MAINTAINER;
+  let roles = [];
+  let permissionsCatalog = { items: [] as { key: string; description?: string | null }[] };
+  let members = project.members ?? [];
+  try {
+    roles = await listProjectRoles(session.token, projectId);
+    permissionsCatalog = await listProjectPermissions(session.token, projectId);
+    if (!members.length) {
+      members = await listProjectMembers(session.token, projectId);
+    }
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  const roleId = resolveMemberRoleId({
+    project,
+    members,
+    currentUserId,
+    roles,
+  });
+  const permissionKeys = resolveRolePermissions(roles, roleId);
+  const permissionSet = new Set(permissionKeys);
+  const canUpdateProject = hasPermission(permissionSet, "project.update");
+  const canDeleteProject = hasPermission(permissionSet, "project.delete");
 
   return (
     <div className="grid gap-6">
@@ -106,26 +128,29 @@ export default async function ProjectDetailPage({
             label={tStatus(project.status)}
           />
           {/* Botones de acción */}
-          {canManageProject && (
+          {(canUpdateProject || canDeleteProject) && (
             <div className="flex gap-2">
-              <Link
-                href={`/app/projects/${project.id}/edit`}
-                className={actionButtonClass()}
-              >
-                <Pencil className="mr-2 h-4 w-4" aria-hidden />
-                {t("actions.edit", { default: "Editar" })}
-              </Link>
-
-              {/* Eliminar proyecto (igual patrón que en /edit) */}
-              <form action={deleteProject.bind(null, project.id)}>
-                <button
-                  type="submit"
-                  className={actionButtonClass({ variant: "destructive" })}
+              {canUpdateProject && (
+                <Link
+                  href={`/app/projects/${project.id}/edit`}
+                  className={actionButtonClass()}
                 >
-                  <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-                  {t("actions.delete", { default: "Eliminar" })}
-                </button>
-              </form>
+                  <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                  {t("actions.edit", { default: "Editar" })}
+                </Link>
+              )}
+
+              {canDeleteProject && (
+                <form action={deleteProject.bind(null, project.id)}>
+                  <button
+                    type="submit"
+                    className={actionButtonClass({ variant: "destructive" })}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                    {t("actions.delete", { default: "Eliminar" })}
+                  </button>
+                </form>
+              )}
             </div>
           )}
         </div>
@@ -138,7 +163,9 @@ export default async function ProjectDetailPage({
         token={session.token}
         featureOptions={featureOptions}
         currentUserId={currentUserId ?? undefined}
-        membershipRole={membershipRole ?? undefined}
+        permissions={permissionKeys}
+        roles={roles}
+        permissionsCatalog={permissionsCatalog.items ?? []}
       />
     </div>
   );

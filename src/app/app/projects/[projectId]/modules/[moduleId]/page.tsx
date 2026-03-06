@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { ProjectMemberRole, StructureModuleNode } from "@/lib/definitions";
+import { StructureModuleNode } from "@/lib/definitions";
 import {
   fetchModuleById,
   fetchModuleStructure,
@@ -22,6 +22,9 @@ import { actionButtonClass } from "@/ui/styles/action-button";
 import { Pencil, Trash2 } from "lucide-react";
 import { deleteModule } from "@/app/app/projects/[projectId]/modules/[moduleId]/edit/actions";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
+import { listProjectMembers } from "@/lib/api/project-members";
+import { listProjectRoles } from "@/lib/api/project-roles";
+import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 
 type Params = {
   projectId: string;
@@ -107,13 +110,28 @@ export default async function ModuleDetailPage({
     await handlePageError(error);
   }
 
-  const membershipRole =
-    project.membershipRole ??
-    project.members?.find((member) => member.userId === currentUserId)?.role ??
-    (project.ownerId === currentUserId ? ProjectMemberRole.OWNER : null);
-  const canManageStructure =
-    membershipRole === ProjectMemberRole.OWNER ||
-    membershipRole === ProjectMemberRole.MAINTAINER;
+  let roles = [];
+  let members = project.members ?? [];
+  try {
+    roles = await listProjectRoles(session.token, projectId);
+    if (!members.length) {
+      members = await listProjectMembers(session.token, projectId);
+    }
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  const roleId = resolveMemberRoleId({
+    project,
+    members,
+    currentUserId,
+    roles,
+  });
+  const permissionKeys = resolveRolePermissions(roles, roleId);
+  const permissionSet = new Set(permissionKeys);
+  const canManageStructure = hasPermission(permissionSet, "module.write");
+  const canManageModule = canManageStructure;
+  const canDeleteModule = hasPermission(permissionSet, "module.write");
   const hasDescription = Boolean(currentModule.description?.trim());
 
   return (
@@ -159,7 +177,7 @@ export default async function ModuleDetailPage({
               )}
             </div>
 
-            {canManageStructure && (
+            {canManageModule && (
               <div className="flex gap-2">
                 <Link
                   href={`/app/projects/${projectId}/modules/${moduleId}/edit`}
@@ -169,15 +187,17 @@ export default async function ModuleDetailPage({
                   {tModule("actions.edit", { default: "Edit" })}
                 </Link>
 
-                <form action={deleteModule.bind(null, projectId, moduleId)}>
-                  <button
-                    type="submit"
-                    className={actionButtonClass({ variant: "destructive" })}
-                  >
-                    <Trash2 className="mr-2 h-4 w-4" aria-hidden />
-                    {tModule("actions.delete", { default: "Delete" })}
-                  </button>
-                </form>
+                {canDeleteModule && (
+                  <form action={deleteModule.bind(null, projectId, moduleId)}>
+                    <button
+                      type="submit"
+                      className={actionButtonClass({ variant: "destructive" })}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                      {tModule("actions.delete", { default: "Delete" })}
+                    </button>
+                  </form>
+                )}
               </div>
             )}
           </div>
@@ -188,7 +208,7 @@ export default async function ModuleDetailPage({
         project={project}
         module={currentModule}
         structureNode={structureNode!}
-        canManageStructure={canManageStructure}
+        permissions={permissionKeys}
         token={session.token}
       />
     </div>

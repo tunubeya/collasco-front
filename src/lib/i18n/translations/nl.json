@@ -731,6 +731,10 @@
       "members": {
         "title": "Projectleden",
         "subtitle": "Nodig collega’s uit en beheer hun rollen en rechten.",
+        "tabs": {
+          "members": "Leden",
+          "roles": "Rollen"
+        },
         "actions": {
           "add": "Lid toevoegen",
           "remove": "Verwijderen",
@@ -777,7 +781,8 @@
           "removed": "Lid verwijderd.",
           "removeError": "Het lid kon niet worden verwijderd.",
           "removeConfirm": "{name} uit het project verwijderen?",
-          "ownerOnly": "Alleen de eigenaar kan leden beheren."
+          "ownerOnly": "Alleen de eigenaar kan leden beheren.",
+          "manageOnly": "Alleen rollen met toestemming kunnen leden beheren."
         },
         "addDialog": {
           "title": "Lid uitnodigen",
@@ -806,7 +811,8 @@
           "deleted": "Label verwijderd.",
           "deleteError": "We konden het label niet verwijderen.",
           "deleteConfirm": "Label \"{name}\" verwijderen?",
-          "ownerOnly": "Alleen de eigenaar kan labels wijzigen."
+          "ownerOnly": "Alleen de eigenaar kan labels wijzigen.",
+          "manageOnly": "Alleen rollen met toestemming kunnen labels wijzigen."
         },
         "table": {
           "name": "Label",
@@ -852,6 +858,61 @@
           "DEVELOPER": "Ontwikkelaar",
           "VIEWER": "Lezer",
           "TESTER": "Tester"
+        }
+      },
+      "roles": {
+        "title": "Projectrollen",
+        "subtitle": "Maak rollen aan en bepaal welke rechten ze hebben.",
+        "actions": {
+          "add": "Nieuwe rol",
+          "edit": "Bewerken",
+          "delete": "Verwijderen",
+          "save": "Opslaan",
+          "saving": "Opslaan...",
+          "cancel": "Annuleren"
+        },
+        "table": {
+          "role": "Rol",
+          "description": "Beschrijving",
+          "permissions": "Rechten",
+          "members": "Leden",
+          "actions": "Acties"
+        },
+        "badges": {
+          "owner": "Owner",
+          "default": "Standaard"
+        },
+        "empty": {
+          "title": "Nog geen rollen",
+          "description": "Maak een rol aan om rechten toe te wijzen."
+        },
+        "messages": {
+          "loadError": "We konden de rollen niet laden.",
+          "saveError": "We konden de rol niet opslaan.",
+          "created": "Rol aangemaakt.",
+          "updated": "Rol bijgewerkt.",
+          "deleted": "Rol verwijderd.",
+          "deleteError": "We konden de rol niet verwijderen.",
+          "deleteConfirm": "Rol \"{name}\" verwijderen?",
+          "cannotDelete": "Owner-rollen of rollen met leden kunnen niet worden verwijderd.",
+          "manageOnly": "Alleen rollen met toestemming kunnen rollen beheren.",
+          "loading": "Rollen laden..."
+        },
+        "dialog": {
+          "createTitle": "Nieuwe rol",
+          "editTitle": "Rol bewerken",
+          "description": "Bepaal de rechten van deze rol."
+        },
+        "form": {
+          "name": "Rolnaam",
+          "namePlaceholder": "bijv. QA Lead",
+          "description": "Beschrijving",
+          "descriptionPlaceholder": "Optioneel",
+          "permissions": "Rechten",
+          "permissionsCount": "{count} geselecteerd"
+        },
+        "validation": {
+          "name": "Vul een rolnaam in."
         }
       },
       "documentation": {

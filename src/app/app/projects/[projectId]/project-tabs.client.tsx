@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
-import { ProjectMemberRole } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
 import { ProjectQA } from "./project-qa.client";
@@ -20,6 +19,8 @@ import { ProjectLabelsTab } from "./project-labels-tab.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 import { ProjectTrashTab } from "./project-trash-tab.client";
 import { ProjectImagesTab } from "./project-images-tab.client";
+import type { ProjectPermission, ProjectRole } from "@/lib/api/project-roles";
+import { hasPermission } from "@/lib/permissions";
 
 type ProjectTabsProps = {
   project: Project;
@@ -28,7 +29,9 @@ type ProjectTabsProps = {
   token: string;
   featureOptions: FeatureOption[];
   currentUserId?: string;
-  membershipRole?: ProjectMemberRole | null;
+  permissions: string[];
+  roles: ProjectRole[];
+  permissionsCatalog: ProjectPermission[];
 };
 
 type ProjectTab =
@@ -48,62 +51,119 @@ export function ProjectTabs({
   token,
   featureOptions,
   currentUserId,
-  membershipRole,
+  permissions,
+  roles,
+  permissionsCatalog,
 }: ProjectTabsProps) {
   const tTabs = useTranslations("app.projects.detail.tabs");
   const tProjectDetail = useTranslations("app.projects.detail");
   const tActions = useTranslations("app.projects.detail.actions");
   const tManual = useTranslations("app.projects.manual");
   const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
-  const canManageStructure =
-    membershipRole === ProjectMemberRole.OWNER ||
-    membershipRole === ProjectMemberRole.MAINTAINER;
-  const canManageQa =
-    membershipRole === ProjectMemberRole.OWNER ||
-    membershipRole === ProjectMemberRole.MAINTAINER ||
-    membershipRole === ProjectMemberRole.DEVELOPER;
+  const permissionSet = useMemo(() => new Set(permissions), [permissions]);
+  const canViewStructure = hasPermission(permissionSet, "module.read");
+  const canManageStructure = hasPermission(permissionSet, "module.write");
+  const canViewQa = hasPermission(permissionSet, "qa.read");
+  const canManageQa = hasPermission(permissionSet, "qa.write");
+  const canManageLabels = hasPermission(permissionSet, "labels.manage");
+  const canManageTrash = hasPermission(permissionSet, "project.delete");
+  const canManageMembers = hasPermission(permissionSet, "project.manage_members");
+  const canManageRoles = hasPermission(permissionSet, "project.manage_roles");
+  const canManageShareLinks = hasPermission(
+    permissionSet,
+    "project.manage_share_links",
+  );
+  const canViewProjectDocumentation = canViewQa;
+  const canViewImages = canViewQa;
+  const canViewMembers = canManageMembers || canManageRoles;
+  const canViewLabels = canManageLabels;
+  const canViewManual = canViewQa;
+  const [roleList, setRoleList] = useState<ProjectRole[]>(roles);
 
-  const canManageLabels = membershipRole === ProjectMemberRole.OWNER;
-  const canManageTrash = membershipRole === ProjectMemberRole.OWNER;
+  useEffect(() => {
+    setRoleList(roles);
+  }, [roles]);
+
+  const availableTabs = useMemo<ProjectTab[]>(() => {
+    const tabs: ProjectTab[] = [];
+    if (canViewStructure) tabs.push("structure");
+    if (canViewProjectDocumentation) tabs.push("documentation");
+    if (canViewImages) tabs.push("images");
+    if (canViewQa) tabs.push("qa");
+    if (canViewMembers) tabs.push("members");
+    if (canViewLabels) tabs.push("labels");
+    if (canViewManual) tabs.push("manual");
+    if (canManageTrash) tabs.push("trash");
+    return tabs;
+  }, [
+    canManageTrash,
+    canViewImages,
+    canViewLabels,
+    canViewManual,
+    canViewMembers,
+    canViewProjectDocumentation,
+    canViewQa,
+    canViewStructure,
+  ]);
+
+  useEffect(() => {
+    if (!availableTabs.includes(activeTab)) {
+      setActiveTab(availableTabs[0] ?? "structure");
+    }
+  }, [activeTab, availableTabs]);
 
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        <TabButton
-          label={tTabs("structure")}
-          isActive={activeTab === "structure"}
-          onClick={() => setActiveTab("structure")}
-        />
-        <TabButton
-          label={tTabs("documentation")}
-          isActive={activeTab === "documentation"}
-          onClick={() => setActiveTab("documentation")}
-        />
-        <TabButton
-          label={tTabs("images")}
-          isActive={activeTab === "images"}
-          onClick={() => setActiveTab("images")}
-        />
-        <TabButton
-          label={tTabs("qa")}
-          isActive={activeTab === "qa"}
-          onClick={() => setActiveTab("qa")}
-        />
-        <TabButton
-          label={tTabs("members")}
-          isActive={activeTab === "members"}
-          onClick={() => setActiveTab("members")}
-        />
-        <TabButton
-          label={tTabs("labels")}
-          isActive={activeTab === "labels"}
-          onClick={() => setActiveTab("labels")}
-        />
-        <TabButton
-          label={tTabs("manual")}
-          isActive={activeTab === "manual"}
-          onClick={() => setActiveTab("manual")}
-        />
+        {canViewStructure && (
+          <TabButton
+            label={tTabs("structure")}
+            isActive={activeTab === "structure"}
+            onClick={() => setActiveTab("structure")}
+          />
+        )}
+        {canViewProjectDocumentation && (
+          <TabButton
+            label={tTabs("documentation")}
+            isActive={activeTab === "documentation"}
+            onClick={() => setActiveTab("documentation")}
+          />
+        )}
+        {canViewImages && (
+          <TabButton
+            label={tTabs("images")}
+            isActive={activeTab === "images"}
+            onClick={() => setActiveTab("images")}
+          />
+        )}
+        {canViewQa && (
+          <TabButton
+            label={tTabs("qa")}
+            isActive={activeTab === "qa"}
+            onClick={() => setActiveTab("qa")}
+          />
+        )}
+        {canViewMembers && (
+          <TabButton
+            label={tTabs("members")}
+            isActive={activeTab === "members"}
+            onClick={() => setActiveTab("members")}
+          />
+        )}
+        {canViewLabels && (
+          <TabButton
+            label={tTabs("labels")}
+            isActive={activeTab === "labels"}
+            onClick={() => setActiveTab("labels")}
+          />
+        )}
+        {canViewManual && (
+          <TabButton
+            label={tTabs("manual")}
+            isActive={activeTab === "manual"}
+            onClick={() => setActiveTab("manual")}
+          />
+        )}
         {canManageTrash && (
           <TabButton
             label={tTabs("trash", { default: "Trash" })}
@@ -117,7 +177,7 @@ export function ProjectTabs({
         />
       </div>
 
-      {activeTab === "structure" && (
+      {activeTab === "structure" && canViewStructure && (
         <>
           <ProjectDetailClient
             project={project}
@@ -138,7 +198,7 @@ export function ProjectTabs({
         </>
       )}
 
-      {activeTab === "qa" && (
+      {activeTab === "qa" && canViewQa && (
         <ProjectQA
           token={token}
           projectId={projectId}
@@ -148,7 +208,7 @@ export function ProjectTabs({
         />
       )}
 
-      {activeTab === "documentation" && (
+      {activeTab === "documentation" && canViewProjectDocumentation && (
         <EntityDocumentationPanel
           token={token}
           entityId={projectId}
@@ -157,28 +217,33 @@ export function ProjectTabs({
         />
       )}
 
-      {activeTab === "images" && (
+      {activeTab === "images" && canViewImages && (
         <ProjectImagesTab token={token} projectId={projectId} />
       )}
-      {activeTab === "members" && (
+      {activeTab === "members" && canViewMembers && (
         <ProjectMembersTab
           token={token}
           projectId={projectId}
           initialMembers={project.members ?? []}
-          canManageMembers={membershipRole === ProjectMemberRole.OWNER}
+          canManageMembers={canManageMembers}
+          canManageRoles={canManageRoles}
+          permissionsCatalog={permissionsCatalog}
+          roles={roleList}
+          onRolesChange={setRoleList}
           currentUserId={currentUserId}
         />
       )}
 
-      {activeTab === "labels" && (
+      {activeTab === "labels" && canViewLabels && (
         <ProjectLabelsTab
           token={token}
           projectId={projectId}
           canManageLabels={canManageLabels}
+          roles={roleList}
         />
       )}
 
-      {activeTab === "manual" && (
+      {activeTab === "manual" && canViewManual && (
         <div className="space-y-4">
           <ManualLabelsNavbar token={token} projectId={projectId} />
           <ManualTabContent
@@ -195,7 +260,7 @@ export function ProjectTabs({
             })}
             title={""}
             hideProjectTitle
-            canShareManual={canManageStructure}
+            canShareManual={canManageShareLinks}
           />
         </div>
       )}

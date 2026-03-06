@@ -1,4 +1,3 @@
-import { ProjectMemberRole } from "@/lib/definitions";
 import type { ProjectMember } from "@/lib/model-definitions/project";
 import { fetchWithAuth } from "@/lib/utils";
 import { handleUnauthorized } from "@/lib/server-auth-helpers";
@@ -7,11 +6,11 @@ const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export type AddProjectMemberDto = {
   email: string;
-  role?: ProjectMemberRole;
+  roleId?: string;
 };
 
 export type UpdateProjectMemberDto = {
-  role: ProjectMemberRole;
+  roleId: string;
 };
 
 async function parseMembersResponse(res: Response): Promise<ProjectMember[]> {
@@ -70,7 +69,6 @@ export async function updateProjectMemberRole(
   dto: UpdateProjectMemberDto
 ): Promise<ProjectMember[]> {
   try {
-    
     const res = await fetchWithAuth(
       `${apiUrl}/projects/${projectId}/members/${userId}`,
       {

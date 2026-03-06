@@ -733,6 +733,10 @@
     "members": {
         "title": "Miembros del proyecto",
         "subtitle": "Gestiona quién tiene acceso al proyecto y qué rol cumple.",
+        "tabs": {
+          "members": "Miembros",
+          "roles": "Roles"
+        },
         "actions": {
           "add": "Agregar miembro",
           "remove": "Quitar",
@@ -779,7 +783,8 @@
           "removed": "Miembro eliminado.",
           "removeError": "No pudimos quitar a ese miembro.",
           "removeConfirm": "¿Quitar a {name} del proyecto?",
-          "ownerOnly": "Solo el propietario puede gestionar los miembros."
+          "ownerOnly": "Solo el propietario puede gestionar los miembros.",
+          "manageOnly": "Solo los roles con permiso pueden gestionar miembros."
         },
         "addDialog": {
           "title": "Invitar miembro",
@@ -808,7 +813,8 @@
           "deleted": "Etiqueta eliminada.",
           "deleteError": "No pudimos eliminar la etiqueta.",
           "deleteConfirm": "¿Eliminar la etiqueta \"{name}\"?",
-          "ownerOnly": "Solo el owner puede modificar las etiquetas."
+          "ownerOnly": "Solo el owner puede modificar las etiquetas.",
+          "manageOnly": "Solo los roles con permiso pueden modificar etiquetas."
         },
         "table": {
           "name": "Etiqueta",
@@ -854,6 +860,61 @@
           "DEVELOPER": "Desarrollador",
           "VIEWER": "Lector",
           "TESTER": "Tester"
+        }
+      },
+      "roles": {
+        "title": "Roles del proyecto",
+        "subtitle": "Crea roles y decide qué permisos tendrán.",
+        "actions": {
+          "add": "Nuevo rol",
+          "edit": "Editar",
+          "delete": "Eliminar",
+          "save": "Guardar",
+          "saving": "Guardando...",
+          "cancel": "Cancelar"
+        },
+        "table": {
+          "role": "Rol",
+          "description": "Descripción",
+          "permissions": "Permisos",
+          "members": "Miembros",
+          "actions": "Acciones"
+        },
+        "badges": {
+          "owner": "Owner",
+          "default": "Por defecto"
+        },
+        "empty": {
+          "title": "Aún no hay roles",
+          "description": "Crea un rol para empezar a asignar permisos."
+        },
+        "messages": {
+          "loadError": "No pudimos cargar los roles.",
+          "saveError": "No pudimos guardar el rol.",
+          "created": "Rol creado.",
+          "updated": "Rol actualizado.",
+          "deleted": "Rol eliminado.",
+          "deleteError": "No pudimos eliminar el rol.",
+          "deleteConfirm": "¿Eliminar el rol \"{name}\"?",
+          "cannotDelete": "Los roles owner o con miembros no se pueden eliminar.",
+          "manageOnly": "Solo los roles con permiso pueden gestionar roles.",
+          "loading": "Cargando roles..."
+        },
+        "dialog": {
+          "createTitle": "Nuevo rol",
+          "editTitle": "Editar rol",
+          "description": "Define los permisos de este rol."
+        },
+        "form": {
+          "name": "Nombre del rol",
+          "namePlaceholder": "Ej. QA Lead",
+          "description": "Descripción",
+          "descriptionPlaceholder": "Opcional",
+          "permissions": "Permisos",
+          "permissionsCount": "{count} seleccionados"
+        },
+        "validation": {
+          "name": "Ingresa un nombre de rol."
         }
       },
       "documentation": {

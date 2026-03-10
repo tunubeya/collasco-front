@@ -24,12 +24,12 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   return (
-    <html lang={locale}>
-      <body className={`${plusJakartaSans.className} antialiased`}>
+    <html lang={locale} suppressHydrationWarning>
+      <body className={`${plusJakartaSans.className} antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         <Toaster richColors />
         <div className='relative'>
-          <div className='fixed bottom-8 right-8 z-0'>
+          <div className='fixed bottom-8 right-8 z-0' suppressHydrationWarning>
             <LangSelector />
           </div>
         </div>

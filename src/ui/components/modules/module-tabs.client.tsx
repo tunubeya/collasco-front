@@ -40,10 +40,12 @@ export function ModuleTabs({
   const tManual = useTranslations("app.projects.manual");
 
   const permissionSet = useMemo(() => new Set(permissions), [permissions]);
-  const canViewStructure = hasPermission(permissionSet, "module.read");
+  const canViewProject = hasPermission(permissionSet, "project.read");
+  const canViewStructure = canViewProject || hasPermission(permissionSet, "module.read");
   const canManageStructure = hasPermission(permissionSet, "module.write");
-  const canViewDocumentation = hasPermission(permissionSet, "qa.read");
-  const canViewManual = hasPermission(permissionSet, "qa.read");
+  const canManageFeatures = hasPermission(permissionSet, "feature.write");
+  const canViewDocumentation = canViewProject || hasPermission(permissionSet, "qa.read");
+  const canViewManual = canViewProject || hasPermission(permissionSet, "qa.read");
   const canShareManual = hasPermission(permissionSet, "project.manage_share_links");
 
   const availableTabs = useMemo<ModuleTab[]>(() => {
@@ -107,22 +109,26 @@ export function ModuleTabs({
             hideRootModule
           />
 
-          {canManageStructure && (
+          {(canManageStructure || canManageFeatures) && (
             <div className="flex flex-wrap gap-2">
-              <Link
-                href={`/app/projects/${project.id}/modules/new?parent=${module.id}`}
-                className={actionButtonClass()}
-              >
-                <Plus className="mr-2 h-4 w-4" aria-hidden />
-                {tModule("actions.addChild")}
-              </Link>
-              <Link
-                href={`/app/projects/${project.id}/features/new?moduleId=${module.id}`}
-                className={actionButtonClass()}
-              >
-                <Plus className="mr-2 h-4 w-4" aria-hidden />
-                {tModule("actions.addFeature")}
-              </Link>
+              {canManageStructure && (
+                <Link
+                  href={`/app/projects/${project.id}/modules/new?parent=${module.id}`}
+                  className={actionButtonClass()}
+                >
+                  <Plus className="mr-2 h-4 w-4" aria-hidden />
+                  {tModule("actions.addChild")}
+                </Link>
+              )}
+              {canManageFeatures && (
+                <Link
+                  href={`/app/projects/${project.id}/features/new?moduleId=${module.id}`}
+                  className={actionButtonClass()}
+                >
+                  <Plus className="mr-2 h-4 w-4" aria-hidden />
+                  {tModule("actions.addFeature")}
+                </Link>
+              )}
             </div>
           )}
         </>

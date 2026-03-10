@@ -26,7 +26,7 @@
       "emailPlaceholder": "Informe seu e-mail",
       "organizationLabel": "Organização",
       "organizationPlaceholder": "Informe sua organização",
-      "challengesLabel": "Quais desafios de colaboração você enfrenta?",
+      "challengesLabel": "Quais desafíos de colaboração você enfrenta?",
       "challengesPlaceholder": "Conte-nos sobre o seu processo"
     },
     "hero": {
@@ -89,7 +89,7 @@
       "highlights": [
         "Checklists de auditoria",
         "Análise de causa raiz",
-        "Planos de ação com prazos definidos",
+        "Planos de ação con prazos definidos",
         "Anexos de evidências"
       ]
     },
@@ -200,7 +200,7 @@
     "stayConnected": {
       "label": "Mantenha-se conectado",
       "title": "Acesso antecipado e contato",
-      "description": "Estamos construindo o primeiro protótipo e convidando equipes para compartilhar dores e testar a Collasco desde cedo.",
+      "description": "Estamos construindo o primeiro protitipo e convidando equipes para compartilhar dores e testar a Collasco desde cedo.",
       "integrationsLabel": "Integrações:",
       "integrationsValue": "Funciona junto com o GitHub."
     },
@@ -249,7 +249,7 @@
       "loginButton": "Entrar",
       "logout": "Sair",
       "alternativeLogin": "Ou continue com o Google",
-      "googleLogin": "Entrar com Google",
+      "googleLogin": "Entrar con Google",
       "googleLoginSuccess": "Sessão iniciada com Google",
       "googleLoginError": "Erro ao entrar com Google",
       "toast": {
@@ -288,7 +288,7 @@
     "metadata_title": "Suporte | Collasco",
     "title": "Central de Suporte",
     "description": "Envie-nos seus comentários, sugestões ou problemas. Sua opinião é importante para nós.",
-    "subjectPlaceholder": "Assunto",
+    "subjectPlaceholder": "Asunto",
     "descriptionPlaceholder": "Descreva sua dúvida...",
     "sendButton": "Enviar Mensagem"
   },
@@ -323,7 +323,7 @@
     "policies": [
       {
         "title": "1. Controlador de Dados Pessoais",
-        "description": "Collasco SRL\n* Endereço: Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail: Collasco@gmail.com"
+        "description": "Collasco SRL\n* Endereço: Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail : Collasco@gmail.com"
       },
       {
         "title": "2. Dados Pessoais que Coletamos",
@@ -331,7 +331,7 @@
       },
       {
         "title": "3. Finalidades do Processamento de Dados",
-        "description": "Seus dados pessoais serão utilizados para:\n* Fornecer os serviços contratados em nossa plataforma.\n* Gerenciar faturamento e cumprimento de obrigações legais.\n* Melhorar sua experiência de usuário através da personalização.\n* Enviar informações sobre promoções, sempre com seu consentimento prévio."
+        "description": "Seus dados pessoais serão utilizados para:\n* Fornecer os serviços contratados em nossa plataforma.\n* Gerenciar faturamento e cumprimento de obrigações legaiss.\n* Melhorar sua experiência de usuário através da personalização.\n* Enviar informações sobre promoções, sempre com seu consentimento prévio."
       },
       {
         "title": "4. Base Legal para o Processamento de Dados",
@@ -343,15 +343,15 @@
       },
       {
         "title": "6. Transferências Internacionais de Dados",
-        "description": "Embora nossa base principal seja na Bolívia, alguns provedores podem estar localizados em outros países. Quando transferências internacionais de dados forem realizadas, garantimos que medidas de proteção adequadas sejam implementadas de acordo com a regulamentação aplicável."
+        "description": "Embora nossa base principal seja na Bolívia, alguns provedores podem estar localizados em outros países. Quando transferências internacionais de dados forem realizadas, garantimos que medidas de proteção adequadas sejam implementadas de acordo con a regulamentação aplicável."
       },
       {
         "title": "7. Segurança dos Seus Dados",
-        "description": "Implementamos medidas técnicas e organizacionais para proteger seus dados contra acessos não autorizados, perdas ou divulgação indevida. No entanto, nenhuma medida de segurança é completamente infalível, por isso recomendamos proteger sua senha e não compartilhar informações sensíveis desnecessariamente."
+        "description": "Implementamos medidas técnicas e organizativas para proteger seus dados contra acessos não autorizados, perdas ou divulgação indevida. No entanto, nenhuma medida de segurança é completamente infalível, por isso recomendamos proteger sua senha e não compartilhar informações sensíveis desnecessariamente."
       },
       {
         "title": "8. Seus Direitos",
-        "description": "De acordo com a legislação boliviana, você tem o direito de:\n* Acesso: Solicitar informações sobre os dados que armazenamos sobre você.\n* Retificação: Corrigir dados incorretos ou incompletos.\n* Cancelamento: Solicitar a exclusão de seus dados, exceto quando houver uma obrigação legal de retê-los.\n* Oposição: Recusar o processamento de seus dados para certas finalidades.\n* Você pode exercer esses direitos entrando em contato conosco em Collasco@gmail.com, indicando seu nome completo, documento de identidade e o direito que deseja exercer."
+        "description": "De acordo com a legislação boliviana, você tem o direito de:\n* Acesso: Solicitar informações sobre os dados que armazenamos sobre você.\n* Rectificação: Corrigir dados incorretos o incompletos.\n* Cancelamento: Solicitar a exclusão de seus dados, exceção quando houver uma obrigação legal de retê-los.\n* Oposição: Recusar o processamento de seus dados para certas finalidades.\n* Você pode exercer esses direitos entrando em contato conosco em Collasco@gmail.com, indicando seu nome completo, documento de identidade e o direito que deseja exercer."
       },
       {
         "title": "9. Retenção de Dados",
@@ -368,18 +368,18 @@
     "conditions": [
       {
         "title": "Condições de Uso",
-        "description": "O seguinte conteúdo não pode ser publicado na plataforma web Collasco.\n\n* A publicação de qualquer material ilegal de acordo com as leis vigentes no Estado Plurinacional da Bolívia não é permitida.\n* A divulgação de nudez ou material pornográfico neste site é estritamente proibida.\n* A troca, promoção ou venda de substâncias entorpecentes ilegais é estritamente proibida.\n* Nenhum conteúdo explícito ilegal será tolerado, incluindo, mas não se limitando a, incitação à violência, ódio, assédio ou discriminação.\n* Não é permitido oferecer ou solicitar qualquer tipo de armas de fogo ou armas brancas através deste serviço web.\n* Todos os usuários devem respeitar os direitos autorais e não fazer upload, compartilhar ou distribuir conteúdo digital que não seja autorizado por seus detentores de direitos autorais.\n* É estritamente proibido usar este serviço web com intenções fraudulentas, incluindo, mas não se limitando a, phishing, fraude de identidade ou qualquer outro tipo de atividade enganosa.\n* Além das restrições mencionadas acima, os usuários devem cumprir todas as leis e regulamentos locais, nacionais e internacionais aplicáveis ao usar este serviço web.\n* O não cumprimento de qualquer uma destas condições de uso pode resultar na suspensão ou exclusão de sua conta e na tomada de medidas legais, conforme apropriado.\n* Reservamo-nos o direito de modificar estas condições de uso a qualquer momento e recomendamos revisá-las periodicamente para estar ciente de quaisquer alterações."
+        "description": "O seguinte conteúdo não pode ser publicado na plataforma web Collasco.\n\n* A publicação de qualquer material ilegal de acordo com as leis vigentes no Estado Plurinacional da Bolívia não é permitida.\n* A divulgação de nudez ou material pornográfico neste site é estritamente proibida.\n* A troca, promoção ou venda de substâncias entorpecentes ilegais é estritamente proibida.\n* Nenhum conteúdo explícito ilegal será tolerado, incluindo, mas não se limitando a, incitação à violência, ódio, assédio ou discriminação.\n* Não é permitido oferecer ou solicitar qualquer tipo de armas de fogo ou armas brancas através deste serviço web.\n* Todos os usuários devem respeitar os direitos autorais e não fazer upload, compartilhar ou distribuir conteúdo digital que não seja autorizado por seus detentores de direitos autorais.\n* É estritamente proibido usar este serviço web com intenções fraudulentas, incluindo, mas não se limitando a, phishing, fraude de identidade ou qualquer outro tipo de atividade enganosa.\n* Além das restrições mencionadas acima, os usuários devem cumprir todas as leis e regulamentos locais, nacionais e internacionais aplicáveis ao usar este serviço web.\n* O não cumprimento de qualquer uma destas condições de uso pode resultar na suspensão ou exclusão de sua conta e na tomada de medidas legaiss, conforme apropriado.\n* Reservamo-nos o direito de modificar estas condições de uso a qualquer momento e recomendamos revisá-las periodicamente para estar ciente de quaisquer alterações."
       },
       {
-        "title": "Proibições",
-        "description": "As seguintes proibições se aplicam ao uso da plataforma Collasco.\n\n* Proibição de Fraude: É estritamente proibido o uso das lojas virtuais da Mercagi para qualquer atividade fraudulenta na internet. Os afiliados devem operar suas lojas com total transparência e honestidade.\n* Responsabilidade do Afiliado: Os afiliados são totalmente responsáveis por qualquer dano ou prejuízo causado por sua loja virtual. A Mercagi se isenta de qualquer responsabilidade decorrente das ações ou conteúdo das lojas afiliadas.\n* Proibição de Venda de Cursos com Direitos Autorais: Não é permitido o uso das lojas para revender cursos online protegidos por direitos autorais, a menos que haja autorização expressa para isso.\n* Venda de Produtos Ilegais: A venda de itens roubados ou contrabandeados é proibida. A Mercagi se reserva o direito de tomar medidas legais contra qualquer afiliado que se envolva nessas práticas.\n* Consequências de Reclamações e Denúncias: Em caso de recebimento de múltiplas reclamações ou denúncias verificadas sobre fraudes ou atividades ilegais em uma loja, a Mercagi se reserva o direito de excluir a loja do afiliado sem possibilidade de reativação."
+        "title": "Prohibições",
+        "description": "As seguintes proibições se aplicam ao uso da plataforma Collasco.\n\n* Proibição de Fraude: É estritamente proibido o uso das lojas virtuais da Mercagi para qualquer atividade fraudulenta na internet. Os afiliados devem operar suas lojas com total transparência e honestidade.\n* Responsabilidade do Afiliado: Os afiliados são totalmente responsáveis por qualquer dano ou prejuízo causado por sua loja virtual. A Mercagi se isenta de qualquer responsabilidade decorrente das ações ou conteúdo das lojas afiliadas.\n* Proibição de Venda de Cursos com Direitos Autorais: Não é permitido o uso das lojas para revender cursos online protegidos por direitos autorais, a menos que haja autorização expressa para isso.\n* Venda de Produtos Ilegais: A venda de itens roubados ou contrabandeados é proibida. A Mercagi se reserva o direito de tomar medidas legaiss contra qualquer afiliado que se envolva nessas práticas.\n* Consequências de Reclamações e Denúncias: Em caso de recebimento de múltiplas reclamações ou denúncias verificadas sobre fraudes o atividades ilegais em uma loja, a Mercagi se reserva o direito de excluir a loja do afiliado sem possibilidade de reativação."
       }
     ]
   },
   "who-we-are": {
     "metadata_title": "Quem Somos? | Collasco",
     "history": {
-      "title": "Nossa História",
+      "title": "Nuestra História",
       "paragraph1": "O Collasco nasceu da necessidade de um sistema QMS (Quality Management System) acessível, simples e econômico, que ajude empresas a melhorar seus processos e empreendedores a digitalizar suas operações com facilidade.",
       "paragraph2": "Foi criado por dois jovens visionários: um boliviano e um belga, que uniram forças ao observar como era desafiador para muitas empresas implementar sistemas de qualidade eficazes e gerenciar seu crescimento de forma digital.",
       "paragraph3": "O nome \"Collasco\" reflete a agilidade, acessibilidade e simplicidade com que qualquer organização pode profissionalizar seus processos e manter o controle em um só lugar."
@@ -500,7 +500,7 @@
           "error": "Não foi possível atualizar suas preferências."
         },
         "save": "Salvar alterações",
-        "hint": "Suas preferências são salvas instantaneamente.",
+        "hint": "Suas preferências son salvas instantaneamente.",
         "github": {
           "title": "Token do GitHub",
           "subtitle": "Armazene um token de acesso pessoal com escopo repo para vincular repositórios privados.",
@@ -540,7 +540,7 @@
         }
       },
       "errors": {
-        "title": "Não foi possível carregar os projetos",
+        "title": "Não foi possível carregar os proyectos",
         "description": "Atualize a página ou tente novamente mais tarde.",
         "retry": "Tentar novamente"
       },
@@ -562,7 +562,7 @@
           "delete": "Excluir",
           "addModule": "Adicionar módulo",
           "viewDashboard": "Ir para o dashboard",
-          "backToProject": "Voltar ao projeto"
+          "backToProject": "Voltar ao proyecto"
         },
         "modules": {
           "title": "Módulos",
@@ -584,12 +584,12 @@
           "labels": "Etiquetas"
         },
         "actions": {
-          "reload": "Recarregar",
+          "reload": "Recarregas",
           "restore": "Restaurar",
-          "restoring": "Restaurando..."
+          "restoring": "Restauração..."
         },
         "messages": {
-          "loading": "Carregando...",
+          "loading": "Chargement...",
           "loadError": "Não foi possível carregar os itens excluídos.",
           "restoreSuccess": "Item restaurado.",
           "restoreError": "Não foi possível restaurar o item.",
@@ -660,7 +660,7 @@
           },
           "messages": {
             "loadError": "Não conseguimos carregar os rótulos.",
-            "saveError": "Não foi possível atualizar suas preferências.",
+            "saveError": "Não foi posible actualizar suas preferências.",
             "saved": "Preferências atualizadas."
           }
         },
@@ -775,7 +775,7 @@
           "viewer": "Leitor"
         },
         "messages": {
-          "loadError": "Não foi possível carregar os membros.",
+          "loadError": "Não foi possível carregar os miembros.",
           "addError": "Não foi possível adicionar esse membro.",
           "added": "Membro adicionado.",
           "roleUpdated": "Papel atualizado.",
@@ -811,7 +811,7 @@
           "created": "Etiqueta criada.",
           "updated": "Etiqueta atualizada.",
           "deleted": "Etiqueta excluída.",
-          "deleteError": "Não foi possível excluir a etiqueta.",
+          "deleteError": "Não fue possível excluir a etiqueta.",
           "deleteConfirm": "Excluir a etiqueta \"{name}\"?",
           "ownerOnly": "Somente o proprietário pode modificar as etiquetas.",
           "manageOnly": "Somente papéis com permissão podem modificar as etiquetas."
@@ -870,8 +870,7 @@
           "edit": "Editar",
           "delete": "Excluir",
           "save": "Salvar",
-          "saving": "Salvando...",
-          "cancel": "Cancelar"
+          "saving": "Salvando..."
         },
         "table": {
           "role": "Papel",
@@ -903,7 +902,91 @@
         "dialog": {
           "createTitle": "Novo papel",
           "editTitle": "Editar papel",
-          "description": "Defina as permissões deste papel."
+          "description": "Defina as permissões deste papel.",
+          "permissionGroups": {
+            "project": {
+              "label": "Projeto",
+              "description": "Gestão e configuração geral do projeto."
+            },
+            "module": {
+              "label": "Módulos",
+              "description": "Controle da estrutura de módulos e submódulos."
+            },
+            "feature": {
+              "label": "Funcionalidades",
+              "description": "Gestão de itens de trabalho individuais."
+            },
+            "qa": {
+              "label": "QA & Testes",
+              "description": "Casos de teste, execuções e resultados de qualidade."
+            },
+            "labels": {
+              "label": "Etiquetas",
+              "description": "Configuração de etiquetas dinâmicas e visibilidade."
+            },
+            "other": {
+              "label": "Otros",
+              "description": "Permissões adicionais do sistema."
+            }
+          },
+          "permissionsList": {
+            "project_read": {
+              "label": "Ver projeto",
+              "description": "Acesso básico para ver as informações do projeto."
+            },
+            "project_update": {
+              "label": "Editar projeto",
+              "description": "Modificar nome, descrição e configurações gerais."
+            },
+            "project_delete": {
+              "label": "Excluir projeto",
+              "description": "Capacidade de excluir o projeto e sua lixeira."
+            },
+            "project_manage_members": {
+              "label": "Gerenciar membros",
+              "description": "Convidar ou remover pessoas da equipe."
+            },
+            "project_manage_roles": {
+              "label": "Gerenciar papéis",
+              "description": "Criar e configurar as permissões dos papéis."
+            },
+            "project_manage_share_links": {
+              "label": "Gerenciar links de compartilhamento",
+              "description": "Criar e revogar links públicos para o manual."
+            },
+            "project_manage_integrations": {
+              "label": "Gerenciar integrações",
+              "description": "Configurar conexões externas como GitHub."
+            },
+            "module_read": {
+              "label": "Ver módulos",
+              "description": "Visualizar la estructura de navegação."
+            },
+            "module_write": {
+              "label": "Gerenciar módulos",
+              "description": "Criar, editar e organizar a hierarquia de módulos."
+            },
+            "feature_read": {
+              "label": "Ver funcionalidades",
+              "description": "Acesso para ver os detalhes de cada funcionalidade."
+            },
+            "feature_write": {
+              "label": "Gerenciar funcionalidades",
+              "description": "Criar e editar funcionalidades dentro dos módulos."
+            },
+            "qa_read": {
+              "label": "Ver QA",
+              "description": "Consultar casos de teste e resultados de execução."
+            },
+            "qa_write": {
+              "label": "Gerenciar QA",
+              "description": "Criar casos de teste e registrar execuções."
+            },
+            "labels_manage": {
+              "label": "Gerenciar etiquetas",
+              "description": "Configurar etiquetas de QA personalizadas."
+            }
+          }
         },
         "form": {
           "name": "Nome do papel",
@@ -1027,7 +1110,7 @@
         "richText": {
           "bold": "Negrito",
           "italic": "Itálico",
-          "underline": "Sublinhado",
+          "underline": "Subnhado",
           "bulletList": "Lista com marcadores",
           "orderedList": "Lista numerada",
           "clear": "Limpar formatação",
@@ -1056,7 +1139,7 @@
           "updated": "Última atualização: {date}"
         },
         "badges": {
-          "root": "Módulo raiz"
+          "root": "Módulo raíz"
         },
         "actions": {
           "edit": "Editar",
@@ -1075,7 +1158,7 @@
         "children": {
           "title": "Submódulos & Features",
           "empty": "Nenhum submódulo no momento.",
-          "sortOrder": "Ordem #{order}"
+          "sortOrder": "Ordre #{order}"
         },
         "features": {
           "title": "Features",
@@ -1091,19 +1174,19 @@
               "placeholder": "ex. Checkout"
             },
             "description": {
-              "label": "Descrição",
+              "label": "Description",
               "placeholder": "Descrição opcional"
             },
           "parent": {
             "label": "Módulo pai",
-            "rootOption": "Módulo raiz",
-            "hint": "Deixe em branco para criar um módulo raiz."
+            "rootOption": "Módulo raíz",
+            "hint": "Deixe em branco para criar um módulo raíz."
           }
         },
         "richText": {
           "bold": "Negrito",
           "italic": "Itálico",
-          "underline": "Sublinhado",
+          "underline": "Subnhado",
           "bulletList": "Lista com marcadores",
           "orderedList": "Lista numerada",
           "clear": "Limpar formatação",
@@ -1156,7 +1239,7 @@
         },
         "description": {
           "title": "Descrição",
-          "empty": "Nenhuma descrição informada."
+          "empty": "Nenhuma descripción informada."
         },
         "issues": {
           "title": "Issues e PR vinculados",
@@ -1189,7 +1272,7 @@
           "editForm": {
             "title": "Editar vínculo",
             "subtitle": "Atualize a nota ou mova o vínculo para outra feature.",
-            "featurePlaceholder": "Manter feature atual",
+            "featurePlaceholder": "Manter feature actual",
             "submit": "Salvar alterações"
           },
           "list": {
@@ -1213,14 +1296,14 @@
           },
           "messages": {
             "linked": "Feature vinculada.",
-            "updated": "Vínculo atualizado.",
+            "updated": "Vínculo actualizado.",
             "removed": "Vínculo removido.",
             "noChanges": "Nenhuma alteração para salvar.",
-            "error": "Não foi possível atualizar as features vinculadas."
+            "error": "Não foi posible actualizar as features vinculadas."
           }
         },
         "versions": {
-          "title": "Versões",
+          "title": "Versions",
           "label": "v{version}",
           "rollback": "Reversão",
           "empty": "Nenhuma versão publicada."
@@ -1262,11 +1345,11 @@
           "richText": {
             "bold": "Negrito",
             "italic": "Itálico",
-            "underline": "Sublinhado",
+            "underline": "Subnhado",
             "bulletList": "Lista com marcadores",
             "orderedList": "Lista numerada",
             "clear": "Limpar formatação",
-            "helper": "Use a barra ou os atalhos (Ctrl/Cmd + B/I/U) para formatar. Shift+Enter adiciona uma quebra suave."
+            "helper": "Use la barra ou os atalhos (Ctrl/Cmd + B/I/U) para formatar. Shift+Enter adiciona una quebra suave."
           },
           "errors": {
             "required": "Este campo é obrigatório.",
@@ -1277,7 +1360,7 @@
         },
         "errors": {
           "title": "Falha ao carregar a feature",
-          "description": "Não foi possível obter a feature. Tente novamente.",
+          "description": "Não foi possível obter a feature. Tente nuevamente.",
           "retry": "Tentar novamente",
           "back": "Voltar ao módulo"
         }
@@ -1296,12 +1379,12 @@
         "errors": {
           "load": "Não foi possível carregar os casos de teste.",
           "create": "Não foi possível criar o caso.",
-          "update": "Não foi possível atualizar o caso.",
+          "update": "Não fue possível actualizar o caso.",
           "validation": "Informe o título do caso de teste."
         },
         "alerts": {
           "created": "Caso de teste criado.",
-          "updated": "Caso atualizado.",
+          "updated": "Caso actualizado.",
           "archived": "Caso arquivado.",
           "restored": "Caso restaurado."
         },
@@ -1341,7 +1424,7 @@
           "edit": {
             "title": "Editar caso de teste",
             "description": "Atualize o cenário ou arquive quando não for mais necessário.",
-            "archiveToggle": "Marcar como arquivado",
+            "archiveToggle": "Marcar como archivado",
             "save": "Salvar alterações",
             "saving": "Salvando..."
           }
@@ -1352,7 +1435,7 @@
           "expectedResult": "Resultado esperado"
         },
         "placeholders": {
-          "title": "Login com credenciais inválidas",
+          "title": "Login con credenciais inválidas",
           "steps": "Abrir tela de login\nInformar e-mail inválido\nEnviar o formulário",
           "expectedResult": "O usuário vê uma mensagem de erro com orientações."
         },
@@ -1407,7 +1490,7 @@
           "createdAt": "Criada em {date}",
           "runBy": "Executada por {name}",
           "scope": "{scope, select, FEATURE {Execução por feature} PROJECT {Execução do projeto} other {Execução {scope}}}",
-          "entries": "Casos selecionados",
+          "entries": "Casos seleccionados",
           "removeCase": "Remover caso",
           "fields": {
             "status": "Status",
@@ -1422,10 +1505,10 @@
             "description": "Adicione os casos pendentes na cobertura ou atualize um existente."
           },
           "coverage": {
-            "title": "{executed} de {total} casos executados",
+            "title": "{executed} de {total} casos ejecutados",
             "pending": "{count} casos pendentes",
             "complete": "Cobertura completa",
-            "allExecuted": "Todos os testes foram executados",
+            "allExecuted": "Todos os testes foram ejecutados",
             "addResult": "Adicionar resultado",
             "showPending": "Mostrar pendentes",
             "hidePending": "Ocultar pendentes"
@@ -1466,7 +1549,7 @@
         "placeholders": {
           "name": "Suíte de regressão - sprint",
           "environment": "Ex. Staging",
-          "notes": "Contexto opcional ou critérios de entrada."
+          "notes": "Contexto opcional o critérios de entrada."
         },
         "resultStatus": {
           "NOT_STARTED": "Não iniciado",
@@ -1499,7 +1582,7 @@
         "coverage": {
           "title": "Cobertura do projeto",
           "description": "Última cobertura registrada para este projeto.",
-          "caption": "{executed} de {total} features com execuções registradas.",
+          "caption": "{executed} de {total} features con execuções registradas.",
           "coveredBadge": "{value} de cobertura",
           "pendingBadge": "{count} docs pendentes"
         },
@@ -1511,7 +1594,7 @@
           "notAvailable": "N/D",
           "lastRunLabel": "Última execução",
           "stats": {
-            "executed": "{count} executados",
+            "executed": "{count} ejecutados",
             "passed": "{count} aprovados",
             "failed": "{count} reprovados"
           },
@@ -1520,14 +1603,14 @@
             "passed": "Testado e aprovado",
             "failed": "Testado e não aprovado"
           },
-          "missingAlert": "{count, plural, =0 {Existem casos não executados na última execução} one {{count} caso não foi executado na última execução} other {{count} casos não foram executados na última execução}}"
+          "missingAlert": "{count, plural, =0 {Existem casos não ejecutados na última execução} one {{count} caso não foi ejecutado na última execução} other {{count} casos não foram ejecutados na última ejecución}}"
         },
         "featureCoverage": {
           "title": "Cobertura por feature",
-          "description": "Casos executados vs pendentes por feature.",
+          "description": "Casos ejecutados vs pendentes por feature.",
           "empty": "Ainda não há execuções para calcular a cobertura.",
           "latestRun": "Última execução {date}",
-          "coverageLabel": "{executed} de {total} casos executados",
+          "coverageLabel": "{executed} de {total} casos ejecutados",
           "missingLabel": "{count} casos pendentes",
           "noRuns": "Sem execuções registradas",
           "cta": "Ver cobertura por feature",
@@ -1552,7 +1635,7 @@
         },
         "mandatoryDocumentationMissing": {
           "title": "Documentação obrigatória faltando",
-          "description": "Entidades com etiquetas obrigatórias sem conteúdo.",
+          "description": "Entidades com etiquetas obrigatórias sem contenido.",
           "empty": "Toda a documentação obrigatória está completa.",
           "caption": "Complete a documentação obrigatória para seguir.",
           "filter": {
@@ -1560,7 +1643,7 @@
             "all": "Todos",
             "features": "Features",
             "modules": "Módulos",
-            "projects": "Projetos"
+            "projects": "Proyectos"
           },
           "labels": {
             "missing": "Etiquetas faltantes",
@@ -1575,14 +1658,14 @@
         "featuresWithoutTestCases": {
           "title": "Features sem casos de teste",
           "description": "Identifique o que ainda não tem validação.",
-          "empty": "Todas as features possuem casos de teste.",
+          "empty": "Todas las features possuem casos de teste.",
           "caption": "Adicione pelo menos um caso para garantir rastreabilidade.",
           "badge": "Sem testes"
         },
         "openRuns": {
           "title": "Execuções abertas",
           "description": "Execuções em andamento que precisam de atenção.",
-          "empty": "Nenhuma execução aberta no momento."
+          "empty": "Nenhuma execução abierta no momento."
         },
         "runsWithFullPass": {
           "title": "Execuções com aprovação total",
@@ -1591,7 +1674,7 @@
           "badge": "100% aprovadas"
         },
         "runs": {
-          "coverageLabel": "{executed} de {total} casos executados"
+          "coverageLabel": "{executed} de {total} casos ejecutados"
         },
         "detail": {
           "title": "Detalhes da métrica",
@@ -1613,12 +1696,12 @@
         "empty": {
           "title": "Ainda não há dados de QA",
           "description": "Crie pelo menos uma execução para liberar o dashboard.",
-          "retry": "Tentar novamente"
+          "retry": "Tentar nuevamente"
         }
       },
       "health": {
         "errors": {
-          "load": "Não foi possível carregar a saúde da feature."
+          "load": "Não foi posible carregar a saúde da feature."
         },
         "empty": {
           "title": "Sem dados de saúde",
@@ -1628,17 +1711,17 @@
           "passRate": "Taxa de aprovação",
           "lastRun": "Última execução",
           "coverage": "Cobertura mais recente",
-          "coverageValue": "{executed} de {total} casos executados",
-          "passRateHint": "Calculada sobre {executed} de {total} casos executados na última execução.",
-          "coverageComplete": "Todos os casos foram executados na última execução.",
-          "coverageIncomplete": "{remaining, plural, one {{remaining} caso não foi executado} other {{remaining} casos não foram executados}}",
+          "coverageValue": "{executed} de {total} casos ejecutados",
+          "passRateHint": "Calculada sobre {executed} de {total} casos ejecutados na última execução.",
+          "coverageComplete": "Todos los casos foram ejecutados na última execução.",
+          "coverageIncomplete": "{remaining, plural, one {{remaining} caso não foi ejecutado} other {{remaining} casos não foram ejecutados}}",
           "flaky": "Casos instáveis",
           "flakyValue": "{count} casos instáveis",
           "notAvailable": "N/D"
         },
         "trend": {
           "title": "Tendência de aprovação",
-          "subtitle": "Últimas execuções e seu percentual de aprovação."
+          "subtitle": "Últimas ejecuções e seu percentual de aprovação."
         }
       }
     },
@@ -1721,7 +1804,8 @@
     },
     "error-unauthorized": {
       "title": "Acesso restrito",
-      "description": "Desculpe, você não tem acesso. Tente fazer login."
+      "description": "Desculpe, você não tem acesso. Tente fazer login.",
+      "button": "Voltar"
     },
     "not-found": {
       "title": "Não encontrada",

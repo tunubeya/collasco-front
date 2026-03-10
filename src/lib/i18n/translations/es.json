@@ -911,7 +911,91 @@
           "description": "Descripción",
           "descriptionPlaceholder": "Opcional",
           "permissions": "Permisos",
-          "permissionsCount": "{count} seleccionados"
+          "permissionsCount": "{count} seleccionados",
+          "permissionGroups": {
+            "project": {
+              "label": "Proyecto",
+              "description": "Gestión y configuración general del proyecto."
+            },
+            "module": {
+              "label": "Módulos",
+              "description": "Control sobre la estructura de módulos y submódulos."
+            },
+            "feature": {
+              "label": "Funcionalidades (Features)",
+              "description": "Gestión de los elementos de trabajo individuales."
+            },
+            "qa": {
+              "label": "QA & Pruebas",
+              "description": "Casos de prueba, ejecuciones y resultados de calidad."
+            },
+            "labels": {
+              "label": "Etiquetas",
+              "description": "Configuración de etiquetas dinámicas y visibilidad."
+            },
+            "other": {
+              "label": "Otros",
+              "description": "Permisos adicionales del sistema."
+            }
+          },
+          "permissionsList": {
+            "project_read": {
+              "label": "Ver proyecto",
+              "description": "Acceso básico para ver la información del proyecto."
+            },
+            "project_update": {
+              "label": "Editar proyecto",
+              "description": "Modificar nombre, descripción y ajustes generales."
+            },
+            "project_delete": {
+              "label": "Eliminar proyecto",
+              "description": "Capacidad para borrar el proyecto y su papelera."
+            },
+            "project_manage_members": {
+              "label": "Gestionar miembros",
+              "description": "Invitar o quitar personas del equipo."
+            },
+            "project_manage_roles": {
+              "label": "Gestionar roles",
+              "description": "Crear y configurar los permisos de los roles."
+            },
+            "project_manage_share_links": {
+              "label": "Gestionar enlaces compartidos",
+              "description": "Crear y revocar enlaces públicos del manual."
+            },
+            "project_manage_integrations": {
+              "label": "Gestionar integraciones",
+              "description": "Configurar conexiones externas como GitHub."
+            },
+            "module_read": {
+              "label": "Ver módulos",
+              "description": "Visualizar la estructura de navegación."
+            },
+            "module_write": {
+              "label": "Gestionar módulos",
+              "description": "Crear, editar y organizar la jerarquía de módulos."
+            },
+            "feature_read": {
+              "label": "Ver funcionalidades",
+              "description": "Acceso para ver los detalles de cada feature."
+            },
+            "feature_write": {
+              "label": "Gestionar funcionalidades",
+              "description": "Crear y editar features dentro de los módulos."
+            },
+            "qa_read": {
+              "label": "Ver QA",
+              "description": "Consultar casos de prueba y resultados de ejecuciones."
+            },
+            "qa_write": {
+              "label": "Gestionar QA",
+              "description": "Crear casos de prueba y registrar ejecuciones."
+            },
+            "labels_manage": {
+              "label": "Gestionar etiquetas",
+              "description": "Configurar etiquetas personalizadas de QA."
+            }
+          }
         },
         "validation": {
           "name": "Ingresa un nombre de rol."
@@ -1721,7 +1805,8 @@
     },
     "error-unauthorized": {
       "title": "Acceso restringido",
-      "description": "Lo sentimos, no tiene acceso. Intente iniciar sesión."
+      "description": "Lo sentimos, no tiene acceso. Por favor, contacte con el administrador del proyecto.",
+      "button": "Volver atrás"
     },
     "not-found": {
       "title": "No encontrado",

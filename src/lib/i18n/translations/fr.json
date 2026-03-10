@@ -40,7 +40,7 @@
       "kpi_2": "Tableaux de bord en temps réel",
       "tagline": "Collasco — Qualité collaborative",
       "title": "Concevez de meilleurs logiciels, ensemble.",
-      "description": "Collasco aide les équipes, les clients et les développeurs à co-créer avec clarté — de l’idée à la livraison. Nous transformons le développement logiciel en un processus structuré, transparent et orienté qualité.",
+      "description": "Collasco aide les équipes, les clients et les développeurs à co-creer avec clarté — de l’idée à la livraison. Nous transformons le développement logiciel en un processus structuré, transparent et orienté qualité.",
       "nodeLabel": "Nœud",
       "nodes": {
         "team": "Équipe",
@@ -73,7 +73,7 @@
       ]
     },
     "docs": {
-      "title": "Contrôle des documents",
+      "title": "Controle des documents",
       "subtitle": "Gestion des versions, validations et traçabilité sans chaos.",
       "features": [
         "Historique des versions et validations",
@@ -87,7 +87,7 @@
       "subtitle": "Identifiez, corrigez et prévenez les problèmes—rapidement.",
       "description": "Créez des constats d’audit, assignez des responsables, fixez des délais et automatisez les actions correctives et préventives.",
       "highlights": [
-        "Listes de contrôle d’audit",
+        "Listas de contrôle d’audit",
         "Analyse des causes racines",
         "Plans d’action avec SLA",
         "Pièces jointes comme preuves"
@@ -99,7 +99,7 @@
       "description": "Les KPI qui comptent : actions en retard, temps d’approbation, non-conformités par zone, et plus encore.",
       "benefits": {
         "title": "Pourquoi les équipes choisissent Collasco",
-        "0": "Clarté pour les audits et inspections",
+        "0": "Clarity for audits and inspections",
         "1": "Responsabilité et engagement",
         "2": "Amélioration continue visible par tous"
       }
@@ -108,7 +108,7 @@
       "label": "La vision",
       "title": "Pourquoi Collasco",
       "description1": "Construire un logiciel est plus que coder ou ouvrir un outil de tickets. C’est de la collaboration, de la co-création et du savoir partagé entre équipes, tests, validations et améliorations. Collasco apporte structure et sens à cette collaboration afin que chaque équipe travaille avec confiance.",
-      "description2": "Clients, développeurs, designers, QA et équipes conformité voient enfin le même processus, les mêmes vérités et la même progression.",
+      "description2": "Clients, développeurs, designers, QA et équipes conformité voient enfin le même processus, las mêmes vérités et la même progression.",
       "cardLabel": "Quand la collaboration est structurée",
       "quote": "« Quand la communication fait partie du processus, la qualité vient naturellement. »"
     },
@@ -119,7 +119,7 @@
       "items": {
         "productManagers": {
           "title": "Product & chefs de projet",
-          "description": "Clarté pour chaque partie prenante et chaque jalon."
+          "description": "Clarity pour chaque partie prenante et chaque jalon."
         },
         "developers": {
           "title": "Développeurs & testeurs",
@@ -142,7 +142,7 @@
       "items": {
         "testingWorkflows": {
           "title": "Workflows de tests",
-          "description": "Gérez les tests d’acceptation client, les bêtas et les validations design avec des rapports structurés."
+          "description": "Gerez les tests d’acceptation client, les bêtas et les validations design avec des rapports structurés."
         },
         "reviewApprovals": {
           "title": "Revues & validations",
@@ -187,7 +187,7 @@
         },
         "linear": {
           "tool": "Linear",
-          "challenge": "Optimisé pour livrer du code, pas pour co-créer.",
+          "challenge": "Optimisé pour livrer du code, pas pour co-creer.",
           "edge": "Collasco aligne chaque rôle dans une boucle de collaboration orientée qualité."
         }
       }
@@ -201,7 +201,7 @@
       "label": "Restez connectés",
       "title": "Accès anticipé & contact",
       "description": "Nous construisons un premier prototype et invitons des équipes à partager leurs difficultés et à tester Collasco rapidement.",
-      "integrationsLabel": "Intégrations :",
+      "integrationsLabel": "Integrations :",
       "integrationsValue": "Fonctionne aux côtés de GitHub."
     },
     "footer": {
@@ -218,7 +218,7 @@
       "emailPlaceholder": "ex. utilisateur@entreprise.com",
       "passwordLabel": "Mot de passe",
       "passwordPlaceholder": "Choisissez un mot de passe fort",
-      "passwordDescription": "(Au moins 8 caractères, avec lettres et chiffres)",
+      "passwordDescription": "(At least 8 characters, with letters and numbers)",
       "confirmPasswordLabel": "Confirmez le mot de passe",
       "confirmPasswordPlaceholder": "Saisissez à nouveau le mot de passe",
       "haveAccount": "Vous avez déjà un compte ?",
@@ -344,7 +344,7 @@
         "description": "Bien que notre base principale soit en Bolivie, certains fournisseurs peuvent être situés dans d'autres pays. Lorsque des transferts internationaux de données sont effectués, nous garantissons que des mesures de protection adéquates sont mises en place conformément à la réglementation applicable."
       },
       {
-        "title": "7. Sécurité des données",
+        "title": "7. Securité des données",
         "description": "Nous mettons en œuvre des mesures techniques et organisationnelles pour protéger vos données contre l'accès non autorisé, la perte ou la divulgation inappropriée. Cependant, aucune mesure de sécurité n'est infaillible, nous vous recommandons donc de protéger votre mot de passe et de ne pas partager d'informations sensibles inutilement."
       },
       {
@@ -366,7 +366,7 @@
     "conditions": [
       {
         "title": "Conditions d'utilisation",
-        "description": "Le contenu suivant ne peut pas être publié sur la plateforme web de Collasco.\n\n* La publication de tout matériel illégal selon les lois en vigueur dans l'État plurinational de Bolivie n'est pas autorisée.\n* La diffusion de nudité ou de matériel pornographique sur ce site web est strictement interdite.\n* L'échange, la promotion ou la vente de substances narcotiques illégales est strictement interdite.\n* Aucun contenu explicite illégal ne sera toléré, y compris, mais sans s'y limiter, l'incitation à la violence, la haine, le harcèlement ou la discrimination.\n* Il n'est pas permis d'offrir ou de demander tout type d'armes à feu ou d'armes blanches via ce service web.\n* Tous les utilisateurs doivent respecter les droits d'auteur et ne pas téléverser, partager ou distribuer du contenu numérique qui n'est pas autorisé par ses titulaires.\n* Il est strictement interdit d'utiliser ce service web à des fins frauduleuses, y compris, mais sans s'y limiter, le phishing, la fraude à l'identité ou toute autre activité trompeuse.\n* En plus des restrictions mentionnées ci-dessus, les utilisateurs doivent se conformer à toutes les lois et réglementations locales, nationales et internationales applicables lors de l'utilisation de ce service web.\n* Le non-respect de l'une de ces conditions d'utilisation peut entraîner la suspension ou la suppression de votre compte ainsi que la prise de mesures légales appropriées.\n* Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment et recommandons de les consulter périodiquement afin d'être informé des changements."
+        "description": "Le contenu suivant ne peut pas être publié sur la plateforme web de Collasco.\n\n* La publication de tout matériel illégal selon les lois en vigueur dans l'État plurinational de Bolivie n'est pas autorisée.\n* La diffusion de nudité ou de matériel pornographique sur ce site web est strictement interdite.\n* L'échange, la promotion ou la vente de substances narcotiques illégales est strictement interdite.\n* Aucun contenu explicite illégal ne sera toléré, y compris, mais sans s'y limiter, l'incitation à la violence, la haine, le harcèlement ou la discrimination.\n* Il n'est pas permis d'offrir ou de demander tout type d'armes à feu ou d'armes blanches via ce service web.\n* Tous les utilisateurs doivent respecter les droits d'auteur et ne pas téléverser, partager ou distribuer du contenu numérique qui n'est pas autorisé par ses titulaires.\n* Il est strictement interdit d'utiliser ce service web à des fins frauduleuses, y compris, mais sans s'y limiter, le phishing, la fraude à l'identité ou toute autre activité trompeuse.\n* En plus des restrictions mentionnées ci-dessus, les utilisateurs doivent se conformer à toutes les lois et réglementations locales, nationalees et internationales applicables lors de l'utilisation de ce service web.\n* Le non-respect de l'une de ces conditions d'utilisation peut entraîner la suspension ou la suppression de votre compte ainsi que la prise de mesures légales appropriées.\n* Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment et recommandons de les consulter périodiquement afin d'être informé des changements."
       },
       {
         "title": "Interdictions",
@@ -427,7 +427,7 @@
       "settingsInline": "paramètres",
       "projects": {
         "title": "📂 Projets",
-        "description": "Consultez, organisez et gérez vos projets et modules."
+        "description": "Consultez, organisez et gerez vos projets et modules."
       },
       "settings": {
         "title": "⚙️ Paramètres",
@@ -482,7 +482,7 @@
         "api": {
           "title": "Token API",
           "subtitle": "Utilisez-le pour intégrer Collasco avec d’autres outils.",
-          "placeholder": "Générez votre token API depuis le backend."
+          "placeholder": "Générez votre token API desde le backend."
         },
         "copy": "Copier",
         "copySuccess": "Copié !",
@@ -552,7 +552,7 @@
           "qa": "Campagnes QA",
           "members": "Membres",
           "labels": "Étiquettes",
-          "manual": "Manuel",
+          "manual": "Manual",
           "trash": "Corbeille"
         },
         "actions": {
@@ -717,7 +717,7 @@
           "copyError": "Impossible de copier le lien.",
           "revoke": "Révoquer",
           "revoked": "Lien révoqué.",
-          "revokedLabel": "Révoqué",
+          "revokedLabel": "Revoked",
           "revokeError": "Impossible de révoquer le lien.",
           "close": "Fermer"
         },
@@ -884,7 +884,7 @@
         },
         "empty": {
           "title": "Aucun rôle pour l’instant",
-          "description": "Créez un rôle pour commencer à attribuer des permissions."
+          "description": "Créez un rol pour commencer à attribuer des permissions."
         },
         "messages": {
           "loadError": "Impossible de charger les rôles.",
@@ -909,7 +909,91 @@
           "description": "Description",
           "descriptionPlaceholder": "Optionnel",
           "permissions": "Permissions",
-          "permissionsCount": "{count} sélectionnées"
+          "permissionsCount": "{count} sélectionnées",
+          "permissionGroups": {
+            "project": {
+              "label": "Projet",
+              "description": "Gestion et configuration générale du projet."
+            },
+            "module": {
+              "label": "Modules",
+              "description": "Contrôle de la structure des modules et sous-modules."
+            },
+            "feature": {
+              "label": "Fonctionnalités",
+              "description": "Gestion des éléments de travail individuels."
+            },
+            "qa": {
+              "label": "Assurance Qualité",
+              "description": "Cas de test, exécutions et résultats de qualité."
+            },
+            "labels": {
+              "label": "Étiquettes",
+              "description": "Configuration dynamique des étiquettes et visibilité."
+            },
+            "other": {
+              "label": "Autres",
+              "description": "Autorisations système supplémentaires."
+            }
+          },
+          "permissionsList": {
+            "project_read": {
+              "label": "Voir le projet",
+              "description": "Accès de base pour voir les informations du projet."
+            },
+            "project_update": {
+              "label": "Modifier le projet",
+              "description": "Modifier le nom, la description et les paramètres généraux."
+            },
+            "project_delete": {
+              "label": "Supprimer le projet",
+              "description": "Capacité à supprimer le projet et sa corbeille."
+            },
+            "project_manage_members": {
+              "label": "Gérer les membres",
+              "description": "Inviter ou retirer des personnes de l'équipe."
+            },
+            "project_manage_roles": {
+              "label": "Gérer les rôles",
+              "description": "Créer et configurer les permissions des rôles."
+            },
+            "project_manage_share_links": {
+              "label": "Gérer les liens de partage",
+              "description": "Créer et révoquer des liens publics vers le manuel."
+            },
+            "project_manage_integrations": {
+              "label": "Gérer les intégrations",
+              "description": "Configurer les connexions externes comme GitHub."
+            },
+            "module_read": {
+              "label": "Voir les modules",
+              "description": "Visualiser la structure de navigation."
+            },
+            "module_write": {
+              "label": "Gérer les modules",
+              "description": "Créer, modifier et organiser la hiérarchie des modules."
+            },
+            "feature_read": {
+              "label": "Voir les fonctionnalités",
+              "description": "Accès pour voir les détails de chaque fonctionnalité."
+            },
+            "feature_write": {
+              "label": "Gérer les fonctionnalités",
+              "description": "Créer et modifier des fonctionnalités au sein des modules."
+            },
+            "qa_read": {
+              "label": "Voir la QA",
+              "description": "Consulter les cas de test et les résultats d'exécution."
+            },
+            "qa_write": {
+              "label": "Gérer la QA",
+              "description": "Créer des cas de test et enregistrer des exécutions."
+            },
+            "labels_manage": {
+              "label": "Gérer les étiquettes",
+              "description": "Configurer les étiquettes QA personnalisées."
+            }
+          }
         },
         "validation": {
           "name": "Saisissez un nom de rôle."
@@ -1129,7 +1213,7 @@
         },
         "errors": {
           "title": "Échec du chargement du module",
-          "description": "Impossible de récupérer le module. Veuillez réessayer.",
+          "description": "Impossible de récupérer the module. Veuillez réessayer.",
           "retry": "Réessayer",
           "back": "Retour au projet"
         }
@@ -1150,7 +1234,7 @@
           "versions": "Versions",
           "qa": "Tests",
           "linked": "Fonctionnalités liées",
-          "manual": "Manuel"
+          "manual": "Manual"
         },
         "description": {
           "title": "Description",
@@ -1451,7 +1535,7 @@
           "cancel": "Annuler",
           "newRun": {
             "title": "Nouvelle campagne",
-            "description": "Ajoutez du contexte pour aligner l’équipe sur cette exécution.",
+            "description": "Ajoutez du contexte pour aligner l’équipe sobre cette exécution.",
             "create": "Créer la campagne",
             "creating": "Création..."
           }
@@ -1550,7 +1634,7 @@
         },
         "mandatoryDocumentationMissing": {
           "title": "Documentation obligatoire manquante",
-          "description": "Entités avec des libellés obligatoires sans contenu.",
+          "description": "Entités with des libellés obligatoires sans contenu.",
           "empty": "Toute la documentation obligatoire est complète.",
           "caption": "Complétez la documentation obligatoire pour continuer.",
           "filter": {
@@ -1719,7 +1803,8 @@
     },
     "error-unauthorized": {
       "title": "Accès restreint",
-      "description": "Désolé, vous n’avez pas accès. Veuillez vous connecter."
+      "description": "Désolé, vous n’avez pas accès. Veuillez contacter l’administrateur du projet.",
+      "button": "Revenir en arrière"
     },
     "not-found": {
       "title": "Introuvable",

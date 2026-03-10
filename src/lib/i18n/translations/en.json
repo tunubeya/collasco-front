@@ -911,7 +911,91 @@
           "description": "Description",
           "descriptionPlaceholder": "Optional",
           "permissions": "Permissions",
-          "permissionsCount": "{count} selected"
+          "permissionsCount": "{count} selected",
+          "permissionGroups": {
+            "project": {
+              "label": "Project",
+              "description": "General project management and configuration."
+            },
+            "module": {
+              "label": "Modules",
+              "description": "Control over the module and submodule structure."
+            },
+            "feature": {
+              "label": "Features",
+              "description": "Management of individual work items."
+            },
+            "qa": {
+              "label": "QA & Testing",
+              "description": "Test cases, runs, and quality results."
+            },
+            "labels": {
+              "label": "Labels",
+              "description": "Dynamic label configuration and visibility."
+            },
+            "other": {
+              "label": "Others",
+              "description": "Additional system permissions."
+            }
+          },
+          "permissionsList": {
+            "project_read": {
+              "label": "View project",
+              "description": "Basic access to view project information."
+            },
+            "project_update": {
+              "label": "Edit project",
+              "description": "Modify name, description, and general settings."
+            },
+            "project_delete": {
+              "label": "Delete project",
+              "description": "Ability to delete the project and its trash bin."
+            },
+            "project_manage_members": {
+              "label": "Manage members",
+              "description": "Invite or remove people from the team."
+            },
+            "project_manage_roles": {
+              "label": "Manage roles",
+              "description": "Create and configure role permissions."
+            },
+            "project_manage_share_links": {
+              "label": "Manage share links",
+              "description": "Create and revoke public manual links."
+            },
+            "project_manage_integrations": {
+              "label": "Manage integrations",
+              "description": "Configure external connections like GitHub."
+            },
+            "module_read": {
+              "label": "View modules",
+              "description": "Visualize the navigation structure."
+            },
+            "module_write": {
+              "label": "Manage modules",
+              "description": "Create, edit, and organize the module hierarchy."
+            },
+            "feature_read": {
+              "label": "View features",
+              "description": "Access to view details of each feature."
+            },
+            "feature_write": {
+              "label": "Manage features",
+              "description": "Create and edit features within modules."
+            },
+            "qa_read": {
+              "label": "View QA",
+              "description": "Consult test cases and run results."
+            },
+            "qa_write": {
+              "label": "Manage QA",
+              "description": "Create test cases and record executions."
+            },
+            "labels_manage": {
+              "label": "Manage labels",
+              "description": "Configure custom QA labels."
+            }
+          }
         },
         "validation": {
           "name": "Enter a role name."
@@ -1702,6 +1786,23 @@
         "logout": "Logout"
       }
     },
+    "navbar": {
+      "mobile-menu-drawer": {
+        "menu": "Menu",
+        "close": "Close"
+      },
+      "landing": {
+        "whoWeAre": "Who we are?",
+        "plans": "Plans",
+        "support": "Support"
+      },
+      "profile-menu-client": {
+        "logout": "Logout"
+      },
+      "profile-menu": {
+        "logout": "Logout"
+      }
+    },
     "footer": {
       "privacy": "Privacy Policies",
       "terms": "Terms and Conditions",
@@ -1722,7 +1823,8 @@
     },
     "error-unauthorized": {
       "title": "Access Restricted",
-      "description": "Sorry, you don't have access. Please try logging in."
+      "description": "Sorry, you don't have access. Please contact the project administrator.",
+      "button": "Go back"
     },
     "not-found": {
       "title": "Not Found",

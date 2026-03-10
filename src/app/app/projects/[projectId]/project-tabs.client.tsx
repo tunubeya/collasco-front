@@ -32,6 +32,7 @@ type ProjectTabsProps = {
   permissions: string[];
   roles: ProjectRole[];
   permissionsCatalog: ProjectPermission[];
+  canViewQa?: boolean;
 };
 
 type ProjectTab =
@@ -54,6 +55,7 @@ export function ProjectTabs({
   permissions,
   roles,
   permissionsCatalog,
+  canViewQa: canViewQaProp,
 }: ProjectTabsProps) {
   const tTabs = useTranslations("app.projects.detail.tabs");
   const tProjectDetail = useTranslations("app.projects.detail");
@@ -61,9 +63,11 @@ export function ProjectTabs({
   const tManual = useTranslations("app.projects.manual");
   const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
   const permissionSet = useMemo(() => new Set(permissions), [permissions]);
-  const canViewStructure = hasPermission(permissionSet, "module.read");
+  const canViewProject = hasPermission(permissionSet, "project.read");
+  const canViewStructure = canViewProject || hasPermission(permissionSet, "module.read");
   const canManageStructure = hasPermission(permissionSet, "module.write");
-  const canViewQa = hasPermission(permissionSet, "qa.read");
+  const hasQaRead = canViewQaProp ?? hasPermission(permissionSet, "qa.read");
+  const canViewQa = hasQaRead;
   const canManageQa = hasPermission(permissionSet, "qa.write");
   const canManageLabels = hasPermission(permissionSet, "labels.manage");
   const canManageTrash = hasPermission(permissionSet, "project.delete");
@@ -73,11 +77,11 @@ export function ProjectTabs({
     permissionSet,
     "project.manage_share_links",
   );
-  const canViewProjectDocumentation = canViewQa;
-  const canViewImages = canViewQa;
+  const canViewProjectDocumentation = canViewProject || hasQaRead;
+  const canViewImages = canViewProject || hasQaRead;
   const canViewMembers = canManageMembers || canManageRoles;
   const canViewLabels = canManageLabels;
-  const canViewManual = canViewQa;
+  const canViewManual = canViewProject || hasQaRead;
   const [roleList, setRoleList] = useState<ProjectRole[]>(roles);
 
   useEffect(() => {
@@ -171,10 +175,12 @@ export function ProjectTabs({
             onClick={() => setActiveTab("trash")}
           />
         )}
-        <TabButton
-          label={tTabs("dashboard")}
-          href={`/app/projects/${projectId}/dashboard`}
-        />
+        {hasQaRead && (
+          <TabButton
+            label={tTabs("dashboard")}
+            href={`/app/projects/${projectId}/dashboard`}
+          />
+        )}
       </div>
 
       {activeTab === "structure" && canViewStructure && (

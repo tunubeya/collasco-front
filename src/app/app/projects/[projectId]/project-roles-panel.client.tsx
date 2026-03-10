@@ -363,8 +363,8 @@ export function ProjectRolesPanel({
               />
             </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between gap-2">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-2 border-b pb-2">
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {t("form.permissions")}
                 </label>
@@ -374,38 +374,85 @@ export function ProjectRolesPanel({
                   })}
                 </span>
               </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {sortedPermissions.map((permission) => {
-                  const checked = formValues.permissionKeys.includes(permission.key);
-                  return (
-                    <label
-                      key={permission.key}
-                      className={cn(
-                        "flex items-start gap-2 rounded-lg border px-3 py-2 text-sm",
-                        checked
-                          ? "border-primary bg-primary/5 font-semibold"
-                          : "border-border bg-background",
-                      )}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => togglePermission(permission.key)}
-                        disabled={!canManageRoles || Boolean(editingRole?.isOwner)}
-                        className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-primary"
-                      />
-                      <span className="flex flex-col">
-                        <span>{permission.key}</span>
-                        {permission.description ? (
-                          <span className="text-xs text-muted-foreground">
-                            {permission.description}
-                          </span>
-                        ) : null}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
+
+              {(() => {
+                const groups: Record<string, ProjectPermission[]> = {
+                  project: [],
+                  module: [],
+                  feature: [],
+                  qa: [],
+                  labels: [],
+                  other: [],
+                };
+
+                sortedPermissions.forEach((p) => {
+                  const prefix = p.key.split(".")[0];
+                  if (prefix && prefix in groups) {
+                    groups[prefix].push(p);
+                  } else {
+                    groups.other.push(p);
+                  }
+                });
+
+                return Object.entries(groups)
+                  .filter(([, items]) => items.length > 0)
+                  .map(([key, items]) => (
+                    <div key={key} className="space-y-3 rounded-xl border bg-muted/5 p-4">
+                      <div>
+                        <h5 className="font-bold text-sm text-foreground">
+                          {t(`form.permissionGroups.${key}.label`)}
+                        </h5>
+                        <p className="text-[11px] text-muted-foreground">
+                          {t(`form.permissionGroups.${key}.description`)}
+                        </p>
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {items.map((permission) => {
+                          const checked = formValues.permissionKeys.includes(
+                            permission.key,
+                          );
+                          const translationKey = permission.key.replace(/\./g, "_");
+                          return (
+                            <label
+                              key={permission.key}
+                              className={cn(
+                                "flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-all hover:bg-background",
+                                checked
+                                  ? "border-primary bg-primary/5 ring-1 ring-primary/20"
+                                  : "border-border bg-background/50",
+                              )}
+                            >
+                              <div className="flex h-5 items-center">
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => togglePermission(permission.key)}
+                                  disabled={
+                                    !canManageRoles || Boolean(editingRole?.isOwner)
+                                  }
+                                  className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                                />
+                              </div>
+                              <div className="flex flex-col gap-0.5 leading-none">
+                                <span className="text-xs font-semibold">
+                                  {t(`form.permissionsList.${translationKey}.label`, {
+                                    default: permission.key ?? "",
+                                  })}
+                                </span>
+                                <span className="text-[10px] text-muted-foreground line-clamp-2">
+                                  {t(
+                                    `form.permissionsList.${translationKey}.description`,
+                                    { default: permission.description ?? "" },
+                                  )}
+                                </span>
+                              </div>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ));
+              })()}
             </div>
 
             {formError && <p className="text-sm text-red-600">{formError}</p>}

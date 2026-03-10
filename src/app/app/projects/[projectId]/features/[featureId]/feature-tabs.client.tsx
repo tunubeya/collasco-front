@@ -35,6 +35,8 @@ type FeatureTabsProps = {
   projectId: string;
   linkedFeaturesCount?: number | null;
   testCasesCount?: number | null;
+  canManageFeature?: boolean;
+  canReadFeature?: boolean;
 };
 
 type FeatureTab =
@@ -60,6 +62,8 @@ export function FeatureTabs({
   projectId,
   linkedFeaturesCount,
   testCasesCount,
+  canManageFeature = false,
+  canReadFeature = false,
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
@@ -74,15 +78,17 @@ export function FeatureTabs({
     setLinkedFeatures(initialLinkedFeatures);
   }, [initialLinkedFeatures]);
 
+  const canViewDocumentation = canViewQa || canReadFeature;
+
   const availableTabs = useMemo<FeatureTab[]>(() => {
     const tabs: FeatureTab[] = [];
-    if (canViewQa) tabs.push("documentation");
+    if (canViewDocumentation) tabs.push("documentation");
     tabs.push("issues", "versions");
     if (canViewQa) tabs.push("qa");
     tabs.push("linked");
     if (canViewQa) tabs.push("manual");
     return tabs;
-  }, [canViewQa]);
+  }, [canViewDocumentation, canViewQa]);
 
   useEffect(() => {
     if (!availableTabs.includes(activeTab)) {
@@ -99,7 +105,7 @@ export function FeatureTabs({
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        {canViewQa && (
+        {canViewDocumentation && (
           <TabButton
             label={tTabs("info")}
             isActive={activeTab === "documentation"}
@@ -139,7 +145,7 @@ export function FeatureTabs({
         )}
       </div>
 
-      {activeTab === "documentation" && canViewQa && (
+      {activeTab === "documentation" && canViewDocumentation && (
         <EntityDocumentationPanel
           token={token}
           entityId={featureId}
@@ -240,6 +246,7 @@ export function FeatureTabs({
           options={linkableFeatures}
           modulePathById={modulePathById}
           projectId={projectId}
+          canManageFeature={canManageFeature}
         />
       )}
 

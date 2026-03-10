@@ -33,7 +33,7 @@
       "title_01": "Kwaliteit",
       "title_02": "die echt",
       "title_03": "stroomt",
-      "subtitle_01": "Documentbeheer, audits en CAPA op één plek.",
+      "subtitle_01": "Documentbeheer, audits and CAPA op één plek.",
       "subtitle_02": "Gemaakt voor teams die waarde hechten aan helderheid en naleving.",
       "kpi_0": "ISO-klaar structuur",
       "kpi_1": "Audit trails in seconden",
@@ -115,7 +115,7 @@
     "personas": {
       "label": "Voor wie",
       "title": "Gebouwd voor teams die om kwaliteit geven",
-      "description": "Of je nu een SaaS-product bouwt of maatwerk levert, Collasco brengt iedereen samen in één gedeeld proces.",
+      "description": "Of je nu een SaaS of maatwerk levert, Collasco brengt iedereen op één shared proces.",
       "items": {
         "productManagers": {
           "title": "Product- en projectmanagers",
@@ -153,7 +153,7 @@
           "description": "Maak transparante, controleerbare releasenotes en documentatie van wijzigingen."
         },
         "manuals": {
-          "title": "Handleidingen & kwaliteitsdossiers",
+          "title": "Manuals & kwaliteitsdossiers",
           "description": "Genereer IQ/OQ/PQ-documentatie vanuit één consistente kennisbasis."
         },
         "structuredCommunication": {
@@ -173,7 +173,7 @@
     "differentiators": {
       "label": "Waarom Collasco",
       "title": "Wat ons uniek maakt",
-      "description": "Collasco overbrugt de kloof tussen technische tools en collaboratief kwaliteitsbeheer.",
+      "description": "Collasco overbrugt de kloof tussen technische tools and collaboratief kwaliteitsbeheer.",
       "items": {
         "jira": {
           "tool": "Jira / GitHub Projects",
@@ -188,7 +188,7 @@
         "linear": {
           "tool": "Linear",
           "challenge": "Geoptimaliseerd voor code shippen, niet voor co-creatie.",
-          "edge": "Collasco brengt elke rol samen in een kwaliteitsgedreven samenwerkingslus."
+          "edge": "Collasco brengt elke rol op één lijn in een kwaliteitsgedreven samenwerkingslus."
         }
       }
     },
@@ -325,7 +325,7 @@
       },
       {
         "title": "2. Persoonsgegevens die we verzamelen",
-        "description": "We verzamelen de volgende soorten informatie:\n* Registratiegegevens: naam, e-mail, telefoon en wachtwoord.\n* Facturatiegegevens: fiscaal identificatienummer (NIT), fiscaal adres.\n* Gebruiksgegevens: informatie over hoe u met ons platform omgaat.\n* Optionele gegevens: die u ervoor kiest te verstrekken, zoals contactreferenties."
+        "description": "We verzamelen the volgende soorten informatie:\n* Registratiegegevens: naam, e-mail, telefoon en wachtwoord.\n* Facturatiegegevens: fiscaal identificatienummer (NIT), fiscaal adres.\n* Gebruiksgegevens: informatie over hoe u met ons platform omgaat.\n* Optionele gegevens: die u ervoor kiest te verstrekken, zoals contactreferenties."
       },
       {
         "title": "3. Doeleinden van de gegevensverwerking",
@@ -345,7 +345,7 @@
       },
       {
         "title": "7. Gegevensbeveiliging",
-        "description": "We nemen technische en organisatorische maatregelen om uw gegevens te beschermen tegen ongeoorloofde toegang, verlies of onjuiste openbaarmaking. Geen enkele beveiligingsmaatregel is echter volledig waterdicht, dus raden we aan uw wachtwoord te beschermen en geen gevoelige informatie onnodig te delen."
+        "description": "We nemen technische en organisationele maatregelen om uw gegevens te beschermen tegen ongeoorloofde toegang, verlies of onjuiste openbaarmaking. Geen enkele beveiligingsmaatregel is echter volledig waterdicht, dus raden we aan uw wachtwoord te beschermen en geen gevoelige informatie onnodig te delen."
       },
       {
         "title": "8. Uw rechten",
@@ -366,11 +366,11 @@
     "conditions": [
       {
         "title": "Gebruiksvoorwaarden",
-        "description": "De volgende inhoud mag niet worden gepubliceerd op het Collasco-webplatform.\n\n* Het publiceren van illegaal materiaal volgens de geldende wetten in de Plurinationale Staat Bolivia is niet toegestaan.\n* De verspreiding van naaktheid of pornografisch materiaal op deze website is strikt verboden.\n* Het uitwisselen, promoten of verkopen van illegale verdovende middelen is strikt verboden.\n* Illegale expliciete inhoud wordt niet getolereerd, inclusief maar niet beperkt tot het aanzetten tot geweld, haat, intimidatie of discriminatie.\n* Het is niet toegestaan om via deze webdienst vuurwapens of steek-/snijwapens aan te bieden of te vragen.\n* Alle gebruikers moeten auteursrechten respecteren en geen digitale content uploaden, delen of verspreiden die niet door de rechthebbenden is toegestaan.\n* Het is strikt verboden om deze webdienst te gebruiken voor frauduleuze doeleinden, waaronder, maar niet beperkt tot, phishing, identiteitsfraude of andere misleidende activiteiten.\n* Naast de hierboven genoemde beperkingen moeten gebruikers alle toepasselijke lokale, nationale en internationale wetten en regels naleven bij het gebruik van deze webdienst.\n* Het niet naleven van een van deze gebruiksvoorwaarden kan leiden tot schorsing of verwijdering van uw account en het nemen van passende juridische stappen.\n* We behouden ons het recht voor om deze gebruiksvoorwaarden op elk moment te wijzigen en raden aan ze periodiek te bekijken om op de hoogte te blijven van wijzigingen."
+        "description": "De volgende inhoud mag niet worden gepubliceerd op het Collasco-webplatform.\n\n* Het publiceren van illegaal materiaal volgens de geldende wetten in de Plurinationale Staat Bolivia is niet toegestaan.\n* De verspreiding van naaktheid of pornografisch materiaal op deze website is strikt verboden.\n* Het uitwisselen, promoten of verkopen van illegally verdovende middelen is strikt verboden.\n* Illegale expliciete inhoud wordt niet getolereerd, inclusief maar niet beperkt tot het aanzetten tot geweld, haat, intimidatie of discriminatie.\n* Het is niet toegestaan om via deze webdienst vuurwapens of steek-/snijwapens aan te bieden of te vragen.\n* Alle gebruikers moeten auteursrechten respecteren en geen digitale content uploaden, delen of verspreiden die niet door de rechthebbenden is toegestaan.\n* Het is strikt verboden om deze webdienst te gebruiken voor frauduleuze doeleinden, waaronder, maar niet beperkt tot, phishing, identiteitsfraude of andere misleidende activiteiten.\n* Naast de hierboven genoemde beperkingen moeten gebruikers alle toepasselijke lokale, nationale en internationale wetten en regels naleven bij het gebruik van deze webdienst.\n* Het niet naleven van een van deze gebruiksvoorwaarden kan leiden tot schorsing of verwijdering van uw account en het nemen van passende juridische stappen.\n* We behouden ons het recht voor om deze gebruiksvoorwaarden op elk moment te wijzigen en raden aan ze periodiek te bekijken om op de hoogte te blijven van wijzigingen."
       },
       {
         "title": "Verboden",
-        "description": "De volgende verboden zijn van toepassing op het gebruik van het Collasco-platform.\n\n* Verbod op fraude: het gebruik van Mercagi-webwinkels voor frauduleuze activiteiten op internet is strikt verboden. Affiliates moeten hun winkels volledig transparant en eerlijk beheren.\n* Verantwoordelijkheid van de affiliate: affiliates zijn volledig verantwoordelijk voor schade of verlies veroorzaakt door hun webwinkel. Mercagi wijst elke verantwoordelijkheid af die voortvloeit uit de acties of inhoud van de winkels van affiliates.\n* Verbod op verkoop van auteursrechtelijk beschermde cursussen: het is niet toegestaan winkels te gebruiken om online cursussen die door auteursrecht zijn beschermd door te verkopen, tenzij uitdrukkelijke toestemming is verkregen.\n* Verkoop van illegale producten: de verkoop van gestolen of gesmokkelde goederen is verboden. Mercagi behoudt zich het recht voor om juridische stappen te ondernemen tegen affiliates die zich hieraan schuldig maken.\n* Gevolgen van klachten en claims: bij meerdere geverifieerde klachten of claims over fraude of illegale activiteiten in een winkel behoudt Mercagi zich het recht voor de winkel van de affiliate te verwijderen zonder mogelijkheid tot heractivering."
+        "description": "De volgende verboden zijn van toepassing op het gebruik van het Collasco-platform.\n\n* Verbod op fraude: het gebruik van Mercagi-webwinkels voor frauduleuze activiteiten op internet is strikt verboden. Affiliates moeten hun winkels volledig transparant en eerlijk beheren.\n* Verantwoordelijkheid van de affiliate: affiliates zijn volledig verantwoordelijk voor schade of verlies veroorakt door hun webwinkel. Mercagi wijst elke verantwoordelijkheid af die voortvloeit uit de acties of inhoud van de winkels van affiliates.\n* Verbod op verkoop van auteursrechtelijk beschermde cursussen: het is niet toegestaan winkels te gebruiken om online cursussen die door auteursrecht zijn beschermd door te verkopen, tenzij uitdrukkelijke toestemming is verkregen.\n* Verkoop van illegale producten: de verkoop van gestolen of gesmokkelde goederen is verboden. Mercagi behoudt zich het recht voor om juridische stappen te ondernemen tegen affiliates die zich hieraan schuldigen maken.\n* Gevolgen van klachten en claims: bij meerdere geverifieerde klachten of claims over fraude of illegale activiteiten in een winkel behoudt Mercagi se réserve le droit de supprimer la boutique de l'affilié sans mogelijkheid tot heractivering."
       }
     ]
   },
@@ -380,7 +380,7 @@
       "title": "Onze geschiedenis",
       "paragraph1": "Collasco is ontstaan uit de behoefte aan een toegankelijk, eenvoudig en betaalbaar QMS dat bedrijven helpt hun processen te verbeteren en ondernemers hun activiteiten eenvoudig te digitaliseren.",
       "paragraph2": "Het is opgericht door een jonge Boliviaan en een Belg, die hun krachten bundelden nadat ze zagen hoe moeilijk het voor veel bedrijven was om effectieve kwaliteitssystemen te implementeren.",
-      "paragraph3": "De naam \"Collasco\" weerspiegelt de wendbaarheid, toegankelijkheid en eenvoud waarmee elke organisatie haar processen kan professionaliseren en alles op één plek kan beheren."
+      "paragraph3": "Leven \"Collasco\" weerspiegelt de wendbaarheid, toegankelijkheid en eenvoud waarmee elke organisatie haar processen kan professionaliseren en alles op één plek kan beheren."
     },
     "misionTitle": "MISSIE",
     "mision": "Een gebruiksvriendelijk en betaalbaar QMS-platform leveren dat bedrijven helpt hun processen te organiseren, naleving te garanderen en duurzaam te groeien, allemaal op één plek.",
@@ -443,7 +443,7 @@
         "pageTitle": "Profiel",
         "title": "Persoonlijke gegevens",
         "save": "Wijzigingen opslaan",
-        "hint": "Deze wijzigingen zijn binnenkort beschikbaar.",
+        "hint": "De veranderingen worden onmiddellijk toegepast.",
         "alerts": {
           "success": "Profiel succesvol bijgewerkt.",
           "error": "We konden je profiel niet bijwerken."
@@ -461,7 +461,7 @@
           "confirm": "Bevestig wachtwoord",
           "rules": "Minstens 8 tekens, met letters en cijfers",
           "save": "Wachtwoord bijwerken",
-          "hint": "Het bijwerken van het wachtwoord wordt binnenkort ingeschakeld.",
+          "hint": "Maak je account veiliger met een sterker wachtwoord.",
           "alerts": {
             "success": "Wachtwoord succesvol bijgewerkt.",
             "validation": "Controleer de gemarkeerde velden.",
@@ -503,7 +503,7 @@
           "title": "GitHub-token",
           "subtitle": "Sla een persoonlijk access token met repo-rechten op om privérepositories te koppelen.",
           "maskedLabel": "Opgeslagen token",
-          "maskedHint": "Er is een token opgeslagen. Je kunt het hieronder overschrijven of verwijderen.",
+          "maskedHint": "Er is een token opgeslagen. Je kunt het hierover schrijven of verwijderen.",
           "inputLabel": "Persoonlijk access token",
           "placeholder": "ghp_xxxxxxxxxxxxxxxxx",
           "save": "Token opslaan",
@@ -620,7 +620,7 @@
         "messages": {
           "loading": "Afbeeldingen laden...",
           "empty": "Nog geen afbeeldingen.",
-          "loadError": "We konden de afbeeldingen niet laden."
+          "loadError": "We konden the afbeeldingen niet laden."
         },
         "labels": {
           "unknown": "Onbekend label",
@@ -702,7 +702,7 @@
           "loading": "Links laden...",
           "loadError": "We konden de links niet laden.",
           "labelsTitle": "Labels om te delen",
-          "labelsHint": "Selecteer de labels die in de openbare handleiding staan.",
+          "labelsHint": "Selecteer the labels die in de openbare handleiding staan.",
           "labelsEmpty": "Geen labels om te delen.",
           "labelsFallback": "Geen labels",
           "linksTitle": "Aangemaakte links",
@@ -713,7 +713,7 @@
           "created": "Link aangemaakt.",
           "createError": "We konden de link niet maken.",
           "copy": "Link kopiëren",
-          "copied": "Link gekopieerd.",
+          "copied": "Link gekoperd.",
           "copyError": "We konden de link niet kopiëren.",
           "revoke": "Intrekken",
           "revoked": "Link ingetrokken.",
@@ -804,7 +804,7 @@
           "cancel": "Annuleren"
         },
         "messages": {
-          "loadError": "We konden de labels niet laden.",
+          "loadError": "We konden the labels niet laden.",
           "saveError": "We konden het label niet opslaan.",
           "created": "Label aangemaakt.",
           "updated": "Label bijgewerkt.",
@@ -821,12 +821,12 @@
           "mandatoryNo": "Nee",
           "visibleToRoles": "Zichtbaar voor",
           "readOnlyRoles": "Alleen-lezen",
-          "noReadOnly": "Alle zichtbare rollen kunnen bewerken.",
+          "noReadOnly": "Alle rollen met toegang kunnen bewerken.",
           "actions": "Acties"
         },
         "reorder": {
-          "moveUp": "Omhoog",
-          "moveDown": "Omlaag",
+          "moveUp": "Omhoog verplaatsen",
+          "moveDown": "Omlaag verplaatsen",
           "success": "Volgorde bijgewerkt.",
           "error": "Label kon niet worden verplaatst."
         },
@@ -836,12 +836,12 @@
         },
         "fields": {
           "name": "Naam",
-          "namePlaceholder": "bijv. Privacygoedkeuring",
+          "namePlaceholder": "bijv. Privacy-goedkeuring",
           "isMandatory": "Verplicht veld",
           "isNotApplicableByDefault": "Standaard als niet van toepassing markeren",
           "visibleToRoles": "Rollen met toegang",
           "visibleToRolesHint": "Kies wie items met dit label kan zien.",
-          "readOnlyRoles": "Alleen-lezen rollen",
+          "readOnlyRoles": "Rollen met alleen-lezen",
           "readOnlyRolesHint": "Zij zien het label maar kunnen de content niet bewerken."
         },
         "dialog": {
@@ -864,7 +864,7 @@
         "title": "Projectrollen",
         "subtitle": "Maak rollen aan en bepaal welke rechten ze hebben.",
         "actions": {
-          "add": "Nieuwe rol",
+          "add": "Nieuuwe rol",
           "edit": "Bewerken",
           "delete": "Verwijderen",
           "save": "Opslaan",
@@ -887,7 +887,7 @@
           "description": "Maak een rol aan om rechten toe te wijzen."
         },
         "messages": {
-          "loadError": "We konden de rollen niet laden.",
+          "loadError": "We konden the rollen niet laden.",
           "saveError": "We konden de rol niet opslaan.",
           "created": "Rol aangemaakt.",
           "updated": "Rol bijgewerkt.",
@@ -901,7 +901,7 @@
         "dialog": {
           "createTitle": "Nieuwe rol",
           "editTitle": "Rol bewerken",
-          "description": "Bepaal de rechten van deze rol."
+          "description": "Bepaal the rechten van deze rol."
         },
         "form": {
           "name": "Rolnaam",
@@ -909,7 +909,91 @@
           "description": "Beschrijving",
           "descriptionPlaceholder": "Optioneel",
           "permissions": "Rechten",
-          "permissionsCount": "{count} geselecteerd"
+          "permissionsCount": "{count} geselecteerd",
+          "permissionGroups": {
+            "project": {
+              "label": "Project",
+              "description": "Algemeen projectbeheer en configuratie."
+            },
+            "module": {
+              "label": "Modules",
+              "description": "Beheer van de module- en submodule-structuur."
+            },
+            "feature": {
+              "label": "Functionaliteiten (Features)",
+              "description": "Beheer van individuele werkitems."
+            },
+            "qa": {
+              "label": "QA & Testen",
+              "description": "Testcases, runs en kwaliteitsresultaten."
+            },
+            "labels": {
+              "label": "Labels",
+              "description": "Dynamische labelconfiguratie en zichtbaarheid."
+            },
+            "other": {
+              "label": "Overig",
+              "description": "Aanvullende systeemrechten."
+            }
+          },
+          "permissionsList": {
+            "project_read": {
+              "label": "Project bekijken",
+              "description": "Basistoegang om projectinformatie te zien."
+            },
+            "project_update": {
+              "label": "Project bewerken",
+              "description": "Naam, beschrijving en algemene instellingen wijzigen."
+            },
+            "project_delete": {
+              "label": "Project verwijderen",
+              "description": "Mogelijkheid om het project en de prullenbak te verwijderen."
+            },
+            "project_manage_members": {
+              "label": "Leden beheren",
+              "description": "Mensen uitnodigen of uit het team verwijderen."
+            },
+            "project_manage_roles": {
+              "label": "Rollen beheren",
+              "description": "Rollen aanmaken en rechten configureren."
+            },
+            "project_manage_share_links": {
+              "label": "Deellinks beheren",
+              "description": "Openbare links naar de handleiding maken en intrekken."
+            },
+            "project_manage_integrations": {
+              "label": "Integraties beheren",
+              "description": "Externe verbindingen zoals GitHub configureren."
+            },
+            "module_read": {
+              "label": "Modules bekijken",
+              "description": "De navigatiestructuur visualiseren."
+            },
+            "module_write": {
+              "label": "Modules beheren",
+              "description": "De modulehiërarchie aanmaken, bewerken en organiseren."
+            },
+            "feature_read": {
+              "label": "Features bekijken",
+              "description": "Toegang om de details van elke feature te zien."
+            },
+            "feature_write": {
+              "label": "Features beheren",
+              "description": "Features aanmaken en bewerken binnen modules."
+            },
+            "qa_read": {
+              "label": "QA bekijken",
+              "description": "Testcases en run-resultaten raadplegen."
+            },
+            "qa_write": {
+              "label": "QA beheren",
+              "description": "Testcases aanmaken en resultaten registreren."
+            },
+            "labels_manage": {
+              "label": "Labels beheren",
+              "description": "Aangepaste QA-labels configureren."
+            }
+          }
         },
         "validation": {
           "name": "Vul een rolnaam in."
@@ -935,11 +1019,11 @@
           "editorHelper": "Gebruik rich text om je bewijs leesbaar te houden."
         },
         "states": {
-          "notApplicable": "Dit label is gemarkeerd als niet van toepassing.",
+          "notApplicable": "Deze label is gemarkeerd als niet van toepassing.",
           "empty": "Nog geen inhoud."
         },
         "messages": {
-          "loadError": "We konden de documentatie niet laden.",
+          "loadError": "We konden the documentatie niet laden.",
           "saved": "Documentatie opgeslagen.",
           "saveError": "We konden dit label niet opslaan."
         },
@@ -1026,9 +1110,9 @@
           "bold": "Vet",
           "italic": "Cursief",
           "underline": "Onderstrepen",
-          "bulletList": "Opsommingstekens",
+          "bulletList": "Lijst met marcadores",
           "orderedList": "Genummerde lijst",
-          "clear": "Opmaak wissen",
+          "clear": "Limpar formatação",
           "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
         },
         "errors": {
@@ -1061,7 +1145,7 @@
           "delete": "Verwijderen",
           "backToParent": "Terug naar bovenliggende module",
           "addChild": "Submodule toevoegen",
-          "addFeature": "Feature toevoegen"
+          "addFeature": "Add feature"
         },
         "reorder": {
           "moveUp": "Omhoog verplaatsen",
@@ -1073,7 +1157,7 @@
         "children": {
           "title": "Submodules en features",
           "empty": "Nog geen submodules.",
-          "sortOrder": "Volgorde #{order}"
+          "sortOrder": "Order #{order}"
         },
         "features": {
           "title": "Features",
@@ -1092,21 +1176,21 @@
               "label": "Beschrijving",
               "placeholder": "Optionele beschrijving"
             },
-            "parent": {
-              "label": "Bovenliggende module",
-              "rootOption": "Hoofdmodule",
-              "hint": "Laat leeg om een hoofdmodule te maken."
-            }
-          },
-          "richText": {
-            "bold": "Vet",
-            "italic": "Cursief",
-            "underline": "Onderstrepen",
-            "bulletList": "Opsommingstekens",
-            "orderedList": "Genummerde lijst",
-            "clear": "Opmaak wissen",
-            "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
-          },
+          "parent": {
+            "label": "Bovenliggende module",
+            "rootOption": "Hoofdmodule",
+            "hint": "Laat leeg om een hoofdmodule te maken."
+          }
+        },
+        "richText": {
+          "bold": "Vet",
+          "italic": "Cursief",
+          "underline": "Onderstrepen",
+          "bulletList": "Lijst met marcadores",
+          "orderedList": "Genummerde lijst",
+          "clear": "Limpar formatação",
+          "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
+        },
           "errors": {
             "required": "Dit veld is verplicht.",
             "invalidParent": "Een module kan niet zichzelf als ouder hebben.",
@@ -1125,7 +1209,7 @@
           }
         },
         "description": {
-          "empty": "Geen beschrijving beschikbaar."
+          "empty": "Geen beschrijving voorzien."
         },
         "errors": {
           "title": "Module laden mislukt",
@@ -1154,7 +1238,7 @@
         },
         "description": {
           "title": "Beschrijving",
-          "empty": "Geen beschrijving beschikbaar."
+          "empty": "Geen beschrijving voorzien."
         },
         "issues": {
           "title": "Gekoppelde issues & PR’s",
@@ -1261,10 +1345,10 @@
             "bold": "Vet",
             "italic": "Cursief",
             "underline": "Onderstrepen",
-            "bulletList": "Lijst met opsommingstekens",
+            "bulletList": "Lijst met marcadores",
             "orderedList": "Genummerde lijst",
-            "clear": "Opmaak wissen",
-            "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U) voor opmaak. Shift+Enter voegt een zachte regel toe."
+            "clear": "Limpar formatação",
+            "helper": "Use a barra of os atalhos (Ctrl/Cmd + B/I/U) para formatar. Shift+Enter adds a soft line break."
           },
           "errors": {
             "required": "Dit veld is verplicht.",
@@ -1332,7 +1416,7 @@
           "cancel": "Annuleren",
           "add": {
             "title": "Testcase toevoegen",
-            "description": "Leg de details van het scenario vast. Elke regel bij Stappen wordt een afzonderlijke stap.",
+            "description": "Leg de details van het scenario vast. Elke regel bij Stappen vira een afzonderlijke stap.",
             "save": "Testcase opslaan",
             "saving": "Bezig met opslaan..."
           },
@@ -1364,7 +1448,7 @@
           "create": "De run kon niet worden aangemaakt.",
           "loadRun": "De run kon niet worden geopend.",
           "validation": "Controleer de ingevoerde gegevens.",
-          "missingFields": "Vul het volgende in: {fields}.",
+          "missingFields": "Vul in: {fields}.",
           "updateResults": "De resultaten konden niet worden opgeslagen."
         },
         "hints": {
@@ -1387,7 +1471,7 @@
         },
         "empty": {
           "title": "Nog geen runs geregistreerd",
-          "description": "Maak een eerste run aan om de slag te gaan met de slaagkans.",
+          "description": "Maak je eerste run aan om het slaagpercentage te meten.",
           "cta": "Run aanmaken"
         },
         "noFeatures": "Voeg een feature met testcases toe voordat je een project-run maakt.",
@@ -1719,7 +1803,8 @@
     },
     "error-unauthorized": {
       "title": "Toegang geweigerd",
-      "description": "Sorry, je hebt geen toegang. Probeer in te loggen."
+      "description": "Sorry, je hebt geen toegang. Neem contact op met de projectbeheerder.",
+      "button": "Terug"
     },
     "not-found": {
       "title": "Niet gevonden",

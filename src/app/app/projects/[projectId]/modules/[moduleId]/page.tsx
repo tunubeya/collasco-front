@@ -23,8 +23,9 @@ import { Pencil, Trash2 } from "lucide-react";
 import { deleteModule } from "@/app/app/projects/[projectId]/modules/[moduleId]/edit/actions";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { listProjectMembers } from "@/lib/api/project-members";
-import { listProjectRoles } from "@/lib/api/project-roles";
+import { listProjectRoles, type ProjectRole } from "@/lib/api/project-roles";
 import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
+import { UnauthorizedView } from "@/ui/components/error-unauthorized-view";
 
 type Params = {
   projectId: string;
@@ -54,39 +55,38 @@ export default async function ModuleDetailPage({
   }
   if (!project) notFound();
 
-  // 2) Metadata del módulo
+  // 2) Metadata del módulo (Manejo manual de 403)
   let currentModule: Module | null = null;
+  let isForbidden = false;
   try {
     currentModule = await fetchModuleById(session.token, moduleId);
   } catch (error) {
-    await handlePageError(error);
-  }
-  if (!currentModule) notFound();
-
-  // 3) Árbol completo del módulo (intercalado y ordenado)
-  let structureNode: StructureModuleNode;
-  try {
-    const { node } = await fetchModuleStructure(session.token, moduleId);
-    structureNode = node;
-  } catch (error) {
-    await handlePageError(error);
+    if (error instanceof Response && error.status === 403) {
+      isForbidden = true;
+    } else {
+      await handlePageError(error, { manualForbidden: true });
+      // Si llega aquí después de handlePageError con manualForbidden, 
+      // podría ser que decidamos manejarlo como forbidden.
+      if (error instanceof Response && error.status === 403) isForbidden = true;
+    }
   }
 
-  // 4) Path del módulo dentro de la estructura del proyecto
+  // 4) Path del módulo dentro de la estructura del proyecto (necesario para breadcrumbs)
   let moduleCrumbs: { id: string; name: string }[] = [];
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
       sort: "sortOrder",
     });
-    const chain = findModulePath(structure.modules, currentModule.id);
+    const chain = findModulePath(structure.modules, moduleId);
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
     }
-  } catch (error) {
-    await handlePageError(error);
+  } catch {
+    // Si falla la estructura, no bloqueamos, solo breadcrumbs básicos
   }
-  if (moduleCrumbs.length === 0) {
+  
+  if (moduleCrumbs.length === 0 && currentModule) {
     moduleCrumbs = [{ id: currentModule.id, name: currentModule.name }];
   }
 
@@ -102,6 +102,26 @@ export default async function ModuleDetailPage({
     })),
   ];
 
+  if (isForbidden) {
+    return (
+      <div className="grid gap-6">
+        <Breadcrumb items={breadcrumbItems} className="mb-2" />
+        <UnauthorizedView />
+      </div>
+    );
+  }
+
+  if (!currentModule) notFound();
+
+  // 3) Árbol completo del módulo (intercalado y ordenado)
+  let structureNode: StructureModuleNode;
+  try {
+    const { node } = await fetchModuleStructure(session.token, moduleId);
+    structureNode = node;
+  } catch (error) {
+    await handlePageError(error);
+  }
+
   let currentUserId: string | null = null;
   try {
     const profile = await fetchGetUserProfile(session.token);
@@ -110,7 +130,7 @@ export default async function ModuleDetailPage({
     await handlePageError(error);
   }
 
-  let roles = [];
+  let roles: ProjectRole[] = [];
   let members = project.members ?? [];
   try {
     roles = await listProjectRoles(session.token, projectId);
@@ -129,6 +149,17 @@ export default async function ModuleDetailPage({
   });
   const permissionKeys = resolveRolePermissions(roles, roleId);
   const permissionSet = new Set(permissionKeys);
+
+  const canReadModule = hasPermission(permissionSet, "module.read");
+  if (!canReadModule) {
+    return (
+      <div className="grid gap-6">
+        <Breadcrumb items={breadcrumbItems} className="mb-2" />
+        <UnauthorizedView />
+      </div>
+    );
+  }
+
   const canManageStructure = hasPermission(permissionSet, "module.write");
   const canManageModule = canManageStructure;
   const canDeleteModule = hasPermission(permissionSet, "module.write");

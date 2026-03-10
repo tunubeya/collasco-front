@@ -22,11 +22,21 @@ async function readResponseMessage(res: Response) {
   }
 }
 
-export async function handlePageError(error: unknown) {
+export interface HandlePageErrorOptions {
+  manualForbidden?: boolean;
+}
+
+export async function handlePageError(
+  error: unknown,
+  options: HandlePageErrorOptions = {}
+) {
   const res = error instanceof Response ? error : undefined;
 
   // 🚫 Forbidden
   if (res?.status === 403) {
+    if (options.manualForbidden) {
+      return; // Permite al llamador manejar el 403 (ej. mostrar UnauthorizedView)
+    }
     redirect(RoutesEnum.ERROR_UNAUTHORIZED);
   }
 

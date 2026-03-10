@@ -7,7 +7,6 @@ import { FeaturePriority, FeatureStatus, StructureModuleNode } from "@/lib/defin
 import {
   fetchFeatureById,
   fetchGetUserProfile,
-  fetchModuleById,
   fetchProjectById,
   fetchProjectStructure,
 } from "@/lib/data";
@@ -28,12 +27,13 @@ import { FeatureTabs } from "./feature-tabs.client";
 import { Pencil, Trash2 } from "lucide-react";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { listProjectMembers } from "@/lib/api/project-members";
-import { listProjectRoles } from "@/lib/api/project-roles";
+import { listProjectRoles, type ProjectRole } from "@/lib/api/project-roles";
 import {
   hasPermission,
   resolveMemberRoleId,
   resolveRolePermissions,
 } from "@/lib/permissions";
+import { UnauthorizedView } from "@/ui/components/error-unauthorized-view";
 
 type Params = { projectId: string; featureId: string };
 
@@ -64,11 +64,51 @@ export default async function FeatureDetailPage({
   if (!project) notFound();
 
   let feature: Feature | null = null;
+  let isForbidden = false;
   try {
     feature = await fetchFeatureById(session.token, featureId);
   } catch (error) {
-    await handlePageError(error);
+    if (error instanceof Response && error.status === 403) {
+      isForbidden = true;
+    } else {
+      await handlePageError(error, { manualForbidden: true });
+      if (error instanceof Response && error.status === 403) isForbidden = true;
+    }
   }
+
+  let moduleCrumbs: { id: string; name: string }[] = [];
+  try {
+    const structure = await fetchProjectStructure(session.token, projectId, {
+      limit: 1000,
+      sort: "sortOrder",
+    });
+    const chain = findModulePath(structure.modules, feature?.moduleId || "");
+    if (chain) {
+      moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
+    }
+  } catch {
+    // Ignorar error de estructura para breadcrumbs
+  }
+
+  const breadcrumbItems = [
+    { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
+    { label: project.name, href: `/app/projects/${projectId}` },
+    ...moduleCrumbs.map((crumb) => ({
+      label: crumb.name,
+      href: `/app/projects/${projectId}/modules/${crumb.id}`,
+    })),
+    { label: feature?.name || "Feature" },
+  ];
+
+  if (isForbidden) {
+    return (
+      <div className="grid gap-6">
+        <Breadcrumb items={breadcrumbItems} className="mb-2" />
+        <UnauthorizedView />
+      </div>
+    );
+  }
+
   if (!feature) notFound();
 
   let currentUserId: string | null = null;
@@ -79,55 +119,7 @@ export default async function FeatureDetailPage({
     await handlePageError(error);
   }
 
-  let moduleCrumbs: { id: string; name: string }[] = [];
-  let linkableFeatures: Array<{
-    id: string;
-    name: string;
-    moduleId: string | null;
-    moduleName: string | null;
-  }> = [];
-  let modulePathById: Record<string, string> = {};
-  try {
-    const structure = await fetchProjectStructure(session.token, projectId, {
-      limit: 1000,
-      sort: "sortOrder",
-    });
-    modulePathById = buildModulePathMap(structure.modules, project.name);
-    const chain = findModulePath(structure.modules, feature.moduleId);
-    if (chain) {
-      moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
-    }
-    linkableFeatures = extractFeatureOptions(structure.modules).filter(
-      (item) => item.id !== feature.id
-    );
-  } catch (error) {
-    await handlePageError(error);
-  }
-  if (moduleCrumbs.length === 0 && feature.moduleId) {
-    try {
-      const moduleInfo = await fetchModuleById(session.token, feature.moduleId);
-      moduleCrumbs = [{ id: moduleInfo.id, name: moduleInfo.name }];
-    } catch (error) {
-      await handlePageError(error);
-    }
-  }
-
-  const formattedUpdatedAt = formatter.dateTime(new Date(feature.updatedAt), {
-    dateStyle: "medium",
-  });
-  const hasFeatureDescription = Boolean(feature.description?.trim());
-
-  const breadcrumbItems = [
-    { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
-    { label: project.name, href: `/app/projects/${projectId}` },
-    ...moduleCrumbs.map((crumb) => ({
-      label: crumb.name,
-      href: `/app/projects/${projectId}/modules/${crumb.id}`,
-    })),
-    { label: feature.name },
-  ];
-
-  let roles = [];
+  let roles: ProjectRole[] = [];
   let members = project.members ?? [];
   try {
     roles = await listProjectRoles(session.token, projectId);
@@ -146,6 +138,18 @@ export default async function FeatureDetailPage({
   });
   const permissionKeys = resolveRolePermissions(roles, roleId);
   const permissionSet = new Set(permissionKeys);
+
+  // --- Permissions Check ---
+  const canReadFeature = hasPermission(permissionSet, "feature.read");
+  if (!canReadFeature) {
+    return (
+      <div className="grid gap-6">
+        <Breadcrumb items={breadcrumbItems} className="mb-2" />
+        <UnauthorizedView />
+      </div>
+    );
+  }
+
   const canManageFeature = hasPermission(permissionSet, "feature.write");
   const canManageQa = hasPermission(permissionSet, "qa.write");
   const canViewQa = hasPermission(permissionSet, "qa.read");
@@ -154,18 +158,45 @@ export default async function FeatureDetailPage({
     "project.manage_share_links",
   );
 
-  let linkedFeatures: QaLinkedFeature[] = [];
+  let linkableFeatures: Array<{
+    id: string;
+    name: string;
+    moduleId: string | null;
+    moduleName: string | null;
+  }> = [];
+  let modulePathById: Record<string, string> = {};
   try {
-    linkedFeatures = await listLinkedFeatures(session.token, feature.id);
+    const structure = await fetchProjectStructure(session.token, projectId, {
+      limit: 1000,
+      sort: "sortOrder",
+    });
+    modulePathById = buildModulePathMap(structure.modules, project.name);
+    linkableFeatures = extractFeatureOptions(structure.modules).filter(
+      (item) => item.id !== feature.id
+    );
   } catch (error) {
     await handlePageError(error);
+  }
+
+  const formattedUpdatedAt = formatter.dateTime(new Date(feature.updatedAt), {
+    dateStyle: "medium",
+  });
+  const hasFeatureDescription = Boolean(feature.description?.trim());
+
+  let linkedFeatures: QaLinkedFeature[] = [];
+  if (canViewQa) {
+    try {
+      linkedFeatures = await listLinkedFeatures(session.token, feature.id);
+    } catch (error) {
+      await handlePageError(error);
+    }
   }
 
   const linkedFeaturesCount =
     feature.linkedFeaturesCount ?? linkedFeatures.length ?? 0;
 
   let testCasesCount = feature.testCasesCount ?? null;
-  if (testCasesCount == null) {
+  if (testCasesCount == null && canViewQa) {
     try {
       const health = await getTestHealth(session.token, feature.id);
       testCasesCount = health.testCaseCounts?.total ?? testCasesCount ?? 0;
@@ -269,6 +300,8 @@ export default async function FeatureDetailPage({
         projectId={projectId}
         linkedFeaturesCount={linkedFeaturesCount}
         testCasesCount={testCasesCount ?? 0}
+        canManageFeature={canManageFeature}
+        canReadFeature={canReadFeature}
       />
     </div>
   );
@@ -331,7 +364,6 @@ function buildModulePathMap(
   return map;
 }
 
-// … tus badges se mantienen igual …
 function FeatureStatusBadge({
   status,
   label,

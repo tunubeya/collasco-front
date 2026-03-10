@@ -19,6 +19,7 @@ import { listProjectMembers } from "@/lib/api/project-members";
 import {
   listProjectPermissions,
   listProjectRoles,
+  type ProjectRole,
 } from "@/lib/api/project-roles";
 import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 
@@ -79,7 +80,7 @@ export default async function ProjectDetailPage({
     { label: tBreadcrumbs("projects"), href: RoutesEnum.APP_PROJECTS },
     { label: project.name },
   ];
-  let roles = [];
+  let roles: ProjectRole[] = [];
   let permissionsCatalog = { items: [] as { key: string; description?: string | null }[] };
   let members = project.members ?? [];
   try {
@@ -102,6 +103,7 @@ export default async function ProjectDetailPage({
   const permissionSet = new Set(permissionKeys);
   const canUpdateProject = hasPermission(permissionSet, "project.update");
   const canDeleteProject = hasPermission(permissionSet, "project.delete");
+  const canViewQa = hasPermission(permissionSet, "qa.read");
 
   return (
     <div className="grid gap-6">
@@ -166,6 +168,7 @@ export default async function ProjectDetailPage({
         permissions={permissionKeys}
         roles={roles}
         permissionsCatalog={permissionsCatalog.items ?? []}
+        canViewQa={canViewQa}
       />
     </div>
   );

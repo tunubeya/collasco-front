@@ -35,6 +35,7 @@ type LinkedFeaturesPanelProps = {
     moduleId: string | null;
     moduleName: string | null;
   }>;
+  canManageFeature?: boolean;
 };
 
 type LinkedFilter = "all" | "references" | "referenced_by";
@@ -47,6 +48,7 @@ export function LinkedFeaturesPanel({
   projectId,
   modulePathById,
   options,
+  canManageFeature = false,
 }: LinkedFeaturesPanelProps) {
   const t = useTranslations("app.projects.feature.linked");
   const [selectedId, setSelectedId] = useState("");
@@ -231,15 +233,17 @@ export function LinkedFeaturesPanel({
                 {t("description")}
               </p>
             </div>
-            <button
-              type="button"
-              className={actionButtonClass()}
-              onClick={() => setDialogOpen(true)}
-              disabled={selectableOptions.length === 0 || isPending}
-            >
-              <Plus className="mr-2 h-4 w-4" aria-hidden />
-              {t("actions.add")}
-            </button>
+            {canManageFeature && (
+              <button
+                type="button"
+                className={actionButtonClass()}
+                onClick={() => setDialogOpen(true)}
+                disabled={selectableOptions.length === 0 || isPending}
+              >
+                <Plus className="mr-2 h-4 w-4" aria-hidden />
+                {t("actions.add")}
+              </button>
+            )}
           </div>
         </div>
 
@@ -317,26 +321,30 @@ export function LinkedFeaturesPanel({
                             </p>
                           ) : null}
                         </Link>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => openEditDialog(link)}
-                          disabled={isPending}
-                          className="w-full md:w-auto"
-                        >
-                          {t("list.edit")}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleRemove(link.id)}
-                          disabled={isPending}
-                          className="w-full md:w-auto"
-                        >
-                          {t("list.remove")}
-                        </Button>
+                        {canManageFeature && (
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openEditDialog(link)}
+                              disabled={isPending}
+                              className="w-full md:w-auto"
+                            >
+                              {t("list.edit")}
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleRemove(link.id)}
+                              disabled={isPending}
+                              className="w-full md:w-auto"
+                            >
+                              {t("list.remove")}
+                            </Button>
+                          </div>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -381,26 +389,30 @@ export function LinkedFeaturesPanel({
                             </p>
                           ) : null}
                         </Link>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => openEditDialog(link)}
-                          disabled={isPending}
-                          className="w-full md:w-auto"
-                        >
-                          {t("list.edit")}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleRemove(link.id)}
-                          disabled={isPending}
-                          className="w-full md:w-auto"
-                        >
-                          {t("list.remove")}
-                        </Button>
+                        {canManageFeature && (
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openEditDialog(link)}
+                              disabled={isPending}
+                              className="w-full md:w-auto"
+                            >
+                              {t("list.edit")}
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleRemove(link.id)}
+                              disabled={isPending}
+                              className="w-full md:w-auto"
+                            >
+                              {t("list.remove")}
+                            </Button>
+                          </div>
+                        )}
                       </li>
                     ))}
                   </ul>

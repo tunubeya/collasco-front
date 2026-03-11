@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FolderTree, Home, Settings } from 'lucide-react';
+import { Bell, FolderTree, Home, Settings } from 'lucide-react';
 
 import LogoutButton from '@/ui/components/auth/logout-button';
 
@@ -11,7 +11,7 @@ export type AppSidebarItem = {
   key: string;
   label: string;
   href: string;
-  icon: 'home' | 'projects' | 'settings';
+  icon: 'home' | 'projects' | 'notifications' | 'settings';
 };
 
 export default function AppSidebarClient({
@@ -25,7 +25,12 @@ export default function AppSidebarClient({
 }) {
   const pathname = usePathname();
 
-  const IconMap = { home: Home, projects: FolderTree, settings: Settings } as const;
+  const IconMap = {
+    home: Home,
+    projects: FolderTree,
+    notifications: Bell,
+    settings: Settings,
+  } as const;
 
   if (footerOnly) {
     return (

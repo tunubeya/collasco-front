@@ -1726,10 +1726,38 @@
         }
       }
     },
+    "notifications": {
+      "list": {
+        "title": "Notificaciones",
+        "subtitle": "Actualizaciones y actividad relacionadas con tu trabajo.",
+        "summary": "Sin leer: {count}",
+        "markAll": "Marcar todas como leídas",
+        "markRead": "Marcar como leída",
+        "delete": "Eliminar",
+        "empty": {
+          "title": "Aún no hay notificaciones."
+        },
+        "pagination": {
+          "aria": "Paginación de notificaciones",
+          "previous": "Anterior",
+          "next": "Siguiente"
+        },
+        "types": {
+          "INFO": "Info",
+          "SUCCESS": "Éxito",
+          "WARNING": "Advertencia",
+          "ERROR": "Error"
+        },
+        "errors": {
+          "action": "No se pudo actualizar la notificación."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Menú de administración",
       "home": "Inicio",
       "projectSection": "Proyectos",
+      "notifications": "Notificaciones",
       "settingSection": "Configuración",
       "logout": "Cerrar sesión",
       "lightMode": "Modo claro",
@@ -1783,6 +1811,19 @@
       },
       "profile-menu": {
         "logout": "Cerrar Sesion"
+      }
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "loading": "Cargando...",
+      "viewAll": "Ver todas",
+      "empty": "Sin notificaciones",
+      "markAll": "Marcar todas como leídas",
+      "markRead": "Marcar como leída",
+      "delete": "Eliminar",
+      "errors": {
+        "load": "No se pudieron cargar las notificaciones.",
+        "action": "No se pudo actualizar la notificación."
       }
     },
     "footer": {

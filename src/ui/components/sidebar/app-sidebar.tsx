@@ -6,6 +6,7 @@ import { getSession } from '@/lib/session';
 import { fetchGetUserProfile } from '@/lib/data';
 import type { User } from '@/lib/model-definitions/user';
 import LangSelector from '@/ui/components/i18n/lang-selector';
+import NotificationsBell from '@/ui/components/notifications/notifications-bell.client';
 
 export default async function AppSidebar() {
   const t = await getTranslations('app.sidebar');
@@ -23,6 +24,7 @@ export default async function AppSidebar() {
   const items: AppSidebarItem[] = [
     { key: 'home',     label: t('home'),           href: '/app',          icon: 'home' },
     { key: 'projects', label: t('projectSection'), href: '/app/projects', icon: 'projects' },
+    { key: 'notifications', label: t('notifications'), href: '/app/notifications', icon: 'notifications' },
     { key: 'settings', label: t('settingSection'), href: '/app/settings', icon: 'settings' },
   ];
 
@@ -44,20 +46,23 @@ export default async function AppSidebar() {
         px-4 py-10
       ">
         {/* Header */}
-        <div className="flex items-center gap-3 px-2 pb-4">
-          <div className="h-10 w-10 rounded-xl bg-primary/15
-                          flex items-center justify-center
-                          text-[color:var(--color-foreground)] font-semibold">
-            {displayInitial}
+        <div className="flex items-center justify-between gap-3 px-2 pb-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/15
+                            flex items-center justify-center
+                            text-[color:var(--color-foreground)] font-semibold">
+              {displayInitial}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold truncate">{displayName}</p>
+              {displayEmail ? (
+                <p className="text-xs text-[color:var(--color-muted-fg)] truncate">
+                  {displayEmail}
+                </p>
+              ) : null}
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold truncate">{displayName}</p>
-            {displayEmail ? (
-              <p className="text-xs text-[color:var(--color-muted-fg)] truncate">
-                {displayEmail}
-              </p>
-            ) : null}
-          </div>
+          <NotificationsBell token={session?.token ?? null} />
         </div>
 
         {/* Nav */}
@@ -75,20 +80,23 @@ export default async function AppSidebar() {
         <ResponsiveMenu closeButton>
           <div className="w-64 h-auto bg-white px-4 py-6 flex flex-col">
             {/* Header */}
-            <div className="flex items-center gap-3 px-2 pb-4">
-              <div className="h-10 w-10 rounded-xl bg-primary/15
-                              flex items-center justify-center
-                              text-[color:var(--color-foreground)] font-semibold">
-                {displayInitial}
+            <div className="flex items-center justify-between gap-3 px-2 pb-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-primary/15
+                                flex items-center justify-center
+                                text-[color:var(--color-foreground)] font-semibold">
+                  {displayInitial}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold truncate">{displayName}</p>
+                  {displayEmail ? (
+                    <p className="text-xs text-[color:var(--color-muted-fg)] truncate">
+                      {displayEmail}
+                    </p>
+                  ) : null}
+                </div>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold truncate">{displayName}</p>
-                {displayEmail ? (
-                  <p className="text-xs text-[color:var(--color-muted-fg)] truncate">
-                    {displayEmail}
-                  </p>
-                ) : null}
-              </div>
+              <NotificationsBell token={session?.token ?? null} />
             </div>
 
             <AppSidebarClient items={items} />

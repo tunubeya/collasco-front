@@ -1726,10 +1726,38 @@
         }
       }
     },
+    "notifications": {
+      "list": {
+        "title": "Notifications",
+        "subtitle": "Updates and activity related to your work.",
+        "summary": "Unread: {count}",
+        "markAll": "Mark all as read",
+        "markRead": "Mark as read",
+        "delete": "Delete",
+        "empty": {
+          "title": "No notifications yet."
+        },
+        "pagination": {
+          "aria": "Notifications pagination",
+          "previous": "Previous",
+          "next": "Next"
+        },
+        "types": {
+          "INFO": "Info",
+          "SUCCESS": "Success",
+          "WARNING": "Warning",
+          "ERROR": "Error"
+        },
+        "errors": {
+          "action": "Could not update the notification."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Admin Menu",
       "home": "Home",
       "projectSection": "Projects",
+      "notifications": "Notifications",
       "settingSection": "Settings",
       "logout": "Logout",
       "lightMode": "Light Mode",
@@ -1801,6 +1829,19 @@
       },
       "profile-menu": {
         "logout": "Logout"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "loading": "Loading...",
+      "viewAll": "View all",
+      "empty": "No notifications",
+      "markAll": "Mark all as read",
+      "markRead": "Mark as read",
+      "delete": "Delete",
+      "errors": {
+        "load": "Failed to load notifications.",
+        "action": "Could not update the notification."
       }
     },
     "footer": {

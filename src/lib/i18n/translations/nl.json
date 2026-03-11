@@ -1724,10 +1724,38 @@
         }
       }
     },
+    "notifications": {
+      "list": {
+        "title": "Meldingen",
+        "subtitle": "Updates en activiteit gerelateerd aan je werk.",
+        "summary": "Ongelezen: {count}",
+        "markAll": "Alles markeren als gelezen",
+        "markRead": "Markeren als gelezen",
+        "delete": "Verwijderen",
+        "empty": {
+          "title": "Nog geen meldingen."
+        },
+        "pagination": {
+          "aria": "Paginering van meldingen",
+          "previous": "Vorige",
+          "next": "Volgende"
+        },
+        "types": {
+          "INFO": "Info",
+          "SUCCESS": "Succes",
+          "WARNING": "Waarschuwing",
+          "ERROR": "Fout"
+        },
+        "errors": {
+          "action": "De melding kon niet worden bijgewerkt."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Beheer Menu",
       "home": "Start",
       "projectSection": "Projecten",
+      "notifications": "Meldingen",
       "settingSection": "Instellingen",
       "logout": "Uitloggen",
       "lightMode": "Lichte modus",
@@ -1781,6 +1809,19 @@
       },
       "profile-menu": {
         "logout": "Uitloggen"
+      }
+    },
+    "notifications": {
+      "title": "Meldingen",
+      "loading": "Laden...",
+      "viewAll": "Alles bekijken",
+      "empty": "Geen meldingen",
+      "markAll": "Alles markeren als gelezen",
+      "markRead": "Markeren als gelezen",
+      "delete": "Verwijderen",
+      "errors": {
+        "load": "Meldingen konden niet worden geladen.",
+        "action": "De melding kon niet worden bijgewerkt."
       }
     },
     "footer": {

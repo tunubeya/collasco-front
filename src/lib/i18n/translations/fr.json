@@ -1724,10 +1724,38 @@
         }
       }
     },
+    "notifications": {
+      "list": {
+        "title": "Notifications",
+        "subtitle": "Mises à jour et activité liées à votre travail.",
+        "summary": "Non lues : {count}",
+        "markAll": "Tout marquer comme lu",
+        "markRead": "Marquer comme lue",
+        "delete": "Supprimer",
+        "empty": {
+          "title": "Aucune notification pour le moment."
+        },
+        "pagination": {
+          "aria": "Pagination des notifications",
+          "previous": "Précédent",
+          "next": "Suivant"
+        },
+        "types": {
+          "INFO": "Info",
+          "SUCCESS": "Succès",
+          "WARNING": "Avertissement",
+          "ERROR": "Erreur"
+        },
+        "errors": {
+          "action": "Impossible de mettre à jour la notification."
+        }
+      }
+    },
     "sidebar": {
       "menuAdmin": "Menu Admin",
       "home": "Accueil",
       "projectSection": "Projets",
+      "notifications": "Notifications",
       "settingSection": "Paramètres",
       "logout": "Se déconnecter",
       "lightMode": "Mode clair",
@@ -1781,6 +1809,19 @@
       },
       "profile-menu": {
         "logout": "Se déconnecter"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "loading": "Chargement...",
+      "viewAll": "Voir tout",
+      "empty": "Aucune notification",
+      "markAll": "Tout marquer comme lu",
+      "markRead": "Marquer comme lue",
+      "delete": "Supprimer",
+      "errors": {
+        "load": "Impossible de charger les notifications.",
+        "action": "Impossible de mettre à jour la notification."
       }
     },
     "footer": {

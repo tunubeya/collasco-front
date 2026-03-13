@@ -12,6 +12,7 @@ import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.clie
 import type { QaLinkedFeature } from "@/lib/api/qa";
 import { LinkedFeaturesPanel } from "./feature-linked-features.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
+import { FeatureTicketsTab } from "./feature-tickets-tab.client";
 
 type LinkedOption = {
   id: string;
@@ -37,12 +38,15 @@ type FeatureTabsProps = {
   testCasesCount?: number | null;
   canManageFeature?: boolean;
   canReadFeature?: boolean;
+  canReadTickets?: boolean;
+  canCreateTicket?: boolean;
 };
 
 type FeatureTab =
   | "documentation"
   | "issues"
   | "versions"
+  | "tickets"
   | "qa"
   | "linked"
   | "manual";
@@ -64,6 +68,8 @@ export function FeatureTabs({
   testCasesCount,
   canManageFeature = false,
   canReadFeature = false,
+  canReadTickets = false,
+  canCreateTicket = false,
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
   const t = useTranslations("app.projects.feature");
@@ -84,11 +90,12 @@ export function FeatureTabs({
     const tabs: FeatureTab[] = [];
     if (canViewDocumentation) tabs.push("documentation");
     tabs.push("issues", "versions");
+    if (canReadTickets) tabs.push("tickets");
     if (canViewQa) tabs.push("qa");
     tabs.push("linked");
     if (canViewQa) tabs.push("manual");
     return tabs;
-  }, [canViewDocumentation, canViewQa]);
+  }, [canReadTickets, canViewDocumentation, canViewQa]);
 
   useEffect(() => {
     if (!availableTabs.includes(activeTab)) {
@@ -122,6 +129,13 @@ export function FeatureTabs({
           isActive={activeTab === "versions"}
           onClick={() => setActiveTab("versions")}
         />
+        {canReadTickets && (
+          <TabButton
+            label={tTabs("tickets")}
+            isActive={activeTab === "tickets"}
+            onClick={() => setActiveTab("tickets")}
+          />
+        )}
         {canViewQa && (
           <TabButton
             label={tTabs("qa")}
@@ -226,6 +240,16 @@ export function FeatureTabs({
             </p>
           )}
         </section>
+      )}
+
+      {activeTab === "tickets" && canReadTickets && (
+        <FeatureTicketsTab
+          token={token}
+          projectId={projectId}
+          featureId={featureId}
+          featureName={feature.name}
+          canCreateTicket={canCreateTicket}
+        />
       )}
 
       {activeTab === "qa" && canViewQa && (

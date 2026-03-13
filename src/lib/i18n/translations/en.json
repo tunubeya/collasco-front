@@ -925,6 +925,10 @@
               "label": "Features",
               "description": "Management of individual work items."
             },
+            "ticket": {
+              "label": "Tickets",
+              "description": "Track issues, requests, and responses."
+            },
             "qa": {
               "label": "QA & Testing",
               "description": "Test cases, runs, and quality results."
@@ -982,6 +986,26 @@
             "feature_write": {
               "label": "Manage features",
               "description": "Create and edit features within modules."
+            },
+            "ticket_read_own": {
+              "label": "Read own tickets",
+              "description": "View tickets created by the user."
+            },
+            "ticket_read_all": {
+              "label": "Read all tickets",
+              "description": "Access tickets across the project."
+            },
+            "ticket_create": {
+              "label": "Create tickets",
+              "description": "Create new tickets in the project."
+            },
+            "ticket_respond": {
+              "label": "Respond to tickets",
+              "description": "Add responses or comments to tickets."
+            },
+            "ticket_manage": {
+              "label": "Manage tickets",
+              "description": "Assign, change status, and edit tickets."
             },
             "qa_read": {
               "label": "View QA",
@@ -1228,15 +1252,46 @@
         },
         "actions": {
           "edit": "Edit",
-          "delete": "Delete"
+          "delete": "Delete",
+          "addTicket": "Ticket"
+        },
+        "ticketDialog": {
+          "title": "New ticket",
+          "description": "Create a ticket linked to this feature.",
+          "fields": {
+            "feature": "Feature",
+            "title": "Title",
+            "content": "Description"
+          },
+          "placeholders": {
+            "title": "Describe the issue",
+            "content": "Add the ticket details..."
+          },
+          "actions": {
+            "cancel": "Cancel",
+            "create": "Create ticket",
+            "creating": "Creating..."
+          },
+          "messages": {
+            "error": "We could not create the ticket.",
+            "success": "Ticket created."
+          }
         },
         "tabs": {
           "info": "Documentation",
           "issues": "Linked issues",
           "versions": "Versions",
+          "tickets": "Tickets",
           "qa": "Tests",
           "linked": "Linked features",
           "manual": "Manual"
+        },
+        "tickets": {
+          "title": "Tickets",
+          "subtitle": "Tickets linked to this feature.",
+          "loading": "Loading tickets...",
+          "empty": "No tickets for this feature.",
+          "error": "We couldn't load the tickets."
         },
         "description": {
           "title": "Description",
@@ -1753,10 +1808,98 @@
         }
       }
     },
+    "tickets": {
+      "list": {
+        "title": "Tickets",
+        "subtitle": "Track issues, requests, and updates.",
+        "tabs": {
+          "mine": "Created by me",
+          "assigned": "Assigned to me",
+          "project": "By project"
+        },
+        "project": {
+          "placeholder": "Select a project",
+          "emptySelection": "Select a project to view its tickets."
+        },
+        "empty": "No tickets found.",
+        "pagination": {
+          "aria": "Tickets pagination",
+          "previous": "Previous",
+          "next": "Next"
+        },
+        "statuses": {
+          "OPEN": "Open",
+          "PENDING": "Pending",
+          "RESOLVED": "Resolved",
+          "CLOSED": "Closed"
+        },
+        "meta": {
+          "createdBy": "Created by {name}",
+          "assignedTo": "Assigned to {name}",
+          "sections": "{count, plural, one {# section} other {# sections}}",
+          "unassigned": "Unassigned",
+          "unknown": "Unknown"
+        }
+      },
+      "detail": {
+        "breadcrumb": {
+          "ticket": "Ticket",
+          "featureFallback": "Feature"
+        },
+        "sections": {
+          "details": "Details",
+          "activity": "Activity",
+          "add": "Add response"
+        },
+        "fields": {
+          "title": "Title",
+          "status": "Status",
+          "assignee": "Assignee",
+          "feature": "Feature",
+          "type": "Type",
+          "content": "Content"
+        },
+        "placeholders": {
+          "feature": "Search feature...",
+          "content": "Write your response..."
+        },
+        "actions": {
+          "save": "Save changes",
+          "saving": "Saving...",
+          "addSection": "Post"
+        },
+        "meta": {
+          "createdBy": "Created by {name}",
+          "assignedTo": "Assigned to {name}",
+          "createdAt": "Created {date}",
+          "updatedAt": "Updated {date}",
+          "sectionsCount": "{count, plural, one {# section} other {# sections}}"
+        },
+        "assignee": {
+          "unassigned": "Unassigned",
+          "unknown": "Unknown"
+        },
+        "sectionTypes": {
+          "DESCRIPTION": "Description",
+          "RESPONSE": "Response",
+          "COMMENT": "Comment"
+        },
+        "messages": {
+          "updated": "Ticket updated.",
+          "updateError": "We couldn't update the ticket.",
+          "sectionAdded": "Response added.",
+          "sectionError": "We couldn't add the response.",
+          "noChanges": "No changes to save.",
+          "loadingFeatures": "Searching features..."
+        },
+        "empty": "No activity yet."
+      }
+    },
     "sidebar": {
       "menuAdmin": "Admin Menu",
       "home": "Home",
       "projectSection": "Projects",
+      "tickets": "Tickets",
       "notifications": "Notifications",
       "settingSection": "Settings",
       "logout": "Logout",

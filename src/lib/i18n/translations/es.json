@@ -925,6 +925,10 @@
               "label": "Funcionalidades (Features)",
               "description": "Gestión de los elementos de trabajo individuales."
             },
+            "ticket": {
+              "label": "Tickets",
+              "description": "Seguimiento de incidencias, solicitudes y respuestas."
+            },
             "qa": {
               "label": "QA & Pruebas",
               "description": "Casos de prueba, ejecuciones y resultados de calidad."
@@ -982,6 +986,26 @@
             "feature_write": {
               "label": "Gestionar funcionalidades",
               "description": "Crear y editar features dentro de los módulos."
+            },
+            "ticket_read_own": {
+              "label": "Ver tickets propios",
+              "description": "Ver tickets creados por el usuario."
+            },
+            "ticket_read_all": {
+              "label": "Ver todos los tickets",
+              "description": "Acceso a tickets de todo el proyecto."
+            },
+            "ticket_create": {
+              "label": "Crear tickets",
+              "description": "Crear nuevos tickets en el proyecto."
+            },
+            "ticket_respond": {
+              "label": "Responder tickets",
+              "description": "Agregar respuestas o comentarios a tickets."
+            },
+            "ticket_manage": {
+              "label": "Gestionar tickets",
+              "description": "Asignar, cambiar estado y editar tickets."
             },
             "qa_read": {
               "label": "Ver QA",
@@ -1228,15 +1252,46 @@
         },
         "actions": {
           "edit": "Editar",
-          "delete": "Eliminar"
+          "delete": "Eliminar",
+          "addTicket": "Ticket"
+        },
+        "ticketDialog": {
+          "title": "Nuevo ticket",
+          "description": "Crea un ticket ligado a esta feature.",
+          "fields": {
+            "feature": "Feature",
+            "title": "Título",
+            "content": "Descripción"
+          },
+          "placeholders": {
+            "title": "Describe el problema",
+            "content": "Agrega los detalles del ticket..."
+          },
+          "actions": {
+            "cancel": "Cancelar",
+            "create": "Crear ticket",
+            "creating": "Creando..."
+          },
+          "messages": {
+            "error": "No pudimos crear el ticket.",
+            "success": "Ticket creado."
+          }
         },
         "tabs": {
           "info": "Documentación",
           "issues": "Issues y PR",
           "versions": "Versiones",
+          "tickets": "Tickets",
           "qa": "Pruebas",
           "linked": "Features vinculadas",
           "manual": "Manual"
+        },
+        "tickets": {
+          "title": "Tickets",
+          "subtitle": "Tickets asociados a esta feature.",
+          "loading": "Cargando tickets...",
+          "empty": "No hay tickets para esta feature.",
+          "error": "No pudimos cargar los tickets."
         },
         "description": {
           "title": "Descripción",
@@ -1753,10 +1808,98 @@
         }
       }
     },
+    "tickets": {
+      "list": {
+        "title": "Tickets",
+        "subtitle": "Gestiona incidencias, solicitudes y actualizaciones.",
+        "tabs": {
+          "mine": "Creados por mí",
+          "assigned": "Asignados a mí",
+          "project": "Por proyecto"
+        },
+        "project": {
+          "placeholder": "Selecciona un proyecto",
+          "emptySelection": "Selecciona un proyecto para ver sus tickets."
+        },
+        "empty": "No hay tickets.",
+        "pagination": {
+          "aria": "Paginación de tickets",
+          "previous": "Anterior",
+          "next": "Siguiente"
+        },
+        "statuses": {
+          "OPEN": "Abierto",
+          "PENDING": "Pendiente",
+          "RESOLVED": "Resuelto",
+          "CLOSED": "Cerrado"
+        },
+        "meta": {
+          "createdBy": "Creado por {name}",
+          "assignedTo": "Asignado a {name}",
+          "sections": "{count, plural, one {# sección} other {# secciones}}",
+          "unassigned": "Sin asignar",
+          "unknown": "Desconocido"
+        }
+      },
+      "detail": {
+        "breadcrumb": {
+          "ticket": "Ticket",
+          "featureFallback": "Feature"
+        },
+        "sections": {
+          "details": "Detalles",
+          "activity": "Actividad",
+          "add": "Agregar respuesta"
+        },
+        "fields": {
+          "title": "Título",
+          "status": "Estado",
+          "assignee": "Asignado a",
+          "feature": "Feature",
+          "type": "Tipo",
+          "content": "Contenido"
+        },
+        "placeholders": {
+          "feature": "Buscar feature...",
+          "content": "Escribe tu respuesta..."
+        },
+        "actions": {
+          "save": "Guardar cambios",
+          "saving": "Guardando...",
+          "addSection": "Publicar"
+        },
+        "meta": {
+          "createdBy": "Creado por {name}",
+          "assignedTo": "Asignado a {name}",
+          "createdAt": "Creado {date}",
+          "updatedAt": "Actualizado {date}",
+          "sectionsCount": "{count, plural, one {# sección} other {# secciones}}"
+        },
+        "assignee": {
+          "unassigned": "Sin asignar",
+          "unknown": "Desconocido"
+        },
+        "sectionTypes": {
+          "DESCRIPTION": "Descripción",
+          "RESPONSE": "Respuesta",
+          "COMMENT": "Comentario"
+        },
+        "messages": {
+          "updated": "Ticket actualizado.",
+          "updateError": "No pudimos actualizar el ticket.",
+          "sectionAdded": "Respuesta agregada.",
+          "sectionError": "No pudimos agregar la respuesta.",
+          "noChanges": "No hay cambios para guardar.",
+          "loadingFeatures": "Buscando features..."
+        },
+        "empty": "Aún no hay actividad."
+      }
+    },
     "sidebar": {
       "menuAdmin": "Menú de administración",
       "home": "Inicio",
       "projectSection": "Proyectos",
+      "tickets": "Tickets",
       "notifications": "Notificaciones",
       "settingSection": "Configuración",
       "logout": "Cerrar sesión",

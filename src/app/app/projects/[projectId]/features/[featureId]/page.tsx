@@ -157,6 +157,10 @@ export default async function FeatureDetailPage({
     permissionSet,
     "project.manage_share_links",
   );
+  const canCreateTicket = hasPermission(permissionSet, "ticket.create");
+  const canReadTickets =
+    hasPermission(permissionSet, "ticket.read_all") ||
+    hasPermission(permissionSet, "ticket.read_own");
 
   let linkableFeatures: Array<{
     id: string;
@@ -250,8 +254,8 @@ export default async function FeatureDetailPage({
             </Link>
 
             {/* Acciones: Editar / Eliminar */}
-            {canManageFeature && (
-              <div className="mt-2 flex gap-2">
+            {canManageFeature ? (
+              <div className="mt-2 flex flex-wrap gap-2">
                 <Link
                   href={`/app/projects/${projectId}/features/${featureId}/edit`}
                   className={actionButtonClass({ size: "xs" })}
@@ -280,7 +284,7 @@ export default async function FeatureDetailPage({
                   </button>
                 </form>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </header>
@@ -302,6 +306,8 @@ export default async function FeatureDetailPage({
         testCasesCount={testCasesCount ?? 0}
         canManageFeature={canManageFeature}
         canReadFeature={canReadFeature}
+        canReadTickets={canReadTickets}
+        canCreateTicket={canCreateTicket}
       />
     </div>
   );

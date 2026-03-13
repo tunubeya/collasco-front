@@ -380,6 +380,7 @@ export function ProjectRolesPanel({
                   project: [],
                   module: [],
                   feature: [],
+                  ticket: [],
                   qa: [],
                   labels: [],
                   other: [],

@@ -923,6 +923,10 @@
               "label": "Functionaliteiten (Features)",
               "description": "Beheer van individuele werkitems."
             },
+            "ticket": {
+              "label": "Tickets",
+              "description": "Issues, verzoeken en antwoorden opvolgen."
+            },
             "qa": {
               "label": "QA & Testen",
               "description": "Testcases, runs en kwaliteitsresultaten."
@@ -980,6 +984,26 @@
             "feature_write": {
               "label": "Features beheren",
               "description": "Features aanmaken en bewerken binnen modules."
+            },
+            "ticket_read_own": {
+              "label": "Eigen tickets bekijken",
+              "description": "Tickets bekijken die door de gebruiker zijn gemaakt."
+            },
+            "ticket_read_all": {
+              "label": "Alle tickets bekijken",
+              "description": "Toegang tot tickets binnen het hele project."
+            },
+            "ticket_create": {
+              "label": "Tickets aanmaken",
+              "description": "Nieuwe tickets in het project aanmaken."
+            },
+            "ticket_respond": {
+              "label": "Tickets beantwoorden",
+              "description": "Antwoorden of opmerkingen aan tickets toevoegen."
+            },
+            "ticket_manage": {
+              "label": "Tickets beheren",
+              "description": "Tickets toewijzen, status wijzigen en bewerken."
             },
             "qa_read": {
               "label": "QA bekijken",
@@ -1226,15 +1250,46 @@
         },
         "actions": {
           "edit": "Bewerken",
-          "delete": "Verwijderen"
+          "delete": "Verwijderen",
+          "addTicket": "Ticket"
+        },
+        "ticketDialog": {
+          "title": "Nieuw ticket",
+          "description": "Maak een ticket dat aan deze feature is gekoppeld.",
+          "fields": {
+            "feature": "Feature",
+            "title": "Titel",
+            "content": "Beschrijving"
+          },
+          "placeholders": {
+            "title": "Beschrijf het probleem",
+            "content": "Voeg de ticketdetails toe..."
+          },
+          "actions": {
+            "cancel": "Annuleren",
+            "create": "Ticket maken",
+            "creating": "Bezig..."
+          },
+          "messages": {
+            "error": "We konden het ticket niet maken.",
+            "success": "Ticket aangemaakt."
+          }
         },
         "tabs": {
           "info": "Documentatie",
           "issues": "Issues",
           "versions": "Versies",
+          "tickets": "Tickets",
           "qa": "Tests",
           "linked": "Gelinkte features",
           "manual": "Handleiding"
+        },
+        "tickets": {
+          "title": "Tickets",
+          "subtitle": "Tickets gekoppeld aan deze feature.",
+          "loading": "Tickets laden...",
+          "empty": "Geen tickets voor deze feature.",
+          "error": "We konden de tickets niet laden."
         },
         "description": {
           "title": "Beschrijving",
@@ -1751,10 +1806,98 @@
         }
       }
     },
+    "tickets": {
+      "list": {
+        "title": "Tickets",
+        "subtitle": "Volg issues, verzoeken en updates.",
+        "tabs": {
+          "mine": "Door mij aangemaakt",
+          "assigned": "Aan mij toegewezen",
+          "project": "Per project"
+        },
+        "project": {
+          "placeholder": "Selecteer een project",
+          "emptySelection": "Selecteer een project om tickets te bekijken."
+        },
+        "empty": "Geen tickets gevonden.",
+        "pagination": {
+          "aria": "Paginering van tickets",
+          "previous": "Vorige",
+          "next": "Volgende"
+        },
+        "statuses": {
+          "OPEN": "Open",
+          "PENDING": "In behandeling",
+          "RESOLVED": "Opgelost",
+          "CLOSED": "Gesloten"
+        },
+        "meta": {
+          "createdBy": "Gemaakt door {name}",
+          "assignedTo": "Toegewezen aan {name}",
+          "sections": "{count, plural, one {# sectie} other {# secties}}",
+          "unassigned": "Niet toegewezen",
+          "unknown": "Onbekend"
+        }
+      },
+      "detail": {
+        "breadcrumb": {
+          "ticket": "Ticket",
+          "featureFallback": "Feature"
+        },
+        "sections": {
+          "details": "Details",
+          "activity": "Activiteit",
+          "add": "Antwoord toevoegen"
+        },
+        "fields": {
+          "title": "Titel",
+          "status": "Status",
+          "assignee": "Toegewezen aan",
+          "feature": "Feature",
+          "type": "Type",
+          "content": "Inhoud"
+        },
+        "placeholders": {
+          "feature": "Feature zoeken...",
+          "content": "Schrijf je antwoord..."
+        },
+        "actions": {
+          "save": "Wijzigingen opslaan",
+          "saving": "Opslaan...",
+          "addSection": "Plaatsen"
+        },
+        "meta": {
+          "createdBy": "Gemaakt door {name}",
+          "assignedTo": "Toegewezen aan {name}",
+          "createdAt": "Gemaakt {date}",
+          "updatedAt": "Bijgewerkt {date}",
+          "sectionsCount": "{count, plural, one {# sectie} other {# secties}}"
+        },
+        "assignee": {
+          "unassigned": "Niet toegewezen",
+          "unknown": "Onbekend"
+        },
+        "sectionTypes": {
+          "DESCRIPTION": "Beschrijving",
+          "RESPONSE": "Antwoord",
+          "COMMENT": "Opmerking"
+        },
+        "messages": {
+          "updated": "Ticket bijgewerkt.",
+          "updateError": "Ticket kon niet worden bijgewerkt.",
+          "sectionAdded": "Antwoord toegevoegd.",
+          "sectionError": "Antwoord kon niet worden toegevoegd.",
+          "noChanges": "Geen wijzigingen om op te slaan.",
+          "loadingFeatures": "Features zoeken..."
+        },
+        "empty": "Nog geen activiteit."
+      }
+    },
     "sidebar": {
       "menuAdmin": "Beheer Menu",
       "home": "Start",
       "projectSection": "Projecten",
+      "tickets": "Tickets",
       "notifications": "Meldingen",
       "settingSection": "Instellingen",
       "logout": "Uitloggen",

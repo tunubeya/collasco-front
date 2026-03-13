@@ -923,6 +923,10 @@
               "label": "Fonctionnalités",
               "description": "Gestion des éléments de travail individuels."
             },
+            "ticket": {
+              "label": "Tickets",
+              "description": "Suivi des problèmes, demandes et réponses."
+            },
             "qa": {
               "label": "Assurance Qualité",
               "description": "Cas de test, exécutions et résultats de qualité."
@@ -980,6 +984,26 @@
             "feature_write": {
               "label": "Gérer les fonctionnalités",
               "description": "Créer et modifier des fonctionnalités au sein des modules."
+            },
+            "ticket_read_own": {
+              "label": "Voir ses tickets",
+              "description": "Voir les tickets créés par l'utilisateur."
+            },
+            "ticket_read_all": {
+              "label": "Voir tous les tickets",
+              "description": "Accès aux tickets de l'ensemble du projet."
+            },
+            "ticket_create": {
+              "label": "Créer des tickets",
+              "description": "Créer de nouveaux tickets dans le projet."
+            },
+            "ticket_respond": {
+              "label": "Répondre aux tickets",
+              "description": "Ajouter des réponses ou commentaires aux tickets."
+            },
+            "ticket_manage": {
+              "label": "Gérer les tickets",
+              "description": "Assigner, changer le statut et éditer les tickets."
             },
             "qa_read": {
               "label": "Voir la QA",
@@ -1226,15 +1250,46 @@
         },
         "actions": {
           "edit": "Modifier",
-          "delete": "Supprimer"
+          "delete": "Supprimer",
+          "addTicket": "Ticket"
+        },
+        "ticketDialog": {
+          "title": "Nouveau ticket",
+          "description": "Créez un ticket lié à cette feature.",
+          "fields": {
+            "feature": "Feature",
+            "title": "Titre",
+            "content": "Description"
+          },
+          "placeholders": {
+            "title": "Décrivez le problème",
+            "content": "Ajoutez les détails du ticket..."
+          },
+          "actions": {
+            "cancel": "Annuler",
+            "create": "Créer le ticket",
+            "creating": "Création..."
+          },
+          "messages": {
+            "error": "Impossible de créer le ticket.",
+            "success": "Ticket créé."
+          }
         },
         "tabs": {
           "info": "Documentation",
           "issues": "Issues liées",
           "versions": "Versions",
+          "tickets": "Tickets",
           "qa": "Tests",
           "linked": "Fonctionnalités liées",
           "manual": "Manual"
+        },
+        "tickets": {
+          "title": "Tickets",
+          "subtitle": "Tickets liés à cette fonctionnalité.",
+          "loading": "Chargement des tickets...",
+          "empty": "Aucun ticket pour cette fonctionnalité.",
+          "error": "Impossible de charger les tickets."
         },
         "description": {
           "title": "Description",
@@ -1751,10 +1806,98 @@
         }
       }
     },
+    "tickets": {
+      "list": {
+        "title": "Tickets",
+        "subtitle": "Suivez les incidents, demandes et mises à jour.",
+        "tabs": {
+          "mine": "Créés par moi",
+          "assigned": "Assignés à moi",
+          "project": "Par projet"
+        },
+        "project": {
+          "placeholder": "Sélectionnez un projet",
+          "emptySelection": "Sélectionnez un projet pour voir ses tickets."
+        },
+        "empty": "Aucun ticket trouvé.",
+        "pagination": {
+          "aria": "Pagination des tickets",
+          "previous": "Précédent",
+          "next": "Suivant"
+        },
+        "statuses": {
+          "OPEN": "Ouvert",
+          "PENDING": "En attente",
+          "RESOLVED": "Résolu",
+          "CLOSED": "Fermé"
+        },
+        "meta": {
+          "createdBy": "Créé par {name}",
+          "assignedTo": "Assigné à {name}",
+          "sections": "{count, plural, one {# section} other {# sections}}",
+          "unassigned": "Non assigné",
+          "unknown": "Inconnu"
+        }
+      },
+      "detail": {
+        "breadcrumb": {
+          "ticket": "Ticket",
+          "featureFallback": "Feature"
+        },
+        "sections": {
+          "details": "Détails",
+          "activity": "Activité",
+          "add": "Ajouter une réponse"
+        },
+        "fields": {
+          "title": "Titre",
+          "status": "Statut",
+          "assignee": "Assigné à",
+          "feature": "Feature",
+          "type": "Type",
+          "content": "Contenu"
+        },
+        "placeholders": {
+          "feature": "Rechercher une feature...",
+          "content": "Écrivez votre réponse..."
+        },
+        "actions": {
+          "save": "Enregistrer",
+          "saving": "Enregistrement...",
+          "addSection": "Publier"
+        },
+        "meta": {
+          "createdBy": "Créé par {name}",
+          "assignedTo": "Assigné à {name}",
+          "createdAt": "Créé {date}",
+          "updatedAt": "Mis à jour {date}",
+          "sectionsCount": "{count, plural, one {# section} other {# sections}}"
+        },
+        "assignee": {
+          "unassigned": "Non assigné",
+          "unknown": "Inconnu"
+        },
+        "sectionTypes": {
+          "DESCRIPTION": "Description",
+          "RESPONSE": "Réponse",
+          "COMMENT": "Commentaire"
+        },
+        "messages": {
+          "updated": "Ticket mis à jour.",
+          "updateError": "Impossible de mettre à jour le ticket.",
+          "sectionAdded": "Réponse ajoutée.",
+          "sectionError": "Impossible d'ajouter la réponse.",
+          "noChanges": "Aucun changement à enregistrer.",
+          "loadingFeatures": "Recherche des features..."
+        },
+        "empty": "Aucune activité pour le moment."
+      }
+    },
     "sidebar": {
       "menuAdmin": "Menu Admin",
       "home": "Accueil",
       "projectSection": "Projets",
+      "tickets": "Tickets",
       "notifications": "Notifications",
       "settingSection": "Paramètres",
       "logout": "Se déconnecter",

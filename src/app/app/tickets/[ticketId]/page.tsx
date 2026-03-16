@@ -90,6 +90,7 @@ export default async function TicketDetailPage({ params }: Props) {
 
   const canManageTicket = hasPermission(permissionSet, "ticket.manage");
   const canRespondTicket = hasPermission(permissionSet, "ticket.respond") || isOwner;
+  const canAccessImages = canReadAll || isOwner;
 
   let modulePath: StructureModuleNode[] = [];
   if (ticket.feature?.moduleId) {
@@ -135,6 +136,8 @@ export default async function TicketDetailPage({ params }: Props) {
         members={members}
         canManageTicket={canManageTicket}
         canRespondTicket={canRespondTicket}
+        canAccessImages={canAccessImages}
+        currentUserId={currentUserId}
       />
     </div>
   );

@@ -1891,7 +1891,16 @@
         "actions": {
           "save": "Save changes",
           "saving": "Saving...",
+          "edit": "Edit",
+          "cancel": "Cancel",
+          "delete": "Delete",
+          "confirmDelete": "Delete ticket",
+          "deleting": "Deleting...",
           "addSection": "Post"
+        },
+        "delete": {
+          "title": "Delete ticket?",
+          "description": "This will permanently remove the ticket and its images."
         },
         "meta": {
           "createdBy": "Created by {name}",
@@ -1912,12 +1921,42 @@
         "messages": {
           "updated": "Ticket updated.",
           "updateError": "We couldn't update the ticket.",
+          "deleted": "Ticket deleted.",
+          "deleteError": "We couldn't delete the ticket.",
           "sectionAdded": "Response added.",
           "sectionError": "We couldn't add the response.",
+          "sectionUpdated": "Section updated.",
+          "sectionUpdateError": "We couldn't update the section.",
           "noChanges": "No changes to save.",
           "loadingFeatures": "Searching features..."
         },
-        "empty": "No activity yet."
+        "empty": "No activity yet.",
+        "images": {
+          "title": "Images",
+          "hint": "Use [name] in responses to embed.",
+          "toggle": "Show images",
+          "fields": {
+            "name": "Image name",
+            "file": "File"
+          },
+          "placeholders": {
+            "name": "screenshot-login"
+          },
+          "actions": {
+            "upload": "Upload",
+            "copy": "Copy tag",
+            "delete": "Delete"
+          },
+          "token": "Use [{name}]",
+          "loading": "Loading images...",
+          "empty": "No images yet.",
+          "validation": "Name and file are required.",
+          "uploaded": "Image uploaded.",
+          "uploadError": "We couldn't upload the image.",
+          "deleted": "Image deleted.",
+          "deleteError": "We couldn't delete the image.",
+          "loadError": "We couldn't load the images."
+        }
       }
     },
     "sidebar": {

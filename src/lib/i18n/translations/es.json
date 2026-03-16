@@ -1891,7 +1891,16 @@
         "actions": {
           "save": "Guardar cambios",
           "saving": "Guardando...",
+          "edit": "Editar",
+          "cancel": "Cancelar",
+          "delete": "Eliminar",
+          "confirmDelete": "Eliminar ticket",
+          "deleting": "Eliminando...",
           "addSection": "Publicar"
+        },
+        "delete": {
+          "title": "¿Eliminar ticket?",
+          "description": "Esto eliminará el ticket y sus imágenes."
         },
         "meta": {
           "createdBy": "Creado por {name}",
@@ -1912,12 +1921,42 @@
         "messages": {
           "updated": "Ticket actualizado.",
           "updateError": "No pudimos actualizar el ticket.",
+          "deleted": "Ticket eliminado.",
+          "deleteError": "No pudimos eliminar el ticket.",
           "sectionAdded": "Respuesta agregada.",
           "sectionError": "No pudimos agregar la respuesta.",
+          "sectionUpdated": "Sección actualizada.",
+          "sectionUpdateError": "No pudimos actualizar la sección.",
           "noChanges": "No hay cambios para guardar.",
           "loadingFeatures": "Buscando features..."
         },
-        "empty": "Aún no hay actividad."
+        "empty": "Aún no hay actividad.",
+        "images": {
+          "title": "Imágenes",
+          "hint": "Usa [nombre] en las respuestas para insertar.",
+          "toggle": "Mostrar imágenes",
+          "fields": {
+            "name": "Nombre de imagen",
+            "file": "Archivo"
+          },
+          "placeholders": {
+            "name": "captura-login"
+          },
+          "actions": {
+            "upload": "Subir",
+            "copy": "Copiar tag",
+            "delete": "Eliminar"
+          },
+          "token": "Usa [{name}]",
+          "loading": "Cargando imágenes...",
+          "empty": "Todavía no hay imágenes.",
+          "validation": "Nombre y archivo son requeridos.",
+          "uploaded": "Imagen subida.",
+          "uploadError": "No pudimos subir la imagen.",
+          "deleted": "Imagen eliminada.",
+          "deleteError": "No pudimos eliminar la imagen.",
+          "loadError": "No pudimos cargar las imágenes."
+        }
       }
     },
     "sidebar": {

@@ -4,10 +4,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Calendar, User } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import type { ProjectMember } from "@/lib/model-definitions/project";
 import type {
   TicketDetail,
+  TicketImage,
+  TicketSection,
   TicketSectionType,
   TicketStatus,
   TicketFeature,
@@ -15,11 +18,24 @@ import type {
 import {
   addTicketSection,
   autocompleteTicketFeatures,
+  deleteTicketImage,
+  deleteTicket,
+  listTicketImages,
+  uploadTicketImage,
+  updateTicketSection,
   updateTicket,
 } from "@/lib/api/tickets";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/useDebounce";
+import { Switch } from "@/ui/components/form/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeading,
+  DialogDescription,
+  DialogClose,
+} from "@/ui/components/dialog/dialog";
 
 type Props = {
   token: string;
@@ -28,7 +44,48 @@ type Props = {
   members: ProjectMember[];
   canManageTicket: boolean;
   canRespondTicket: boolean;
+  canAccessImages: boolean;
+  currentUserId?: string | null;
 };
+
+type ImageTokenSize = {
+  name: string;
+  width?: number;
+  height?: number;
+};
+
+function parseImageToken(raw: string): ImageTokenSize | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  const [namePart, sizePart] = splitOnce(trimmed, ":");
+  const name = namePart.trim();
+  if (!name) return null;
+  if (!sizePart) return { name };
+
+  const size = sizePart.trim().toLowerCase();
+  if (!size) return { name };
+
+  if (size === "small" || size === "medium" || size === "big") {
+    const width =
+      size === "small" ? 240 : size === "medium" ? 480 : 720;
+    return { name, width };
+  }
+
+  const match = size.match(/^(\d+|auto)x(\d+|auto)$/i);
+  if (!match) {
+    return { name };
+  }
+  const [, rawW, rawH] = match;
+  const width = rawW.toLowerCase() === "auto" ? undefined : Number(rawW);
+  const height = rawH.toLowerCase() === "auto" ? undefined : Number(rawH);
+  return { name, width, height };
+}
+
+function splitOnce(value: string, delimiter: string): [string, string | null] {
+  const idx = value.indexOf(delimiter);
+  if (idx === -1) return [value, null];
+  return [value.slice(0, idx), value.slice(idx + delimiter.length)];
+}
 
 const STATUS_OPTIONS: TicketStatus[] = ["OPEN", "PENDING", "RESOLVED"];
 const SECTION_TYPES: TicketSectionType[] = ["RESPONSE", "COMMENT"];
@@ -40,10 +97,13 @@ export function TicketDetailView({
   members,
   canManageTicket,
   canRespondTicket,
+  canAccessImages,
+  currentUserId,
 }: Props) {
   const t = useTranslations("app.tickets.detail");
   const tList = useTranslations("app.tickets.list");
   const format = useFormatter();
+  const router = useRouter();
 
   const [ticketState, setTicketState] = useState<TicketDetail>(ticket);
   const [title, setTitle] = useState(ticket.title);
@@ -69,6 +129,18 @@ export function TicketDetailView({
     useState<TicketSectionType>("RESPONSE");
   const [sectionContent, setSectionContent] = useState("");
   const [sectionSaving, setSectionSaving] = useState(false);
+  const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
+  const [editingContent, setEditingContent] = useState("");
+  const [editingSaving, setEditingSaving] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [images, setImages] = useState<TicketImage[]>([]);
+  const [imagesLoading, setImagesLoading] = useState(false);
+  const [imageName, setImageName] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageBusyId, setImageBusyId] = useState<string | null>(null);
+  const [showImageForm, setShowImageForm] = useState(false);
+  const [showImages, setShowImages] = useState(true);
 
   const assigneeOptions = useMemo(
     () =>
@@ -90,10 +162,23 @@ export function TicketDetailView({
     return match?.name ?? t("assignee.unknown");
   }, [assigneeId, assigneeOptions, t, tList]);
 
+  const canDeleteTicket = useMemo(
+    () =>
+      canManageTicket ||
+      (currentUserId ? currentUserId === ticketState.createdById : false),
+    [canManageTicket, currentUserId, ticketState.createdById]
+  );
+
   const sections = useMemo(
     () => ticketState.sections ?? [],
     [ticketState.sections]
   );
+
+  const imagesByName = useMemo(() => {
+    const map = new Map<string, TicketImage>();
+    images.forEach((image) => map.set(image.name, image));
+    return map;
+  }, [images]);
 
   useEffect(() => {
     setTicketState(ticket);
@@ -103,6 +188,27 @@ export function TicketDetailView({
     setFeatureId(ticket.feature?.id ?? null);
     setFeatureQuery(ticket.feature?.name ?? "");
   }, [ticket]);
+
+  useEffect(() => {
+    if (!canAccessImages) return;
+    let active = true;
+    setImagesLoading(true);
+    listTicketImages(token, ticket.id)
+      .then((items) => {
+        if (!active) return;
+        setImages(items ?? []);
+      })
+      .catch((error) => {
+        console.error("[TicketDetailView] images load error:", error);
+        toast.error(t("images.loadError"));
+      })
+      .finally(() => {
+        if (active) setImagesLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [canAccessImages, t, ticket.id, token]);
 
   useEffect(() => {
     if (!canManageTicket || !featureOpen) return;
@@ -208,6 +314,154 @@ export function TicketDetailView({
     token,
   ]);
 
+  const handleEditSection = useCallback(
+    (section: TicketSection) => {
+      setEditingSectionId(section.id);
+      setEditingContent(section.content);
+    },
+    []
+  );
+
+  const handleSaveSection = useCallback(async () => {
+    if (!editingSectionId || !editingContent.trim()) return;
+    setEditingSaving(true);
+    try {
+      const updated = await updateTicketSection(
+        token,
+        ticketState.id,
+        editingSectionId,
+        { content: editingContent.trim() }
+      );
+      setTicketState((prev) => ({
+        ...prev,
+        sections: (prev.sections ?? []).map((section) =>
+          section.id === updated.id ? updated : section
+        ),
+      }));
+      setEditingSectionId(null);
+      setEditingContent("");
+      toast.success(t("messages.sectionUpdated"));
+    } catch (error) {
+      console.error("[TicketDetailView] edit section error:", error);
+      toast.error(t("messages.sectionUpdateError"));
+    } finally {
+      setEditingSaving(false);
+    }
+  }, [editingContent, editingSectionId, t, ticketState.id, token]);
+
+  const handleCancelEdit = useCallback(() => {
+    setEditingSectionId(null);
+    setEditingContent("");
+  }, []);
+
+  const handleUploadImage = useCallback(async () => {
+    if (!canAccessImages) return;
+    if (!imageFile || !imageName.trim()) {
+      toast.error(t("images.validation"));
+      return;
+    }
+    try {
+      const created = await uploadTicketImage(token, ticketState.id, {
+        file: imageFile,
+        name: imageName.trim(),
+      });
+      setImages((prev) => [...prev, created]);
+      setImageName("");
+      setImageFile(null);
+      setShowImageForm(false);
+      toast.success(t("images.uploaded"));
+    } catch (error) {
+      console.error("[TicketDetailView] upload image error:", error);
+      toast.error(t("images.uploadError"));
+    }
+  }, [canAccessImages, imageFile, imageName, t, ticketState.id, token]);
+
+  const handleDeleteImage = useCallback(
+    async (image: TicketImage) => {
+      if (!canAccessImages) return;
+      if (imageBusyId) return;
+      setImageBusyId(image.id);
+      try {
+        await deleteTicketImage(token, ticketState.id, image.id);
+        setImages((prev) => prev.filter((item) => item.id !== image.id));
+        toast.success(t("images.deleted"));
+      } catch (error) {
+        console.error("[TicketDetailView] delete image error:", error);
+        toast.error(t("images.deleteError"));
+      } finally {
+        setImageBusyId(null);
+      }
+    },
+    [canAccessImages, imageBusyId, t, ticketState.id, token]
+  );
+
+  const handleDeleteTicket = useCallback(async () => {
+    if (deleting) return;
+    setDeleting(true);
+    try {
+      await deleteTicket(token, ticketState.id);
+      toast.success(t("messages.deleted"));
+      router.push("/app/tickets");
+      router.refresh();
+    } catch (error) {
+      console.error("[TicketDetailView] delete ticket error:", error);
+      toast.error(t("messages.deleteError"));
+    } finally {
+      setDeleting(false);
+      setDeleteOpen(false);
+    }
+  }, [deleting, router, t, ticketState.id, token]);
+
+  const renderContent = useCallback(
+    (content: string) => {
+      if (!showImages) {
+        return <span>{content}</span>;
+      }
+      const parts: Array<string | (TicketImage & { width?: number; height?: number })> = [];
+      const regex = /\[([^\]]+)\]/g;
+      let lastIndex = 0;
+      let match: RegExpExecArray | null;
+      while ((match = regex.exec(content)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(content.slice(lastIndex, match.index));
+        }
+        const token = match[1];
+        const parsed = parseImageToken(token);
+        const image = parsed ? imagesByName.get(parsed.name) : undefined;
+        if (image) {
+          parts.push({
+            ...image,
+            width: parsed?.width,
+            height: parsed?.height,
+          } as TicketImage & { width?: number; height?: number });
+        } else {
+          parts.push(match[0]);
+        }
+        lastIndex = match.index + match[0].length;
+      }
+      if (lastIndex < content.length) {
+        parts.push(content.slice(lastIndex));
+      }
+      return parts.map((part, index) =>
+        typeof part === "string" ? (
+          <span key={`text-${index}`}>{part}</span>
+        ) : (
+          <img
+            key={`img-${part.id}-${index}`}
+            src={part.url}
+            alt={part.name}
+            style={{
+              width: typeof part.width === "number" ? part.width : undefined,
+              height: typeof part.height === "number" ? part.height : undefined,
+            }}
+            className="my-2 max-w-full rounded-lg border object-cover"
+          />
+        )
+      );
+    },
+    [imagesByName, showImages]
+  );
+
   const createdAt = format.dateTime(new Date(ticketState.createdAt), {
     dateStyle: "medium",
     timeStyle: "short",
@@ -263,16 +517,30 @@ export function TicketDetailView({
       <section className="rounded-xl border bg-background p-4 space-y-4">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-semibold">{t("sections.details")}</h2>
-          {canManageTicket ? (
-            <button
-              type="button"
-              className={actionButtonClass({ size: "xs" })}
-              onClick={() => void handleSave()}
-              disabled={saving}
-            >
-              {saving ? t("actions.saving") : t("actions.save")}
-            </button>
-          ) : null}
+          <div className="flex items-center gap-2">
+            {canManageTicket ? (
+              <button
+                type="button"
+                className={actionButtonClass({ size: "xs" })}
+                onClick={() => void handleSave()}
+                disabled={saving}
+              >
+                {saving ? t("actions.saving") : t("actions.save")}
+              </button>
+            ) : null}
+            {canDeleteTicket ? (
+              <button
+                type="button"
+                className={actionButtonClass({
+                  size: "xs",
+                  variant: "destructive",
+                })}
+                onClick={() => setDeleteOpen(true)}
+              >
+                {t("actions.delete")}
+              </button>
+            ) : null}
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -399,12 +667,165 @@ export function TicketDetailView({
         </div>
       </section>
 
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+          <DialogHeading className="text-lg font-semibold">
+            {t("delete.title")}
+          </DialogHeading>
+          <DialogDescription className="text-sm text-muted-foreground">
+            {t("delete.description")}
+          </DialogDescription>
+          <div className="mt-5 flex justify-end gap-2">
+            <DialogClose>{t("actions.cancel")}</DialogClose>
+            <button
+              type="button"
+              className={actionButtonClass({ variant: "destructive" })}
+              onClick={() => void handleDeleteTicket()}
+              disabled={deleting}
+            >
+              {deleting ? t("actions.deleting") : t("actions.confirmDelete")}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {canAccessImages ? (
+        <section className="rounded-xl border bg-background p-4 space-y-4">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-lg font-semibold">{t("images.title")}</h2>
+            <span className="text-xs text-muted-foreground">
+              {t("images.hint")}
+            </span>
+          </div>
+
+          {imagesLoading ? (
+            <p className="text-sm text-muted-foreground">
+              {t("images.loading")}
+            </p>
+          ) : (
+            <>
+              {images.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  {t("images.empty")}
+                </p>
+              ) : null}
+              <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                {images.map((image) => (
+                  <li key={image.id} className="group rounded-lg border p-2">
+                    <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
+                      <img
+                        src={image.url}
+                        alt={image.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      <p className="truncate text-xs font-semibold">
+                        {image.name}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-1">
+                        <button
+                          type="button"
+                          className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                          onClick={() =>
+                            navigator.clipboard.writeText(`[${image.name}]`)
+                          }
+                        >
+                          {t("images.actions.copy")}
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
+                          onClick={() => void handleDeleteImage(image)}
+                          disabled={imageBusyId === image.id}
+                        >
+                          {t("images.actions.delete")}
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+                <li>
+                  <button
+                    type="button"
+                    className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
+                    onClick={() => setShowImageForm(true)}
+                  >
+                    <span className="text-lg">+</span>
+                    {t("images.actions.upload")}
+                  </button>
+                </li>
+              </ul>
+            </>
+          )}
+
+          {showImageForm ? (
+            <div className="rounded-lg border bg-muted/10 p-4 space-y-3">
+              <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+                <div className="space-y-2">
+                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {t("images.fields.name")}
+                  </label>
+                  <input
+                    type="text"
+                    value={imageName}
+                    onChange={(event) => setImageName(event.target.value)}
+                    className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder={t("images.placeholders.name")}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {t("images.fields.file")}
+                  </label>
+                  <input
+                    type="file"
+                    onChange={(event) =>
+                      setImageFile(event.target.files?.[0] ?? null)
+                    }
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                  onClick={() => {
+                    setShowImageForm(false);
+                    setImageName("");
+                    setImageFile(null);
+                  }}
+                >
+                  {t("actions.cancel")}
+                </button>
+                <button
+                  type="button"
+                  className={actionButtonClass({ size: "xs" })}
+                  onClick={() => void handleUploadImage()}
+                  disabled={!imageFile || !imageName.trim()}
+                >
+                  {t("images.actions.upload")}
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
       <section className="rounded-xl border bg-background p-4 space-y-4">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-semibold">{t("sections.activity")}</h2>
-          <span className="text-xs text-muted-foreground">
-            {t("meta.sectionsCount", { count: sections.length })}
-          </span>
+          <div className="flex items-center gap-4">
+            <Switch
+              checked={showImages}
+              onChange={(event) => setShowImages(event.target.checked)}
+              label={t("images.toggle")}
+            />
+            <span className="text-xs text-muted-foreground">
+              {t("meta.sectionsCount", { count: sections.length })}
+            </span>
+          </div>
         </div>
 
         {sections.length === 0 ? (
@@ -423,6 +844,11 @@ export function TicketDetailView({
                 section.author?.name ??
                 section.author?.email ??
                 t("assignee.unknown");
+              const canEditSection =
+                canManageTicket ||
+                (section.authorId && currentUserId
+                  ? section.authorId === currentUserId
+                  : false);
               return (
                 <li key={section.id} className="rounded-lg border p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
@@ -438,12 +864,56 @@ export function TicketDetailView({
                       {section.title}
                     </p>
                   ) : null}
-                  <p className="mt-2 text-sm whitespace-pre-line">
-                    {section.content}
-                  </p>
+                  {editingSectionId === section.id ? (
+                    <div className="mt-2 space-y-2">
+                      <textarea
+                        rows={3}
+                        value={editingContent}
+                        onChange={(event) =>
+                          setEditingContent(event.target.value)
+                        }
+                        className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                          onClick={handleCancelEdit}
+                          disabled={editingSaving}
+                        >
+                          {t("actions.cancel")}
+                        </button>
+                        <button
+                          type="button"
+                          className={actionButtonClass({ size: "xs" })}
+                          onClick={() => void handleSaveSection()}
+                          disabled={editingSaving || !editingContent.trim()}
+                        >
+                          {editingSaving
+                            ? t("actions.saving")
+                            : t("actions.save")}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mt-2 text-sm whitespace-pre-line">
+                      {renderContent(section.content)}
+                    </div>
+                  )}
                   <p className="mt-2 text-xs text-muted-foreground">
                     {t("meta.createdBy", { name: author })}
                   </p>
+                  {canEditSection && editingSectionId !== section.id ? (
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                        onClick={() => handleEditSection(section)}
+                      >
+                        {t("actions.edit")}
+                      </button>
+                    </div>
+                  ) : null}
                 </li>
               );
             })}

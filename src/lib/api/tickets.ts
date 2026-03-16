@@ -3,6 +3,7 @@ import { handleUnauthorized } from "@/lib/server-auth-helpers";
 import type {
   TicketDetail,
   TicketListResponse,
+  TicketImage,
   TicketSection,
   TicketSectionType,
   TicketStatus,
@@ -33,6 +34,11 @@ export type UpdateTicketRequest = {
 
 export type CreateTicketSectionRequest = {
   type: TicketSectionType;
+  content: string;
+  title?: string | null;
+};
+
+export type UpdateTicketSectionRequest = {
   content: string;
   title?: string | null;
 };
@@ -219,6 +225,30 @@ export async function addTicketSection(
   }
 }
 
+export async function updateTicketSection(
+  token: string,
+  ticketId: string,
+  sectionId: string,
+  payload: UpdateTicketSectionRequest
+): Promise<TicketSection> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/tickets/${ticketId}/sections/${sectionId}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<TicketSection>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function autocompleteTicketFeatures(
   token: string,
   projectId: string,
@@ -232,6 +262,86 @@ export async function autocompleteTicketFeatures(
     );
     if (!res.ok) throw res;
     return await parseJson<TicketFeature[]>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listTicketImages(
+  token: string,
+  ticketId: string
+): Promise<TicketImage[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/tickets/${ticketId}/images`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<TicketImage[]>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function uploadTicketImage(
+  token: string,
+  ticketId: string,
+  payload: { file: File; name: string }
+): Promise<TicketImage> {
+  try {
+    const formData = new FormData();
+    formData.append("file", payload.file);
+    formData.append("name", payload.name);
+    const res = await fetchWithAuth(
+      `${apiUrl}/tickets/${ticketId}/images`,
+      {
+        method: "POST",
+        body: formData,
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<TicketImage>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function deleteTicketImage(
+  token: string,
+  ticketId: string,
+  imageId: string
+): Promise<{ success: boolean }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/tickets/${ticketId}/images/${imageId}`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<{ success: boolean }>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function deleteTicket(
+  token: string,
+  ticketId: string
+): Promise<{ success: boolean }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/tickets/${ticketId}`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<{ success: boolean }>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

@@ -65,6 +65,15 @@ export type TicketDetail = {
   sections?: TicketSection[];
 };
 
+export type TicketImage = {
+  id: string;
+  ticketId: string;
+  name: string;
+  url: string;
+  uploadedById: string;
+  createdAt: ISODateString;
+};
+
 export type TicketUpdateResponse = {
   id: string;
   projectId: string;

@@ -1889,7 +1889,16 @@
         "actions": {
           "save": "Enregistrer",
           "saving": "Enregistrement...",
+          "edit": "Modifier",
+          "cancel": "Annuler",
+          "delete": "Supprimer",
+          "confirmDelete": "Supprimer le ticket",
+          "deleting": "Suppression...",
           "addSection": "Publier"
+        },
+        "delete": {
+          "title": "Supprimer le ticket ?",
+          "description": "Cela supprimera définitivement le ticket et ses images."
         },
         "meta": {
           "createdBy": "Créé par {name}",
@@ -1910,12 +1919,42 @@
         "messages": {
           "updated": "Ticket mis à jour.",
           "updateError": "Impossible de mettre à jour le ticket.",
+          "deleted": "Ticket supprimé.",
+          "deleteError": "Impossible de supprimer le ticket.",
           "sectionAdded": "Réponse ajoutée.",
           "sectionError": "Impossible d'ajouter la réponse.",
+          "sectionUpdated": "Section mise à jour.",
+          "sectionUpdateError": "Impossible de mettre à jour la section.",
           "noChanges": "Aucun changement à enregistrer.",
           "loadingFeatures": "Recherche des features..."
         },
-        "empty": "Aucune activité pour le moment."
+        "empty": "Aucune activité pour le moment.",
+        "images": {
+          "title": "Images",
+          "hint": "Utilisez [nom] dans les réponses pour insérer.",
+          "toggle": "Afficher les images",
+          "fields": {
+            "name": "Nom de l'image",
+            "file": "Fichier"
+          },
+          "placeholders": {
+            "name": "capture-login"
+          },
+          "actions": {
+            "upload": "Téléverser",
+            "copy": "Copier le tag",
+            "delete": "Supprimer"
+          },
+          "token": "Utilisez [{name}]",
+          "loading": "Chargement des images...",
+          "empty": "Aucune image pour le moment.",
+          "validation": "Nom et fichier requis.",
+          "uploaded": "Image téléversée.",
+          "uploadError": "Impossible de téléverser l'image.",
+          "deleted": "Image supprimée.",
+          "deleteError": "Impossible de supprimer l'image.",
+          "loadError": "Impossible de charger les images."
+        }
       }
     },
     "sidebar": {

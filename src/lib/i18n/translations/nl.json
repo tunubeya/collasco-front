@@ -1889,7 +1889,16 @@
         "actions": {
           "save": "Wijzigingen opslaan",
           "saving": "Opslaan...",
+          "edit": "Bewerken",
+          "cancel": "Annuleren",
+          "delete": "Verwijderen",
+          "confirmDelete": "Ticket verwijderen",
+          "deleting": "Verwijderen...",
           "addSection": "Plaatsen"
+        },
+        "delete": {
+          "title": "Ticket verwijderen?",
+          "description": "Dit verwijdert het ticket en alle afbeeldingen."
         },
         "meta": {
           "createdBy": "Gemaakt door {name}",
@@ -1910,12 +1919,42 @@
         "messages": {
           "updated": "Ticket bijgewerkt.",
           "updateError": "Ticket kon niet worden bijgewerkt.",
+          "deleted": "Ticket verwijderd.",
+          "deleteError": "Ticket kon niet worden verwijderd.",
           "sectionAdded": "Antwoord toegevoegd.",
           "sectionError": "Antwoord kon niet worden toegevoegd.",
+          "sectionUpdated": "Sectie bijgewerkt.",
+          "sectionUpdateError": "Sectie kon niet worden bijgewerkt.",
           "noChanges": "Geen wijzigingen om op te slaan.",
           "loadingFeatures": "Features zoeken..."
         },
-        "empty": "Nog geen activiteit."
+        "empty": "Nog geen activiteit.",
+        "images": {
+          "title": "Afbeeldingen",
+          "hint": "Gebruik [naam] in antwoorden om in te voegen.",
+          "toggle": "Afbeeldingen tonen",
+          "fields": {
+            "name": "Afbeeldingsnaam",
+            "file": "Bestand"
+          },
+          "placeholders": {
+            "name": "screenshot-login"
+          },
+          "actions": {
+            "upload": "Uploaden",
+            "copy": "Tag kopieren",
+            "delete": "Verwijderen"
+          },
+          "token": "Gebruik [{name}]",
+          "loading": "Afbeeldingen laden...",
+          "empty": "Nog geen afbeeldingen.",
+          "validation": "Naam en bestand zijn vereist.",
+          "uploaded": "Afbeelding geupload.",
+          "uploadError": "Afbeelding kon niet worden geupload.",
+          "deleted": "Afbeelding verwijderd.",
+          "deleteError": "Afbeelding kon niet worden verwijderd.",
+          "loadError": "Afbeeldingen konden niet worden geladen."
+        }
       }
     },
     "sidebar": {

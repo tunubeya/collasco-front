@@ -1890,7 +1890,16 @@
         "actions": {
           "save": "Salvar alterações",
           "saving": "Salvando...",
+          "edit": "Editar",
+          "cancel": "Cancelar",
+          "delete": "Excluir",
+          "confirmDelete": "Excluir ticket",
+          "deleting": "Excluindo...",
           "addSection": "Publicar"
+        },
+        "delete": {
+          "title": "Excluir ticket?",
+          "description": "Isso removerá o ticket e suas imagens."
         },
         "meta": {
           "createdBy": "Criado por {name}",
@@ -1911,12 +1920,42 @@
         "messages": {
           "updated": "Ticket atualizado.",
           "updateError": "Não foi possível atualizar o ticket.",
+          "deleted": "Ticket excluído.",
+          "deleteError": "Não foi possível excluir o ticket.",
           "sectionAdded": "Resposta adicionada.",
           "sectionError": "Não foi possível adicionar a resposta.",
+          "sectionUpdated": "Seção atualizada.",
+          "sectionUpdateError": "Não foi possível atualizar a seção.",
           "noChanges": "Não há alterações para salvar.",
           "loadingFeatures": "Buscando features..."
         },
-        "empty": "Ainda não há atividade."
+        "empty": "Ainda não há atividade.",
+        "images": {
+          "title": "Imagens",
+          "hint": "Use [nome] nas respostas para inserir.",
+          "toggle": "Mostrar imagens",
+          "fields": {
+            "name": "Nome da imagem",
+            "file": "Arquivo"
+          },
+          "placeholders": {
+            "name": "captura-login"
+          },
+          "actions": {
+            "upload": "Enviar",
+            "copy": "Copiar tag",
+            "delete": "Excluir"
+          },
+          "token": "Use [{name}]",
+          "loading": "Carregando imagens...",
+          "empty": "Ainda não há imagens.",
+          "validation": "Nome e arquivo são obrigatórios.",
+          "uploaded": "Imagem enviada.",
+          "uploadError": "Não foi possível enviar a imagem.",
+          "deleted": "Imagem excluída.",
+          "deleteError": "Não foi possível excluir a imagem.",
+          "loadError": "Não foi possível carregar as imagens."
+        }
       }
     },
     "sidebar": {

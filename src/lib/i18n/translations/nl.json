@@ -1839,6 +1839,31 @@
           "unknown": "Onbekend"
         }
       },
+      "create": {
+        "title": "Nieuw ticket",
+        "description": "Maak een ticket voor dit project.",
+        "fields": {
+          "title": "Titel",
+          "content": "Beschrijving",
+          "feature": "Feature (optioneel)"
+        },
+        "placeholders": {
+          "title": "Beschrijf het probleem",
+          "content": "Voeg de ticketdetails toe...",
+          "feature": "Feature zoeken..."
+        },
+        "actions": {
+          "create": "Nieuw ticket",
+          "save": "Ticket maken",
+          "creating": "Bezig...",
+          "cancel": "Annuleren"
+        },
+        "messages": {
+          "success": "Ticket aangemaakt.",
+          "error": "We konden het ticket niet maken.",
+          "loadingFeatures": "Features zoeken..."
+        }
+      },
       "detail": {
         "breadcrumb": {
           "ticket": "Ticket",

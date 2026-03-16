@@ -89,6 +89,7 @@ export default async function TicketsPage({ searchParams }: Props) {
       </div>
 
       <TicketsTabs
+        token={token}
         tab={tab}
         items={items}
         pagination={{

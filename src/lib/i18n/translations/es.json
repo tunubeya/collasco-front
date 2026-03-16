@@ -1841,6 +1841,31 @@
           "unknown": "Desconocido"
         }
       },
+      "create": {
+        "title": "Nuevo ticket",
+        "description": "Crea un ticket para este proyecto.",
+        "fields": {
+          "title": "Título",
+          "content": "Descripción",
+          "feature": "Feature (opcional)"
+        },
+        "placeholders": {
+          "title": "Describe el problema",
+          "content": "Agrega los detalles del ticket...",
+          "feature": "Buscar feature..."
+        },
+        "actions": {
+          "create": "Nuevo ticket",
+          "save": "Crear ticket",
+          "creating": "Creando...",
+          "cancel": "Cancelar"
+        },
+        "messages": {
+          "success": "Ticket creado.",
+          "error": "No pudimos crear el ticket.",
+          "loadingFeatures": "Buscando features..."
+        }
+      },
       "detail": {
         "breadcrumb": {
           "ticket": "Ticket",

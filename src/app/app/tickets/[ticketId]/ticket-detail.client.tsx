@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Calendar, User } from "lucide-react";
 import { toast } from "sonner";
@@ -61,6 +61,8 @@ export function TicketDetailView({
   const [featureOptions, setFeatureOptions] = useState<TicketFeature[]>([]);
   const debouncedQuery = useDebounce(featureQuery, 300);
   const [featureLoading, setFeatureLoading] = useState(false);
+  const [featureOpen, setFeatureOpen] = useState(false);
+  const featureBlurRef = useRef<number | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [sectionType, setSectionType] =
@@ -103,7 +105,7 @@ export function TicketDetailView({
   }, [ticket]);
 
   useEffect(() => {
-    if (!canManageTicket) return;
+    if (!canManageTicket || !featureOpen) return;
     if (!debouncedQuery || debouncedQuery.length < 2) {
       setFeatureOptions([]);
       return;
@@ -124,7 +126,7 @@ export function TicketDetailView({
     return () => {
       active = false;
     };
-  }, [canManageTicket, debouncedQuery, projectId, token]);
+  }, [canManageTicket, debouncedQuery, featureOpen, projectId, token]);
 
   const handleSave = useCallback(async () => {
     if (!canManageTicket) return;
@@ -329,25 +331,37 @@ export function TicketDetailView({
             <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {t("fields.feature")}
             </label>
-            <input
-              type="text"
-              value={featureQuery}
-              onChange={(event) => {
-                setFeatureQuery(event.target.value);
-                if (!event.target.value) {
-                  setFeatureId(null);
-                }
-              }}
-              placeholder={t("placeholders.feature")}
-              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60"
-              disabled={!canManageTicket}
-            />
-            {canManageTicket && featureLoading ? (
+              <input
+                type="text"
+                value={featureQuery}
+                onChange={(event) => {
+                  setFeatureQuery(event.target.value);
+                  if (!event.target.value) {
+                    setFeatureId(null);
+                  }
+                }}
+                onFocus={() => {
+                  if (featureBlurRef.current) {
+                    window.clearTimeout(featureBlurRef.current);
+                    featureBlurRef.current = null;
+                  }
+                  setFeatureOpen(true);
+                }}
+                onBlur={() => {
+                  featureBlurRef.current = window.setTimeout(() => {
+                    setFeatureOpen(false);
+                  }, 150);
+                }}
+                placeholder={t("placeholders.feature")}
+                className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60"
+                disabled={!canManageTicket}
+              />
+            {canManageTicket && featureOpen && featureLoading ? (
               <p className="text-xs text-muted-foreground">
                 {t("messages.loadingFeatures")}
               </p>
             ) : null}
-            {canManageTicket && featureOptions.length > 0 ? (
+            {canManageTicket && featureOpen && featureOptions.length > 0 ? (
               <div className="rounded-lg border bg-white p-2 text-sm">
                 <ul className="space-y-1">
                   {featureOptions.map((option) => (
@@ -364,9 +378,17 @@ export function TicketDetailView({
                           setFeatureId(option.id);
                           setFeatureQuery(option.name);
                           setFeatureOptions([]);
+                          setFeatureOpen(false);
                         }}
                       >
-                        {option.name}
+                        <div className="text-sm font-medium">
+                          {option.name}
+                        </div>
+                        {option.path ? (
+                          <div className="text-xs text-muted-foreground">
+                            {option.path}
+                          </div>
+                        ) : null}
                       </button>
                     </li>
                   ))}

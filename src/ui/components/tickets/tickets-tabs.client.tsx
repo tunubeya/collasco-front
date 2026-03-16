@@ -8,11 +8,13 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { Calendar, Folder, User } from "lucide-react";
+import Link from "next/link";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { Ticket } from "@/lib/model-definitions/ticket";
 import { cn, generatePagination } from "@/lib/utils";
 import { Dropdown } from "@/ui/components/form/dropdown";
+import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.client";
 
 type TicketsTab = "mine" | "assigned" | "project";
 
@@ -23,6 +25,7 @@ type Pagination = {
 };
 
 type Props = {
+  token: string;
   tab: TicketsTab;
   items: Ticket[];
   pagination: Pagination;
@@ -38,6 +41,7 @@ const TAB_ICON = {
 } as const;
 
 export default function TicketsTabs({
+  token,
   tab,
   items,
   pagination,
@@ -127,14 +131,19 @@ export default function TicketsTabs({
         </div>
 
         {tab === "project" ? (
-          <div className="min-w-[220px]">
-            <Dropdown
-              value={projectId ?? ""}
-              onChange={(event) => setProject(event.target.value)}
-              options={projectOptions}
-              sizeElement="sm"
-              fullWidth={false}
-            />
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="min-w-[220px]">
+              <Dropdown
+                value={projectId ?? ""}
+                onChange={(event) => setProject(event.target.value)}
+                options={projectOptions}
+                sizeElement="sm"
+                fullWidth={false}
+              />
+            </div>
+            {projectId ? (
+              <TicketsCreateButton token={token} projectId={projectId} />
+            ) : null}
           </div>
         ) : null}
       </div>
@@ -167,7 +176,12 @@ export default function TicketsTabs({
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-sm font-semibold">{ticket.title}</p>
+                        <Link
+                          href={`/app/tickets/${ticket.id}`}
+                          className="text-sm font-semibold text-primary hover:underline"
+                        >
+                          {ticket.title}
+                        </Link>
                         <span className="rounded-full border px-2 py-0.5 text-[10px] text-muted-foreground">
                           {statusLabel}
                         </span>
@@ -268,4 +282,3 @@ export default function TicketsTabs({
     </section>
   );
 }
-

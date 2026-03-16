@@ -122,6 +122,7 @@ export function FeatureTicketCreateButton({
             label={t("fields.feature")}
             value={featureName}
             readOnly
+            className="border border-border bg-muted/30 text-foreground"
           />
           <Input
             ref={titleRef}
@@ -129,6 +130,7 @@ export function FeatureTicketCreateButton({
             placeholder={t("placeholders.title")}
             value={title}
             onChange={(event) => setTitle(event.target.value)}
+            className="border border-border"
           />
           <Textarea
             label={t("fields.content")}
@@ -136,6 +138,7 @@ export function FeatureTicketCreateButton({
             value={content}
             onChange={(event) => setContent(event.target.value)}
             rows={5}
+            className="border border-border"
           />
 
           {error ? (

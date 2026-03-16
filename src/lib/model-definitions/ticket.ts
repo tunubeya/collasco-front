@@ -19,6 +19,8 @@ export type TicketFeature = {
   id: string;
   name: string;
   moduleId?: string;
+  projectId?: string;
+  path?: string;
 };
 
 export type Ticket = {

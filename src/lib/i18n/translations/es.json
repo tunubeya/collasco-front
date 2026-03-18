@@ -1104,7 +1104,29 @@
         },
         "attachments": {
           "title": "Adjuntos",
-          "hint": "Sube imágenes o archivos. Tags de imagen: [nombre:small] o [nombre:300xauto]."
+          "hint": "Sube imágenes o archivos. Tags de imagen: [nombre:small] o [nombre:300xauto].",
+          "sectionTitle": "Adjuntos",
+          "empty": "Aún no hay adjuntos.",
+          "fields": {
+            "name": "Nombre del adjunto",
+            "file": "Archivo"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Subir"
+          },
+          "messages": {
+            "uploaded": "Adjunto subido.",
+            "duplicateName": "Ya existe un adjunto con ese nombre para este proyecto. Elige otro nombre.",
+            "uploadError": "No pudimos subir el adjunto."
+          },
+          "validation": {
+            "name": "Ingresa un nombre para el adjunto.",
+            "file": "Selecciona un archivo.",
+            "fileTooLarge": "El archivo debe pesar 2 MB o menos."
+          }
         },
         "files": {
           "sectionTitle": "Archivos",

@@ -1102,7 +1102,29 @@
         },
         "attachments": {
           "title": "Pièces jointes",
-          "hint": "Téléversez des images ou des fichiers. Tags image : [nom:small] ou [nom:300xauto]."
+          "hint": "Téléversez des images ou des fichiers. Tags image : [nom:small] ou [nom:300xauto].",
+          "sectionTitle": "Pièces jointes",
+          "empty": "Aucune pièce jointe pour le moment.",
+          "fields": {
+            "name": "Nom de la pièce jointe",
+            "file": "Fichier"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Téléverser"
+          },
+          "messages": {
+            "uploaded": "Pièce jointe téléversée.",
+            "duplicateName": "Une pièce jointe avec ce nom existe déjà pour ce projet. Choisissez un autre nom.",
+            "uploadError": "Impossible de téléverser la pièce jointe."
+          },
+          "validation": {
+            "name": "Saisissez un nom pour la pièce jointe.",
+            "file": "Sélectionnez un fichier.",
+            "fileTooLarge": "Le fichier doit faire 2 Mo ou moins."
+          }
         },
         "files": {
           "sectionTitle": "Fichiers",

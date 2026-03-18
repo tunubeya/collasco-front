@@ -1103,7 +1103,29 @@
         },
         "attachments": {
           "title": "Anexos",
-          "hint": "Envie imagens ou arquivos. Tags de imagem: [nome:small] ou [nome:300xauto]."
+          "hint": "Envie imagens ou arquivos. Tags de imagem: [nome:small] ou [nome:300xauto].",
+          "sectionTitle": "Anexos",
+          "empty": "Nenhum anexo adicionado ainda.",
+          "fields": {
+            "name": "Nome do anexo",
+            "file": "Arquivo"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Enviar"
+          },
+          "messages": {
+            "uploaded": "Anexo enviado.",
+            "duplicateName": "Já existe um anexo com esse nome para este projeto. Escolha outro nome.",
+            "uploadError": "Não foi possível enviar o anexo."
+          },
+          "validation": {
+            "name": "Informe um nome para o anexo.",
+            "file": "Selecione um arquivo.",
+            "fileTooLarge": "O arquivo deve ter 2 MB ou menos."
+          }
         },
         "files": {
           "sectionTitle": "Arquivos",

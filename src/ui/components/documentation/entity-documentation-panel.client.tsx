@@ -308,21 +308,21 @@ export function EntityDocumentationPanel({
       const name = (imageNameByLabel[labelId] ?? "").trim();
       const file = imageFileByLabel[labelId];
       if (!name) {
-        toast.error(t("images.validation.name"));
+        toast.error(t("attachments.validation.name"));
         return;
       }
       if (!file) {
-        toast.error(t("images.validation.file"));
+        toast.error(t("attachments.validation.file"));
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        toast.error(t("images.validation.fileTooLarge"));
+        toast.error(t("attachments.validation.fileTooLarge"));
         return;
       }
       setImageLoadingLabelId(labelId);
       try {
         await uploadDocumentationImage(token, entityType, entityId, labelId, name, file);
-        toast.success(t("images.messages.uploaded"));
+        toast.success(t("attachments.messages.uploaded"));
         setImageNameByLabel((prev) => ({ ...prev, [labelId]: "" }));
         setImageFileByLabel((prev) => ({ ...prev, [labelId]: null }));
         setShowImages(true);
@@ -360,9 +360,9 @@ export function EntityDocumentationPanel({
         }
 
         if (isDuplicate) {
-          toast.error(t("images.messages.duplicateName"));
+          toast.error(t("attachments.messages.duplicateName"));
         } else {
-          toast.error(t("images.messages.uploadError"), { description });
+          toast.error(t("attachments.messages.uploadError"), { description });
         }
       } finally {
         setImageLoadingLabelId(null);
@@ -618,7 +618,7 @@ export function EntityDocumentationPanel({
                               <div className="mt-2 grid gap-2 sm:grid-cols-2">
                                 <div className="space-y-1">
                                   <label className="text-[11px] font-medium text-muted-foreground">
-                                    {t("images.fields.name")}
+                                    {t("attachments.fields.name")}
                                   </label>
                                   <input
                                     type="text"
@@ -630,40 +630,40 @@ export function EntityDocumentationPanel({
                                       }))
                                     }
                                     className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder={t("images.placeholders.name")}
+                                    placeholder={t("attachments.placeholders.name")}
                                   />
                                 </div>
                                 <div className="space-y-1">
                                   <label className="text-[11px] font-medium text-muted-foreground">
-                                    {t("images.fields.file")}
+                                    {t("attachments.fields.file")}
                                   </label>
                                   <input
                                     type="file"
-                                    accept="image/*"
+                                    accept="*/*"
                                     onChange={(event) =>
                                       setImageFileByLabel((prev) => ({
                                         ...prev,
                                         [entry.label.id]: event.target.files?.[0] ?? null,
                                       }))
                                     }
-                                    className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
-                                  />
-                                </div>
+                                  className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
                               </div>
-                              <div className="mt-2 flex justify-end">
-                                <button
-                                  type="button"
-                                  className={actionButtonClass({ size: "xs" })}
-                                  onClick={() => void handleUploadImage(entry.label.id)}
-                                  disabled={imageLoadingLabelId === entry.label.id}
-                                >
-                                  {imageLoadingLabelId === entry.label.id ? (
-                                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                                  ) : (
-                                    t("images.actions.upload")
-                                  )}
-                                </button>
-                              </div>
+                            </div>
+                            <div className="mt-2 flex justify-end">
+                              <button
+                                type="button"
+                                className={actionButtonClass({ size: "xs" })}
+                                onClick={() => void handleUploadImage(entry.label.id)}
+                                disabled={imageLoadingLabelId === entry.label.id}
+                              >
+                                {imageLoadingLabelId === entry.label.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                                ) : (
+                                  t("attachments.actions.upload")
+                                )}
+                              </button>
+                            </div>
                             </div>
                           )}
                         </div>
@@ -693,11 +693,11 @@ export function EntityDocumentationPanel({
 
                     <div className="mt-4 space-y-2">
                       <p className="text-xs font-semibold text-muted-foreground">
-                        {t("images.sectionTitle")}
+                        {t("attachments.sectionTitle")}
                       </p>
                       {images.length === 0 ? (
                         <p className="text-xs text-muted-foreground">
-                          {t("images.empty")}
+                          {t("attachments.empty")}
                         </p>
                       ) : (
                         <div className="space-y-2">

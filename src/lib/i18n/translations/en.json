@@ -1104,7 +1104,29 @@
         },
         "attachments": {
           "title": "Attachments",
-          "hint": "Upload images or files. Image tags: [name:small] or [name:300xauto]."
+          "hint": "Upload images or files. Image tags: [name:small] or [name:300xauto].",
+          "sectionTitle": "Attachments",
+          "empty": "No attachments added yet.",
+          "fields": {
+            "name": "Attachment name",
+            "file": "File"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Upload"
+          },
+          "messages": {
+            "uploaded": "Attachment uploaded.",
+            "duplicateName": "An attachment with that name already exists for this project. Please choose a different name.",
+            "uploadError": "We couldn't upload the attachment."
+          },
+          "validation": {
+            "name": "Enter a name for the attachment.",
+            "file": "Select a file.",
+            "fileTooLarge": "The file must be 2MB or smaller."
+          }
         },
         "files": {
           "sectionTitle": "Files",

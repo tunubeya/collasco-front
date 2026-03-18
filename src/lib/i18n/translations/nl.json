@@ -1102,7 +1102,29 @@
         },
         "attachments": {
           "title": "Bijlagen",
-          "hint": "Upload afbeeldingen of bestanden. Afbeeldingstags: [naam:small] of [naam:300xauto]."
+          "hint": "Upload afbeeldingen of bestanden. Afbeeldingstags: [naam:small] of [naam:300xauto].",
+          "sectionTitle": "Bijlagen",
+          "empty": "Nog geen bijlagen toegevoegd.",
+          "fields": {
+            "name": "Bijlagennaam",
+            "file": "Bestand"
+          },
+          "placeholders": {
+            "name": "login-flow"
+          },
+          "actions": {
+            "upload": "Uploaden"
+          },
+          "messages": {
+            "uploaded": "Bijlage geüpload.",
+            "duplicateName": "Er bestaat al een bijlage met die naam voor dit project. Kies een andere naam.",
+            "uploadError": "We konden de bijlage niet uploaden."
+          },
+          "validation": {
+            "name": "Vul een naam voor de bijlage in.",
+            "file": "Selecteer een bestand.",
+            "fileTooLarge": "Het bestand moet 2 MB of kleiner zijn."
+          }
         },
         "files": {
           "sectionTitle": "Bestanden",

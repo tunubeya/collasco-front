@@ -308,6 +308,8 @@ export type DocumentationImage = {
   id: string;
   name: string;
   url: string;
+  mimeType?: string;
+  size?: number;
   createdAt: string;
   createdBy?: { id: string; name?: string | null; email?: string | null } | null;
 };

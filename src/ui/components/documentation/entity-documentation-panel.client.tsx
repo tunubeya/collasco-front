@@ -610,10 +610,10 @@ export function EntityDocumentationPanel({
                           {entry.canEdit && (
                             <div className="rounded-md border border-dashed border-border/80 bg-muted/10 p-2">
                               <p className="text-[11px] font-semibold text-muted-foreground">
-                                {t("images.title")}
+                                {t("attachments.title")}
                               </p>
                               <p className="text-[10px] text-muted-foreground">
-                                {t("images.tagHint")}
+                                {t("attachments.hint")}
                               </p>
                               <div className="mt-2 grid gap-2 sm:grid-cols-2">
                                 <div className="space-y-1">

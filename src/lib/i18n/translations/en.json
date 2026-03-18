@@ -1065,7 +1065,7 @@
           "title": "Attach image",
           "sectionTitle": "Images",
           "empty": "No images added yet.",
-          "tagHint": "Reference an image in the text using [name].",
+          "tagHint": "Reference an image with [name:small] or [name:300xauto].",
           "fields": {
             "name": "Image name",
             "file": "File"
@@ -1101,6 +1101,17 @@
             "fileTooLarge": "The image must be 2MB or smaller."
           },
           "loadError": "We couldn't load the images."
+        },
+        "attachments": {
+          "title": "Attachments",
+          "hint": "Upload images or files. Image tags: [name:small] or [name:300xauto]."
+        },
+        "files": {
+          "sectionTitle": "Files",
+          "actions": {
+            "open": "Open",
+            "delete": "Delete"
+          }
         },
         "validation": {
           "content": "Enter some content or mark it as not applicable."
@@ -1933,7 +1944,7 @@
         "empty": "No activity yet.",
         "images": {
           "title": "Images",
-          "hint": "Use [name] in responses to embed.",
+          "hint": "Use [name:small] or [name:300xauto] to embed images.",
           "toggle": "Show images",
           "fields": {
             "name": "Image name",
@@ -1944,18 +1955,37 @@
           },
           "actions": {
             "upload": "Upload",
+            "uploading": "Uploading...",
             "copy": "Copy tag",
-            "delete": "Delete"
+            "delete": "Delete",
+            "deleting": "Deleting..."
           },
           "token": "Use [{name}]",
           "loading": "Loading images...",
           "empty": "No images yet.",
           "validation": "Name and file are required.",
+          "validationTooLarge": "Max file size is 2MB.",
           "uploaded": "Image uploaded.",
           "uploadError": "We couldn't upload the image.",
           "deleted": "Image deleted.",
           "deleteError": "We couldn't delete the image.",
           "loadError": "We couldn't load the images."
+        },
+        "attachments": {
+          "title": "Attachments",
+          "hint": "Images support size tokens. Files are shown as downloads.",
+          "actions": {
+            "add": "Add attachment"
+          }
+        },
+        "files": {
+          "title": "Files",
+          "empty": "No files yet.",
+          "actions": {
+            "open": "Open",
+            "delete": "Delete",
+            "deleting": "Deleting..."
+          }
         }
       }
     },

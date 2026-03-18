@@ -1063,7 +1063,7 @@
           "title": "Joindre une image",
           "sectionTitle": "Images",
           "empty": "Aucune image pour le moment.",
-          "tagHint": "Référencez une image dans le texte avec [nom].",
+          "tagHint": "Référencez une image avec [nom:small] ou [nom:300xauto].",
           "fields": {
             "name": "Nom de l’image",
             "file": "Fichier"
@@ -1099,6 +1099,17 @@
             "fileTooLarge": "L’image doit faire 2 Mo ou moins."
           },
           "loadError": "Impossible de charger les images."
+        },
+        "attachments": {
+          "title": "Pièces jointes",
+          "hint": "Téléversez des images ou des fichiers. Tags image : [nom:small] ou [nom:300xauto]."
+        },
+        "files": {
+          "sectionTitle": "Fichiers",
+          "actions": {
+            "open": "Ouvrir",
+            "delete": "Supprimer"
+          }
         },
         "validation": {
           "content": "Saisissez du contenu ou marquez l’étiquette comme non applicable."
@@ -1931,7 +1942,7 @@
         "empty": "Aucune activité pour le moment.",
         "images": {
           "title": "Images",
-          "hint": "Utilisez [nom] dans les réponses pour insérer.",
+          "hint": "Utilisez [nom:small] ou [nom:300xauto] pour insérer des images.",
           "toggle": "Afficher les images",
           "fields": {
             "name": "Nom de l'image",
@@ -1942,18 +1953,37 @@
           },
           "actions": {
             "upload": "Téléverser",
+            "uploading": "Téléversement...",
             "copy": "Copier le tag",
-            "delete": "Supprimer"
+            "delete": "Supprimer",
+            "deleting": "Suppression..."
           },
           "token": "Utilisez [{name}]",
           "loading": "Chargement des images...",
           "empty": "Aucune image pour le moment.",
           "validation": "Nom et fichier requis.",
+          "validationTooLarge": "La taille maximale est 2 Mo.",
           "uploaded": "Image téléversée.",
           "uploadError": "Impossible de téléverser l'image.",
           "deleted": "Image supprimée.",
           "deleteError": "Impossible de supprimer l'image.",
           "loadError": "Impossible de charger les images."
+        },
+        "attachments": {
+          "title": "Pièces jointes",
+          "hint": "Les images supportent les tailles. Les fichiers sont listés pour téléchargement.",
+          "actions": {
+            "add": "Ajouter une pièce jointe"
+          }
+        },
+        "files": {
+          "title": "Fichiers",
+          "empty": "Aucun fichier pour le moment.",
+          "actions": {
+            "open": "Ouvrir",
+            "delete": "Supprimer",
+            "deleting": "Suppression..."
+          }
         }
       }
     },

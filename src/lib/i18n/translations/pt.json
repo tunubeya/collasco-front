@@ -1064,7 +1064,7 @@
           "title": "Anexar imagem",
           "sectionTitle": "Imagens",
           "empty": "Nenhuma imagem adicionada ainda.",
-          "tagHint": "Referencie uma imagem no texto usando [nome].",
+          "tagHint": "Referencie uma imagem com [nome:small] ou [nome:300xauto].",
           "fields": {
             "name": "Nome da imagem",
             "file": "Arquivo"
@@ -1100,6 +1100,17 @@
             "fileTooLarge": "A imagem deve ter 2MB ou menos."
           },
           "loadError": "Não foi possível carregar as imagens."
+        },
+        "attachments": {
+          "title": "Anexos",
+          "hint": "Envie imagens ou arquivos. Tags de imagem: [nome:small] ou [nome:300xauto]."
+        },
+        "files": {
+          "sectionTitle": "Arquivos",
+          "actions": {
+            "open": "Abrir",
+            "delete": "Excluir"
+          }
         },
         "validation": {
           "content": "Informe algum conteúdo ou marque como não aplicável."
@@ -1932,7 +1943,7 @@
         "empty": "Ainda não há atividade.",
         "images": {
           "title": "Imagens",
-          "hint": "Use [nome] nas respostas para inserir.",
+          "hint": "Use [nome:small] ou [nome:300xauto] para inserir imagens.",
           "toggle": "Mostrar imagens",
           "fields": {
             "name": "Nome da imagem",
@@ -1943,18 +1954,37 @@
           },
           "actions": {
             "upload": "Enviar",
+            "uploading": "Enviando...",
             "copy": "Copiar tag",
-            "delete": "Excluir"
+            "delete": "Excluir",
+            "deleting": "Excluindo..."
           },
           "token": "Use [{name}]",
           "loading": "Carregando imagens...",
           "empty": "Ainda não há imagens.",
           "validation": "Nome e arquivo são obrigatórios.",
+          "validationTooLarge": "O tamanho máximo é 2MB.",
           "uploaded": "Imagem enviada.",
           "uploadError": "Não foi possível enviar a imagem.",
           "deleted": "Imagem excluída.",
           "deleteError": "Não foi possível excluir a imagem.",
           "loadError": "Não foi possível carregar as imagens."
+        },
+        "attachments": {
+          "title": "Anexos",
+          "hint": "Imagens suportam tamanhos. Arquivos aparecem para download.",
+          "actions": {
+            "add": "Adicionar anexo"
+          }
+        },
+        "files": {
+          "title": "Arquivos",
+          "empty": "Ainda não há arquivos.",
+          "actions": {
+            "open": "Abrir",
+            "delete": "Excluir",
+            "deleting": "Excluindo..."
+          }
         }
       }
     },

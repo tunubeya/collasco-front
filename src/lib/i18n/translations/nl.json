@@ -1063,7 +1063,7 @@
           "title": "Afbeelding toevoegen",
           "sectionTitle": "Afbeeldingen",
           "empty": "Nog geen afbeeldingen toegevoegd.",
-          "tagHint": "Verwijs in de tekst naar een afbeelding met [naam].",
+          "tagHint": "Verwijs naar een afbeelding met [naam:small] of [naam:300xauto].",
           "fields": {
             "name": "Afbeeldingsnaam",
             "file": "Bestand"
@@ -1099,6 +1099,17 @@
             "fileTooLarge": "De afbeelding moet 2MB of kleiner zijn."
           },
           "loadError": "We konden de afbeeldingen niet laden."
+        },
+        "attachments": {
+          "title": "Bijlagen",
+          "hint": "Upload afbeeldingen of bestanden. Afbeeldingstags: [naam:small] of [naam:300xauto]."
+        },
+        "files": {
+          "sectionTitle": "Bestanden",
+          "actions": {
+            "open": "Openen",
+            "delete": "Verwijderen"
+          }
         },
         "validation": {
           "content": "Vul inhoud in of markeer het label als niet van toepassing."
@@ -1931,7 +1942,7 @@
         "empty": "Nog geen activiteit.",
         "images": {
           "title": "Afbeeldingen",
-          "hint": "Gebruik [naam] in antwoorden om in te voegen.",
+          "hint": "Gebruik [naam:small] of [naam:300xauto] om afbeeldingen in te voegen.",
           "toggle": "Afbeeldingen tonen",
           "fields": {
             "name": "Afbeeldingsnaam",
@@ -1942,18 +1953,37 @@
           },
           "actions": {
             "upload": "Uploaden",
+            "uploading": "Bezig...",
             "copy": "Tag kopieren",
-            "delete": "Verwijderen"
+            "delete": "Verwijderen",
+            "deleting": "Verwijderen..."
           },
           "token": "Gebruik [{name}]",
           "loading": "Afbeeldingen laden...",
           "empty": "Nog geen afbeeldingen.",
           "validation": "Naam en bestand zijn vereist.",
+          "validationTooLarge": "Maximale grootte is 2MB.",
           "uploaded": "Afbeelding geupload.",
           "uploadError": "Afbeelding kon niet worden geupload.",
           "deleted": "Afbeelding verwijderd.",
           "deleteError": "Afbeelding kon niet worden verwijderd.",
           "loadError": "Afbeeldingen konden niet worden geladen."
+        },
+        "attachments": {
+          "title": "Bijlagen",
+          "hint": "Afbeeldingen ondersteunen groottes. Bestanden worden als downloads getoond.",
+          "actions": {
+            "add": "Bijlage toevoegen"
+          }
+        },
+        "files": {
+          "title": "Bestanden",
+          "empty": "Nog geen bestanden.",
+          "actions": {
+            "open": "Openen",
+            "delete": "Verwijderen",
+            "deleting": "Verwijderen..."
+          }
         }
       }
     },

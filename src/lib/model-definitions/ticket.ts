@@ -70,6 +70,8 @@ export type TicketImage = {
   ticketId: string;
   name: string;
   url: string;
+  mimeType: string;
+  size: number;
   uploadedById: string;
   createdAt: ISODateString;
 };

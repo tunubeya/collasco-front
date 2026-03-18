@@ -1065,7 +1065,7 @@
           "title": "Adjuntar imagen",
           "sectionTitle": "Imágenes",
           "empty": "Todavía no hay imágenes.",
-          "tagHint": "Referencia una imagen en el texto usando [nombre].",
+          "tagHint": "Referencia una imagen con [nombre:small] o [nombre:300xauto].",
           "fields": {
             "name": "Nombre de imagen",
             "file": "Archivo"
@@ -1101,6 +1101,17 @@
             "fileTooLarge": "La imagen debe pesar 2MB o menos."
           },
           "loadError": "No pudimos cargar las imágenes."
+        },
+        "attachments": {
+          "title": "Adjuntos",
+          "hint": "Sube imágenes o archivos. Tags de imagen: [nombre:small] o [nombre:300xauto]."
+        },
+        "files": {
+          "sectionTitle": "Archivos",
+          "actions": {
+            "open": "Abrir",
+            "delete": "Eliminar"
+          }
         },
         "validation": {
           "content": "Ingresa contenido o marca la etiqueta como no aplicable."
@@ -1933,7 +1944,7 @@
         "empty": "Aún no hay actividad.",
         "images": {
           "title": "Imágenes",
-          "hint": "Usa [nombre] en las respuestas para insertar.",
+          "hint": "Usa [nombre:small] o [nombre:300xauto] para insertar imágenes.",
           "toggle": "Mostrar imágenes",
           "fields": {
             "name": "Nombre de imagen",
@@ -1944,18 +1955,37 @@
           },
           "actions": {
             "upload": "Subir",
+            "uploading": "Subiendo...",
             "copy": "Copiar tag",
-            "delete": "Eliminar"
+            "delete": "Eliminar",
+            "deleting": "Eliminando..."
           },
           "token": "Usa [{name}]",
           "loading": "Cargando imágenes...",
           "empty": "Todavía no hay imágenes.",
           "validation": "Nombre y archivo son requeridos.",
+          "validationTooLarge": "El tamaño máximo es 2MB.",
           "uploaded": "Imagen subida.",
           "uploadError": "No pudimos subir la imagen.",
           "deleted": "Imagen eliminada.",
           "deleteError": "No pudimos eliminar la imagen.",
           "loadError": "No pudimos cargar las imágenes."
+        },
+        "attachments": {
+          "title": "Adjuntos",
+          "hint": "Las imágenes soportan tamaños. Los archivos se muestran para descarga.",
+          "actions": {
+            "add": "Agregar adjunto"
+          }
+        },
+        "files": {
+          "title": "Archivos",
+          "empty": "Todavía no hay archivos.",
+          "actions": {
+            "open": "Abrir",
+            "delete": "Eliminar",
+            "deleting": "Eliminando..."
+          }
         }
       }
     },

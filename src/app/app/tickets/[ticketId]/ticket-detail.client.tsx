@@ -2,7 +2,19 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
-import { Calendar, User } from "lucide-react";
+import {
+  Calendar,
+  FileArchive,
+  FileCode,
+  FileImage,
+  FileSpreadsheet,
+  FileText,
+  FileType2,
+  FileVideo,
+  FileAudio,
+  File,
+  User,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -87,8 +99,20 @@ function splitOnce(value: string, delimiter: string): [string, string | null] {
   return [value.slice(0, idx), value.slice(idx + delimiter.length)];
 }
 
+function formatBytes(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const idx = Math.min(
+    units.length - 1,
+    Math.floor(Math.log(bytes) / Math.log(1024))
+  );
+  const value = bytes / Math.pow(1024, idx);
+  return `${value.toFixed(value >= 10 || idx === 0 ? 0 : 1)} ${units[idx]}`;
+}
+
 const STATUS_OPTIONS: TicketStatus[] = ["OPEN", "PENDING", "RESOLVED"];
 const SECTION_TYPES: TicketSectionType[] = ["RESPONSE", "COMMENT"];
+const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
 
 export function TicketDetailView({
   token,
@@ -141,6 +165,7 @@ export function TicketDetailView({
   const [imageBusyId, setImageBusyId] = useState<string | null>(null);
   const [showImageForm, setShowImageForm] = useState(false);
   const [showImages, setShowImages] = useState(true);
+  const [uploadingAttachment, setUploadingAttachment] = useState(false);
 
   const assigneeOptions = useMemo(
     () =>
@@ -176,9 +201,35 @@ export function TicketDetailView({
 
   const imagesByName = useMemo(() => {
     const map = new Map<string, TicketImage>();
-    images.forEach((image) => map.set(image.name, image));
+    images
+      .filter((image) => image.mimeType?.startsWith("image/"))
+      .forEach((image) => map.set(image.name, image));
     return map;
   }, [images]);
+
+  const imageAttachments = useMemo(
+    () => images.filter((image) => image.mimeType?.startsWith("image/")),
+    [images]
+  );
+  const fileAttachments = useMemo(
+    () => images.filter((image) => !image.mimeType?.startsWith("image/")),
+    [images]
+  );
+
+  const resolveFileIcon = useCallback((mimeType?: string) => {
+    const type = (mimeType ?? "").toLowerCase();
+    if (type.startsWith("image/")) return FileImage;
+    if (type.startsWith("audio/")) return FileAudio;
+    if (type.startsWith("video/")) return FileVideo;
+    if (type.includes("pdf")) return FileText;
+    if (type.includes("word")) return FileType2;
+    if (type.includes("sheet") || type.includes("excel")) return FileSpreadsheet;
+    if (type.includes("presentation") || type.includes("powerpoint")) return FileText;
+    if (type.includes("zip") || type.includes("compressed")) return FileArchive;
+    if (type.includes("json") || type.includes("xml")) return FileCode;
+    if (type.includes("text")) return FileText;
+    return File;
+  }, []);
 
   useEffect(() => {
     setTicketState(ticket);
@@ -360,6 +411,12 @@ export function TicketDetailView({
       toast.error(t("images.validation"));
       return;
     }
+    if (imageFile.size > MAX_ATTACHMENT_BYTES) {
+      toast.error(t("images.validationTooLarge"));
+      return;
+    }
+    if (uploadingAttachment) return;
+    setUploadingAttachment(true);
     try {
       const created = await uploadTicketImage(token, ticketState.id, {
         file: imageFile,
@@ -373,8 +430,18 @@ export function TicketDetailView({
     } catch (error) {
       console.error("[TicketDetailView] upload image error:", error);
       toast.error(t("images.uploadError"));
+    } finally {
+      setUploadingAttachment(false);
     }
-  }, [canAccessImages, imageFile, imageName, t, ticketState.id, token]);
+  }, [
+    canAccessImages,
+    imageFile,
+    imageName,
+    t,
+    ticketState.id,
+    token,
+    uploadingAttachment,
+  ]);
 
   const handleDeleteImage = useCallback(
     async (image: TicketImage) => {
@@ -692,9 +759,9 @@ export function TicketDetailView({
       {canAccessImages ? (
         <section className="rounded-xl border bg-background p-4 space-y-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-semibold">{t("images.title")}</h2>
+            <h2 className="text-lg font-semibold">{t("attachments.title")}</h2>
             <span className="text-xs text-muted-foreground">
-              {t("images.hint")}
+              {t("attachments.hint")}
             </span>
           </div>
 
@@ -709,53 +776,115 @@ export function TicketDetailView({
                   {t("images.empty")}
                 </p>
               ) : null}
-              <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                {images.map((image) => (
-                  <li key={image.id} className="group rounded-lg border p-2">
-                    <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
-                      <img
-                        src={image.url}
-                        alt={image.name}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                    <div className="mt-2 space-y-1">
-                      <p className="truncate text-xs font-semibold">
-                        {image.name}
-                      </p>
-                      <div className="flex flex-wrap items-center gap-1">
-                        <button
-                          type="button"
-                          className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
-                          onClick={() =>
-                            navigator.clipboard.writeText(`[${image.name}]`)
-                          }
-                        >
-                          {t("images.actions.copy")}
-                        </button>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold">
+                    {t("images.title")}
+                  </h3>
+                  <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                    {imageAttachments.map((image) => (
+                      <li key={image.id} className="group rounded-lg border p-2">
+                        <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
+                          <img
+                            src={image.url}
+                            alt={image.name}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div className="mt-2 space-y-1">
+                          <p className="truncate text-xs font-semibold">
+                            {image.name}
+                          </p>
+                          <div className="flex flex-wrap items-center gap-1">
+                            <button
+                              type="button"
+                              className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                              onClick={() =>
+                                navigator.clipboard.writeText(`[${image.name}]`)
+                              }
+                            >
+                              {t("images.actions.copy")}
+                            </button>
                         <button
                           type="button"
                           className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
                           onClick={() => void handleDeleteImage(image)}
                           disabled={imageBusyId === image.id}
                         >
-                          {t("images.actions.delete")}
+                          {imageBusyId === image.id
+                            ? t("images.actions.deleting")
+                            : t("images.actions.delete")}
                         </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-                <li>
-                  <button
-                    type="button"
-                    className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
-                    onClick={() => setShowImageForm(true)}
-                  >
-                    <span className="text-lg">+</span>
-                    {t("images.actions.upload")}
-                  </button>
-                </li>
-              </ul>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                    <li>
+                      <button
+                        type="button"
+                        className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
+                        onClick={() => setShowImageForm(true)}
+                        disabled={uploadingAttachment}
+                      >
+                        <span className="text-lg">+</span>
+                        {t("attachments.actions.add")}
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold">
+                    {t("files.title")}
+                  </h3>
+                  {fileAttachments.length === 0 ? (
+                    <p className="text-xs text-muted-foreground">
+                      {t("files.empty")}
+                    </p>
+                  ) : (
+                    <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                      {fileAttachments.map((file) => {
+                        const Icon = resolveFileIcon(file.mimeType);
+                        return (
+                          <li key={file.id} className="group rounded-lg border p-2">
+                            <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/10 grid place-items-center">
+                              <Icon className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                            <div className="mt-2 space-y-1">
+                              <p className="truncate text-xs font-semibold">
+                                {file.name}
+                              </p>
+                              <p className="text-[10px] text-muted-foreground">
+                                {formatBytes(file.size)}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-1">
+                                <a
+                                  href={file.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                                >
+                                  {t("files.actions.open")}
+                                </a>
+                                <button
+                                  type="button"
+                                  className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
+                                  onClick={() => void handleDeleteImage(file)}
+                                  disabled={imageBusyId === file.id}
+                                >
+                                  {imageBusyId === file.id
+                                    ? t("files.actions.deleting")
+                                    : t("files.actions.delete")}
+                                </button>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+              </div>
             </>
           )}
 
@@ -785,6 +914,9 @@ export function TicketDetailView({
                     }
                     className="w-full rounded-lg border px-3 py-2 text-sm"
                   />
+                  <p className="text-[10px] text-muted-foreground">
+                    {t("images.validationTooLarge")}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2">
@@ -796,6 +928,7 @@ export function TicketDetailView({
                     setImageName("");
                     setImageFile(null);
                   }}
+                  disabled={uploadingAttachment}
                 >
                   {t("actions.cancel")}
                 </button>
@@ -803,9 +936,11 @@ export function TicketDetailView({
                   type="button"
                   className={actionButtonClass({ size: "xs" })}
                   onClick={() => void handleUploadImage()}
-                  disabled={!imageFile || !imageName.trim()}
+                  disabled={!imageFile || !imageName.trim() || uploadingAttachment}
                 >
-                  {t("images.actions.upload")}
+                  {uploadingAttachment
+                    ? t("images.actions.uploading")
+                    : t("images.actions.upload")}
                 </button>
               </div>
             </div>

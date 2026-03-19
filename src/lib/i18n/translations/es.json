@@ -1930,6 +1930,8 @@
           "saving": "Guardando...",
           "edit": "Editar",
           "cancel": "Cancelar",
+          "expand": "Expandir",
+          "collapse": "Colapsar",
           "delete": "Eliminar",
           "confirmDelete": "Eliminar ticket",
           "deleting": "Eliminando...",

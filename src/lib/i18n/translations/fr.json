@@ -1928,6 +1928,8 @@
           "saving": "Enregistrement...",
           "edit": "Modifier",
           "cancel": "Annuler",
+          "expand": "Développer",
+          "collapse": "Réduire",
           "delete": "Supprimer",
           "confirmDelete": "Supprimer le ticket",
           "deleting": "Suppression...",

@@ -1929,6 +1929,8 @@
           "saving": "Salvando...",
           "edit": "Editar",
           "cancel": "Cancelar",
+          "expand": "Expandir",
+          "collapse": "Recolher",
           "delete": "Excluir",
           "confirmDelete": "Excluir ticket",
           "deleting": "Excluindo...",

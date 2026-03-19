@@ -13,6 +13,7 @@ import {
   FileVideo,
   FileAudio,
   File,
+  ChevronDown,
   User,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -166,6 +167,7 @@ export function TicketDetailView({
   const [showImageForm, setShowImageForm] = useState(false);
   const [showImages, setShowImages] = useState(true);
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
+  const [attachmentsOpen, setAttachmentsOpen] = useState(false);
 
   const assigneeOptions = useMemo(
     () =>
@@ -771,175 +773,195 @@ export function TicketDetailView({
       {canAccessImages ? (
         <section className="rounded-xl border bg-background p-4 space-y-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg font-semibold">{t("attachments.title")}</h2>
-            <span className="text-xs text-muted-foreground">
-              {t("attachments.hint")}
-            </span>
+            <div>
+              <h2 className="text-lg font-semibold">{t("attachments.title")}</h2>
+              <span className="text-xs text-muted-foreground">
+                {t("attachments.hint")}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAttachmentsOpen((prev) => !prev)}
+              className="rounded-full border p-1 text-muted-foreground hover:text-foreground"
+              aria-expanded={attachmentsOpen}
+              aria-label={attachmentsOpen ? t("actions.collapse") : t("actions.expand")}
+            >
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 transition-transform",
+                  attachmentsOpen ? "rotate-180" : "rotate-0"
+                )}
+              />
+            </button>
           </div>
 
-          {imagesLoading ? (
-            <p className="text-sm text-muted-foreground">
-              {t("images.loading")}
-            </p>
-          ) : (
+          {attachmentsOpen ? (
             <>
-              {images.length === 0 ? (
+              {imagesLoading ? (
                 <p className="text-sm text-muted-foreground">
-                  {t("images.empty")}
+                  {t("images.loading")}
                 </p>
-              ) : null}
-              <div className="space-y-2">
-                <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                  {orderedAttachments.map(({ kind, item }) => {
-                    if (kind === "image") {
-                      return (
-                        <li key={item.id} className="group rounded-lg border p-2">
-                          <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
-                            <img
-                              src={item.url}
-                              alt={item.name}
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <div className="mt-2 space-y-1">
-                            <p className="truncate text-xs font-semibold">
-                              {item.name}
-                            </p>
-                            <div className="flex flex-wrap items-center gap-1">
-                              <button
-                                type="button"
-                                className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
-                                onClick={() =>
-                                  navigator.clipboard.writeText(`[${item.name}]`)
-                                }
-                              >
-                                {t("images.actions.copy")}
-                              </button>
-                              <button
-                                type="button"
-                                className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
-                                onClick={() => void handleDeleteImage(item)}
-                                disabled={imageBusyId === item.id}
-                              >
-                                {imageBusyId === item.id
-                                  ? t("images.actions.deleting")
-                                  : t("images.actions.delete")}
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    }
+              ) : (
+                <>
+                  {images.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      {t("images.empty")}
+                    </p>
+                  ) : null}
+                  <div className="space-y-2">
+                    <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                      {orderedAttachments.map(({ kind, item }) => {
+                        if (kind === "image") {
+                          return (
+                            <li key={item.id} className="group rounded-lg border p-2">
+                              <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
+                                <img
+                                  src={item.url}
+                                  alt={item.name}
+                                  className="h-full w-full object-cover"
+                                />
+                              </div>
+                              <div className="mt-2 space-y-1">
+                                <p className="truncate text-xs font-semibold">
+                                  {item.name}
+                                </p>
+                                <div className="flex flex-wrap items-center gap-1">
+                                  <button
+                                    type="button"
+                                    className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                                    onClick={() =>
+                                      navigator.clipboard.writeText(`[${item.name}]`)
+                                    }
+                                  >
+                                    {t("images.actions.copy")}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
+                                    onClick={() => void handleDeleteImage(item)}
+                                    disabled={imageBusyId === item.id}
+                                  >
+                                    {imageBusyId === item.id
+                                      ? t("images.actions.deleting")
+                                      : t("images.actions.delete")}
+                                  </button>
+                                </div>
+                              </div>
+                            </li>
+                          );
+                        }
 
-                    const Icon = resolveFileIcon(item.mimeType);
-                    return (
-                      <li key={item.id} className="group rounded-lg border p-2">
-                        <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/10 grid place-items-center">
-                          <Icon className="h-8 w-8 text-muted-foreground" />
-                        </div>
-                        <div className="mt-2 space-y-1">
-                          <p className="truncate text-xs font-semibold">
-                            {item.name}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground">
-                            {formatBytes(item.size)}
-                          </p>
-                          <div className="flex flex-wrap items-center gap-1">
-                            <a
-                              href={item.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
-                            >
-                              {t("files.actions.open")}
-                            </a>
-                            <button
-                              type="button"
-                              className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
-                              onClick={() => void handleDeleteImage(item)}
-                              disabled={imageBusyId === item.id}
-                            >
-                              {imageBusyId === item.id
-                                ? t("files.actions.deleting")
-                                : t("files.actions.delete")}
-                            </button>
-                          </div>
-                        </div>
+                        const Icon = resolveFileIcon(item.mimeType);
+                        return (
+                          <li key={item.id} className="group rounded-lg border p-2">
+                            <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/10 grid place-items-center">
+                              <Icon className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                            <div className="mt-2 space-y-1">
+                              <p className="truncate text-xs font-semibold">
+                                {item.name}
+                              </p>
+                              <p className="text-[10px] text-muted-foreground">
+                                {formatBytes(item.size)}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-1">
+                                <a
+                                  href={item.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                                >
+                                  {t("files.actions.open")}
+                                </a>
+                                <button
+                                  type="button"
+                                  className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
+                                  onClick={() => void handleDeleteImage(item)}
+                                  disabled={imageBusyId === item.id}
+                                >
+                                  {imageBusyId === item.id
+                                    ? t("files.actions.deleting")
+                                    : t("files.actions.delete")}
+                                </button>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
+                      <li>
+                        <button
+                          type="button"
+                          className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
+                          onClick={() => setShowImageForm(true)}
+                          disabled={uploadingAttachment}
+                        >
+                          <span className="text-lg">+</span>
+                          {t("attachments.actions.add")}
+                        </button>
                       </li>
-                    );
-                  })}
-                  <li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {showImageForm ? (
+                <div className="rounded-lg border bg-muted/10 p-4 space-y-3">
+                  <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {t("images.fields.name")}
+                      </label>
+                      <input
+                        type="text"
+                        value={imageName}
+                        onChange={(event) => setImageName(event.target.value)}
+                        className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder={t("images.placeholders.name")}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                        {t("images.fields.file")}
+                      </label>
+                      <input
+                        type="file"
+                        onChange={(event) =>
+                          setImageFile(event.target.files?.[0] ?? null)
+                        }
+                        className="w-full rounded-lg border px-3 py-2 text-sm"
+                      />
+                      <p className="text-[10px] text-muted-foreground">
+                        {t("images.validationTooLarge")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-end gap-2">
                     <button
                       type="button"
-                      className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
-                      onClick={() => setShowImageForm(true)}
+                      className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                      onClick={() => {
+                        setShowImageForm(false);
+                        setImageName("");
+                        setImageFile(null);
+                      }}
                       disabled={uploadingAttachment}
                     >
-                      <span className="text-lg">+</span>
-                      {t("attachments.actions.add")}
+                      {t("actions.cancel")}
                     </button>
-                  </li>
-                </ul>
-              </div>
+                    <button
+                      type="button"
+                      className={actionButtonClass({ size: "xs" })}
+                      onClick={() => void handleUploadImage()}
+                      disabled={!imageFile || !imageName.trim() || uploadingAttachment}
+                    >
+                      {uploadingAttachment
+                        ? t("images.actions.uploading")
+                        : t("images.actions.upload")}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
             </>
-          )}
-
-          {showImageForm ? (
-            <div className="rounded-lg border bg-muted/10 p-4 space-y-3">
-              <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-                <div className="space-y-2">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("images.fields.name")}
-                  </label>
-                  <input
-                    type="text"
-                    value={imageName}
-                    onChange={(event) => setImageName(event.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t("images.placeholders.name")}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {t("images.fields.file")}
-                  </label>
-                  <input
-                    type="file"
-                    onChange={(event) =>
-                      setImageFile(event.target.files?.[0] ?? null)
-                    }
-                    className="w-full rounded-lg border px-3 py-2 text-sm"
-                  />
-                  <p className="text-[10px] text-muted-foreground">
-                    {t("images.validationTooLarge")}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  className="rounded border px-2 py-1 text-xs hover:bg-muted"
-                  onClick={() => {
-                    setShowImageForm(false);
-                    setImageName("");
-                    setImageFile(null);
-                  }}
-                  disabled={uploadingAttachment}
-                >
-                  {t("actions.cancel")}
-                </button>
-                <button
-                  type="button"
-                  className={actionButtonClass({ size: "xs" })}
-                  onClick={() => void handleUploadImage()}
-                  disabled={!imageFile || !imageName.trim() || uploadingAttachment}
-                >
-                  {uploadingAttachment
-                    ? t("images.actions.uploading")
-                    : t("images.actions.upload")}
-                </button>
-              </div>
-            </div>
           ) : null}
         </section>
       ) : null}

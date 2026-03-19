@@ -1928,6 +1928,8 @@
           "saving": "Opslaan...",
           "edit": "Bewerken",
           "cancel": "Annuleren",
+          "expand": "Uitklappen",
+          "collapse": "Inklappen",
           "delete": "Verwijderen",
           "confirmDelete": "Ticket verwijderen",
           "deleting": "Verwijderen...",

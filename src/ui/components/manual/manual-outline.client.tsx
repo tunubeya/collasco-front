@@ -322,6 +322,85 @@ function ManualNodeItem({
   if (hideRootTitle && level === 0) {
     return (
       <div className="space-y-2" id={getNodeDomId(node.id)}>
+        <div className="px-3">
+          <span className={cn(titleClass, "leading-tight")}>
+            {currentNumbering ? (
+              <span className="mr-2 font-mono">{currentNumbering}</span>
+            ) : null}
+            {node.name}
+          </span>
+        </div>
+        {node.linkedFeatures?.length ? (
+          <div className="px-3 text-xs text-muted-foreground">
+            {node.linkedFeatures.some((linked) => linked.direction !== "referenced_by") && (
+              <>
+                <p className="font-semibold">{referencesLabel}</p>
+                <ul className="mt-1 space-y-1">
+                  {node.linkedFeatures
+                    .filter((linked) => linked.direction !== "referenced_by")
+                    .map((linked) => (
+                      <li key={`ref-${linked.id}`} className="flex items-start gap-2">
+                        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground" />
+                        <button
+                          type="button"
+                          className="text-left hover:text-primary"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onNavigateTo?.(linked.id);
+                          }}
+                        >
+                          {linked.name}
+                        </button>
+                        {linked.reason ? (
+                          <span className="text-muted-foreground/80">
+                            — {linked.reason}
+                          </span>
+                        ) : null}
+                      </li>
+                    ))}
+                </ul>
+              </>
+            )}
+            {node.linkedFeatures.some((linked) => linked.direction === "referenced_by") && (
+              <>
+                <p className="mt-3 font-semibold">{referencedByLabel}</p>
+                <ul className="mt-1 space-y-1">
+                  {node.linkedFeatures
+                    .filter((linked) => linked.direction === "referenced_by")
+                    .map((linked) => (
+                      <li key={`refby-${linked.id}`} className="flex items-start gap-2">
+                        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-muted-foreground" />
+                        <button
+                          type="button"
+                          className="text-left hover:text-primary"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onNavigateTo?.(linked.id);
+                          }}
+                        >
+                          {linked.name}
+                        </button>
+                        {linked.reason ? (
+                          <span className="text-muted-foreground/80">
+                            — {linked.reason}
+                          </span>
+                        ) : null}
+                      </li>
+                    ))}
+                </ul>
+              </>
+            )}
+          </div>
+        ) : null}
+        <div className="px-3">
+          <RichTextPreview
+            value={richTextValue}
+            emptyLabel={fallbackDescription}
+            className={cn(descriptionClass)}
+            imageMap={imageMap ?? undefined}
+            fileOpenLabel={fileOpenLabel}
+          />
+        </div>
         {hasChildren && isExpanded && (
           <div className="space-y-4">
             {node.children.map((child, index) => (

@@ -282,6 +282,7 @@ export function FeatureTabs({
             project={project}
             projectId={projectId}
             focusId={feature.id}
+            subtreeRootId={feature.id}
             fallbackDescription={tManual("noDescription")}
             expandLabel={tProjectDetail("modules.expandAll", {
               default: "Expand all",

@@ -549,7 +549,7 @@
         "tabs": {
           "structure": "Estructura",
           "documentation": "Documentación",
-          "images": "Imágenes",
+          "attachments": "Adjuntos",
           "dashboard": "Dashboard",
           "qa": "Ejecuciones QA",
           "members": "Miembros",
@@ -611,26 +611,26 @@
           "requiresModule": "Requiere módulo restaurado"
         }
       },
-      "images": {
-        "title": "Imágenes del proyecto",
-        "subtitle": "Todas las imágenes de documentación agrupadas por etiqueta.",
+      "attachments": {
+        "title": "Adjuntos del proyecto",
+        "subtitle": "Adjuntos de documentación agrupados por etiqueta.",
         "actions": {
           "reload": "Recargar",
           "loading": "Cargando...",
           "viewEntity": "Ver elemento"
         },
         "messages": {
-          "loading": "Cargando imágenes...",
-          "empty": "Aún no hay imágenes.",
-          "loadError": "No pudimos cargar las imágenes."
+          "loading": "Cargando adjuntos...",
+          "empty": "Aún no hay adjuntos.",
+          "loadError": "No pudimos cargar los adjuntos."
         },
         "labels": {
           "unknown": "Etiqueta desconocida",
-          "count": "{count, plural, one {# imagen} other {# imágenes}}"
+          "count": "{count, plural, one {# adjunto} other {# adjuntos}}"
         },
         "meta": {
-          "createdByAt": "Subida por {name} · {date}",
-          "createdAt": "Subida {date}"
+          "createdByAt": "Subido por {name} · {date}",
+          "createdAt": "Subido {date}"
         },
         "entity": {
           "project": "Proyecto",

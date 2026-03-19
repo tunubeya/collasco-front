@@ -549,7 +549,7 @@
         "tabs": {
           "structure": "Estrutura",
           "documentation": "Documentação",
-          "images": "Imagens",
+          "attachments": "Anexos",
           "dashboard": "Painel",
           "qa": "Execuções QA",
           "members": "Membros",
@@ -611,22 +611,22 @@
           "requiresModule": "Requer módulo restaurado"
         }
       },
-      "images": {
-        "title": "Imagens do projeto",
-        "subtitle": "Todas as imagens de documentação agrupadas por etiqueta.",
+      "attachments": {
+        "title": "Anexos do projeto",
+        "subtitle": "Anexos de documentação agrupados por etiqueta.",
         "actions": {
           "reload": "Recarregar",
           "loading": "Carregando...",
           "viewEntity": "Ver item"
         },
         "messages": {
-          "loading": "Carregando imagens...",
-          "empty": "Ainda não há imagens.",
-          "loadError": "Não foi possível carregar as imagens."
+          "loading": "Carregando anexos...",
+          "empty": "Ainda não há anexos.",
+          "loadError": "Não foi possível carregar os anexos."
         },
         "labels": {
           "unknown": "Etiqueta desconhecida",
-          "count": "{count, plural, one {# imagem} other {# imagens}}"
+          "count": "{count, plural, one {# anexo} other {# anexos}}"
         },
         "meta": {
           "createdByAt": "Enviado por {name} · {date}",

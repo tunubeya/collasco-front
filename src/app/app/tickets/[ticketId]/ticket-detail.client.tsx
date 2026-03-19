@@ -815,11 +815,11 @@ export function TicketDetailView({
                           return (
                             <li key={item.id} className="group rounded-lg border p-2">
                               <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
-                                <img
-                                  src={item.url}
-                                  alt={item.name}
-                                  className="h-full w-full object-cover"
-                                />
+                              <img
+                                src={item.url}
+                                alt={item.name}
+                                className="h-full w-full object-contain"
+                              />
                               </div>
                               <div className="mt-2 space-y-1">
                                 <p className="truncate text-xs font-semibold">

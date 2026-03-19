@@ -547,7 +547,7 @@
         "tabs": {
           "structure": "Structuur",
           "documentation": "Documentatie",
-          "images": "Afbeeldingen",
+          "attachments": "Bijlagen",
           "dashboard": "Dashboard",
           "qa": "QA-runs",
           "members": "Leden",
@@ -609,22 +609,22 @@
           "requiresModule": "Vereist herstelde module"
         }
       },
-      "images": {
-        "title": "Projectafbeeldingen",
-        "subtitle": "Alle documentatie-afbeeldingen gegroepeerd per label.",
+      "attachments": {
+        "title": "Projectbijlagen",
+        "subtitle": "Documentatiebijlagen gegroepeerd per label.",
         "actions": {
           "reload": "Herladen",
           "loading": "Bezig...",
           "viewEntity": "Bekijk item"
         },
         "messages": {
-          "loading": "Afbeeldingen laden...",
-          "empty": "Nog geen afbeeldingen.",
-          "loadError": "We konden the afbeeldingen niet laden."
+          "loading": "Bijlagen laden...",
+          "empty": "Nog geen bijlagen.",
+          "loadError": "We konden de bijlagen niet laden."
         },
         "labels": {
           "unknown": "Onbekend label",
-          "count": "{count, plural, one {# afbeelding} other {# afbeeldingen}}"
+          "count": "{count, plural, one {# bijlage} other {# bijlagen}}"
         },
         "meta": {
           "createdByAt": "Geüpload door {name} · {date}",

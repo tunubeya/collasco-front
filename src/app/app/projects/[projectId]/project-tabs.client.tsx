@@ -38,7 +38,7 @@ type ProjectTabsProps = {
 type ProjectTab =
   | "structure"
   | "documentation"
-  | "images"
+  | "attachments"
   | "qa"
   | "members"
   | "labels"
@@ -78,7 +78,7 @@ export function ProjectTabs({
     "project.manage_share_links",
   );
   const canViewProjectDocumentation = canViewProject || hasQaRead;
-  const canViewImages = canViewProject || hasQaRead;
+  const canViewAttachments = canViewProject || hasQaRead;
   const canViewMembers = canManageMembers || canManageRoles;
   const canViewLabels = canManageLabels;
   const canViewManual = canViewProject || hasQaRead;
@@ -92,7 +92,7 @@ export function ProjectTabs({
     const tabs: ProjectTab[] = [];
     if (canViewStructure) tabs.push("structure");
     if (canViewProjectDocumentation) tabs.push("documentation");
-    if (canViewImages) tabs.push("images");
+    if (canViewAttachments) tabs.push("attachments");
     if (canViewQa) tabs.push("qa");
     if (canViewMembers) tabs.push("members");
     if (canViewLabels) tabs.push("labels");
@@ -101,7 +101,7 @@ export function ProjectTabs({
     return tabs;
   }, [
     canManageTrash,
-    canViewImages,
+    canViewAttachments,
     canViewLabels,
     canViewManual,
     canViewMembers,
@@ -133,11 +133,11 @@ export function ProjectTabs({
             onClick={() => setActiveTab("documentation")}
           />
         )}
-        {canViewImages && (
+        {canViewAttachments && (
           <TabButton
-            label={tTabs("images")}
-            isActive={activeTab === "images"}
-            onClick={() => setActiveTab("images")}
+            label={tTabs("attachments")}
+            isActive={activeTab === "attachments"}
+            onClick={() => setActiveTab("attachments")}
           />
         )}
         {canViewQa && (
@@ -223,7 +223,7 @@ export function ProjectTabs({
         />
       )}
 
-      {activeTab === "images" && canViewImages && (
+      {activeTab === "attachments" && canViewAttachments && (
         <ProjectImagesTab token={token} projectId={projectId} />
       )}
       {activeTab === "members" && canViewMembers && (

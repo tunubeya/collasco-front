@@ -3,7 +3,18 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useFormatter, useTranslations } from "next-intl";
-import { Loader2 } from "lucide-react";
+import {
+  File,
+  FileArchive,
+  FileAudio,
+  FileCode,
+  FileImage,
+  FileSpreadsheet,
+  FileText,
+  FileType2,
+  FileVideo,
+  Loader2,
+} from "lucide-react";
 
 import type { ProjectDocumentationImage } from "@/lib/api/qa";
 import {
@@ -29,8 +40,39 @@ type ImagesGroup = {
   images: ProjectDocumentationImage[];
 };
 
+function formatBytes(size?: number) {
+  if (!size && size !== 0) return "";
+  const units = ["B", "KB", "MB", "GB"];
+  let value = size;
+  let index = 0;
+  while (value >= 1024 && index < units.length - 1) {
+    value /= 1024;
+    index += 1;
+  }
+  return `${value.toFixed(value >= 10 || index === 0 ? 0 : 1)} ${units[index]}`;
+}
+
+function isImageAttachment(item: ProjectDocumentationImage) {
+  return item.mimeType?.startsWith("image/") ?? false;
+}
+
+function resolveFileIcon(mimeType?: string) {
+  const type = (mimeType ?? "").toLowerCase();
+  if (type.startsWith("image/")) return FileImage;
+  if (type.startsWith("audio/")) return FileAudio;
+  if (type.startsWith("video/")) return FileVideo;
+  if (type.includes("pdf")) return FileText;
+  if (type.includes("word")) return FileType2;
+  if (type.includes("sheet") || type.includes("excel")) return FileSpreadsheet;
+  if (type.includes("presentation") || type.includes("powerpoint")) return FileText;
+  if (type.includes("zip") || type.includes("compressed")) return FileArchive;
+  if (type.includes("json") || type.includes("xml")) return FileCode;
+  if (type.includes("text")) return FileText;
+  return File;
+}
+
 export function ProjectImagesTab({ token, projectId }: ProjectImagesTabProps) {
-  const t = useTranslations("app.projects.images");
+  const t = useTranslations("app.projects.attachments");
   const formatter = useFormatter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -127,7 +169,13 @@ export function ProjectImagesTab({ token, projectId }: ProjectImagesTabProps) {
 
       {!error && groups.length > 0 ? (
         <div className="space-y-4">
-          {groups.map((group) => (
+          {groups.map((group) => {
+            const ordered = [...group.images].sort((a, b) => {
+              const aTime = new Date(a.createdAt).getTime();
+              const bTime = new Date(b.createdAt).getTime();
+              return aTime - bTime;
+            });
+            return (
             <div key={group.labelId} className="space-y-2">
               <div className="flex items-center gap-2 text-sm font-semibold">
                 <span>{group.labelName}</span>
@@ -136,36 +184,44 @@ export function ProjectImagesTab({ token, projectId }: ProjectImagesTabProps) {
                 </span>
               </div>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {group.images.map((image) => {
-                  const href = getEntityHref(image);
-                  const createdBy = image.createdBy?.name?.trim();
-                  const createdAt = formatter.dateTime(new Date(image.createdAt), {
+                {ordered.map((attachment) => {
+                  const href = getEntityHref(attachment);
+                  const createdBy = attachment.createdBy?.name?.trim();
+                  const createdAt = formatter.dateTime(new Date(attachment.createdAt), {
                     dateStyle: "medium",
                   });
+                  const isImage = isImageAttachment(attachment);
+                  const Icon = resolveFileIcon(attachment.mimeType);
                   return (
                     <div
-                      key={image.id}
+                      key={attachment.id}
                       className="overflow-hidden rounded-lg border bg-background"
                     >
-                      <img
-                        src={image.url}
-                        alt={image.name}
-                        className="h-40 w-full object-contain"
-                        loading="lazy"
-                      />
+                      {isImage ? (
+                        <img
+                          src={attachment.url}
+                          alt={attachment.name}
+                          className="h-40 w-full object-contain"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="grid h-40 w-full place-items-center bg-muted/20">
+                          <Icon className="h-10 w-10 text-muted-foreground" />
+                        </div>
+                      )}
                       <div className="space-y-1 px-3 py-2 text-xs">
                         <div className="flex items-center justify-between gap-2">
                           <span className="truncate text-sm font-medium">
-                            {image.name}
+                            {attachment.name}
                           </span>
                           <span
                             className={cn(
                               "rounded-full border px-2 py-0.5 text-[10px] font-semibold",
-                              entityTone[image.entityType] ??
+                              entityTone[attachment.entityType] ??
                                 "border-slate-200 bg-slate-100 text-slate-700"
                             )}
                           >
-                            {t(`entity.${image.entityType.toLowerCase()}`)}
+                            {t(`entity.${attachment.entityType.toLowerCase()}`)}
                           </span>
                         </div>
                         <div className="text-muted-foreground">
@@ -176,6 +232,11 @@ export function ProjectImagesTab({ token, projectId }: ProjectImagesTabProps) {
                               })
                             : t("meta.createdAt", { date: createdAt })}
                         </div>
+                        {!isImage && attachment.size ? (
+                          <div className="text-[11px] text-muted-foreground">
+                            {formatBytes(attachment.size)}
+                          </div>
+                        ) : null}
                         {href ? (
                           <Link
                             href={href}
@@ -190,7 +251,7 @@ export function ProjectImagesTab({ token, projectId }: ProjectImagesTabProps) {
                 })}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       ) : null}
     </section>

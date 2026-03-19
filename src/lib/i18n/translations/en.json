@@ -549,7 +549,7 @@
         "tabs": {
           "structure": "Structure",
           "documentation": "Documentation",
-          "images": "Images",
+          "attachments": "Attachments",
           "dashboard": "Dashboard",
           "qa": "Test runs",
           "members": "Members",
@@ -611,22 +611,22 @@
           "requiresModule": "Requires restored module"
         }
       },
-      "images": {
-        "title": "Project images",
-        "subtitle": "All documentation images grouped by label.",
+      "attachments": {
+        "title": "Project attachments",
+        "subtitle": "Documentation attachments grouped by label.",
         "actions": {
           "reload": "Reload",
           "loading": "Loading...",
           "viewEntity": "View item"
         },
         "messages": {
-          "loading": "Loading images...",
-          "empty": "No images available yet.",
-          "loadError": "We couldn't load the images."
+          "loading": "Loading attachments...",
+          "empty": "No attachments available yet.",
+          "loadError": "We couldn't load the attachments."
         },
         "labels": {
           "unknown": "Unknown label",
-          "count": "{count, plural, one {# image} other {# images}}"
+          "count": "{count, plural, one {# attachment} other {# attachments}}"
         },
         "meta": {
           "createdByAt": "Uploaded by {name} · {date}",

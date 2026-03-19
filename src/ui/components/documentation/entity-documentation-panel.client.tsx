@@ -21,7 +21,7 @@ import {
   updateProjectDocumentationEntry,
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Check, Loader2, Pencil, Trash2, X } from "lucide-react";
+import { Check, Info, Loader2, Pencil, Trash2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
@@ -519,7 +519,17 @@ export function EntityDocumentationPanel({
               >
                 {isCompactNotApplicable ? (
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="font-semibold">{entry.label.name}</p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-semibold">{entry.label.name}</p>
+                      {entry.label.instructions && (
+                        <span className="group relative inline-flex items-center">
+                          <Info className="h-4 w-4 text-muted-foreground" aria-hidden />
+                          <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded-md border bg-background p-2 text-[11px] text-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100 whitespace-pre-wrap">
+                            {entry.label.instructions}
+                          </span>
+                        </span>
+                      )}
+                    </div>
                     {entry.canEdit && (
                       <button
                         type="button"
@@ -541,6 +551,14 @@ export function EntityDocumentationPanel({
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
                           <p className="font-semibold">{entry.label.name}</p>
+                          {entry.label.instructions && (
+                            <span className="group relative inline-flex items-center">
+                              <Info className="h-4 w-4 text-muted-foreground" aria-hidden />
+                              <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 w-56 -translate-x-1/2 rounded-md border bg-background p-2 text-[11px] text-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100 whitespace-pre-wrap">
+                                {entry.label.instructions}
+                              </span>
+                            </span>
+                          )}
                           {entry.label.isMandatory && (
                             <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                               {t("badges.mandatory")}

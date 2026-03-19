@@ -839,6 +839,9 @@
         "fields": {
           "name": "Nombre",
           "namePlaceholder": "Ej. Documentación requerida",
+          "instructions": "Instrucciones",
+          "instructionsPlaceholder": "Describe qué se debe documentar aquí.",
+          "instructionsHint": "Se mostrará a los usuarios al completar el label.",
           "isMandatory": "Campo obligatorio",
           "isNotApplicableByDefault": "Marcar como no aplicable por defecto",
           "visibleToRoles": "Roles con acceso",
@@ -1040,6 +1043,7 @@
         "fields": {
           "notApplicable": "No aplica",
           "notApplicableHint": "Oculta este campo para este feature o módulo.",
+          "instructions": "Instrucciones",
           "editorLabel": "Contenido",
           "editorPlaceholder": "Describe la evidencia, las validaciones o notas relevantes.",
           "editorHelper": "Usa texto enriquecido para mantener claridad y contexto."

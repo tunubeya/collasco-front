@@ -837,6 +837,9 @@
         "fields": {
           "name": "Nom",
           "namePlaceholder": "Ex. Validation confidentialité",
+          "instructions": "Instructions",
+          "instructionsPlaceholder": "Décrivez ce qui doit être documenté ici.",
+          "instructionsHint": "Cela sera affiché aux utilisateurs lorsqu’ils remplissent l’étiquette.",
           "isMandatory": "Champ obligatoire",
           "isNotApplicableByDefault": "Définir comme non applicable par défaut",
           "visibleToRoles": "Rôles avec accès",
@@ -1038,6 +1041,7 @@
         "fields": {
           "notApplicable": "Marqué comme non applicable",
           "notApplicableHint": "Masquez cette étiquette pour cette fonctionnalité ou ce module.",
+          "instructions": "Instructions",
           "editorLabel": "Contenu",
           "editorPlaceholder": "Documentez le contexte, les validations ou les décisions.",
           "editorHelper": "Utilisez le texte riche pour garder vos preuves lisibles."

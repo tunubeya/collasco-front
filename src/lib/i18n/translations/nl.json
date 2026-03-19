@@ -837,6 +837,9 @@
         "fields": {
           "name": "Naam",
           "namePlaceholder": "bijv. Privacy-goedkeuring",
+          "instructions": "Instructies",
+          "instructionsPlaceholder": "Beschrijf wat hier gedocumenteerd moet worden.",
+          "instructionsHint": "Dit wordt getoond aan gebruikers bij het invullen van het label.",
           "isMandatory": "Verplicht veld",
           "isNotApplicableByDefault": "Standaard als niet van toepassing markeren",
           "visibleToRoles": "Rollen met toegang",
@@ -1038,6 +1041,7 @@
         "fields": {
           "notApplicable": "Gemarkeerd als niet van toepassing",
           "notApplicableHint": "Verberg dit label voor deze feature of module.",
+          "instructions": "Instructies",
           "editorLabel": "Inhoud",
           "editorPlaceholder": "Documenteer de context, validaties of beslissingen.",
           "editorHelper": "Gebruik rich text om je bewijs leesbaar te houden."

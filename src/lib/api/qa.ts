@@ -262,10 +262,12 @@ export type QaLabelRole = string;
 export type QaProjectLabel = {
   id: string;
   name: string;
+  instructions?: string | null;
   isMandatory: boolean;
   visibleRoleIds: QaLabelRole[];
   readOnlyRoleIds: QaLabelRole[];
   defaultNotApplicable?: boolean;
+  displayOrder?: number;
   deletedAt?: string | null;
   deletedById?: string | null;
   deletedBy?: { id: string; name?: string | null; email?: string | null } | null;
@@ -285,6 +287,7 @@ export type DocumentationLabelPreferences = {
 
 export type CreateQaProjectLabelDto = {
   name: string;
+  instructions?: string | null;
   isMandatory?: boolean;
   visibleRoleIds?: QaLabelRole[];
   readOnlyRoleIds?: QaLabelRole[];

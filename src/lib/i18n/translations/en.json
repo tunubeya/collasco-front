@@ -839,6 +839,9 @@
         "fields": {
           "name": "Name",
           "namePlaceholder": "e.g. Privacy approval",
+          "instructions": "Instructions",
+          "instructionsPlaceholder": "Describe what should be documented here.",
+          "instructionsHint": "This will be shown to users filling out the label.",
           "isMandatory": "Mandatory field",
           "isNotApplicableByDefault": "Make not applicable by default",
           "visibleToRoles": "Roles with access",
@@ -1040,6 +1043,7 @@
         "fields": {
           "notApplicable": "Marked as not applicable",
           "notApplicableHint": "Hide this label for this feature or module.",
+          "instructions": "Instructions",
           "editorLabel": "Content",
           "editorPlaceholder": "Document the context, validations, or decisions.",
           "editorHelper": "Use rich text to keep your evidence readable."

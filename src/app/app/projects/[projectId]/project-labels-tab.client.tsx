@@ -42,6 +42,7 @@ type ProjectLabelsTabProps = {
 
 type LabelFormValues = {
   name: string;
+  instructions: string;
   isMandatory: boolean;
   isNotApplicableByDefault: boolean;
   visibleRoleIds: QaLabelRole[];
@@ -50,6 +51,7 @@ type LabelFormValues = {
 
 const DEFAULT_FORM_VALUES: LabelFormValues = {
   name: "",
+  instructions: "",
   isMandatory: false,
   isNotApplicableByDefault: false,
   visibleRoleIds: [],
@@ -121,6 +123,7 @@ export function ProjectLabelsTab({
     setEditingLabel(label);
     setFormValues({
       name: label.name ?? "",
+      instructions: label.instructions ?? "",
       isMandatory: Boolean(label.isMandatory),
       isNotApplicableByDefault: Boolean(label.defaultNotApplicable),
       visibleRoleIds: label.visibleRoleIds ?? [],
@@ -182,6 +185,7 @@ export function ProjectLabelsTab({
     setIsSaving(true);
     const payload: CreateQaProjectLabelDto = {
       name: formValues.name.trim(),
+      instructions: formValues.instructions.trim(),
       isMandatory: formValues.isMandatory,
       visibleRoleIds: formValues.visibleRoleIds,
       readOnlyRoleIds: formValues.readOnlyRoleIds,
@@ -541,6 +545,24 @@ function LabelFormDialog({
               placeholder={t("fields.namePlaceholder")}
               disabled={!canManageLabels}
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {t("fields.instructions")}
+            </label>
+            <textarea
+              value={values.instructions}
+              onChange={(event) =>
+                setValues({ ...values, instructions: event.target.value })
+              }
+              className="min-h-[96px] w-full resize-y rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("fields.instructionsPlaceholder")}
+              disabled={!canManageLabels}
+            />
+            <p className="text-xs text-muted-foreground">
+              {t("fields.instructionsHint")}
+            </p>
           </div>
 
           <label className="flex items-center gap-2 text-sm font-medium">

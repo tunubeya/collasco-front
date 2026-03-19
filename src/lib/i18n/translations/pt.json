@@ -839,6 +839,9 @@
         "fields": {
           "name": "Nome",
           "namePlaceholder": "ex. Aprovação de privacidade",
+          "instructions": "Instruções",
+          "instructionsPlaceholder": "Descreva o que deve ser documentado aqui.",
+          "instructionsHint": "Isso será mostrado aos usuários ao preencher o label.",
           "isMandatory": "Campo obrigatório",
           "isNotApplicableByDefault": "Marcar como não aplicável por padrão",
           "visibleToRoles": "Papéis com acesso",
@@ -1039,6 +1042,7 @@
         "fields": {
           "notApplicable": "Marcado como não aplicável",
           "notApplicableHint": "Oculte esta etiqueta para esta feature ou módulo.",
+          "instructions": "Instruções",
           "editorLabel": "Conteúdo",
           "editorPlaceholder": "Documente o contexto, validações ou decisões.",
           "editorHelper": "Use rich text para manter suas evidências legíveis."

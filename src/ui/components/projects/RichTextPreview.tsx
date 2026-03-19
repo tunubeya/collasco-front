@@ -11,7 +11,8 @@ type RichTextPreviewProps = {
   value?: string | null;
   emptyLabel: string;
   className?: string;
-  imageMap?: Record<string, string> | null;
+  imageMap?: Record<string, string | { url: string; mimeType?: string | null }> | null;
+  fileOpenLabel?: string;
 };
 
 export function RichTextPreview({
@@ -19,6 +20,7 @@ export function RichTextPreview({
   emptyLabel,
   className,
   imageMap,
+  fileOpenLabel,
 }: RichTextPreviewProps) {
   const [sanitized, setSanitized] = useState<string | null>(null);
   const hasContent = Boolean(value && value.trim().length);
@@ -26,8 +28,8 @@ export function RichTextPreview({
     if (!hasContent) return null;
     const base = normalizeRichTextInput(value);
     const withLinks = autolinkUrls(base);
-    return imageMap ? injectImages(withLinks, imageMap) : withLinks;
-  }, [hasContent, imageMap, value]);
+    return imageMap ? injectImages(withLinks, imageMap, fileOpenLabel) : withLinks;
+  }, [fileOpenLabel, hasContent, imageMap, value]);
 
   useEffect(() => {
     if (!normalized) {
@@ -79,6 +81,37 @@ export function RichTextPreview({
           object-fit: contain;
           vertical-align: middle;
         }
+        .rich-text-preview :global(.attachment-chip) {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          border: 1px solid hsl(var(--border));
+          border-radius: 999px;
+          padding: 0.25rem 0.6rem;
+          font-size: 0.75rem;
+          color: hsl(var(--foreground));
+          background: #d6d6d7;
+          text-decoration: none;
+          box-shadow: 0 1px 0 hsl(var(--border) / 0.6);
+        }
+        .rich-text-preview :global(.attachment-chip:hover) {
+          background: #d6d6d7;
+        }
+        .rich-text-preview :global(.attachment-chip svg) {
+          width: 14px;
+          height: 14px;
+          flex: 0 0 auto;
+        }
+        .rich-text-preview :global(.attachment-chip .attachment-name) {
+          max-width: 240px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .rich-text-preview :global(.attachment-chip .attachment-open) {
+          font-weight: 600;
+          color: hsl(var(--primary));
+        }
         .rich-text-preview :global(a) {
           color: inherit;
           text-decoration: underline;
@@ -96,14 +129,28 @@ function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
 }
 
-function injectImages(value: string, imageMap: Record<string, string>): string {
+function injectImages(
+  value: string,
+  imageMap: Record<string, string | { url: string; mimeType?: string | null }>,
+  fileOpenLabel?: string
+): string {
   const hasPlaceholders = value.includes("[") && value.includes("]");
   if (!hasPlaceholders) return value;
   return value.replace(/\[([^\]]+)\]/g, (match, rawName: string) => {
     const parsed = parseImageToken(rawName);
     if (!parsed) return match;
-    const url = imageMap[parsed.name] ?? imageMap[parsed.name.toLowerCase()];
-    if (!url) return match;
+    const resolved =
+      imageMap[parsed.name] ?? imageMap[parsed.name.toLowerCase()];
+    if (!resolved) return match;
+    const resolvedUrl = typeof resolved === "string" ? resolved : resolved.url;
+    const resolvedMime =
+      typeof resolved === "string" ? "image/*" : resolved.mimeType ?? "";
+    const isImage = resolvedMime.toLowerCase().startsWith("image/");
+
+    if (!isImage) {
+      return buildAttachmentChip(parsed.name, resolvedUrl, fileOpenLabel);
+    }
+
     const escapedAlt = escapeAttribute(parsed.name);
     const widthStyle =
       typeof parsed.width === "number"
@@ -113,11 +160,24 @@ function injectImages(value: string, imageMap: Record<string, string>): string {
       typeof parsed.height === "number"
         ? `height:${Math.round(parsed.height)}px;`
         : "";
-    const style = `${widthStyle}${heightStyle}object-fit:cover;`;
-    return `<img src="${escapeAttribute(url)}" alt="${escapedAlt}" style="${escapeAttribute(
+    const style = `${widthStyle}${heightStyle}object-fit:contain;`;
+    return `<img src="${escapeAttribute(resolvedUrl)}" alt="${escapedAlt}" style="${escapeAttribute(
       style
     )}" />`;
   });
+}
+
+function buildAttachmentChip(name: string, url: string, openLabel?: string): string {
+  const label = openLabel?.trim() ? openLabel.trim() : "";
+  const icon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7.5L14.5 2Z"/><path d="M14 2v6h6"/></svg>`;
+  const openSpan = label
+    ? `<span class="attachment-open">${escapeAttribute(label)}</span>`
+    : "";
+  return `<a class="attachment-chip" href="${escapeAttribute(
+    url
+  )}" target="_blank" rel="noreferrer">${icon}<span class="attachment-name">${escapeAttribute(
+    name
+  )}</span>${openSpan}</a>`;
 }
 
 function escapeAttribute(value: string): string {

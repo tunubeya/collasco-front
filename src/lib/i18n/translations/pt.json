@@ -640,6 +640,9 @@
       },
       "manual": {
         "noDescription": "Nenhuma descrição disponível.",
+        "attachments": {
+          "open": "Abrir"
+        },
         "labelsNavbar": {
           "title": "Preferências do manual",
           "subtitle": "Escolha quais rótulos aparecem no manual.",

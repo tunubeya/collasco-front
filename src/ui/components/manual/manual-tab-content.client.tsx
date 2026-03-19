@@ -222,17 +222,19 @@ export function ManualTabContent({
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
           hideRootTitle={hideProjectTitle}
+          fileOpenLabel={tManual("attachments.open", { default: "Open" })}
           imageLoader={async () => {
             try {
               const payload = await listProjectDocumentationImagesAll(
                 token,
                 projectId,
               );
-              const map: Record<string, string> = {};
+              const map: Record<string, string | { url: string; mimeType?: string | null }> = {};
               payload.items.forEach((group) => {
                 group.images.forEach((image) => {
-                  map[image.name] = image.url;
-                  map[image.name.toLowerCase()] = image.url;
+                  const entry = { url: image.url, mimeType: image.mimeType };
+                  map[image.name] = entry;
+                  map[image.name.toLowerCase()] = entry;
                 });
               });
               return map;

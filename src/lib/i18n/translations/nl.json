@@ -638,6 +638,9 @@
       },
       "manual": {
         "noDescription": "Geen beschrijving beschikbaar.",
+        "attachments": {
+          "open": "Openen"
+        },
         "labelsNavbar": {
           "title": "Handleidingvoorkeuren",
           "subtitle": "Kies welke labels de handleiding toont.",

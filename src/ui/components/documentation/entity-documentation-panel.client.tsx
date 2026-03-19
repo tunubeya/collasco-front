@@ -60,7 +60,9 @@ export function EntityDocumentationPanel({
   const [error, setError] = useState<string | null>(null);
   const [showImages, setShowImages] = useState(false);
   const [imagesByLabel, setImagesByLabel] = useState<Record<string, DocumentationImage[]>>({});
-  const [projectImagesMap, setProjectImagesMap] = useState<Record<string, string> | null>(null);
+  const [projectImagesMap, setProjectImagesMap] = useState<
+    Record<string, string | { url: string; mimeType?: string | null }> | null
+  >(null);
   const [imageNameByLabel, setImageNameByLabel] = useState<Record<string, string>>({});
   const [imageFileByLabel, setImageFileByLabel] = useState<Record<string, File | null>>({});
   const [imageLoadingLabelId, setImageLoadingLabelId] = useState<string | null>(null);
@@ -162,11 +164,12 @@ export function EntityDocumentationPanel({
   const fetchProjectImagesMap = useCallback(async () => {
     try {
       const payload = await listProjectDocumentationImagesAll(token, projectId);
-      const map: Record<string, string> = {};
+      const map: Record<string, string | { url: string; mimeType?: string | null }> = {};
       payload.items?.forEach((group) => {
         group.images.forEach((image) => {
-          map[image.name] = image.url;
-          map[image.name.toLowerCase()] = image.url;
+          const entry = { url: image.url, mimeType: image.mimeType };
+          map[image.name] = entry;
+          map[image.name.toLowerCase()] = entry;
         });
       });
       setProjectImagesMap(map);
@@ -700,11 +703,12 @@ export function EntityDocumentationPanel({
                                 Object.fromEntries(
                                   (images ?? []).map((image) => [
                                     image.name,
-                                    image.url,
+                                    { url: image.url, mimeType: image.mimeType },
                                   ]),
                                 )
                               : undefined
                           }
+                          fileOpenLabel={t("files.actions.open")}
                         />
                       )}
                     </div>

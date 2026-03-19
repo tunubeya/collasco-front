@@ -640,6 +640,9 @@
       },
     "manual": {
         "noDescription": "No description available.",
+        "attachments": {
+          "open": "Open"
+        },
         "labelsNavbar": {
           "title": "Manual preferences",
           "subtitle": "Choose the labels shown in the manual tree.",

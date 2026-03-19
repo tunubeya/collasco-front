@@ -638,6 +638,9 @@
       },
       "manual": {
         "noDescription": "Aucune description disponible.",
+        "attachments": {
+          "open": "Ouvrir"
+        },
         "labelsNavbar": {
           "title": "Préférences du manuel",
           "subtitle": "Choisissez les étiquettes visibles dans le manuel.",

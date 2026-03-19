@@ -49,10 +49,11 @@ type ManualOutlineProps = {
     label: string;
     onClick: () => void;
   };
+  fileOpenLabel?: string;
   imageLoader?: (
     entityType: "project" | "module" | "feature",
     entityId: string
-  ) => Promise<Record<string, string>>;
+  ) => Promise<Record<string, string | { url: string; mimeType?: string | null }>>;
 };
 
 const TITLE_CLASSES = [
@@ -84,6 +85,7 @@ export function ManualOutline({
   filterLabel,
   linkedLabel,
   shareAction,
+  fileOpenLabel,
   imageLoader,
 }: ManualOutlineProps) {
   const focusPath = useMemo(() => {
@@ -102,7 +104,9 @@ export function ManualOutline({
   }, [root.id, focusPath]);
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>(defaultExpanded);
-  const imageCacheRef = useRef(new Map<string, Record<string, string>>());
+  const imageCacheRef = useRef(
+    new Map<string, Record<string, string | { url: string; mimeType?: string | null }>>()
+  );
 
   const resolveImages = useCallback(
     async (entityType: "project" | "module" | "feature", entityId: string) => {
@@ -232,6 +236,7 @@ export function ManualOutline({
         linkedLabel={resolvedLinkedLabels}
         hideRootTitle={hideRootTitle}
         imageResolver={resolveImages}
+        fileOpenLabel={fileOpenLabel}
       />
     </div>
   );
@@ -252,10 +257,11 @@ type ManualNodeItemProps = {
     referencedBy: string;
   };
   hideRootTitle?: boolean;
+  fileOpenLabel?: string;
   imageResolver?: (
     entityType: "project" | "module" | "feature",
     entityId: string
-  ) => Promise<Record<string, string> | null>;
+  ) => Promise<Record<string, string | { url: string; mimeType?: string | null }> | null>;
 };
 
 function ManualNodeItem({
@@ -270,6 +276,7 @@ function ManualNodeItem({
   onNavigateTo,
   linkedLabel,
   hideRootTitle = false,
+  fileOpenLabel,
   imageResolver,
 }: ManualNodeItemProps) {
   const hasChildren = node.children.length > 0;
@@ -285,7 +292,9 @@ function ManualNodeItem({
     node.description && node.description.trim().length > 0
       ? node.description
       : null;
-  const [imageMap, setImageMap] = useState<Record<string, string> | null>(null);
+  const [imageMap, setImageMap] = useState<
+    Record<string, string | { url: string; mimeType?: string | null }> | null
+  >(null);
   const hasImageTokens =
     typeof richTextValue === "string" &&
     richTextValue.includes("[") &&
@@ -333,6 +342,7 @@ function ManualNodeItem({
                 onNavigateTo={onNavigateTo}
                 linkedLabel={linkedLabel}
                 imageResolver={imageResolver}
+                fileOpenLabel={fileOpenLabel}
               />
             ))}
           </div>
@@ -442,6 +452,7 @@ function ManualNodeItem({
           emptyLabel={fallbackDescription}
           className={cn(descriptionClass)}
           imageMap={imageMap ?? undefined}
+          fileOpenLabel={fileOpenLabel}
         />
       </div>
       {hasChildren && isExpanded && (
@@ -464,6 +475,7 @@ function ManualNodeItem({
               onNavigateTo={onNavigateTo}
               linkedLabel={linkedLabel}
               imageResolver={imageResolver}
+              fileOpenLabel={fileOpenLabel}
             />
           ))}
         </div>

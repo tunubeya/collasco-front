@@ -13,7 +13,31 @@ export type CreateNotificationDto = {
   title: string;
   message: string;
   type?: NotificationType;
-  data?: Record<string, unknown>;
+};
+
+export type CreateUserNotificationDto = {
+  email: string;
+  title: string;
+  message: string;
+  type?: NotificationType;
+};
+
+export type CreateProjectNotificationDto = {
+  title: string;
+  message: string;
+  type?: NotificationType;
+  roleNames?: string[];
+};
+
+export type CreateBroadcastNotificationDto = {
+  title: string;
+  message: string;
+  type?: NotificationType;
+};
+
+export type BroadcastNotificationResponse = {
+  created: number;
+  userIds: string[];
 };
 
 export type ListNotificationsParams = {
@@ -45,6 +69,73 @@ export async function createNotification(
     );
     if (!res.ok) throw res;
     return await parseJson<Notification>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function createUserNotification(
+  token: string,
+  dto: CreateUserNotificationDto
+): Promise<Notification> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/notifications/user`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<Notification>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function createProjectNotification(
+  token: string,
+  projectId: string,
+  dto: CreateProjectNotificationDto
+): Promise<BroadcastNotificationResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/notifications/project/${projectId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<BroadcastNotificationResponse>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function createAllNotification(
+  token: string,
+  dto: CreateBroadcastNotificationDto
+): Promise<BroadcastNotificationResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/notifications/all`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<BroadcastNotificationResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -141,4 +232,3 @@ export async function deleteNotification(
     throw error;
   }
 }
-

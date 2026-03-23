@@ -28,6 +28,7 @@ export enum RoutesEnum {
   APP_ROOT = '/app',
   APP_PROJECTS = '/app/projects',
   APP_PROJECT_NEW = '/app/projects/new',
+  APP_ADMIN = '/app/admin',
 
   APP_SETTINGS = '/app/settings',
   APP_SETTINGS_PROFILE = '/app/settings/profile',

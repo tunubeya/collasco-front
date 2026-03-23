@@ -7,6 +7,7 @@ import { fetchGetUserProfile } from '@/lib/data';
 import type { User } from '@/lib/model-definitions/user';
 import LangSelector from '@/ui/components/i18n/lang-selector';
 import NotificationsBell from '@/ui/components/notifications/notifications-bell.client';
+import { UserRole } from '@/lib/definitions';
 
 export default async function AppSidebar() {
   const t = await getTranslations('app.sidebar');
@@ -28,6 +29,10 @@ export default async function AppSidebar() {
     { key: 'notifications', label: t('notifications'), href: '/app/notifications', icon: 'notifications' },
     { key: 'settings', label: t('settingSection'), href: '/app/settings', icon: 'settings' },
   ];
+
+  if (session?.role === UserRole.ADMIN) {
+    items.push({ key: 'admin', label: t('adminPanel'), href: '/app/admin', icon: 'admin' });
+  }
 
   const displayName =
     profile?.name?.trim() ||

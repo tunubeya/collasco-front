@@ -2021,6 +2021,7 @@
     },
     "sidebar": {
       "menuAdmin": "Menu de administração",
+      "adminPanel": "Painel de Administração",
       "home": "Início",
       "projectSection": "Projetos",
       "tickets": "Tickets",
@@ -2029,6 +2030,55 @@
       "logout": "Sair",
       "lightMode": "Modo claro",
       "darkMode": "Modo escuro"
+    },
+    "admin": {
+      "title": "Painel de Administração",
+      "subtitle": "Gerencie usuários, permissões e configurações globais do sistema.",
+      "cards": {
+        "users": {
+          "title": "Usuários",
+          "description": "Gerencie contas, funções e acessos."
+        },
+        "settings": {
+          "title": "Configurações",
+          "description": "Defina parâmetros globais e políticas."
+        }
+      },
+      "notifications": {
+        "title": "Notificações",
+        "subtitle": "Envie mensagens para todos, por projeto ou para um usuário específico.",
+        "scopes": {
+          "all": "Todos os usuários",
+          "project": "Por projeto",
+          "user": "Usuário específico"
+        },
+        "fields": {
+          "title": "Título",
+          "message": "Mensagem",
+          "type": "Tipo",
+          "project": "Projeto",
+          "roles": "Funções (opcional)",
+          "userEmail": "Email do usuário"
+        },
+        "placeholders": {
+          "title": "Ex. Manutenção programada",
+          "message": "Escreva a mensagem...",
+          "project": "Selecione um projeto",
+          "userEmail": "usuario@email.com"
+        },
+        "loadingRoles": "Carregando funções...",
+        "emptyRoles": "Sem funções disponíveis",
+        "hint": "Você pode selecionar múltiplas funções.",
+        "send": "Enviar notificação",
+        "sending": "Enviando...",
+        "successAll": "Notificação enviada para {count} usuários.",
+        "successProject": "Notificação enviada para {count} usuários do projeto.",
+        "successUser": "Notificação enviada para o usuário.",
+        "error": "Não foi possível enviar a notificação.",
+        "errors": {
+          "roles": "Não foi possível carregar as funções."
+        }
+      }
     }
   },
   "ui": {

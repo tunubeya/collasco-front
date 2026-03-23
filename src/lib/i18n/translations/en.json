@@ -2022,6 +2022,7 @@
     },
     "sidebar": {
       "menuAdmin": "Admin Menu",
+      "adminPanel": "Admin Panel",
       "home": "Home",
       "projectSection": "Projects",
       "tickets": "Tickets",
@@ -2030,6 +2031,55 @@
       "logout": "Logout",
       "lightMode": "Light Mode",
       "darkMode": "Dark Mode"
+    },
+    "admin": {
+      "title": "Admin Panel",
+      "subtitle": "Manage users, permissions, and global system settings.",
+      "cards": {
+        "users": {
+          "title": "Users",
+          "description": "Manage accounts, roles, and access."
+        },
+        "settings": {
+          "title": "Settings",
+          "description": "Define global parameters and policies."
+        }
+      },
+      "notifications": {
+        "title": "Notifications",
+        "subtitle": "Send messages to all users, by project, or to a specific user.",
+        "scopes": {
+          "all": "All users",
+          "project": "By project",
+          "user": "Specific user"
+        },
+        "fields": {
+          "title": "Title",
+          "message": "Message",
+          "type": "Type",
+          "project": "Project",
+          "roles": "Roles (optional)",
+          "userEmail": "User email"
+        },
+        "placeholders": {
+          "title": "e.g. Scheduled maintenance",
+          "message": "Write the message...",
+          "project": "Select a project",
+          "userEmail": "user@email.com"
+        },
+        "loadingRoles": "Loading roles...",
+        "emptyRoles": "No roles available",
+        "hint": "You can select multiple roles.",
+        "send": "Send notification",
+        "sending": "Sending...",
+        "successAll": "Notification sent to {count} users.",
+        "successProject": "Notification sent to {count} project users.",
+        "successUser": "Notification sent to the user.",
+        "error": "Could not send the notification.",
+        "errors": {
+          "roles": "Could not load roles."
+        }
+      }
     }
   },
 

@@ -2020,6 +2020,7 @@
     },
     "sidebar": {
       "menuAdmin": "Beheer Menu",
+      "adminPanel": "Adminpaneel",
       "home": "Start",
       "projectSection": "Projecten",
       "tickets": "Tickets",
@@ -2028,6 +2029,55 @@
       "logout": "Uitloggen",
       "lightMode": "Lichte modus",
       "darkMode": "Donkere modus"
+    },
+    "admin": {
+      "title": "Adminpaneel",
+      "subtitle": "Beheer gebruikers, permissies en globale systeeminstellingen.",
+      "cards": {
+        "users": {
+          "title": "Gebruikers",
+          "description": "Beheer accounts, rollen en toegang."
+        },
+        "settings": {
+          "title": "Instellingen",
+          "description": "Stel globale parameters en beleidsregels in."
+        }
+      },
+      "notifications": {
+        "title": "Meldingen",
+        "subtitle": "Stuur berichten naar iedereen, per project of naar een specifieke gebruiker.",
+        "scopes": {
+          "all": "Alle gebruikers",
+          "project": "Per project",
+          "user": "Specifieke gebruiker"
+        },
+        "fields": {
+          "title": "Titel",
+          "message": "Bericht",
+          "type": "Type",
+          "project": "Project",
+          "roles": "Rollen (optioneel)",
+          "userEmail": "Gebruiker email"
+        },
+        "placeholders": {
+          "title": "Bijv. gepland onderhoud",
+          "message": "Schrijf het bericht...",
+          "project": "Selecteer een project",
+          "userEmail": "gebruiker@email.com"
+        },
+        "loadingRoles": "Rollen laden...",
+        "emptyRoles": "Geen rollen beschikbaar",
+        "hint": "Je kunt meerdere rollen selecteren.",
+        "send": "Melding verzenden",
+        "sending": "Verzenden...",
+        "successAll": "Melding verzonden naar {count} gebruikers.",
+        "successProject": "Melding verzonden naar {count} projectgebruikers.",
+        "successUser": "Melding verzonden naar de gebruiker.",
+        "error": "Melding kon niet worden verzonden.",
+        "errors": {
+          "roles": "Kon rollen niet laden."
+        }
+      }
     }
   },
   "ui": {

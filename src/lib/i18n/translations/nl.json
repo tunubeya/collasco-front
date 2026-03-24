@@ -1914,6 +1914,10 @@
           "activity": "Activiteit",
           "add": "Antwoord toevoegen"
         },
+        "activitySort": {
+          "recent": "Meest recent",
+          "oldest": "Oudst"
+        },
         "fields": {
           "title": "Titel",
           "status": "Status",
@@ -1936,7 +1940,7 @@
           "delete": "Verwijderen",
           "confirmDelete": "Ticket verwijderen",
           "deleting": "Verwijderen...",
-          "addSection": "Plaatsen"
+          "addSection": "Verzenden"
         },
         "delete": {
           "title": "Ticket verwijderen?",

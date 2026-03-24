@@ -1916,6 +1916,10 @@
           "activity": "Actividad",
           "add": "Agregar respuesta"
         },
+        "activitySort": {
+          "recent": "Más reciente",
+          "oldest": "Más antiguo"
+        },
         "fields": {
           "title": "Título",
           "status": "Estado",
@@ -1938,7 +1942,7 @@
           "delete": "Eliminar",
           "confirmDelete": "Eliminar ticket",
           "deleting": "Eliminando...",
-          "addSection": "Publicar"
+          "addSection": "Enviar"
         },
         "delete": {
           "title": "¿Eliminar ticket?",

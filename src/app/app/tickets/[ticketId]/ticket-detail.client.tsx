@@ -15,6 +15,7 @@ import {
   File,
   ChevronDown,
   User,
+  Pencil,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -168,6 +169,7 @@ export function TicketDetailView({
   const [showImages, setShowImages] = useState(true);
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
   const [attachmentsOpen, setAttachmentsOpen] = useState(false);
+  const [activityOrder, setActivityOrder] = useState<"recent" | "oldest">("recent");
 
   const assigneeOptions = useMemo(
     () =>
@@ -200,6 +202,15 @@ export function TicketDetailView({
     () => ticketState.sections ?? [],
     [ticketState.sections]
   );
+  const orderedSections = useMemo(() => {
+    const list = [...sections];
+    list.sort((a, b) => {
+      const aTime = new Date(a.createdAt).getTime();
+      const bTime = new Date(b.createdAt).getTime();
+      return activityOrder === "recent" ? bTime - aTime : aTime - bTime;
+    });
+    return list;
+  }, [activityOrder, sections]);
 
   const imagesByName = useMemo(() => {
     const map = new Map<string, TicketImage>();
@@ -970,6 +981,16 @@ export function TicketDetailView({
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-semibold">{t("sections.activity")}</h2>
           <div className="flex items-center gap-4">
+            <select
+              value={activityOrder}
+              onChange={(event) =>
+                setActivityOrder(event.target.value as "recent" | "oldest")
+              }
+              className="rounded-md border px-3 py-1.5 pr-8 text-sm"
+            >
+              <option value="recent">{t("activitySort.recent")}</option>
+              <option value="oldest">{t("activitySort.oldest")}</option>
+            </select>
             <Switch
               checked={showImages}
               onChange={(event) => setShowImages(event.target.checked)}
@@ -985,7 +1006,7 @@ export function TicketDetailView({
           <p className="text-sm text-muted-foreground">{t("empty")}</p>
         ) : (
           <ul className="space-y-3">
-            {sections.map((section) => {
+            {orderedSections.map((section) => {
               const created = format.dateTime(
                 new Date(section.createdAt),
                 {
@@ -1004,13 +1025,25 @@ export function TicketDetailView({
                   : false);
               return (
                 <li key={section.id} className="rounded-lg border p-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-                    <span className="font-semibold">
-                      {t(`sectionTypes.${section.type}`, {
-                        default: section.type,
-                      })}
-                    </span>
-                    <span>{created}</span>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                      <span className="font-semibold">
+                        {t(`sectionTypes.${section.type}`, {
+                          default: section.type,
+                        })}
+                      </span>
+                      <span>{created}</span>
+                    </div>
+                    {canEditSection && editingSectionId !== section.id ? (
+                      <button
+                        type="button"
+                        className={actionButtonClass({ size: "xs" })}
+                        onClick={() => handleEditSection(section)}
+                      >
+                        <Pencil className="mr-2 h-3.5 w-3.5" aria-hidden />
+                        {t("actions.edit")}
+                      </button>
+                    ) : null}
                   </div>
                   {section.title ? (
                     <p className="mt-2 text-sm font-semibold">
@@ -1056,17 +1089,6 @@ export function TicketDetailView({
                   <p className="mt-2 text-xs text-muted-foreground">
                     {t("meta.createdBy", { name: author })}
                   </p>
-                  {canEditSection && editingSectionId !== section.id ? (
-                    <div className="mt-2">
-                      <button
-                        type="button"
-                        className="rounded border px-2 py-1 text-xs hover:bg-muted"
-                        onClick={() => handleEditSection(section)}
-                      >
-                        {t("actions.edit")}
-                      </button>
-                    </div>
-                  ) : null}
                 </li>
               );
             })}
@@ -1074,7 +1096,13 @@ export function TicketDetailView({
         )}
 
         {canRespondTicket ? (
-          <div className="mt-4 space-y-3 rounded-lg border bg-muted/10 p-4">
+          <form
+            className="mt-4 space-y-3 rounded-lg border bg-muted/10 p-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void handleAddSection();
+            }}
+          >
             <h3 className="text-sm font-semibold">{t("sections.add")}</h3>
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-2">
@@ -1110,9 +1138,8 @@ export function TicketDetailView({
             </div>
             <div className="flex justify-end">
               <button
-                type="button"
+                type="submit"
                 className={actionButtonClass({ size: "xs" })}
-                onClick={() => void handleAddSection()}
                 disabled={sectionSaving || !sectionContent.trim()}
               >
                 {sectionSaving
@@ -1120,7 +1147,7 @@ export function TicketDetailView({
                   : t("actions.addSection")}
               </button>
             </div>
-          </div>
+          </form>
         ) : null}
       </section>
     </div>

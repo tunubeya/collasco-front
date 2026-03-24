@@ -28,6 +28,7 @@ export default async function AppSidebar() {
     { key: 'tickets', label: t('tickets'), href: '/app/tickets', icon: 'tickets' },
     { key: 'notifications', label: t('notifications'), href: '/app/notifications', icon: 'notifications' },
     { key: 'settings', label: t('settingSection'), href: '/app/settings', icon: 'settings' },
+    { key: 'support', label: t('support'), href: '/app/support', icon: 'support' },
   ];
 
   if (session?.role === UserRole.ADMIN) {

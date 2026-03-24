@@ -21,7 +21,6 @@ type Props = {
   token: string;
   projectId: string;
   featureId: string;
-  featureName: string;
   onCreated?: () => void;
 };
 
@@ -29,7 +28,6 @@ export function FeatureTicketCreateButton({
   token,
   projectId,
   featureId,
-  featureName,
   onCreated,
 }: Props) {
   const t = useTranslations("app.projects.feature.ticketDialog");
@@ -118,12 +116,6 @@ export function FeatureTicketCreateButton({
             void handleSubmit();
           }}
         >
-          <Input
-            label={t("fields.feature")}
-            value={featureName}
-            readOnly
-            className="border border-border bg-muted/30 text-foreground"
-          />
           <Input
             ref={titleRef}
             label={t("fields.title")}

@@ -87,7 +87,6 @@ export function FeatureTicketsTab({
             token={token}
             projectId={projectId}
             featureId={featureId}
-            featureName={featureName}
             onCreated={() => {
               setPage(1);
               setReloadKey((prev) => prev + 1);

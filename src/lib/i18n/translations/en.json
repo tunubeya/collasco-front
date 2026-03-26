@@ -1855,11 +1855,17 @@
         "tabs": {
           "mine": "Created by me",
           "assigned": "Assigned to me",
-          "project": "By project"
+          "all": "All"
         },
         "project": {
-          "placeholder": "Select a project",
-          "emptySelection": "Select a project to view its tickets."
+          "all": "All projects"
+        },
+        "projectsTitle": "Projects",
+        "actions": {
+          "newTicket": "New ticket"
+        },
+        "filters": {
+          "allStatuses": "All statuses"
         },
         "empty": "No tickets found.",
         "pagination": {

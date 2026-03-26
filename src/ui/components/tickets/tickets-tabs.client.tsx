@@ -11,12 +11,13 @@ import { Calendar, Folder, User } from "lucide-react";
 import Link from "next/link";
 
 import type { Project } from "@/lib/model-definitions/project";
-import type { Ticket } from "@/lib/model-definitions/ticket";
+import type { Ticket, TicketStatus } from "@/lib/model-definitions/ticket";
 import { cn, generatePagination } from "@/lib/utils";
 import { Dropdown } from "@/ui/components/form/dropdown";
 import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.client";
+import { actionButtonClass } from "@/ui/styles/action-button";
 
-type TicketsTab = "mine" | "assigned" | "project";
+type TicketsScope = "mine" | "assigned" | "all";
 
 type Pagination = {
   total: number;
@@ -26,28 +27,28 @@ type Pagination = {
 
 type Props = {
   token: string;
-  tab: TicketsTab;
+  scope: TicketsScope;
   items: Ticket[];
   pagination: Pagination;
   projectId?: string | null;
   projects: Project[];
-  requiresProjectSelection: boolean;
+  status: TicketStatus | null;
 };
 
 const TAB_ICON = {
   mine: User,
   assigned: User,
-  project: Folder,
+  all: Folder,
 } as const;
 
 export default function TicketsTabs({
   token,
-  tab,
+  scope,
   items,
   pagination,
   projectId,
   projects,
-  requiresProjectSelection,
+  status,
 }: Props) {
   const t = useTranslations("app.tickets.list");
   const format = useFormatter();
@@ -60,10 +61,10 @@ export default function TicketsTabs({
     Math.ceil(pagination.total / Math.max(1, pagination.limit))
   );
 
-  const tabs: TicketsTab[] = ["mine", "assigned", "project"];
+  const tabs: TicketsScope[] = ["mine", "assigned", "all"];
   const projectOptions = useMemo(
     () => [
-      { value: "", label: t("project.placeholder") },
+      { value: "", label: t("project.all") },
       ...projects.map((project) => ({
         value: project.id,
         label: project.name,
@@ -72,26 +73,34 @@ export default function TicketsTabs({
     [projects, t]
   );
 
-  const setTab = (next: TicketsTab) => {
+  const setScope = (next: TicketsScope) => {
     const sp = new URLSearchParams(params.toString());
-    sp.set("tab", next);
+    sp.set("scope", next);
     sp.set("page", "1");
     sp.set("limit", String(pagination.limit));
-    if (next !== "project") {
-      sp.delete("projectId");
-    }
     router.push(`${pathname}?${sp.toString()}`);
   };
 
   const setProject = (nextProjectId: string) => {
     const sp = new URLSearchParams(params.toString());
-    sp.set("tab", "project");
     sp.set("page", "1");
     sp.set("limit", String(pagination.limit));
     if (nextProjectId) {
       sp.set("projectId", nextProjectId);
     } else {
       sp.delete("projectId");
+    }
+    router.push(`${pathname}?${sp.toString()}`);
+  };
+
+  const setStatus = (nextStatus: string) => {
+    const sp = new URLSearchParams(params.toString());
+    sp.set("page", "1");
+    sp.set("limit", String(pagination.limit));
+    if (nextStatus) {
+      sp.set("status", nextStatus);
+    } else {
+      sp.delete("status");
     }
     router.push(`${pathname}?${sp.toString()}`);
   };
@@ -106,53 +115,79 @@ export default function TicketsTabs({
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap gap-2">
-          {tabs.map((item) => {
-            const Icon = TAB_ICON[item];
-            const active = item === tab;
-            return (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setTab(item)}
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
-                  active
-                    ? "border-primary-orange bg-primary-orange/10 text-primary-orange"
-                    : "border-border text-muted-foreground hover:bg-muted"
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                {t(`tabs.${item}`)}
-              </button>
-            );
-          })}
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight">
+              {t("projectsTitle")}
+            </h1>
+          </div>
+          <div className="min-w-[240px]">
+            <Dropdown
+              value={projectId ?? ""}
+              onChange={(event) => setProject(event.target.value)}
+              options={projectOptions}
+              sizeElement="sm"
+              fullWidth
+            />
+          </div>
         </div>
 
-        {tab === "project" ? (
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="min-w-[220px]">
-              <Dropdown
-                value={projectId ?? ""}
-                onChange={(event) => setProject(event.target.value)}
-                options={projectOptions}
-                sizeElement="sm"
-                fullWidth={false}
-              />
-            </div>
-            {projectId ? (
-              <TicketsCreateButton token={token} projectId={projectId} />
-            ) : null}
+        <div className="flex flex-wrap items-center gap-3">
+          {projectId ? (
+            <TicketsCreateButton token={token} projectId={projectId} />
+          ) : (
+            <button
+              type="button"
+              disabled
+              className={cn(
+                actionButtonClass(),
+                "cursor-not-allowed opacity-40"
+              )}
+            >
+              {t("actions.newTicket")}
+            </button>
+          )}
+
+          <div className="flex flex-wrap gap-2">
+            {tabs.map((item) => {
+              const Icon = TAB_ICON[item];
+              const active = item === scope;
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setScope(item)}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
+                    active
+                      ? "border-primary-orange bg-primary-orange/10 text-primary-orange"
+                      : "border-border text-muted-foreground hover:bg-muted"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {t(`tabs.${item}`)}
+                </button>
+              );
+            })}
           </div>
-        ) : null}
+
+          <div className="ml-auto">
+            <select
+              value={status ?? ""}
+              onChange={(event) => setStatus(event.target.value)}
+              className="rounded-md border px-3 py-1.5 text-sm"
+            >
+              <option value="">{t("filters.allStatuses")}</option>
+              <option value="OPEN">{t("statuses.OPEN")}</option>
+              <option value="PENDING">{t("statuses.PENDING")}</option>
+              <option value="RESOLVED">{t("statuses.RESOLVED")}</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      {requiresProjectSelection ? (
-        <div className="rounded-xl border bg-background p-6 text-sm text-muted-foreground">
-          {t("project.emptySelection")}
-        </div>
-      ) : items.length === 0 ? (
+      {items.length === 0 ? (
         <div className="rounded-xl border bg-background p-6 text-sm text-muted-foreground">
           {t("empty")}
         </div>

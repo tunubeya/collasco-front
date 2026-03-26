@@ -3,9 +3,7 @@ import { redirect } from "next/navigation";
 
 import { listProjectsMine } from "@/lib/api/projects";
 import {
-  listTicketsAssigned,
-  listTicketsByProject,
-  listTicketsMine,
+  listTicketsAll,
 } from "@/lib/api/tickets";
 import { RoutesEnum } from "@/lib/utils";
 import { getSession } from "@/lib/session";
@@ -13,8 +11,9 @@ import { handlePageError } from "@/lib/handle-page-error";
 import TicketsTabs from "@/ui/components/tickets/tickets-tabs.client";
 
 type SearchParams = {
-  tab?: "mine" | "assigned" | "project";
+  scope?: "mine" | "assigned" | "all";
   projectId?: string;
+  status?: "OPEN" | "PENDING" | "RESOLVED";
   page?: string;
   limit?: string;
 };
@@ -29,10 +28,11 @@ export default async function TicketsPage({ searchParams }: Props) {
   const token = session.token;
   const t = await getTranslations("app.tickets.list");
 
-  const tabParam = (await searchParams)?.tab;
-  const tab =
-    tabParam === "assigned" || tabParam === "project" ? tabParam : "mine";
+  const scopeParam = (await searchParams)?.scope;
+  const scope =
+    scopeParam === "assigned" || scopeParam === "all" ? scopeParam : "mine";
   const projectId = (await searchParams)?.projectId ?? null;
+  const status = (await searchParams)?.status;
   const page = Math.max(1, Number.parseInt((await searchParams)?.page ?? "1", 10) || 1);
   const limit = Math.max(
     1,
@@ -57,17 +57,13 @@ export default async function TicketsPage({ searchParams }: Props) {
 
   let ticketsResult;
   try {
-    if (tab === "assigned") {
-      ticketsResult = await listTicketsAssigned(token, { page, limit });
-    } else if (tab === "project") {
-      if (projectId) {
-        ticketsResult = await listTicketsByProject(token, projectId, { page, limit });
-      } else {
-        ticketsResult = null;
-      }
-    } else {
-      ticketsResult = await listTicketsMine(token, { page, limit });
-    }
+    ticketsResult = await listTicketsAll(token, {
+      page,
+      limit,
+      status,
+      scope,
+      projectId: projectId ?? undefined,
+    });
   } catch (error) {
     if (error instanceof Response && error.status === 404) {
       ticketsResult = { items: [], total: 0, page, limit, totalPages: 1 };
@@ -90,7 +86,7 @@ export default async function TicketsPage({ searchParams }: Props) {
 
       <TicketsTabs
         token={token}
-        tab={tab}
+        scope={scope}
         items={items}
         pagination={{
           total,
@@ -99,7 +95,7 @@ export default async function TicketsPage({ searchParams }: Props) {
         }}
         projects={projects}
         projectId={projectId}
-        requiresProjectSelection={tab === "project" && !projectId}
+        status={status ?? null}
       />
     </div>
   );

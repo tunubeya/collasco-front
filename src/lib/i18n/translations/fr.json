@@ -1853,11 +1853,17 @@
         "tabs": {
           "mine": "Créés par moi",
           "assigned": "Assignés à moi",
-          "project": "Par projet"
+          "all": "Tous"
         },
         "project": {
-          "placeholder": "Sélectionnez un projet",
-          "emptySelection": "Sélectionnez un projet pour voir ses tickets."
+          "all": "Tous les projets"
+        },
+        "projectsTitle": "Projets",
+        "actions": {
+          "newTicket": "Nouveau ticket"
+        },
+        "filters": {
+          "allStatuses": "Tous les statuts"
         },
         "empty": "Aucun ticket trouvé.",
         "pagination": {

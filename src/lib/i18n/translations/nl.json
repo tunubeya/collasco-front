@@ -1853,11 +1853,17 @@
         "tabs": {
           "mine": "Door mij aangemaakt",
           "assigned": "Aan mij toegewezen",
-          "project": "Per project"
+          "all": "Alle"
         },
         "project": {
-          "placeholder": "Selecteer een project",
-          "emptySelection": "Selecteer een project om tickets te bekijken."
+          "all": "Alle projecten"
+        },
+        "projectsTitle": "Projecten",
+        "actions": {
+          "newTicket": "Nieuw ticket"
+        },
+        "filters": {
+          "allStatuses": "Alle statussen"
         },
         "empty": "Geen tickets gevonden.",
         "pagination": {

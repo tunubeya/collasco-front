@@ -16,6 +16,9 @@ const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 export type ListTicketsParams = {
   page?: number;
   limit?: number;
+  status?: TicketStatus;
+  scope?: "mine" | "assigned" | "all";
+  projectId?: string;
 };
 
 export type CreateTicketRequest = {
@@ -51,10 +54,13 @@ async function parseJson<T>(res: Response): Promise<T> {
   return {} as T;
 }
 
-function buildListUrl(base: string, params?: ListTicketsParams) {
-  const url = new URL(`${apiUrl}${base}`);
+function buildListUrl(params?: ListTicketsParams) {
+  const url = new URL(`${apiUrl}/tickets`);
   if (params?.page) url.searchParams.set("page", String(params.page));
   if (params?.limit) url.searchParams.set("limit", String(params.limit));
+  if (params?.status) url.searchParams.set("status", params.status);
+  if (params?.scope) url.searchParams.set("scope", params.scope);
+  if (params?.projectId) url.searchParams.set("projectId", params.projectId);
   return url.toString();
 }
 
@@ -87,50 +93,13 @@ export async function createTicket(
   }
 }
 
-export async function listTicketsMine(
+export async function listTicketsAll(
   token: string,
   params?: ListTicketsParams
 ): Promise<TicketListResponse> {
   try {
     const res = await fetchWithAuth(
-      buildListUrl("/tickets/mine", params),
-      { method: "GET" },
-      token
-    );
-    if (!res.ok) throw res;
-    return await parseJson<TicketListResponse>(res);
-  } catch (error) {
-    await handleUnauthorized(error);
-    throw error;
-  }
-}
-
-export async function listTicketsAssigned(
-  token: string,
-  params?: ListTicketsParams
-): Promise<TicketListResponse> {
-  try {
-    const res = await fetchWithAuth(
-      buildListUrl("/tickets/assigned", params),
-      { method: "GET" },
-      token
-    );
-    if (!res.ok) throw res;
-    return await parseJson<TicketListResponse>(res);
-  } catch (error) {
-    await handleUnauthorized(error);
-    throw error;
-  }
-}
-
-export async function listTicketsByProject(
-  token: string,
-  projectId: string,
-  params?: ListTicketsParams
-): Promise<TicketListResponse> {
-  try {
-    const res = await fetchWithAuth(
-      buildListUrl(`/projects/${projectId}/tickets`, params),
+      buildListUrl(params),
       { method: "GET" },
       token
     );
@@ -148,8 +117,12 @@ export async function listTicketsByFeature(
   params?: ListTicketsParams
 ): Promise<TicketListResponse> {
   try {
+    const url = new URL(`${apiUrl}/features/${featureId}/tickets`);
+    if (params?.page) url.searchParams.set("page", String(params.page));
+    if (params?.limit) url.searchParams.set("limit", String(params.limit));
+    if (params?.status) url.searchParams.set("status", params.status);
     const res = await fetchWithAuth(
-      buildListUrl(`/features/${featureId}/tickets`, params),
+      url.toString(),
       { method: "GET" },
       token
     );

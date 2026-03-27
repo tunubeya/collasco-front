@@ -26,7 +26,6 @@ export function FeatureTicketsTab({
   token,
   projectId,
   featureId,
-  featureName,
   canCreateTicket = false,
 }: Props) {
   const t = useTranslations("app.projects.feature.tickets");

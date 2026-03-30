@@ -94,6 +94,60 @@ const EMPTY_TEST_CASE: DraftTestCase = {
   expected: "",
 };
 
+const URL_REGEX = /https?:\/\/[^\s<>()]+/g;
+const TRAILING_PUNCTUATION_REGEX = /[),.;:!?]+$/;
+
+const linkifyText = (value: string) => {
+  URL_REGEX.lastIndex = 0;
+  const parts: Array<string | JSX.Element> = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = URL_REGEX.exec(value))) {
+    const url = match[0];
+    const start = match.index;
+    if (start > lastIndex) {
+      parts.push(value.slice(lastIndex, start));
+    }
+
+    let cleanUrl = url;
+    let trailing = "";
+    const punct = cleanUrl.match(TRAILING_PUNCTUATION_REGEX);
+    if (punct) {
+      trailing = punct[0];
+      cleanUrl = cleanUrl.slice(0, -trailing.length);
+    }
+
+    if (cleanUrl) {
+      parts.push(
+        <a
+          key={`link-${start}`}
+          href={cleanUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="underline decoration-dotted underline-offset-4 hover:text-foreground"
+        >
+          {cleanUrl}
+        </a>,
+      );
+    } else {
+      parts.push(url);
+    }
+
+    if (trailing) {
+      parts.push(trailing);
+    }
+
+    lastIndex = start + url.length;
+  }
+
+  if (lastIndex < value.length) {
+    parts.push(value.slice(lastIndex));
+  }
+
+  return parts;
+};
+
 const CREATE_TEST_CASES_SCHEMA = z.object({
   cases: z
     .array(
@@ -1830,8 +1884,8 @@ export function TestRunPanel({
             {t("panel.scope", { scope: runMeta.scope })}
           </p>
           {runMeta.notes && (
-            <p className="mt-2 text-sm text-muted-foreground">
-              {runMeta.notes}
+            <p className="mt-2 whitespace-pre-wrap break-words text-sm text-muted-foreground">
+              {linkifyText(runMeta.notes)}
             </p>
           )}
         </div>
@@ -1878,6 +1932,10 @@ export function TestRunPanel({
             "mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
             isNoteDisabled &&
               "cursor-not-allowed border-amber-200 bg-amber-50 text-amber-900",
+          );
+          const noteDisplayClasses = cn(
+            "mt-1 w-full rounded-lg border px-3 py-2 text-sm",
+            isNoteDisabled && "border-amber-200 bg-amber-50 text-amber-900",
           );
           return (
             <div key={testCase.testCaseId} className="rounded-xl border border-border bg-background p-4">
@@ -1942,21 +2000,37 @@ export function TestRunPanel({
                 <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   {t("panel.fields.note")}
                 </label>
-                <textarea
-                  rows={2}
-                  value={noteValue}
-                  onChange={(event) => handleDraftChange(testCase.testCaseId, event.target.value)}
-                  onBlur={() => commitComment(testCase.testCaseId)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" && !event.shiftKey) {
-                      event.preventDefault();
-                      commitComment(testCase.testCaseId);
+                {isNoteDisabled ? (
+                  <div className={noteDisplayClasses}>
+                    {noteValue.trim() ? (
+                      <span className="whitespace-pre-wrap break-words">
+                        {linkifyText(noteValue)}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">
+                        {t("panel.notePlaceholder")}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <textarea
+                    rows={2}
+                    value={noteValue}
+                    onChange={(event) =>
+                      handleDraftChange(testCase.testCaseId, event.target.value)
                     }
-                  }}
-                  disabled={isNoteDisabled}
-                  className={noteClasses}
-                  placeholder={t("panel.notePlaceholder")}
-                />
+                    onBlur={() => commitComment(testCase.testCaseId)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" && !event.shiftKey) {
+                        event.preventDefault();
+                        commitComment(testCase.testCaseId);
+                      }
+                    }}
+                    disabled={isNoteDisabled}
+                    className={noteClasses}
+                    placeholder={t("panel.notePlaceholder")}
+                  />
+                )}
               </div>
             </div>
           );

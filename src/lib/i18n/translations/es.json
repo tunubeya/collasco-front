@@ -528,6 +528,7 @@
         "title": "Proyectos",
         "subtitle": "Gestiona tus iniciativas y sus módulos.",
         "create": "Nuevo proyecto",
+        "noAccess": "Sin acceso",
         "empty": {
           "title": "No se encontraron proyectos.",
           "cta": "Crea tu primer proyecto"

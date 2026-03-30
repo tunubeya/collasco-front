@@ -526,6 +526,7 @@
         "title": "Projecten",
         "subtitle": "Volg je initiatieven en bijbehorende modules.",
         "create": "Nieuw project",
+        "noAccess": "Geen toegang",
         "empty": {
           "title": "Geen projecten gevonden.",
           "cta": "Maak je eerste project aan"

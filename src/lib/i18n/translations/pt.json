@@ -528,6 +528,7 @@
         "title": "Projetos",
         "subtitle": "Acompanhe suas iniciativas e módulos.",
         "create": "Novo projeto",
+        "noAccess": "Sem acesso",
         "empty": {
           "title": "Nenhum projeto encontrado.",
           "cta": "Crie seu primeiro projeto"

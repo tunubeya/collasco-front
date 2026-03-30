@@ -30,9 +30,14 @@ type Pagination = {
 type Props = {
   items: Project[];
   pagination: Pagination;
+  canReadByProjectId?: Record<string, boolean>;
 };
 
-export default function ProjectsList({ items, pagination }: Props) {
+export default function ProjectsList({
+  items,
+  pagination,
+  canReadByProjectId,
+}: Props) {
   const t = useTranslations("app.projects.list");
   const tStatus = useTranslations("app.common.projectStatus");
   const tVisibility = useTranslations("app.common.visibility");
@@ -79,24 +84,41 @@ export default function ProjectsList({ items, pagination }: Props) {
             new Date(project.updatedAt),
             { dateStyle: "medium" }
           );
+          const canReadProject = canReadByProjectId?.[project.id] ?? true;
+
+          const summaryClassName = [
+            "flex items-start justify-between gap-3",
+            canReadProject ? "cursor-pointer" : "cursor-not-allowed opacity-70",
+          ].join(" ");
 
           return (
             <li key={project.id}>
               <details className="group px-4 py-3">
-                <summary className="flex cursor-pointer items-start justify-between gap-3">
+                <summary className={summaryClassName}>
                   <div className="flex flex-col gap-1">
-                    <Link
-                      href={`/app/projects/${project.id}`}
-                      className="text-sm font-medium hover:underline"
-                    >
-                      {project.name}
-                    </Link>
+                    {canReadProject ? (
+                      <Link
+                        href={`/app/projects/${project.id}`}
+                        className="text-sm font-medium hover:underline"
+                      >
+                        {project.name}
+                      </Link>
+                    ) : (
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {project.name}
+                      </span>
+                    )}
                     <span className="text-xs text-muted-foreground">
                       {t("updatedAt", { date: formattedUpdatedAt })}
                     </span>
                   </div>
 
                   <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+                    {!canReadProject && (
+                      <span className="rounded-full border border-amber-200 bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-900">
+                        {t("noAccess")}
+                      </span>
+                    )}
                     <ProjectStatusBadge
                       status={project.status}
                       label={tStatus(project.status)}

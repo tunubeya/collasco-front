@@ -526,6 +526,7 @@
         "title": "Projets",
         "subtitle": "Suivez vos initiatives et leurs modules.",
         "create": "Nouveau projet",
+        "noAccess": "Accès refusé",
         "empty": {
           "title": "Aucun projet trouvé.",
           "cta": "Créez votre premier projet"

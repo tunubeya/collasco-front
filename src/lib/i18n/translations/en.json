@@ -528,6 +528,7 @@
         "title": "Projects",
         "subtitle": "Track your initiatives and their modules.",
         "create": "New project",
+        "noAccess": "No access",
         "empty": {
           "title": "No projects found.",
           "cta": "Create your first project"

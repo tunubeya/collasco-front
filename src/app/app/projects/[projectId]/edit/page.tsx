@@ -6,7 +6,7 @@ import {
   deleteProject,
   updateProject,
 } from "@/app/app/projects/actions";
-import { fetchProjectById } from "@/lib/data";
+import { fetchGetUserProfile, fetchProjectById } from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
 import { RoutesEnum } from "@/lib/utils";
@@ -14,6 +14,12 @@ import { ProjectForm } from "@/ui/components/projects/ProjectForm.client";
 import { handlePageError } from "@/lib/handle-page-error";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Trash2 } from "lucide-react";
+import { listProjectMembers } from "@/lib/api/project-members";
+import {
+  listProjectRoles,
+  type ProjectRole,
+} from "@/lib/api/project-roles";
+import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 
 type Params = { projectId: string };
 type Props = { params: Promise<Params> };
@@ -34,6 +40,35 @@ export default async function EditProjectPage({ params }: Props) {
 }
 
   if (!project) notFound();
+
+  let currentUserId: string | null = null;
+  try {
+    const profile = await fetchGetUserProfile(session.token);
+    currentUserId = profile.id;
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  let roles: ProjectRole[] = [];
+  let members = project.members ?? [];
+  try {
+    roles = await listProjectRoles(session.token, projectId);
+    if (!members.length) {
+      members = await listProjectMembers(session.token, projectId);
+    }
+  } catch (error) {
+    await handlePageError(error);
+  }
+
+  const roleId = resolveMemberRoleId({
+    project,
+    members,
+    currentUserId,
+    roles,
+  });
+  const permissionKeys = resolveRolePermissions(roles, roleId);
+  const permissionSet = new Set(permissionKeys);
+  const canDeleteProject = hasPermission(permissionSet, "project.delete");
 
   const formattedUpdatedAt = formatter.dateTime(
     new Date(project.updatedAt),
@@ -60,22 +95,24 @@ export default async function EditProjectPage({ params }: Props) {
         }}
       />
 
-      <form
-        action={deleteProject.bind(null, projectId)}
-        className="rounded-2xl border border-destructive/50 bg-destructive/5 p-4"
-      >
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-sm font-semibold text-destructive">
-              {t("dangerZone.title")}
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              {t("dangerZone.description")}
-            </p>
+      {canDeleteProject && (
+        <form
+          action={deleteProject.bind(null, projectId)}
+          className="rounded-2xl border border-destructive/50 bg-destructive/5 p-4"
+        >
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-destructive">
+                {t("dangerZone.title")}
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                {t("dangerZone.description")}
+              </p>
+            </div>
+            <DeleteButton label={t("dangerZone.delete")} />
           </div>
-          <DeleteButton label={t("dangerZone.delete")} />
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 }

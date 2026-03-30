@@ -2020,12 +2020,6 @@ export function TestRunPanel({
                       handleDraftChange(testCase.testCaseId, event.target.value)
                     }
                     onBlur={() => commitComment(testCase.testCaseId)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" && !event.shiftKey) {
-                        event.preventDefault();
-                        commitComment(testCase.testCaseId);
-                      }
-                    }}
                     disabled={isNoteDisabled}
                     className={noteClasses}
                     placeholder={t("panel.notePlaceholder")}

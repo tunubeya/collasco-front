@@ -977,7 +977,7 @@
             },
             "module_read": {
               "label": "Voir les modules",
-              "description": "Visualiser la structure de navigation."
+              "description": "Voir les détails du module."
             },
             "module_write": {
               "label": "Gérer les modules",

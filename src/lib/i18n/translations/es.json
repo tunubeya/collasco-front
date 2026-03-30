@@ -979,7 +979,7 @@
             },
             "module_read": {
               "label": "Ver módulos",
-              "description": "Visualizar la estructura de navegación."
+              "description": "Permite ver los detalles del módulo."
             },
             "module_write": {
               "label": "Gestionar módulos",

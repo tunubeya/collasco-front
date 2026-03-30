@@ -977,7 +977,7 @@
             },
             "module_read": {
               "label": "Modules bekijken",
-              "description": "De navigatiestructuur visualiseren."
+              "description": "De modulegegevens bekijken."
             },
             "module_write": {
               "label": "Modules beheren",

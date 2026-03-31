@@ -1298,6 +1298,9 @@
         "ticketDialog": {
           "title": "Novo ticket",
           "description": "Crie um ticket vinculado a esta feature.",
+          "defaults": {
+            "title": "Novo ticket"
+          },
           "fields": {
             "feature": "Feature",
             "title": "Título",
@@ -1890,6 +1893,9 @@
       "create": {
         "title": "Novo ticket",
         "description": "Crie um ticket para este projeto.",
+        "defaults": {
+          "title": "Novo ticket"
+        },
         "fields": {
           "title": "Título",
           "content": "Descrição",
@@ -1909,6 +1915,7 @@
         "messages": {
           "success": "Ticket criado.",
           "error": "Não foi possível criar o ticket.",
+          "projectRequired": "Selecione um projeto antes de criar um ticket.",
           "loadingFeatures": "Buscando features..."
         }
       },
@@ -1975,6 +1982,7 @@
           "updateError": "Não foi possível atualizar o ticket.",
           "deleted": "Ticket excluído.",
           "deleteError": "Não foi possível excluir o ticket.",
+          "descriptionRequired": "A descrição é obrigatória.",
           "sectionAdded": "Resposta adicionada.",
           "sectionError": "Não foi possível adicionar a resposta.",
           "sectionUpdated": "Seção atualizada.",

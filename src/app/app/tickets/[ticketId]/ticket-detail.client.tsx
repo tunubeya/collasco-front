@@ -39,6 +39,7 @@ import {
   updateTicketSection,
   updateTicket,
 } from "@/lib/api/tickets";
+import { MISSING_TICKET_DESCRIPTION } from "@/lib/tickets-constants";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -115,6 +116,10 @@ function formatBytes(bytes: number): string {
 const STATUS_OPTIONS: TicketStatus[] = ["OPEN", "PENDING", "RESOLVED"];
 const SECTION_TYPES: TicketSectionType[] = ["RESPONSE", "COMMENT"];
 const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
+const isMissingDescription = (value?: string | null) => {
+  const trimmed = value?.trim() ?? "";
+  return !trimmed || trimmed === MISSING_TICKET_DESCRIPTION;
+};
 
 export function TicketDetailView({
   token,
@@ -211,6 +216,34 @@ export function TicketDetailView({
     });
     return list;
   }, [activityOrder, sections]);
+  const descriptionSection = useMemo(
+    () => sections.find((section) => section.type === "DESCRIPTION"),
+    [sections]
+  );
+  const [descriptionDraft, setDescriptionDraft] = useState("");
+  const [descriptionSaving, setDescriptionSaving] = useState(false);
+  const canEditDescription = canManageTicket || canRespondTicket;
+  const showDescriptionRequired =
+    canEditDescription && isMissingDescription(descriptionSection?.content);
+  const visibleSections = useMemo(
+    () =>
+      orderedSections.filter(
+        (section) =>
+          !(
+            section.type === "DESCRIPTION" &&
+            isMissingDescription(section.content)
+          )
+      ),
+    [orderedSections]
+  );
+
+  useEffect(() => {
+    if (descriptionSection?.content && !isMissingDescription(descriptionSection.content)) {
+      setDescriptionDraft(descriptionSection.content);
+    } else {
+      setDescriptionDraft("");
+    }
+  }, [descriptionSection]);
 
   const imagesByName = useMemo(() => {
     const map = new Map<string, TicketImage>();
@@ -388,6 +421,51 @@ export function TicketDetailView({
     t,
     ticketState.id,
     token,
+  ]);
+
+  const handleSaveDescription = useCallback(async () => {
+    if (!canEditDescription || !descriptionDraft.trim() || descriptionSaving) return;
+    setDescriptionSaving(true);
+    try {
+      const content = descriptionDraft.trim();
+      if (descriptionSection?.id) {
+        const updated = await updateTicketSection(
+          token,
+          ticketState.id,
+          descriptionSection.id,
+          { content }
+        );
+        setTicketState((prev) => ({
+          ...prev,
+          sections: (prev.sections ?? []).map((section) =>
+            section.id === updated.id ? updated : section
+          ),
+        }));
+      } else {
+        const created = await addTicketSection(token, ticketState.id, {
+          type: "DESCRIPTION",
+          content,
+        });
+        setTicketState((prev) => ({
+          ...prev,
+          sections: [...(prev.sections ?? []), created],
+        }));
+      }
+      toast.success(t("messages.sectionUpdated"));
+    } catch (error) {
+      console.error("[TicketDetailView] description save error:", error);
+      toast.error(t("messages.sectionUpdateError"));
+    } finally {
+      setDescriptionSaving(false);
+    }
+  }, [
+    canEditDescription,
+    descriptionDraft,
+    descriptionSection?.id,
+    descriptionSaving,
+    ticketState.id,
+    token,
+    t,
   ]);
 
   const handleEditSection = useCallback(
@@ -997,16 +1075,44 @@ export function TicketDetailView({
               label={t("images.toggle")}
             />
             <span className="text-xs text-muted-foreground">
-              {t("meta.sectionsCount", { count: sections.length })}
+              {t("meta.sectionsCount", { count: visibleSections.length })}
             </span>
           </div>
         </div>
 
-        {sections.length === 0 ? (
+        {showDescriptionRequired ? (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+            <p className="text-sm font-semibold text-amber-900">
+              {t("messages.descriptionRequired")}
+            </p>
+            <p className="mt-1 text-xs text-amber-800">
+              {t("sectionTypes.DESCRIPTION")}
+            </p>
+            <textarea
+              rows={4}
+              value={descriptionDraft}
+              onChange={(event) => setDescriptionDraft(event.target.value)}
+              className="mt-3 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder={t("placeholders.content")}
+            />
+            <div className="mt-3 flex justify-end">
+              <button
+                type="button"
+                className={actionButtonClass({ size: "xs" })}
+                onClick={() => void handleSaveDescription()}
+                disabled={!descriptionDraft.trim() || descriptionSaving}
+              >
+                {descriptionSaving ? t("actions.saving") : t("actions.save")}
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        {visibleSections.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("empty")}</p>
         ) : (
           <ul className="space-y-3">
-            {orderedSections.map((section) => {
+            {visibleSections.map((section) => {
               const created = format.dateTime(
                 new Date(section.createdAt),
                 {

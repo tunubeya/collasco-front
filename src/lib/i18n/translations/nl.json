@@ -1297,6 +1297,9 @@
         "ticketDialog": {
           "title": "Nieuw ticket",
           "description": "Maak een ticket dat aan deze feature is gekoppeld.",
+          "defaults": {
+            "title": "Nieuw ticket"
+          },
           "fields": {
             "feature": "Feature",
             "title": "Titel",
@@ -1889,6 +1892,9 @@
       "create": {
         "title": "Nieuw ticket",
         "description": "Maak een ticket voor dit project.",
+        "defaults": {
+          "title": "Nieuw ticket"
+        },
         "fields": {
           "title": "Titel",
           "content": "Beschrijving",
@@ -1908,6 +1914,7 @@
         "messages": {
           "success": "Ticket aangemaakt.",
           "error": "We konden het ticket niet maken.",
+          "projectRequired": "Selecteer een project voordat je een ticket aanmaakt.",
           "loadingFeatures": "Features zoeken..."
         }
       },
@@ -1974,6 +1981,7 @@
           "updateError": "Ticket kon niet worden bijgewerkt.",
           "deleted": "Ticket verwijderd.",
           "deleteError": "Ticket kon niet worden verwijderd.",
+          "descriptionRequired": "Beschrijving is verplicht.",
           "sectionAdded": "Antwoord toegevoegd.",
           "sectionError": "Antwoord kon niet worden toegevoegd.",
           "sectionUpdated": "Sectie bijgewerkt.",

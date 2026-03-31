@@ -127,27 +127,14 @@ export default function TicketsTabs({
               value={projectId ?? ""}
               onChange={(event) => setProject(event.target.value)}
               options={projectOptions}
-              sizeElement="sm"
+              sizeElement="default"
               fullWidth
             />
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {projectId ? (
-            <TicketsCreateButton token={token} projectId={projectId} />
-          ) : (
-            <button
-              type="button"
-              disabled
-              className={cn(
-                actionButtonClass(),
-                "cursor-not-allowed opacity-40"
-              )}
-            >
-              {t("actions.newTicket")}
-            </button>
-          )}
+          <TicketsCreateButton token={token} projectId={projectId ?? null} />
 
           <div className="flex flex-wrap gap-2">
             {tabs.map((item) => {

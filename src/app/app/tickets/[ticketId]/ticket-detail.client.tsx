@@ -80,7 +80,7 @@ function formatBytes(bytes: number): string {
 
 const STATUS_OPTIONS: TicketStatus[] = ["OPEN", "PENDING", "RESOLVED"];
 const SECTION_TYPES: TicketSectionType[] = ["RESPONSE", "COMMENT"];
-const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
+const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
 const isMissingDescription = (value?: string | null) => {
   const trimmed = value?.trim() ?? "";
   return !trimmed || trimmed === MISSING_TICKET_DESCRIPTION;

@@ -2014,7 +2014,7 @@
           "loading": "Loading images...",
           "empty": "No images yet.",
           "validation": "Name and file are required.",
-          "validationTooLarge": "Max file size is 2MB.",
+          "validationTooLarge": "Max file size is 5MB.",
           "uploaded": "Image uploaded.",
           "uploadError": "We couldn't upload the image.",
           "deleted": "Image deleted.",

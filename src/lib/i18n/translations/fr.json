@@ -2012,7 +2012,7 @@
           "loading": "Chargement des images...",
           "empty": "Aucune image pour le moment.",
           "validation": "Nom et fichier requis.",
-          "validationTooLarge": "La taille maximale est 2 Mo.",
+          "validationTooLarge": "La taille maximale est 5 Mo.",
           "uploaded": "Image téléversée.",
           "uploadError": "Impossible de téléverser l'image.",
           "deleted": "Image supprimée.",

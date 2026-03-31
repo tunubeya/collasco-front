@@ -2013,7 +2013,7 @@
           "loading": "Carregando imagens...",
           "empty": "Ainda não há imagens.",
           "validation": "Nome e arquivo são obrigatórios.",
-          "validationTooLarge": "O tamanho máximo é 2MB.",
+          "validationTooLarge": "O tamanho máximo é 5MB.",
           "uploaded": "Imagem enviada.",
           "uploadError": "Não foi possível enviar a imagem.",
           "deleted": "Imagem excluída.",

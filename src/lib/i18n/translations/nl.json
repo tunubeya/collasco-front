@@ -2012,7 +2012,7 @@
           "loading": "Afbeeldingen laden...",
           "empty": "Nog geen afbeeldingen.",
           "validation": "Naam en bestand zijn vereist.",
-          "validationTooLarge": "Maximale grootte is 2MB.",
+          "validationTooLarge": "Maximale grootte is 5MB.",
           "uploaded": "Afbeelding geupload.",
           "uploadError": "Afbeelding kon niet worden geupload.",
           "deleted": "Afbeelding verwijderd.",

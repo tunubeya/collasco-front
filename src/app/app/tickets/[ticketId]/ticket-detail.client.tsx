@@ -51,6 +51,8 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/ui/components/dialog/dialog";
+import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 type Props = {
   token: string;
@@ -62,45 +64,6 @@ type Props = {
   canAccessImages: boolean;
   currentUserId?: string | null;
 };
-
-type ImageTokenSize = {
-  name: string;
-  width?: number;
-  height?: number;
-};
-
-function parseImageToken(raw: string): ImageTokenSize | null {
-  const trimmed = raw.trim();
-  if (!trimmed) return null;
-  const [namePart, sizePart] = splitOnce(trimmed, ":");
-  const name = namePart.trim();
-  if (!name) return null;
-  if (!sizePart) return { name };
-
-  const size = sizePart.trim().toLowerCase();
-  if (!size) return { name };
-
-  if (size === "small" || size === "medium" || size === "big") {
-    const width =
-      size === "small" ? 240 : size === "medium" ? 480 : 720;
-    return { name, width };
-  }
-
-  const match = size.match(/^(\d+|auto)x(\d+|auto)$/i);
-  if (!match) {
-    return { name };
-  }
-  const [, rawW, rawH] = match;
-  const width = rawW.toLowerCase() === "auto" ? undefined : Number(rawW);
-  const height = rawH.toLowerCase() === "auto" ? undefined : Number(rawH);
-  return { name, width, height };
-}
-
-function splitOnce(value: string, delimiter: string): [string, string | null] {
-  const idx = value.indexOf(delimiter);
-  if (idx === -1) return [value, null];
-  return [value.slice(0, idx), value.slice(idx + delimiter.length)];
-}
 
 function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
@@ -133,6 +96,7 @@ export function TicketDetailView({
 }: Props) {
   const t = useTranslations("app.tickets.detail");
   const tList = useTranslations("app.tickets.list");
+  const tRichText = useTranslations("app.projects.form.richText");
   const format = useFormatter();
   const router = useRouter();
 
@@ -245,13 +209,25 @@ export function TicketDetailView({
     }
   }, [descriptionSection]);
 
-  const imagesByName = useMemo(() => {
-    const map = new Map<string, TicketImage>();
-    images
-      .filter((image) => image.mimeType?.startsWith("image/"))
-      .forEach((image) => map.set(image.name, image));
+  const imageMap = useMemo(() => {
+    const map: Record<string, { url: string; mimeType?: string | null }> = {};
+    images.forEach((image) => {
+      map[image.name] = { url: image.url, mimeType: image.mimeType };
+    });
     return map;
   }, [images]);
+
+  const richTextLabels = useMemo(
+    () => ({
+      bold: tRichText("bold"),
+      italic: tRichText("italic"),
+      underline: tRichText("underline"),
+      bulletList: tRichText("bulletList"),
+      orderedList: tRichText("orderedList"),
+      clear: tRichText("clear"),
+    }),
+    [tRichText]
+  );
 
   const imageAttachments = useMemo(
     () => images.filter((image) => image.mimeType?.startsWith("image/")),
@@ -582,55 +558,7 @@ export function TicketDetailView({
     }
   }, [deleting, router, t, ticketState.id, token]);
 
-  const renderContent = useCallback(
-    (content: string) => {
-      if (!showImages) {
-        return <span>{content}</span>;
-      }
-      const parts: Array<string | (TicketImage & { width?: number; height?: number })> = [];
-      const regex = /\[([^\]]+)\]/g;
-      let lastIndex = 0;
-      let match: RegExpExecArray | null;
-      while ((match = regex.exec(content)) !== null) {
-        if (match.index > lastIndex) {
-          parts.push(content.slice(lastIndex, match.index));
-        }
-        const token = match[1];
-        const parsed = parseImageToken(token);
-        const image = parsed ? imagesByName.get(parsed.name) : undefined;
-        if (image) {
-          parts.push({
-            ...image,
-            width: parsed?.width,
-            height: parsed?.height,
-          } as TicketImage & { width?: number; height?: number });
-        } else {
-          parts.push(match[0]);
-        }
-        lastIndex = match.index + match[0].length;
-      }
-      if (lastIndex < content.length) {
-        parts.push(content.slice(lastIndex));
-      }
-      return parts.map((part, index) =>
-        typeof part === "string" ? (
-          <span key={`text-${index}`}>{part}</span>
-        ) : (
-          <img
-            key={`img-${part.id}-${index}`}
-            src={part.url}
-            alt={part.name}
-            style={{
-              width: typeof part.width === "number" ? part.width : undefined,
-              height: typeof part.height === "number" ? part.height : undefined,
-            }}
-            className="my-2 max-w-full rounded-lg border object-cover"
-          />
-        )
-      );
-    },
-    [imagesByName, showImages]
-  );
+  const fileOpenLabel = t("files.actions.open");
 
   const createdAt = format.dateTime(new Date(ticketState.createdAt), {
     dateStyle: "medium",
@@ -1058,26 +986,28 @@ export function TicketDetailView({
       <section className="rounded-xl border bg-background p-4 space-y-4">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-semibold">{t("sections.activity")}</h2>
-          <div className="flex items-center gap-4">
-            <select
-              value={activityOrder}
-              onChange={(event) =>
-                setActivityOrder(event.target.value as "recent" | "oldest")
-              }
-              className="rounded-md border px-3 py-1.5 pr-8 text-sm"
-            >
-              <option value="recent">{t("activitySort.recent")}</option>
-              <option value="oldest">{t("activitySort.oldest")}</option>
-            </select>
-            <Switch
-              checked={showImages}
-              onChange={(event) => setShowImages(event.target.checked)}
-              label={t("images.toggle")}
-            />
-            <span className="text-xs text-muted-foreground">
-              {t("meta.sectionsCount", { count: visibleSections.length })}
-            </span>
-          </div>
+          {!showDescriptionRequired ? (
+            <div className="flex items-center gap-4">
+              <select
+                value={activityOrder}
+                onChange={(event) =>
+                  setActivityOrder(event.target.value as "recent" | "oldest")
+                }
+                className="rounded-md border px-3 py-1.5 pr-8 text-sm"
+              >
+                <option value="recent">{t("activitySort.recent")}</option>
+                <option value="oldest">{t("activitySort.oldest")}</option>
+              </select>
+              <Switch
+                checked={showImages}
+                onChange={(event) => setShowImages(event.target.checked)}
+                label={t("images.toggle")}
+              />
+              <span className="text-xs text-muted-foreground">
+                {t("meta.sectionsCount", { count: visibleSections.length })}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         {showDescriptionRequired ? (
@@ -1088,13 +1018,17 @@ export function TicketDetailView({
             <p className="mt-1 text-xs text-amber-800">
               {t("sectionTypes.DESCRIPTION")}
             </p>
-            <textarea
-              rows={4}
-              value={descriptionDraft}
-              onChange={(event) => setDescriptionDraft(event.target.value)}
-              className="mt-3 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder={t("placeholders.content")}
-            />
+            <div className="mt-3">
+              <RichTextEditor
+                name="ticket-description"
+                label={t("sectionTypes.DESCRIPTION")}
+                placeholder={t("placeholders.content")}
+                defaultValue={descriptionDraft}
+                labels={richTextLabels}
+                onValueChange={setDescriptionDraft}
+                hideLabel
+              />
+            </div>
             <div className="mt-3 flex justify-end">
               <button
                 type="button"
@@ -1108,100 +1042,107 @@ export function TicketDetailView({
           </div>
         ) : null}
 
-        {visibleSections.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t("empty")}</p>
-        ) : (
-          <ul className="space-y-3">
-            {visibleSections.map((section) => {
-              const created = format.dateTime(
-                new Date(section.createdAt),
-                {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }
-              );
-              const author =
-                section.author?.name ??
-                section.author?.email ??
-                t("assignee.unknown");
-              const canEditSection =
-                canManageTicket ||
-                (section.authorId && currentUserId
-                  ? section.authorId === currentUserId
-                  : false);
-              return (
-                <li key={section.id} className="rounded-lg border p-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                      <span className="font-semibold">
-                        {t(`sectionTypes.${section.type}`, {
-                          default: section.type,
-                        })}
-                      </span>
-                      <span>{created}</span>
-                    </div>
-                    {canEditSection && editingSectionId !== section.id ? (
-                      <button
-                        type="button"
-                        className={actionButtonClass({ size: "xs" })}
-                        onClick={() => handleEditSection(section)}
-                      >
-                        <Pencil className="mr-2 h-3.5 w-3.5" aria-hidden />
-                        {t("actions.edit")}
-                      </button>
-                    ) : null}
-                  </div>
-                  {section.title ? (
-                    <p className="mt-2 text-sm font-semibold">
-                      {section.title}
-                    </p>
-                  ) : null}
-                  {editingSectionId === section.id ? (
-                    <div className="mt-2 space-y-2">
-                      <textarea
-                        rows={3}
-                        value={editingContent}
-                        onChange={(event) =>
-                          setEditingContent(event.target.value)
-                        }
-                        className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          type="button"
-                          className="rounded border px-2 py-1 text-xs hover:bg-muted"
-                          onClick={handleCancelEdit}
-                          disabled={editingSaving}
-                        >
-                          {t("actions.cancel")}
-                        </button>
+        {!showDescriptionRequired ? (
+          visibleSections.length === 0 ? (
+            <p className="text-sm text-muted-foreground">{t("empty")}</p>
+          ) : (
+            <ul className="space-y-3">
+              {visibleSections.map((section) => {
+                const created = format.dateTime(
+                  new Date(section.createdAt),
+                  {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  }
+                );
+                const author =
+                  section.author?.name ??
+                  section.author?.email ??
+                  t("assignee.unknown");
+                const canEditSection =
+                  canManageTicket ||
+                  (section.authorId && currentUserId
+                    ? section.authorId === currentUserId
+                    : false);
+                return (
+                  <li key={section.id} className="rounded-lg border p-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        <span className="font-semibold">
+                          {t(`sectionTypes.${section.type}`, {
+                            default: section.type,
+                          })}
+                        </span>
+                        <span>{created}</span>
+                      </div>
+                      {canEditSection && editingSectionId !== section.id ? (
                         <button
                           type="button"
                           className={actionButtonClass({ size: "xs" })}
-                          onClick={() => void handleSaveSection()}
-                          disabled={editingSaving || !editingContent.trim()}
+                          onClick={() => handleEditSection(section)}
                         >
-                          {editingSaving
-                            ? t("actions.saving")
-                            : t("actions.save")}
+                          <Pencil className="mr-2 h-3.5 w-3.5" aria-hidden />
+                          {t("actions.edit")}
                         </button>
+                      ) : null}
+                    </div>
+                    {section.title ? (
+                      <p className="mt-2 text-sm font-semibold">
+                        {section.title}
+                      </p>
+                    ) : null}
+                    {editingSectionId === section.id ? (
+                      <div className="mt-2 space-y-2">
+                        <RichTextEditor
+                          name={`ticket-section-${section.id}`}
+                          label={t("fields.content")}
+                          placeholder={t("placeholders.content")}
+                          defaultValue={editingContent}
+                          labels={richTextLabels}
+                          onValueChange={setEditingContent}
+                          hideLabel
+                        />
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                            onClick={handleCancelEdit}
+                            disabled={editingSaving}
+                          >
+                            {t("actions.cancel")}
+                          </button>
+                          <button
+                            type="button"
+                            className={actionButtonClass({ size: "xs" })}
+                            onClick={() => void handleSaveSection()}
+                            disabled={editingSaving || !editingContent.trim()}
+                          >
+                            {editingSaving
+                              ? t("actions.saving")
+                              : t("actions.save")}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="mt-2 text-sm whitespace-pre-line">
-                      {renderContent(section.content)}
-                    </div>
-                  )}
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {t("meta.createdBy", { name: author })}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+                    ) : (
+                      <RichTextPreview
+                        value={section.content}
+                        emptyLabel=""
+                        className="mt-2 text-sm"
+                        imageMap={showImages ? imageMap : null}
+                        fileOpenLabel={fileOpenLabel}
+                      />
+                    )}
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      {t("meta.createdBy", { name: author })}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          )
+        ) : null}
 
-        {canRespondTicket ? (
+        {canRespondTicket && !showDescriptionRequired ? (
           <form
             className="mt-4 space-y-3 rounded-lg border bg-muted/10 p-4"
             onSubmit={(event) => {
@@ -1234,12 +1175,14 @@ export function TicketDetailView({
               <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {t("fields.content")}
               </label>
-              <textarea
-                rows={4}
-                value={sectionContent}
-                onChange={(event) => setSectionContent(event.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              <RichTextEditor
+                name="ticket-response"
+                label={t("fields.content")}
                 placeholder={t("placeholders.content")}
+                defaultValue={sectionContent}
+                labels={richTextLabels}
+                onValueChange={setSectionContent}
+                hideLabel
               />
             </div>
             <div className="flex justify-end">

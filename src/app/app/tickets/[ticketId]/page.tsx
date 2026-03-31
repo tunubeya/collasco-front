@@ -127,18 +127,16 @@ export default async function TicketDetailPage({ params }: Props) {
   ];
 
   return (
-    <div className="space-y-6">
-      <Breadcrumb items={breadcrumbItems} className="mb-2" />
-      <TicketDetailView
-        token={session.token}
-        projectId={project.id}
-        ticket={ticket}
-        members={members}
-        canManageTicket={canManageTicket}
-        canRespondTicket={canRespondTicket}
-        canAccessImages={canAccessImages}
-        currentUserId={currentUserId}
-      />
-    </div>
+    <TicketDetailView
+      token={session.token}
+      projectId={project.id}
+      ticket={ticket}
+      members={members}
+      canManageTicket={canManageTicket}
+      canRespondTicket={canRespondTicket}
+      canAccessImages={canAccessImages}
+      currentUserId={currentUserId}
+      breadcrumbItems={breadcrumbItems}
+    />
   );
 }

@@ -53,6 +53,7 @@ import {
 } from "@/ui/components/dialog/dialog";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
+import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
 
 type Props = {
   token: string;
@@ -63,6 +64,7 @@ type Props = {
   canRespondTicket: boolean;
   canAccessImages: boolean;
   currentUserId?: string | null;
+  breadcrumbItems: Array<{ label: string; href?: string }>;
 };
 
 function formatBytes(bytes: number): string {
@@ -93,6 +95,7 @@ export function TicketDetailView({
   canRespondTicket,
   canAccessImages,
   currentUserId,
+  breadcrumbItems,
 }: Props) {
   const t = useTranslations("app.tickets.detail");
   const tList = useTranslations("app.tickets.list");
@@ -593,8 +596,20 @@ export function TicketDetailView({
     ticketState.createdBy?.name ??
     ticketState.createdBy?.email ??
     t("assignee.unknown");
+  const liveBreadcrumbItems = useMemo(() => {
+    const items = [...breadcrumbItems];
+    if (items.length) {
+      items[items.length - 1] = {
+        ...items[items.length - 1],
+        label: ticketState.title || items[items.length - 1].label,
+      };
+    }
+    return items;
+  }, [breadcrumbItems, ticketState.title]);
+
   return (
     <div className="grid gap-6">
+      <Breadcrumb items={liveBreadcrumbItems} className="mb-2" />
       <header className="rounded-xl border bg-background p-4">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">

@@ -868,9 +868,17 @@ export function TicketDetailView({
                               </div>
                               <div className="mt-2 space-y-1">
                                 <p className="truncate text-xs font-semibold">
-                                  {item.name}
+                                  {item.name}({formatBytes(item.size)})
                                 </p>
                                 <div className="flex flex-wrap items-center gap-1">
+                                  <a
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                                  >
+                                    {t("files.actions.open")}
+                                  </a>
                                   <button
                                     type="button"
                                     className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
@@ -904,10 +912,7 @@ export function TicketDetailView({
                             </div>
                             <div className="mt-2 space-y-1">
                               <p className="truncate text-xs font-semibold">
-                                {item.name}
-                              </p>
-                              <p className="text-[10px] text-muted-foreground">
-                                {formatBytes(item.size)}
+                                {item.name}({formatBytes(item.size)})
                               </p>
                               <div className="flex flex-wrap items-center gap-1">
                                 <a

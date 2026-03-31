@@ -120,6 +120,7 @@ export function TicketDetailView({
   const featureBlurRef = useRef<number | null>(null);
 
   const [saving, setSaving] = useState(false);
+  const saveRequestRef = useRef(0);
   const [sectionType, setSectionType] =
     useState<TicketSectionType>("RESPONSE");
   const [sectionContent, setSectionContent] = useState("");
@@ -319,54 +320,71 @@ export function TicketDetailView({
     };
   }, [canManageTicket, debouncedQuery, featureOpen, projectId, token]);
 
-  const handleSave = useCallback(async () => {
-    if (!canManageTicket) return;
-    setSaving(true);
-    try {
-      const payload: {
-        title?: string;
-        status?: TicketStatus;
-        assigneeId?: string | null;
-        featureId?: string | null;
-      } = {};
-      if (title.trim() !== ticketState.title) payload.title = title.trim();
-      if (status !== ticketState.status) payload.status = status;
-      if ((assigneeId ?? null) !== (ticketState.assigneeId ?? null)) {
-        payload.assigneeId = assigneeId ?? null;
-      }
-      if ((featureId ?? null) !== (ticketState.featureId ?? null)) {
-        payload.featureId = featureId ?? null;
-      }
+  const debouncedDetails = useDebounce(
+    {
+      title: title.trim(),
+      status,
+      assigneeId: assigneeId ?? null,
+      featureId: featureId ?? null,
+    },
+    700
+  );
 
-      if (Object.keys(payload).length === 0) {
-        toast.info(t("messages.noChanges"));
-        return;
-      }
-
-      const updated = await updateTicket(token, ticketState.id, payload);
-      setTicketState((prev) => ({
-        ...prev,
-        ...updated,
-        featureId: updated.featureId ?? featureId ?? null,
-        assigneeId: updated.assigneeId ?? assigneeId ?? null,
-        title: updated.title ?? title,
-        status: updated.status ?? status,
-      }));
-      toast.success(t("messages.updated"));
-    } catch (error) {
-      console.error("[TicketDetailView] update error:", error);
-      toast.error(t("messages.updateError"));
-    } finally {
-      setSaving(false);
+  useEffect(() => {
+    if (!canManageTicket || saving) return;
+    const payload: {
+      title?: string;
+      status?: TicketStatus;
+      assigneeId?: string | null;
+      featureId?: string | null;
+    } = {};
+    if (debouncedDetails.title !== ticketState.title) {
+      payload.title = debouncedDetails.title;
     }
+    if (debouncedDetails.status !== ticketState.status) {
+      payload.status = debouncedDetails.status;
+    }
+    if ((debouncedDetails.assigneeId ?? null) !== (ticketState.assigneeId ?? null)) {
+      payload.assigneeId = debouncedDetails.assigneeId ?? null;
+    }
+    if ((debouncedDetails.featureId ?? null) !== (ticketState.featureId ?? null)) {
+      payload.featureId = debouncedDetails.featureId ?? null;
+    }
+    if (Object.keys(payload).length === 0) return;
+
+    const requestId = ++saveRequestRef.current;
+    setSaving(true);
+    updateTicket(token, ticketState.id, payload)
+      .then((updated) => {
+        if (requestId !== saveRequestRef.current) return;
+        setTicketState((prev) => ({
+          ...prev,
+          ...updated,
+          featureId: updated.featureId ?? debouncedDetails.featureId ?? null,
+          assigneeId: updated.assigneeId ?? debouncedDetails.assigneeId ?? null,
+          title: updated.title ?? debouncedDetails.title,
+          status: updated.status ?? debouncedDetails.status,
+        }));
+      })
+      .catch((error) => {
+        if (requestId !== saveRequestRef.current) return;
+        console.error("[TicketDetailView] update error:", error);
+        toast.error(t("messages.updateError"));
+      })
+      .finally(() => {
+        if (requestId !== saveRequestRef.current) return;
+        setSaving(false);
+      });
   }, [
-    assigneeId,
     canManageTicket,
-    featureId,
-    status,
+    debouncedDetails,
+    saving,
     t,
-    ticketState,
-    title,
+    ticketState.assigneeId,
+    ticketState.featureId,
+    ticketState.id,
+    ticketState.status,
+    ticketState.title,
     token,
   ]);
 
@@ -616,15 +634,10 @@ export function TicketDetailView({
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-semibold">{t("sections.details")}</h2>
           <div className="flex items-center gap-2">
-            {canManageTicket ? (
-              <button
-                type="button"
-                className={actionButtonClass({ size: "xs" })}
-                onClick={() => void handleSave()}
-                disabled={saving}
-              >
-                {saving ? t("actions.saving") : t("actions.save")}
-              </button>
+            {saving ? (
+              <span className="text-xs font-medium text-amber-600">
+                {t("actions.saving")}
+              </span>
             ) : null}
             {canDeleteTicket ? (
               <button

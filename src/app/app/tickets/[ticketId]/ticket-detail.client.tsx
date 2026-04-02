@@ -131,9 +131,12 @@ export function TicketDetailView({
   const [sectionType, setSectionType] =
     useState<TicketSectionType>("RESPONSE");
   const [sectionContent, setSectionContent] = useState("");
+  const [sectionEditorKey, setSectionEditorKey] = useState(0);
   const [sectionSaving, setSectionSaving] = useState(false);
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState("");
+  const [editingSeed, setEditingSeed] = useState("");
+  const [editingEditorKey, setEditingEditorKey] = useState(0);
   const [editingSaving, setEditingSaving] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -211,6 +214,8 @@ export function TicketDetailView({
     [sections]
   );
   const [descriptionDraft, setDescriptionDraft] = useState("");
+  const [descriptionSeed, setDescriptionSeed] = useState("");
+  const [descriptionEditorKey, setDescriptionEditorKey] = useState(0);
   const [descriptionSaving, setDescriptionSaving] = useState(false);
   const ticketLockedByOther = useMemo(
     () =>
@@ -252,9 +257,12 @@ export function TicketDetailView({
   useEffect(() => {
     if (descriptionSection?.content && !isMissingDescription(descriptionSection.content)) {
       setDescriptionDraft(descriptionSection.content);
+      setDescriptionSeed(descriptionSection.content);
     } else {
       setDescriptionDraft("");
+      setDescriptionSeed("");
     }
+    setDescriptionEditorKey((prev) => prev + 1);
   }, [descriptionSection]);
 
   const imageMap = useMemo(() => {
@@ -449,6 +457,7 @@ export function TicketDetailView({
       }));
       setLastMessageId(created.id);
       setSectionContent("");
+      setSectionEditorKey((prev) => prev + 1);
       toast.success(t("messages.sectionAdded"));
     } catch (error) {
       console.error("[TicketDetailView] add section error:", error);
@@ -483,6 +492,7 @@ export function TicketDetailView({
             section.id === updated.id ? updated : section
           ),
         }));
+        setDescriptionSeed(updated.content);
       } else {
         const created = await addTicketSection(token, ticketState.id, {
           type: "DESCRIPTION",
@@ -492,6 +502,7 @@ export function TicketDetailView({
           ...prev,
           sections: [...(prev.sections ?? []), created],
         }));
+        setDescriptionSeed(created.content);
       }
       toast.success(t("messages.sectionUpdated"));
     } catch (error) {
@@ -514,6 +525,8 @@ export function TicketDetailView({
     (section: TicketSection) => {
       setEditingSectionId(section.id);
       setEditingContent(section.content);
+      setEditingSeed(section.content);
+      setEditingEditorKey((prev) => prev + 1);
     },
     []
   );
@@ -536,6 +549,7 @@ export function TicketDetailView({
       }));
       setEditingSectionId(null);
       setEditingContent("");
+      setEditingSeed("");
       toast.success(t("messages.sectionUpdated"));
     } catch (error) {
       console.error("[TicketDetailView] edit section error:", error);
@@ -548,6 +562,7 @@ export function TicketDetailView({
   const handleCancelEdit = useCallback(() => {
     setEditingSectionId(null);
     setEditingContent("");
+    setEditingSeed("");
   }, []);
 
   const handleUploadImage = useCallback(async () => {
@@ -1098,10 +1113,11 @@ export function TicketDetailView({
             </p>
             <div className="mt-3">
               <RichTextEditor
+                key={`ticket-description-${descriptionEditorKey}`}
                 name="ticket-description"
                 label={t("sectionTypes.DESCRIPTION")}
                 placeholder={t("placeholders.content")}
-                defaultValue={descriptionDraft}
+                defaultValue={descriptionSeed}
                 labels={richTextLabels}
                 onValueChange={setDescriptionDraft}
                 hideLabel
@@ -1175,10 +1191,11 @@ export function TicketDetailView({
                     {editingSectionId === section.id ? (
                       <div className="mt-2 space-y-2">
                         <RichTextEditor
+                          key={`ticket-section-${editingEditorKey}`}
                           name={`ticket-section-${section.id}`}
                           label={t("fields.content")}
                           placeholder={t("placeholders.content")}
-                          defaultValue={editingContent}
+                          defaultValue={editingSeed}
                           labels={richTextLabels}
                           onValueChange={setEditingContent}
                           hideLabel
@@ -1257,10 +1274,11 @@ export function TicketDetailView({
                 {t("fields.content")}
               </label>
               <RichTextEditor
+                key={`ticket-response-${sectionEditorKey}`}
                 name="ticket-response"
                 label={t("fields.content")}
                 placeholder={t("placeholders.content")}
-                defaultValue={sectionContent}
+                defaultValue=""
                 labels={richTextLabels}
                 onValueChange={setSectionContent}
                 hideLabel

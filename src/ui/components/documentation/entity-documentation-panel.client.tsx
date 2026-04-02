@@ -67,6 +67,7 @@ export function EntityDocumentationPanel({
   >(null);
   const [imageNameByLabel, setImageNameByLabel] = useState<Record<string, string>>({});
   const [imageFileByLabel, setImageFileByLabel] = useState<Record<string, File | null>>({});
+  const [showAttachmentFormByLabel, setShowAttachmentFormByLabel] = useState<Record<string, boolean>>({});
   const [imageLoadingLabelId, setImageLoadingLabelId] = useState<string | null>(null);
   const [editingImageId, setEditingImageId] = useState<string | null>(null);
   const [imageDraftNameById, setImageDraftNameById] = useState<Record<string, string>>({});
@@ -659,65 +660,6 @@ export function EntityDocumentationPanel({
                               )}
                             </button>
                           </div>
-                          {entry.canEdit && (
-                            <div className="rounded-md border border-dashed border-border/80 bg-muted/10 p-2">
-                              <p className="text-[11px] font-semibold text-muted-foreground">
-                                {t("attachments.title")}
-                              </p>
-                              <p className="text-[10px] text-muted-foreground">
-                                {t("attachments.hint")}
-                              </p>
-                              <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                                <div className="space-y-1">
-                                  <label className="text-[11px] font-medium text-muted-foreground">
-                                    {t("attachments.fields.name")}
-                                  </label>
-                                  <input
-                                    type="text"
-                                    value={imageNameByLabel[entry.label.id] ?? ""}
-                                    onChange={(event) =>
-                                      setImageNameByLabel((prev) => ({
-                                        ...prev,
-                                        [entry.label.id]: event.target.value,
-                                      }))
-                                    }
-                                    className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder={t("attachments.placeholders.name")}
-                                  />
-                                </div>
-                                <div className="space-y-1">
-                                  <label className="text-[11px] font-medium text-muted-foreground">
-                                    {t("attachments.fields.file")}
-                                  </label>
-                                  <input
-                                    type="file"
-                                    accept="*/*"
-                                    onChange={(event) =>
-                                      setImageFileByLabel((prev) => ({
-                                        ...prev,
-                                        [entry.label.id]: event.target.files?.[0] ?? null,
-                                      }))
-                                    }
-                                  className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
-                                />
-                              </div>
-                            </div>
-                            <div className="mt-2 flex justify-end">
-                              <button
-                                type="button"
-                                className={actionButtonClass({ size: "xs" })}
-                                onClick={() => void handleUploadImage(entry.label.id)}
-                                disabled={imageLoadingLabelId === entry.label.id}
-                              >
-                                {imageLoadingLabelId === entry.label.id ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                                ) : (
-                                  t("attachments.actions.upload")
-                                )}
-                              </button>
-                            </div>
-                            </div>
-                          )}
                         </div>
                       ) : entry.field?.isNotApplicable ? (
                         <p className="text-xs italic text-muted-foreground">
@@ -855,6 +797,105 @@ export function EntityDocumentationPanel({
                         </div>
                       )}
                     </div>
+
+                    {entry.canEdit && (
+                      <div className="mt-3 space-y-2">
+                        <div className="flex justify-end">
+                          <button
+                            type="button"
+                            className={actionButtonClass({ size: "xs" })}
+                            onClick={() => {
+                              setShowAttachmentFormByLabel((prev) => {
+                                const nextOpen = !prev[entry.label.id];
+                                if (nextOpen) {
+                                  const current =
+                                    (imageNameByLabel[entry.label.id] ?? "").trim();
+                                  if (!current) {
+                                  const nextName = buildDefaultAttachmentName();
+                                    setImageNameByLabel((names) => ({
+                                      ...names,
+                                      [entry.label.id]: nextName,
+                                    }));
+                                  }
+                                }
+                                return { ...prev, [entry.label.id]: nextOpen };
+                              });
+                            }}
+                          >
+                            + {t("attachments.actions.add", { default: "Add attachment" })}
+                          </button>
+                        </div>
+                        {showAttachmentFormByLabel[entry.label.id] ? (
+                          <div className="rounded-md border border-dashed border-border/80 bg-muted/10 p-2">
+                            <p className="text-[11px] font-semibold text-muted-foreground">
+                              {t("attachments.title")}
+                            </p>
+                            <p className="text-[10px] text-muted-foreground">
+                              {t("attachments.hint")}
+                            </p>
+                            <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                              <div className="space-y-1">
+                                <label className="text-[11px] font-medium text-muted-foreground">
+                                  {t("attachments.fields.name")}
+                                </label>
+                                <input
+                                  type="text"
+                                  value={imageNameByLabel[entry.label.id] ?? ""}
+                                  onChange={(event) =>
+                                    setImageNameByLabel((prev) => ({
+                                      ...prev,
+                                      [entry.label.id]: event.target.value,
+                                    }))
+                                  }
+                                  className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                                  placeholder={t("attachments.placeholders.name")}
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <label className="text-[11px] font-medium text-muted-foreground">
+                                  {t("attachments.fields.file")}
+                                </label>
+                                <input
+                                  type="file"
+                                  accept="*/*"
+                                  onChange={(event) => {
+                                    const file = event.target.files?.[0] ?? null;
+                                    setImageFileByLabel((prev) => ({
+                                      ...prev,
+                                      [entry.label.id]: file,
+                                    }));
+                                    const currentName =
+                                      (imageNameByLabel[entry.label.id] ?? "").trim();
+                                    if (file && !currentName) {
+                                        const nextName = buildDefaultAttachmentName();
+                                        setImageNameByLabel((prev) => ({
+                                          ...prev,
+                                          [entry.label.id]: nextName,
+                                        }));
+                                    }
+                                  }}
+                                  className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                              </div>
+                            </div>
+                            <div className="mt-2 flex justify-end">
+                              <button
+                                type="button"
+                                className={actionButtonClass({ size: "xs" })}
+                                onClick={() => void handleUploadImage(entry.label.id)}
+                                disabled={imageLoadingLabelId === entry.label.id}
+                              >
+                                {imageLoadingLabelId === entry.label.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                                ) : (
+                                  t("attachments.actions.upload")
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
 
 
                     {entry.canEdit && entry.field?.isNotApplicable && (

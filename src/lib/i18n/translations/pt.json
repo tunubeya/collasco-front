@@ -1122,7 +1122,8 @@
             "name": "login-flow"
           },
           "actions": {
-            "upload": "Enviar"
+            "upload": "Enviar",
+            "add": "Adicionar anexo"
           },
           "messages": {
             "uploaded": "Anexo enviado.",

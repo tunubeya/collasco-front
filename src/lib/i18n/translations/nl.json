@@ -1121,7 +1121,8 @@
             "name": "login-flow"
           },
           "actions": {
-            "upload": "Uploaden"
+            "upload": "Uploaden",
+            "add": "Bijlage toevoegen"
           },
           "messages": {
             "uploaded": "Bijlage geüpload.",

@@ -1123,7 +1123,8 @@
             "name": "login-flow"
           },
           "actions": {
-            "upload": "Subir"
+            "upload": "Subir",
+            "add": "Agregar adjunto"
           },
           "messages": {
             "uploaded": "Adjunto subido.",

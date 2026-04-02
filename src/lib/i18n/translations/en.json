@@ -1123,7 +1123,8 @@
             "name": "login-flow"
           },
           "actions": {
-            "upload": "Upload"
+            "upload": "Upload",
+            "add": "Add attachment"
           },
           "messages": {
             "uploaded": "Attachment uploaded.",

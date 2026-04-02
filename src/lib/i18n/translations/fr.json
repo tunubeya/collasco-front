@@ -1121,7 +1121,8 @@
             "name": "login-flow"
           },
           "actions": {
-            "upload": "Téléverser"
+            "upload": "Téléverser",
+            "add": "Ajouter une pièce jointe"
           },
           "messages": {
             "uploaded": "Pièce jointe téléversée.",

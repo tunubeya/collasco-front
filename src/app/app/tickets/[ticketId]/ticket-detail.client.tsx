@@ -38,6 +38,7 @@ import {
   uploadTicketImage,
   updateTicketSection,
   updateTicket,
+  openTicket,
 } from "@/lib/api/tickets";
 import { MISSING_TICKET_DESCRIPTION } from "@/lib/tickets-constants";
 import { actionButtonClass } from "@/ui/styles/action-button";
@@ -123,6 +124,9 @@ export function TicketDetailView({
   const featureBlurRef = useRef<number | null>(null);
 
   const [saving, setSaving] = useState(false);
+  const [lastMessageId, setLastMessageId] = useState<string | null>(
+    ticket.lastMessageId ?? null
+  );
   const saveRequestRef = useRef(0);
   const [sectionType, setSectionType] =
     useState<TicketSectionType>("RESPONSE");
@@ -175,6 +179,24 @@ export function TicketDetailView({
     () => ticketState.sections ?? [],
     [ticketState.sections]
   );
+  useEffect(() => {
+    let active = true;
+    openTicket(token, ticketState.id)
+      .then((result) => {
+        if (!active) return;
+        setTicketState((prev) => ({
+          ...prev,
+          sections: result.sections ?? prev.sections ?? [],
+        }));
+        setLastMessageId(result.lastMessageId ?? null);
+      })
+      .catch((error) => {
+        console.error("[TicketDetailView] open ticket error:", error);
+      });
+    return () => {
+      active = false;
+    };
+  }, [ticketState.id, token]);
   const orderedSections = useMemo(() => {
     const list = [...sections];
     list.sort((a, b) => {
@@ -190,7 +212,29 @@ export function TicketDetailView({
   );
   const [descriptionDraft, setDescriptionDraft] = useState("");
   const [descriptionSaving, setDescriptionSaving] = useState(false);
-  const canEditDescription = canManageTicket || canRespondTicket;
+  const ticketLockedByOther = useMemo(
+    () =>
+      Boolean(
+        currentUserId &&
+          sections.some(
+            (section) =>
+              section.lockedAt &&
+              section.lockedById &&
+              section.lockedById !== currentUserId
+          )
+      ),
+    [currentUserId, sections]
+  );
+
+  const canEditDescription =
+    (canManageTicket || canRespondTicket) &&
+    !ticketLockedByOther &&
+    (descriptionSection
+      ? !descriptionSection.lockedAt &&
+        Boolean(
+          currentUserId && descriptionSection.authorId === currentUserId
+        )
+      : Boolean(currentUserId));
   const showDescriptionRequired =
     canEditDescription && isMissingDescription(descriptionSection?.content);
   const visibleSections = useMemo(
@@ -403,6 +447,7 @@ export function TicketDetailView({
         ...prev,
         sections: [...(prev.sections ?? []), created],
       }));
+      setLastMessageId(created.id);
       setSectionContent("");
       toast.success(t("messages.sectionAdded"));
     } catch (error) {
@@ -1093,10 +1138,13 @@ export function TicketDetailView({
                   section.author?.email ??
                   t("assignee.unknown");
                 const canEditSection =
-                  canManageTicket ||
-                  (section.authorId && currentUserId
-                    ? section.authorId === currentUserId
-                    : false);
+                  !section.lockedAt &&
+                  section.id === lastMessageId &&
+                  Boolean(
+                    section.authorId &&
+                      currentUserId &&
+                      section.authorId === currentUserId
+                  );
                 return (
                   <li key={section.id} className="rounded-lg border p-3">
                     <div className="flex items-start justify-between gap-3">

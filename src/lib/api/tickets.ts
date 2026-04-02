@@ -46,6 +46,11 @@ export type UpdateTicketSectionRequest = {
   title?: string | null;
 };
 
+export type TicketOpenResponse = {
+  sections: TicketSection[];
+  lastMessageId: string | null;
+};
+
 async function parseJson<T>(res: Response): Promise<T> {
   const contentType = res.headers.get("content-type") ?? "";
   if (contentType.includes("application/json")) {
@@ -146,6 +151,24 @@ export async function getTicket(
     );
     if (!res.ok) throw res;
     return await parseJson<TicketDetail>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function openTicket(
+  token: string,
+  ticketId: string
+): Promise<TicketOpenResponse> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/tickets/${ticketId}/open`,
+      { method: "POST" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<TicketOpenResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

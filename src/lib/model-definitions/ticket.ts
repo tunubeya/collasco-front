@@ -46,6 +46,9 @@ export type TicketSection = {
   createdAt: ISODateString;
   updatedAt?: ISODateString;
   author?: TicketUser | null;
+  lockedAt?: ISODateString | null;
+  lockedById?: string | null;
+  lockedBy?: TicketUser | null;
 };
 
 export type TicketDetail = {
@@ -63,6 +66,7 @@ export type TicketDetail = {
   assignee?: TicketUser | null;
   feature?: TicketFeature | null;
   sections?: TicketSection[];
+  lastMessageId?: string | null;
 };
 
 export type TicketImage = {

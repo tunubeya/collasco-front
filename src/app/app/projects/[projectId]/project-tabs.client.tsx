@@ -220,6 +220,7 @@ export function ProjectTabs({
           entityId={projectId}
           entityType="project"
           projectId={projectId}
+          entityName={project.name}
         />
       )}
 

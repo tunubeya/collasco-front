@@ -306,6 +306,22 @@ export function TicketDetailView({
     });
   }, [fileAttachments, imageAttachments]);
 
+  const buildDefaultAttachmentName = useCallback(() => {
+    const baseRaw = (ticketState.title || "Ticket").trim();
+    const base = baseRaw
+      .replace(/\s+/g, "-")
+      .replace(/[^a-zA-Z0-9_-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "") || "Ticket";
+    return `${base}-${images.length + 1}`;
+  }, [images.length, ticketState.title]);
+
+  useEffect(() => {
+    if (showImageForm && !imageName.trim()) {
+      setImageName(buildDefaultAttachmentName());
+    }
+  }, [buildDefaultAttachmentName, imageName, showImageForm]);
+
   const resolveFileIcon = useCallback((mimeType?: string) => {
     const type = (mimeType ?? "").toLowerCase();
     if (type.startsWith("image/")) return FileImage;
@@ -567,9 +583,14 @@ export function TicketDetailView({
 
   const handleUploadImage = useCallback(async () => {
     if (!canAccessImages) return;
-    if (!imageFile || !imageName.trim()) {
+    if (!imageFile) {
       toast.error(t("images.validation"));
       return;
+    }
+    let name = imageName.trim();
+    if (!name) {
+      name = buildDefaultAttachmentName();
+      setImageName(name);
     }
     if (imageFile.size > MAX_ATTACHMENT_BYTES) {
       toast.error(t("images.validationTooLarge"));
@@ -580,7 +601,7 @@ export function TicketDetailView({
     try {
       const created = await uploadTicketImage(token, ticketState.id, {
         file: imageFile,
-        name: imageName.trim(),
+        name,
       });
       setImages((prev) => [...prev, created]);
       setImageName("");
@@ -594,6 +615,7 @@ export function TicketDetailView({
       setUploadingAttachment(false);
     }
   }, [
+    buildDefaultAttachmentName,
     canAccessImages,
     imageFile,
     imageName,
@@ -941,16 +963,7 @@ export function TicketDetailView({
                                   </a>
                                   <button
                                     type="button"
-                                    className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
-                                    onClick={() =>
-                                      navigator.clipboard.writeText(`[${item.name}]`)
-                                    }
-                                  >
-                                    {t("images.actions.copy")}
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
+                                    className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-muted"
                                     onClick={() => void handleDeleteImage(item)}
                                     disabled={imageBusyId === item.id}
                                   >
@@ -985,7 +998,7 @@ export function TicketDetailView({
                                 </a>
                                 <button
                                   type="button"
-                                  className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-destructive/10"
+                                  className="rounded border border-destructive px-2 py-0.5 text-[10px] text-destructive hover:bg-muted"
                                   onClick={() => void handleDeleteImage(item)}
                                   disabled={imageBusyId === item.id}
                                 >
@@ -1035,9 +1048,13 @@ export function TicketDetailView({
                       </label>
                       <input
                         type="file"
-                        onChange={(event) =>
-                          setImageFile(event.target.files?.[0] ?? null)
-                        }
+                        onChange={(event) => {
+                          const file = event.target.files?.[0] ?? null;
+                          setImageFile(file);
+                          if (file && !imageName.trim()) {
+                            setImageName(buildDefaultAttachmentName());
+                          }
+                        }}
                         className="w-full rounded-lg border px-3 py-2 text-sm"
                       />
                       <p className="text-[10px] text-muted-foreground">

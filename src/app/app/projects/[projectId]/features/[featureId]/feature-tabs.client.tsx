@@ -165,6 +165,7 @@ export function FeatureTabs({
           entityId={featureId}
           entityType="feature"
           projectId={projectId}
+          entityName={feature.name ?? ""}
         />
       )}
 

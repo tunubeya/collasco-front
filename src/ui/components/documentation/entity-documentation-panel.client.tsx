@@ -38,6 +38,7 @@ type EntityDocumentationPanelProps = {
   entityId: string;
   entityType: "feature" | "module" | "project";
   projectId: string;
+  entityName?: string | null;
 };
 
 export function EntityDocumentationPanel({
@@ -45,6 +46,7 @@ export function EntityDocumentationPanel({
   entityId,
   entityType,
   projectId,
+  entityName,
 }: EntityDocumentationPanelProps) {
   const t = useTranslations("app.projects.documentation");
   const tRichText = useTranslations("app.projects.form.richText");
@@ -80,6 +82,26 @@ export function EntityDocumentationPanel({
     }),
     [tRichText],
   );
+
+  const totalImagesCount = useMemo(
+    () =>
+      Object.values(imagesByLabel).reduce(
+        (total, list) => total + (list?.length ?? 0),
+        0
+      ),
+    [imagesByLabel]
+  );
+
+  const buildDefaultAttachmentName = useCallback(() => {
+    const baseRaw = (entityName ?? entityType).trim() || entityType;
+    const base = baseRaw
+      .replace(/\s+/g, "-")
+      .replace(/[^a-zA-Z0-9_-]/g, "")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "") || entityType;
+    const index = totalImagesCount + 1;
+    return `${base}-${index}`;
+  }, [entityName, entityType, totalImagesCount]);
 
   const fetcher = useMemo(
     () =>
@@ -308,11 +330,11 @@ export function EntityDocumentationPanel({
 
   const handleUploadImage = useCallback(
     async (labelId: string) => {
-      const name = (imageNameByLabel[labelId] ?? "").trim();
+      let name = (imageNameByLabel[labelId] ?? "").trim();
       const file = imageFileByLabel[labelId];
       if (!name) {
-        toast.error(t("attachments.validation.name"));
-        return;
+        name = buildDefaultAttachmentName();
+        setImageNameByLabel((prev) => ({ ...prev, [labelId]: name }));
       }
       if (!file) {
         toast.error(t("attachments.validation.file"));
@@ -371,7 +393,16 @@ export function EntityDocumentationPanel({
         setImageLoadingLabelId(null);
       }
     },
-    [entityId, entityType, fetchImages, imageFileByLabel, imageNameByLabel, t, token],
+    [
+      buildDefaultAttachmentName,
+      entityId,
+      entityType,
+      fetchImages,
+      imageFileByLabel,
+      imageNameByLabel,
+      t,
+      token,
+    ],
   );
 
   const handleDeleteImage = useCallback(

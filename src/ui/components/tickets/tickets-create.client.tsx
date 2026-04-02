@@ -51,7 +51,7 @@ export function TicketsCreateButton({ token, projectId }: Props) {
   return (
     <button
       type="button"
-      className={actionButtonClass({ size: "xs" })}
+      className={actionButtonClass({ size: "sm", className: "text-sm" })}
       onClick={() => void handleSubmit()}
     >
       <Plus className="mr-2 h-4 w-4" aria-hidden />

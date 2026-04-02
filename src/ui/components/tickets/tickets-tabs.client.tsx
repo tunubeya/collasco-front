@@ -133,8 +133,10 @@ export default function TicketsTabs({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <TicketsCreateButton token={token} projectId={projectId ?? null} />
+        <div className="flex flex-wrap items-center gap-4">
+          <div>
+            <TicketsCreateButton token={token} projectId={projectId ?? null} />
+          </div>
 
           <div className="flex flex-wrap gap-2">
             {tabs.map((item) => {
@@ -148,9 +150,10 @@ export default function TicketsTabs({
                   className={cn(
                     "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
                     active
-                      ? "border-primary-orange bg-primary-orange/10 text-primary-orange"
-                      : "border-border text-muted-foreground hover:bg-muted"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-muted text-muted-foreground hover:bg-background"
                   )}
+                  aria-current={active ? "page" : undefined}
                 >
                   <Icon className="h-4 w-4" />
                   {t(`tabs.${item}`)}

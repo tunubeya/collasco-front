@@ -15,7 +15,6 @@ import type { Ticket, TicketStatus } from "@/lib/model-definitions/ticket";
 import { cn, generatePagination } from "@/lib/utils";
 import { Dropdown } from "@/ui/components/form/dropdown";
 import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.client";
-import { actionButtonClass } from "@/ui/styles/action-button";
 
 type TicketsScope = "mine" | "assigned" | "all";
 

@@ -2036,6 +2036,105 @@
             "deleting": "Suppression..."
           }
         }
+      },
+      "publicShare": {
+        "title": "Liens publics de tickets",
+        "description": "Créez des liens pour que des utilisateurs externes envoient des tickets.",
+        "actionLabel": "Partager les tickets publics",
+        "projectRequired": "Sélectionnez un projet pour partager des tickets.",
+        "loading": "Chargement des liens...",
+        "loadError": "Impossible de charger les liens.",
+        "linksEmpty": "Aucun lien créé.",
+        "linkLabel": "Lien public",
+        "create": "Créer un lien",
+        "creating": "Création...",
+        "created": "Lien créé.",
+        "createError": "Impossible de créer le lien.",
+        "copy": "Copier le lien",
+        "copied": "Lien copié.",
+        "copyError": "Impossible de copier le lien.",
+        "refresh": "Rafraîchir",
+        "refreshed": "Lien rafraîchi.",
+        "refreshError": "Impossible de rafraîchir le lien.",
+        "revoke": "Révoquer",
+        "revoked": "Lien révoqué.",
+        "revokedLabel": "Révoqué",
+        "revokeError": "Impossible de révoquer le lien.",
+        "close": "Fermer"
+      },
+      "public": {
+        "link": {
+          "loading": "Validation du lien...",
+          "notFound": "Ce lien n'existe pas ou a été révoqué.",
+          "revoked": "Ce lien a été révoqué.",
+          "error": "Impossible de valider ce lien.",
+          "projectLabel": "Projet",
+          "projectFallback": "Projet inconnu"
+        },
+        "create": {
+          "title": "Soumettre un ticket",
+          "subtitle": "Partagez les détails pour que l'équipe puisse aider.",
+          "fields": {
+            "title": "Titre",
+            "content": "Détails",
+            "email": "Email"
+          },
+          "placeholders": {
+            "title": "Décrivez le problème",
+            "content": "Ajoutez des détails, étapes ou contexte...",
+            "email": "vous@email.com"
+          },
+          "submit": "Envoyer le ticket",
+          "creating": "Envoi...",
+          "missing": "Veuillez remplir tous les champs.",
+          "success": "Ticket créé.",
+          "error": "Impossible de créer le ticket.",
+          "followUpTitle": "Lien de suivi prêt",
+          "followUpHint": "Conservez ce lien pour suivre et répondre.",
+          "copy": "Copier le lien",
+          "copied": "Lien copié.",
+          "copyError": "Impossible de copier le lien.",
+          "openFollowUp": "Ouvrir le suivi"
+        },
+        "follow": {
+          "title": "Suivre votre ticket",
+          "subtitle": "Consultez les mises à jour et répondez à l'équipe.",
+          "loading": "Chargement du ticket...",
+          "notFound": "Ticket introuvable.",
+          "revoked": "Ce lien de suivi a été révoqué.",
+          "error": "Impossible de charger ce ticket.",
+          "ticketFallback": "Ticket",
+          "projectLabel": "Projet : {name}",
+          "projectFallback": "Projet inconnu",
+          "createdAt": "Créé {date}",
+          "activity": "Activité",
+          "empty": "Aucune activité pour le moment.",
+          "emptyContent": "Aucun contenu.",
+          "images": "Images",
+          "addResponse": "Ajouter une réponse",
+          "fields": {
+            "type": "Type",
+            "content": "Message",
+            "email": "Email"
+          },
+          "placeholders": {
+            "content": "Écrivez votre message...",
+            "email": "vous@email.com"
+          },
+          "submit": "Envoyer",
+          "saving": "Envoi...",
+          "missing": "Veuillez fournir un message et un email.",
+          "sectionAdded": "Message envoyé.",
+          "sectionError": "Impossible d'envoyer le message.",
+          "addImage": "Ajouter une image",
+          "selectImage": "Choisir une image",
+          "noImage": "Aucune image sélectionnée.",
+          "upload": "Téléverser",
+          "uploading": "Téléversement...",
+          "imageTooLarge": "La taille maximale est 5 Mo.",
+          "imageUploaded": "Image téléversée.",
+          "imageError": "Impossible de téléverser l'image."
+        }
       }
     },
     "sidebar": {

@@ -2037,6 +2037,105 @@
             "deleting": "Excluindo..."
           }
         }
+      },
+      "publicShare": {
+        "title": "Links públicos de tickets",
+        "description": "Crie links para que usuários externos enviem tickets.",
+        "actionLabel": "Compartilhar tickets públicos",
+        "projectRequired": "Selecione um projeto para compartilhar tickets.",
+        "loading": "Carregando links...",
+        "loadError": "Não foi possível carregar os links.",
+        "linksEmpty": "Ainda não há links.",
+        "linkLabel": "Link público",
+        "create": "Criar link",
+        "creating": "Criando...",
+        "created": "Link criado.",
+        "createError": "Não foi possível criar o link.",
+        "copy": "Copiar link",
+        "copied": "Link copiado.",
+        "copyError": "Não foi possível copiar o link.",
+        "refresh": "Atualizar",
+        "refreshed": "Link atualizado.",
+        "refreshError": "Não foi possível atualizar o link.",
+        "revoke": "Revogar",
+        "revoked": "Link revogado.",
+        "revokedLabel": "Revogado",
+        "revokeError": "Não foi possível revogar o link.",
+        "close": "Fechar"
+      },
+      "public": {
+        "link": {
+          "loading": "Validando link...",
+          "notFound": "Este link não existe ou foi revogado.",
+          "revoked": "Este link foi revogado.",
+          "error": "Não foi possível validar este link.",
+          "projectLabel": "Projeto",
+          "projectFallback": "Projeto desconhecido"
+        },
+        "create": {
+          "title": "Enviar um ticket",
+          "subtitle": "Compartilhe detalhes para que a equipe possa ajudar.",
+          "fields": {
+            "title": "Título",
+            "content": "Detalhes",
+            "email": "Email"
+          },
+          "placeholders": {
+            "title": "Descreva o problema",
+            "content": "Adicione detalhes, passos ou contexto...",
+            "email": "voce@email.com"
+          },
+          "submit": "Enviar ticket",
+          "creating": "Enviando...",
+          "missing": "Preencha todos os campos.",
+          "success": "Ticket criado.",
+          "error": "Não foi possível criar o ticket.",
+          "followUpTitle": "Link de acompanhamento pronto",
+          "followUpHint": "Salve este link para acompanhar e responder.",
+          "copy": "Copiar link",
+          "copied": "Link copiado.",
+          "copyError": "Não foi possível copiar o link.",
+          "openFollowUp": "Abrir acompanhamento"
+        },
+        "follow": {
+          "title": "Acompanhar ticket",
+          "subtitle": "Veja atualizações e responda à equipe.",
+          "loading": "Carregando ticket...",
+          "notFound": "Não encontramos este ticket.",
+          "revoked": "Este link de acompanhamento foi revogado.",
+          "error": "Não foi possível carregar este ticket.",
+          "ticketFallback": "Ticket",
+          "projectLabel": "Projeto: {name}",
+          "projectFallback": "Projeto desconhecido",
+          "createdAt": "Criado em {date}",
+          "activity": "Atividade",
+          "empty": "Ainda não há atividade.",
+          "emptyContent": "Sem conteúdo.",
+          "images": "Imagens",
+          "addResponse": "Adicionar resposta",
+          "fields": {
+            "type": "Tipo",
+            "content": "Mensagem",
+            "email": "Email"
+          },
+          "placeholders": {
+            "content": "Escreva sua mensagem...",
+            "email": "voce@email.com"
+          },
+          "submit": "Enviar",
+          "saving": "Enviando...",
+          "missing": "Informe uma mensagem e um email.",
+          "sectionAdded": "Mensagem enviada.",
+          "sectionError": "Não foi possível enviar a mensagem.",
+          "addImage": "Adicionar imagem",
+          "selectImage": "Escolher imagem",
+          "noImage": "Nenhuma imagem selecionada.",
+          "upload": "Enviar",
+          "uploading": "Enviando...",
+          "imageTooLarge": "O tamanho máximo é 5MB.",
+          "imageUploaded": "Imagem enviada.",
+          "imageError": "Não foi possível enviar a imagem."
+        }
       }
     },
     "sidebar": {

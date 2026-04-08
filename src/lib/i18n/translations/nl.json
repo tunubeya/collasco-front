@@ -2036,6 +2036,105 @@
             "deleting": "Verwijderen..."
           }
         }
+      },
+      "publicShare": {
+        "title": "Publieke ticketlinks",
+        "description": "Maak links zodat externe gebruikers tickets kunnen indienen.",
+        "actionLabel": "Publieke tickets delen",
+        "projectRequired": "Selecteer een project om tickets te delen.",
+        "loading": "Links laden...",
+        "loadError": "We konden de links niet laden.",
+        "linksEmpty": "Nog geen links.",
+        "linkLabel": "Publieke link",
+        "create": "Link maken",
+        "creating": "Bezig...",
+        "created": "Link gemaakt.",
+        "createError": "We konden de link niet maken.",
+        "copy": "Link kopiëren",
+        "copied": "Link gekopieerd.",
+        "copyError": "We konden de link niet kopiëren.",
+        "refresh": "Vernieuwen",
+        "refreshed": "Link vernieuwd.",
+        "refreshError": "We konden de link niet vernieuwen.",
+        "revoke": "Intrekken",
+        "revoked": "Link ingetrokken.",
+        "revokedLabel": "Ingetrokken",
+        "revokeError": "We konden de link niet intrekken.",
+        "close": "Sluiten"
+      },
+      "public": {
+        "link": {
+          "loading": "Link valideren...",
+          "notFound": "Deze link bestaat niet of is ingetrokken.",
+          "revoked": "Deze link is ingetrokken.",
+          "error": "We konden deze link niet valideren.",
+          "projectLabel": "Project",
+          "projectFallback": "Onbekend project"
+        },
+        "create": {
+          "title": "Ticket indienen",
+          "subtitle": "Deel details zodat het team kan helpen.",
+          "fields": {
+            "title": "Titel",
+            "content": "Details",
+            "email": "Email"
+          },
+          "placeholders": {
+            "title": "Beschrijf het probleem",
+            "content": "Voeg details, stappen of context toe...",
+            "email": "jij@email.com"
+          },
+          "submit": "Ticket indienen",
+          "creating": "Verzenden...",
+          "missing": "Vul alle velden in.",
+          "success": "Ticket aangemaakt.",
+          "error": "We konden het ticket niet maken.",
+          "followUpTitle": "Follow-up link klaar",
+          "followUpHint": "Bewaar deze link om updates te volgen en te antwoorden.",
+          "copy": "Link kopiëren",
+          "copied": "Link gekopieerd.",
+          "copyError": "We konden de link niet kopiëren.",
+          "openFollowUp": "Follow-up openen"
+        },
+        "follow": {
+          "title": "Ticket volgen",
+          "subtitle": "Bekijk updates en reageer op het team.",
+          "loading": "Ticket laden...",
+          "notFound": "We konden dit ticket niet vinden.",
+          "revoked": "Deze follow-up link is ingetrokken.",
+          "error": "We konden dit ticket niet laden.",
+          "ticketFallback": "Ticket",
+          "projectLabel": "Project: {name}",
+          "projectFallback": "Onbekend project",
+          "createdAt": "Aangemaakt {date}",
+          "activity": "Activiteit",
+          "empty": "Nog geen activiteit.",
+          "emptyContent": "Geen inhoud.",
+          "images": "Afbeeldingen",
+          "addResponse": "Reactie toevoegen",
+          "fields": {
+            "type": "Type",
+            "content": "Bericht",
+            "email": "Email"
+          },
+          "placeholders": {
+            "content": "Schrijf je bericht...",
+            "email": "jij@email.com"
+          },
+          "submit": "Verzenden",
+          "saving": "Verzenden...",
+          "missing": "Vul een bericht en email in.",
+          "sectionAdded": "Bericht verzonden.",
+          "sectionError": "We konden het bericht niet verzenden.",
+          "addImage": "Afbeelding toevoegen",
+          "selectImage": "Afbeelding kiezen",
+          "noImage": "Geen afbeelding geselecteerd.",
+          "upload": "Uploaden",
+          "uploading": "Bezig...",
+          "imageTooLarge": "Maximale grootte is 5MB.",
+          "imageUploaded": "Afbeelding geüpload.",
+          "imageError": "We konden de afbeelding niet uploaden."
+        }
       }
     },
     "sidebar": {

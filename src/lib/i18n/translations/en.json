@@ -2038,6 +2038,105 @@
             "deleting": "Deleting..."
           }
         }
+      },
+      "publicShare": {
+        "title": "Public ticket links",
+        "description": "Create share links so external users can submit tickets.",
+        "actionLabel": "Share public tickets",
+        "projectRequired": "Select a project to share tickets.",
+        "loading": "Loading links...",
+        "loadError": "We couldn't load the links.",
+        "linksEmpty": "No links created yet.",
+        "linkLabel": "Public link",
+        "create": "Create link",
+        "creating": "Creating...",
+        "created": "Link created.",
+        "createError": "We couldn't create the link.",
+        "copy": "Copy link",
+        "copied": "Link copied.",
+        "copyError": "We couldn't copy the link.",
+        "refresh": "Refresh",
+        "refreshed": "Link refreshed.",
+        "refreshError": "We couldn't refresh the link.",
+        "revoke": "Revoke",
+        "revoked": "Link revoked.",
+        "revokedLabel": "Revoked",
+        "revokeError": "We couldn't revoke the link.",
+        "close": "Close"
+      },
+      "public": {
+        "link": {
+          "loading": "Validating link...",
+          "notFound": "This link does not exist or was revoked.",
+          "revoked": "This link has been revoked.",
+          "error": "We couldn't validate this link.",
+          "projectLabel": "Project",
+          "projectFallback": "Unknown project"
+        },
+        "create": {
+          "title": "Submit a ticket",
+          "subtitle": "Share details so the team can help you.",
+          "fields": {
+            "title": "Title",
+            "content": "Details",
+            "email": "Email"
+          },
+          "placeholders": {
+            "title": "Describe the issue",
+            "content": "Add details, steps, or context...",
+            "email": "you@email.com"
+          },
+          "submit": "Submit ticket",
+          "creating": "Submitting...",
+          "missing": "Please complete all fields.",
+          "success": "Ticket created.",
+          "error": "We couldn't create the ticket.",
+          "followUpTitle": "Follow-up link ready",
+          "followUpHint": "Save this link to track updates and reply.",
+          "copy": "Copy link",
+          "copied": "Link copied.",
+          "copyError": "We couldn't copy the link.",
+          "openFollowUp": "Open follow-up"
+        },
+        "follow": {
+          "title": "Follow your ticket",
+          "subtitle": "Check updates and reply to the team.",
+          "loading": "Loading ticket...",
+          "notFound": "We couldn't find this ticket.",
+          "revoked": "This follow-up link was revoked.",
+          "error": "We couldn't load this ticket.",
+          "ticketFallback": "Ticket",
+          "projectLabel": "Project: {name}",
+          "projectFallback": "Unknown project",
+          "createdAt": "Created {date}",
+          "activity": "Activity",
+          "empty": "No activity yet.",
+          "emptyContent": "No content.",
+          "images": "Images",
+          "addResponse": "Add a response",
+          "fields": {
+            "type": "Type",
+            "content": "Message",
+            "email": "Email"
+          },
+          "placeholders": {
+            "content": "Write your message...",
+            "email": "you@email.com"
+          },
+          "submit": "Send",
+          "saving": "Sending...",
+          "missing": "Please provide a message and email.",
+          "sectionAdded": "Message sent.",
+          "sectionError": "We couldn't send the message.",
+          "addImage": "Add an image",
+          "selectImage": "Choose image",
+          "noImage": "No image selected.",
+          "upload": "Upload",
+          "uploading": "Uploading...",
+          "imageTooLarge": "Max file size is 5MB.",
+          "imageUploaded": "Image uploaded.",
+          "imageError": "We couldn't upload the image."
+        }
       }
     },
     "sidebar": {

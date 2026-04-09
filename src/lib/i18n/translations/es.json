@@ -1974,6 +1974,7 @@
           "unassigned": "Sin asignar",
           "unknown": "Desconocido"
         },
+        "externalUser": "Usuario externo",
         "sectionTypes": {
           "DESCRIPTION": "Descripción",
           "RESPONSE": "Respuesta",
@@ -2037,6 +2038,108 @@
             "delete": "Eliminar",
             "deleting": "Eliminando..."
           }
+        }
+      },
+      "publicShare": {
+        "title": "Enlaces públicos de tickets",
+        "description": "Crea enlaces para que usuarios externos puedan enviar tickets.",
+        "actionLabel": "Compartir tickets públicos",
+        "projectRequired": "Selecciona un proyecto para compartir tickets.",
+        "loading": "Cargando enlaces...",
+        "loadError": "No pudimos cargar los enlaces.",
+        "linksEmpty": "Aún no hay enlaces creados.",
+        "linkLabel": "Enlace público",
+        "nameLabel": "Nombre del enlace",
+        "namePlaceholder": "Onboarding cliente",
+        "cancel": "Cancelar",
+        "create": "Crear enlace",
+        "creating": "Creando...",
+        "created": "Enlace creado.",
+        "createError": "No pudimos crear el enlace.",
+        "copy": "Copiar enlace",
+        "copied": "Enlace copiado.",
+        "copyError": "No pudimos copiar el enlace.",
+        "refresh": "Actualizar",
+        "refreshed": "Enlace actualizado.",
+        "refreshError": "No pudimos actualizar el enlace.",
+        "revoke": "Revocar",
+        "revoked": "Enlace revocado.",
+        "revokedLabel": "Revocado",
+        "revokeError": "No pudimos revocar el enlace.",
+        "close": "Cerrar"
+      },
+      "public": {
+        "link": {
+          "loading": "Validando enlace...",
+          "notFound": "El enlace no existe o fue revocado.",
+          "revoked": "Este enlace fue revocado.",
+          "error": "No pudimos validar este enlace.",
+          "projectLabel": "Proyecto",
+          "projectFallback": "Proyecto desconocido"
+        },
+        "create": {
+          "title": "Enviar un ticket",
+          "subtitle": "Comparte detalles para que el equipo pueda ayudarte.",
+          "fields": {
+            "title": "Título",
+            "content": "Detalles",
+            "email": "Email"
+          },
+          "placeholders": {
+            "title": "Describe el problema",
+            "content": "Agrega detalles, pasos o contexto...",
+            "email": "tu@email.com"
+          },
+          "submit": "Enviar ticket",
+          "creating": "Enviando...",
+          "missing": "Completa todos los campos.",
+          "success": "Ticket creado.",
+          "error": "No pudimos crear el ticket.",
+          "followUpTitle": "Enlace de seguimiento listo",
+          "followUpHint": "Guarda este enlace para ver actualizaciones y responder.",
+          "copy": "Copiar enlace",
+          "copied": "Enlace copiado.",
+          "copyError": "No pudimos copiar el enlace.",
+          "openFollowUp": "Abrir seguimiento"
+        },
+        "follow": {
+          "title": "Seguimiento del ticket",
+          "subtitle": "Revisa actualizaciones y responde al equipo.",
+          "loading": "Cargando ticket...",
+          "notFound": "No encontramos este ticket.",
+          "revoked": "Este enlace de seguimiento fue revocado.",
+          "error": "No pudimos cargar este ticket.",
+          "ticketFallback": "Ticket",
+          "authorFallback": "Tú",
+          "externalAuthor": "Usuario externo",
+          "projectLabel": "Proyecto: {name}",
+          "projectFallback": "Proyecto desconocido",
+          "createdAt": "Creado {date}",
+          "activity": "Actividad",
+          "empty": "Aún no hay actividad.",
+          "emptyContent": "Sin contenido.",
+          "images": "Imágenes",
+          "addResponse": "Agregar respuesta",
+          "fields": {
+            "type": "Tipo",
+            "content": "Mensaje"
+          },
+          "placeholders": {
+            "content": "Escribe tu mensaje..."
+          },
+          "submit": "Enviar",
+          "saving": "Enviando...",
+          "missing": "Ingresa un mensaje.",
+          "sectionAdded": "Mensaje enviado.",
+          "sectionError": "No pudimos enviar el mensaje.",
+          "addImage": "Agregar imagen",
+          "selectImage": "Elegir imagen",
+          "noImage": "Ninguna imagen seleccionada.",
+          "upload": "Subir",
+          "uploading": "Subiendo...",
+          "imageTooLarge": "El tamaño máximo es 5MB.",
+          "imageUploaded": "Imagen subida.",
+          "imageError": "No pudimos subir la imagen."
         }
       }
     },

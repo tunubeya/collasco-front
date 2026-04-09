@@ -30,7 +30,11 @@ const publicRoutes = [
   "/500",
 ];
 
-const publicRoutePrefixes = ["/public/manual/shared"];
+const publicRoutePrefixes = [
+  "/public/manual/shared",
+  "/public/tickets/links",
+  "/public/tickets/follow",
+];
 const refreshInFlightByToken = new Map<string, Promise<SessionResult>>();
 const REFRESH_LOCK_COOKIE = "refresh-lock";
 const REFRESH_LOCK_TTL_SECONDS = 5;

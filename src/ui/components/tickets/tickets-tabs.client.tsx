@@ -1,20 +1,23 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import {
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { Calendar, Folder, User } from "lucide-react";
+import { Calendar, Folder, Share2, User } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { Ticket, TicketStatus } from "@/lib/model-definitions/ticket";
 import { cn, generatePagination } from "@/lib/utils";
 import { Dropdown } from "@/ui/components/form/dropdown";
 import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.client";
+import { actionButtonClass } from "@/ui/styles/action-button";
+import { PublicTicketShareDialog } from "@/ui/components/tickets/public-ticket-share-dialog.client";
 
 type TicketsScope = "mine" | "assigned" | "all";
 
@@ -50,10 +53,12 @@ export default function TicketsTabs({
   status,
 }: Props) {
   const t = useTranslations("app.tickets.list");
+  const tShare = useTranslations("app.tickets.publicShare");
   const format = useFormatter();
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const [shareOpen, setShareOpen] = useState(false);
 
   const totalPages = Math.max(
     1,
@@ -136,7 +141,6 @@ export default function TicketsTabs({
           <div>
             <TicketsCreateButton token={token} projectId={projectId ?? null} />
           </div>
-
           <div className="flex flex-wrap gap-2">
             {tabs.map((item) => {
               const Icon = TAB_ICON[item];
@@ -162,16 +166,33 @@ export default function TicketsTabs({
           </div>
 
           <div className="ml-auto">
-            <select
-              value={status ?? ""}
-              onChange={(event) => setStatus(event.target.value)}
-              className="rounded-md border px-3 py-1.5 text-sm"
-            >
-              <option value="">{t("filters.allStatuses")}</option>
-              <option value="OPEN">{t("statuses.OPEN")}</option>
-              <option value="PENDING">{t("statuses.PENDING")}</option>
-              <option value="RESOLVED">{t("statuses.RESOLVED")}</option>
-            </select>
+            <div className="flex items-center gap-2">
+              <select
+                value={status ?? ""}
+                onChange={(event) => setStatus(event.target.value)}
+                className="rounded-md border px-3 py-1.5 text-sm"
+              >
+                <option value="">{t("filters.allStatuses")}</option>
+                <option value="OPEN">{t("statuses.OPEN")}</option>
+                <option value="PENDING">{t("statuses.PENDING")}</option>
+                <option value="RESOLVED">{t("statuses.RESOLVED")}</option>
+              </select>
+              <button
+                type="button"
+                className={actionButtonClass({ size: "sm", className: "text-sm px-2" })}
+                onClick={() => {
+                  if (!projectId) {
+                    toast.error(tShare("projectRequired"));
+                    return;
+                  }
+                  setShareOpen(true);
+                }}
+                aria-label={tShare("actionLabel")}
+                title={tShare("actionLabel")}
+              >
+                <Share2 className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -303,6 +324,15 @@ export default function TicketsTabs({
           ) : null}
         </div>
       )}
+
+      {projectId ? (
+        <PublicTicketShareDialog
+          token={token}
+          projectId={projectId}
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+        />
+      ) : null}
     </section>
   );
 }

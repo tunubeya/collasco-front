@@ -217,6 +217,7 @@ export function TicketDetailView({
   const [descriptionSeed, setDescriptionSeed] = useState("");
   const [descriptionEditorKey, setDescriptionEditorKey] = useState(0);
   const [descriptionSaving, setDescriptionSaving] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
   const ticketLockedByOther = useMemo(
     () =>
       Boolean(
@@ -240,18 +241,24 @@ export function TicketDetailView({
           currentUserId && descriptionSection.authorId === currentUserId
         )
       : Boolean(currentUserId));
+  const hasOnlyDescription = useMemo(
+    () => sections.filter((section) => section.type !== "DESCRIPTION").length === 0,
+    [sections]
+  );
   const showDescriptionRequired =
     canEditDescription && isMissingDescription(descriptionSection?.content);
+  const showDescriptionEditor =
+    canEditDescription && (showDescriptionRequired || isEditingDescription);
   const visibleSections = useMemo(
     () =>
       orderedSections.filter(
         (section) =>
           !(
             section.type === "DESCRIPTION" &&
-            isMissingDescription(section.content)
+            (isMissingDescription(section.content) || showDescriptionEditor)
           )
       ),
-    [orderedSections]
+    [orderedSections, showDescriptionEditor]
   );
 
   useEffect(() => {
@@ -263,6 +270,9 @@ export function TicketDetailView({
       setDescriptionSeed("");
     }
     setDescriptionEditorKey((prev) => prev + 1);
+    if (!descriptionSection || isMissingDescription(descriptionSection.content)) {
+      setIsEditingDescription(false);
+    }
   }, [descriptionSection]);
 
   const imageMap = useMemo(() => {
@@ -521,6 +531,7 @@ export function TicketDetailView({
         setDescriptionSeed(created.content);
       }
       toast.success(t("messages.sectionUpdated"));
+      setIsEditingDescription(false);
     } catch (error) {
       console.error("[TicketDetailView] description save error:", error);
       toast.error(t("messages.sectionUpdateError"));
@@ -532,10 +543,16 @@ export function TicketDetailView({
     descriptionDraft,
     descriptionSection?.id,
     descriptionSaving,
+    setIsEditingDescription,
     ticketState.id,
     token,
     t,
   ]);
+
+  const handleCancelDescriptionEdit = useCallback(() => {
+    setDescriptionDraft(descriptionSeed);
+    setIsEditingDescription(false);
+  }, [descriptionSeed]);
 
   const handleEditSection = useCallback(
     (section: TicketSection) => {
@@ -1120,14 +1137,36 @@ export function TicketDetailView({
           ) : null}
         </div>
 
-        {showDescriptionRequired ? (
+        {showDescriptionEditor ? (
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <p className="text-sm font-semibold text-amber-900">
-              {t("messages.descriptionRequired")}
-            </p>
-            <p className="mt-1 text-xs text-amber-800">
-              {t("sectionTypes.DESCRIPTION")}
-            </p>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                {showDescriptionRequired ? (
+                  <>
+                    <p className="text-sm font-semibold text-amber-900">
+                      {t("messages.descriptionRequired")}
+                    </p>
+                    <p className="mt-1 text-xs text-amber-800">
+                      {t("sectionTypes.DESCRIPTION")}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-sm font-semibold text-amber-900">
+                    {t("sectionTypes.DESCRIPTION")}
+                  </p>
+                )}
+              </div>
+              {!showDescriptionRequired ? (
+                <button
+                  type="button"
+                  className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                  onClick={handleCancelDescriptionEdit}
+                  disabled={descriptionSaving}
+                >
+                  {t("actions.cancel")}
+                </button>
+              ) : null}
+            </div>
             <div className="mt-3">
               <RichTextEditor
                 key={`ticket-description-${descriptionEditorKey}`}
@@ -1168,8 +1207,7 @@ export function TicketDetailView({
                 );
                 const author =
                   section.author?.name ??
-                  section.author?.email ??
-                  t("assignee.unknown");
+                  t("externalUser");
                 const canEditSection =
                   !section.lockedAt &&
                   section.id === lastMessageId &&
@@ -1188,8 +1226,21 @@ export function TicketDetailView({
                           })}
                         </span>
                         <span>{created}</span>
+                        <span>·</span>
+                        <span>{author}</span>
                       </div>
-                      {canEditSection && editingSectionId !== section.id ? (
+                      {section.type === "DESCRIPTION" &&
+                      hasOnlyDescription &&
+                      canEditDescription &&
+                      !showDescriptionRequired ? (
+                        <button
+                          type="button"
+                          className={actionButtonClass({ size: "xs" })}
+                          onClick={() => setIsEditingDescription(true)}
+                        >
+                          {t("actions.edit")}
+                        </button>
+                      ) : canEditSection && editingSectionId !== section.id ? (
                         <button
                           type="button"
                           className={actionButtonClass({ size: "xs" })}
@@ -1200,7 +1251,7 @@ export function TicketDetailView({
                         </button>
                       ) : null}
                     </div>
-                    {section.title ? (
+                    {section.title && section.type !== "DESCRIPTION" ? (
                       <p className="mt-2 text-sm font-semibold">
                         {section.title}
                       </p>
@@ -1247,9 +1298,6 @@ export function TicketDetailView({
                         fileOpenLabel={fileOpenLabel}
                       />
                     )}
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {t("meta.createdBy", { name: author })}
-                    </p>
                   </li>
                 );
               })}

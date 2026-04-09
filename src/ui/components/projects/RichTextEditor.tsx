@@ -80,9 +80,10 @@ export function RichTextEditor({
       },
     },
     onUpdate({ editor }) {
-      const text = editor.getText().trim();
+      const text = editor.getText();
+      const hasContent = text.replace(/\s/g, "").length > 0;
       const html = editor.getHTML();
-      setCurrentValue(text.length ? html : "");
+      setCurrentValue(hasContent ? html : "");
     },
   });
 

@@ -116,7 +116,6 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   }, [loadTicket]);
 
   const ticket = data?.ticket;
-  const lastMessageId = ticket?.lastMessageId ?? null;
   const sections = useMemo(() => {
     const list = data?.sections ?? ticket?.sections ?? [];
     return [...list].sort((a, b) => {

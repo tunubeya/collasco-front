@@ -101,7 +101,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
           return;
         }
         if (err.status === 410) {
-          setError(t("follow.revoked"));
+          setError(err.message || t("follow.revoked"));
           return;
         }
       }

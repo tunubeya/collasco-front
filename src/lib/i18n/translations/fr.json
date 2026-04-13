@@ -2036,6 +2036,22 @@
             "delete": "Supprimer",
             "deleting": "Suppression..."
           }
+        },
+        "notifications": {
+          "title": "Notifications",
+          "subtitle": "Abonnez-vous à ce ticket.",
+          "notify": "Recevoir dans l’app",
+          "notifySaving": "Enregistrement...",
+          "email": "Recevoir par e-mail",
+          "emailSaving": "Enregistrement...",
+          "notifySuccess": "Vous recevrez des notifications dans l’app pour ce ticket.",
+          "notifyRemoved": "Notifications dans l’app désactivées pour ce ticket.",
+          "notifyError": "Impossible d’activer les notifications dans l’app.",
+          "notifyRemoveError": "Impossible de désactiver les notifications dans l’app.",
+          "emailSuccess": "Vous recevrez des e-mails pour ce ticket.",
+          "emailRemoved": "Notifications par e-mail désactivées pour ce ticket.",
+          "emailError": "Impossible d’activer les notifications par e-mail.",
+          "emailRemoveError": "Impossible de désactiver les notifications par e-mail."
         }
       },
       "publicShare": {

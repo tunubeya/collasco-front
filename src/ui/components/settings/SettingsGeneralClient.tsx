@@ -63,6 +63,7 @@ export default function SettingsGeneralClient({ initial }: Props) {
     }
   }, [githubState, t]);
 
+
   const handleDisconnect = useCallback(() => {
     startRevoke(async () => {
       const result = await deleteGithubTokenAction();

@@ -25,6 +25,7 @@ export type GithubTokenFormState = {
   success?: boolean;
 };
 
+
 export async function updateGeneralPreferencesAction(
   prevState: GeneralFormState,
   formData: FormData

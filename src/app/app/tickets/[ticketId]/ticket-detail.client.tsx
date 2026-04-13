@@ -40,6 +40,12 @@ import {
   updateTicket,
   openTicket,
 } from "@/lib/api/tickets";
+import {
+  emailTickets,
+  notifyTickets,
+  removeEmailedTicket,
+  removeNotifiedTicket,
+} from "@/lib/api/ticket-notifications";
 import { MISSING_TICKET_DESCRIPTION } from "@/lib/tickets-constants";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { cn } from "@/lib/utils";
@@ -150,6 +156,14 @@ export function TicketDetailView({
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
   const [attachmentsOpen, setAttachmentsOpen] = useState(false);
   const [activityOrder, setActivityOrder] = useState<"recent" | "oldest">("recent");
+  const [notifyBusy, setNotifyBusy] = useState(false);
+  const [emailBusy, setEmailBusy] = useState(false);
+  const [receiveNotifications, setReceiveNotifications] = useState(
+    Boolean(ticket.receiveNotifications)
+  );
+  const [receiveEmails, setReceiveEmails] = useState(
+    Boolean(ticket.receiveEmails)
+  );
 
   const assigneeOptions = useMemo(
     () =>
@@ -209,6 +223,78 @@ export function TicketDetailView({
     });
     return list;
   }, [activityOrder, sections]);
+
+  const handleNotifyTicket = useCallback(
+    async (nextValue: boolean) => {
+      if (notifyBusy) return;
+      const previous = receiveNotifications;
+      setReceiveNotifications(nextValue);
+      setNotifyBusy(true);
+      try {
+        if (nextValue) {
+          console.log("[TicketDetailView] POST notify ticket", {
+            endpoint: "/users/me/ticket-notify-tickets",
+            payload: { ticketIds: [ticketState.id] },
+          });
+          await notifyTickets(token, [ticketState.id]);
+          toast.success(t("notifications.notifySuccess"));
+        } else {
+          console.log("[TicketDetailView] DELETE notify ticket", {
+            endpoint: `/users/me/ticket-notify-tickets/${ticketState.id}`,
+          });
+          await removeNotifiedTicket(token, ticketState.id);
+          toast.success(t("notifications.notifyRemoved"));
+        }
+      } catch (error) {
+        console.error("[TicketDetailView] notify ticket error:", error);
+        setReceiveNotifications(previous);
+        toast.error(
+          nextValue
+            ? t("notifications.notifyError")
+            : t("notifications.notifyRemoveError")
+        );
+      } finally {
+        setNotifyBusy(false);
+      }
+    },
+    [notifyBusy, receiveNotifications, t, ticketState.id, token]
+  );
+
+  const handleEmailTicket = useCallback(
+    async (nextValue: boolean) => {
+      if (emailBusy) return;
+      const previous = receiveEmails;
+      setReceiveEmails(nextValue);
+      setEmailBusy(true);
+      try {
+        if (nextValue) {
+          console.log("[TicketDetailView] POST email ticket", {
+            endpoint: "/users/me/ticket-email-tickets",
+            payload: { ticketIds: [ticketState.id] },
+          });
+          await emailTickets(token, [ticketState.id]);
+          toast.success(t("notifications.emailSuccess"));
+        } else {
+          console.log("[TicketDetailView] DELETE email ticket", {
+            endpoint: `/users/me/ticket-email-tickets/${ticketState.id}`,
+          });
+          await removeEmailedTicket(token, ticketState.id);
+          toast.success(t("notifications.emailRemoved"));
+        }
+      } catch (error) {
+        console.error("[TicketDetailView] email ticket error:", error);
+        setReceiveEmails(previous);
+        toast.error(
+          nextValue
+            ? t("notifications.emailError")
+            : t("notifications.emailRemoveError")
+        );
+      } finally {
+        setEmailBusy(false);
+      }
+    },
+    [emailBusy, receiveEmails, t, ticketState.id, token]
+  );
   const descriptionSection = useMemo(
     () => sections.find((section) => section.type === "DESCRIPTION"),
     [sections]
@@ -694,7 +780,7 @@ export function TicketDetailView({
   const createdBy =
     ticketState.createdBy?.name ??
     ticketState.createdBy?.email ??
-    t("assignee.unknown");
+    null;
   const liveBreadcrumbItems = useMemo(() => {
     const items = [...breadcrumbItems];
     if (items.length) {
@@ -714,10 +800,12 @@ export function TicketDetailView({
           <div className="space-y-2">
             <h1 className="text-2xl font-bold">{ticketState.title}</h1>
             <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <User className="h-4 w-4" />
-                {t("meta.createdBy", { name: createdBy })}
-              </span>
+              {createdBy ? (
+                <span className="flex items-center gap-1">
+                  <User className="h-4 w-4" />
+                  {t("meta.createdBy", { name: createdBy })}
+                </span>
+              ) : null}
               <span className="flex items-center gap-1">
                 <User className="h-4 w-4" />
                 {t("meta.assignedTo", { name: assigneeLabel })}
@@ -729,7 +817,7 @@ export function TicketDetailView({
               </span>
             </div>
           </div>
-          <div className="text-xs text-muted-foreground space-y-1 text-right">
+          <div className="text-xs text-muted-foreground space-y-2 text-right">
             <div className="flex items-center justify-end gap-1">
               <Calendar className="h-3 w-3" />
               {t("meta.createdAt", { date: createdAt })}
@@ -740,6 +828,26 @@ export function TicketDetailView({
                 {t("meta.updatedAt", { date: updatedAt })}
               </div>
             ) : null}
+            <div className="flex items-center justify-end">
+              <Switch
+                label={t("notifications.notify")}
+                checked={receiveNotifications}
+                disabled={notifyBusy}
+                onChange={(event) =>
+                  void handleNotifyTicket(event.target.checked)
+                }
+              />
+            </div>
+            <div className="flex items-center justify-end">
+              <Switch
+                label={t("notifications.email")}
+                checked={receiveEmails}
+                disabled={emailBusy}
+                onChange={(event) =>
+                  void handleEmailTicket(event.target.checked)
+                }
+              />
+            </div>
           </div>
         </div>
       </header>

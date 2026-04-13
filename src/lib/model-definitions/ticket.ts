@@ -67,6 +67,8 @@ export type TicketDetail = {
   feature?: TicketFeature | null;
   sections?: TicketSection[];
   lastMessageId?: string | null;
+  receiveNotifications?: boolean | null;
+  receiveEmails?: boolean | null;
 };
 
 export type TicketImage = {

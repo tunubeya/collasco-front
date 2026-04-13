@@ -2036,6 +2036,22 @@
             "delete": "Verwijderen",
             "deleting": "Verwijderen..."
           }
+        },
+        "notifications": {
+          "title": "Notificaties",
+          "subtitle": "Abonneer je op dit ticket.",
+          "notify": "In-app ontvangen",
+          "notifySaving": "Opslaan...",
+          "email": "E-mails ontvangen",
+          "emailSaving": "Opslaan...",
+          "notifySuccess": "Je ontvangt in-app notificaties voor dit ticket.",
+          "notifyRemoved": "In-app notificaties uitgeschakeld voor dit ticket.",
+          "notifyError": "We konden in-app notificaties niet inschakelen.",
+          "notifyRemoveError": "We konden in-app notificaties niet uitschakelen.",
+          "emailSuccess": "Je ontvangt e-mails voor dit ticket.",
+          "emailRemoved": "E-mailnotificaties uitgeschakeld voor dit ticket.",
+          "emailError": "We konden e-mailnotificaties niet inschakelen.",
+          "emailRemoveError": "We konden e-mailnotificaties niet uitschakelen."
         }
       },
       "publicShare": {

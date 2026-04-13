@@ -19,6 +19,8 @@ export type User = {
   githubIdentity?: GithubIdentity | null;
   apiTokenMasked?: string | null;
   preferences?: UserPreferences | null;
+  ticketReceiveNotifications?: boolean | null;
+  ticketReceiveEmails?: boolean | null;
 };
 
 export type UpdateUserDto = {

@@ -2038,6 +2038,22 @@
             "delete": "Delete",
             "deleting": "Deleting..."
           }
+        },
+        "notifications": {
+          "title": "Notifications",
+          "subtitle": "Subscribe to this ticket.",
+          "notify": "Receive in-app",
+          "notifySaving": "Saving...",
+          "email": "Receive emails",
+          "emailSaving": "Saving...",
+          "notifySuccess": "You'll receive in-app notifications for this ticket.",
+          "notifyRemoved": "In-app notifications disabled for this ticket.",
+          "notifyError": "We couldn't enable in-app notifications.",
+          "notifyRemoveError": "We couldn't disable in-app notifications.",
+          "emailSuccess": "You'll receive emails for this ticket.",
+          "emailRemoved": "Email notifications disabled for this ticket.",
+          "emailError": "We couldn't enable email notifications.",
+          "emailRemoveError": "We couldn't disable email notifications."
         }
       },
       "publicShare": {

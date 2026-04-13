@@ -19,7 +19,7 @@ import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.clie
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { PublicTicketShareDialog } from "@/ui/components/tickets/public-ticket-share-dialog.client";
 
-type TicketsScope = "mine" | "assigned" | "all";
+type TicketsScope = "mine" | "assigned" | "all" | "external";
 
 type Pagination = {
   total: number;
@@ -41,6 +41,7 @@ const TAB_ICON = {
   mine: User,
   assigned: User,
   all: Folder,
+  external: Share2,
 } as const;
 
 export default function TicketsTabs({
@@ -65,7 +66,7 @@ export default function TicketsTabs({
     Math.ceil(pagination.total / Math.max(1, pagination.limit))
   );
 
-  const tabs: TicketsScope[] = ["mine", "assigned", "all"];
+  const tabs: TicketsScope[] = ["mine", "assigned", "all", "external"];
   const projectOptions = useMemo(
     () => [
       { value: "", label: t("project.all") },
@@ -212,12 +213,20 @@ export default function TicketsTabs({
               const statusLabel = t(`statuses.${ticket.status}`, {
                 default: ticket.status,
               });
+              const isExternal = !ticket.createdBy;
               const assignee =
                 ticket.assignee?.name ?? t("meta.unassigned");
-              const createdBy =
-                ticket.createdBy?.name ?? t("meta.unknown");
+              const createdBy = isExternal
+                ? t("meta.externalUser")
+                : ticket.createdBy?.name ?? t("meta.unknown");
               return (
-                <li key={ticket.id} className="px-4 py-4">
+                <li
+                  key={ticket.id}
+                  className={cn(
+                    "px-4 py-4",
+                    isExternal && "bg-amber-50/60"
+                  )}
+                >
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-2">
@@ -227,6 +236,11 @@ export default function TicketsTabs({
                         >
                           {ticket.title}
                         </Link>
+                        {isExternal ? (
+                          <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                            {t("meta.externalTag")}
+                          </span>
+                        ) : null}
                         <span className="rounded-full border px-2 py-0.5 text-[10px] text-muted-foreground">
                           {statusLabel}
                         </span>

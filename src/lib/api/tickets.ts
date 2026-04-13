@@ -17,7 +17,7 @@ export type ListTicketsParams = {
   page?: number;
   limit?: number;
   status?: TicketStatus;
-  scope?: "mine" | "assigned" | "all";
+  scope?: "mine" | "assigned" | "all" | "external";
   projectId?: string;
 };
 

@@ -1858,7 +1858,8 @@
         "tabs": {
           "mine": "Door mij aangemaakt",
           "assigned": "Aan mij toegewezen",
-          "all": "Alle"
+          "all": "Alle",
+          "external": "Extern"
         },
         "project": {
           "all": "Alle projecten"
@@ -1887,7 +1888,9 @@
           "assignedTo": "Toegewezen aan {name}",
           "sections": "{count, plural, one {# sectie} other {# secties}}",
           "unassigned": "Niet toegewezen",
-          "unknown": "Onbekend"
+          "unknown": "Onbekend",
+          "externalUser": "Externe gebruiker",
+          "externalTag": "Extern"
         }
       },
       "create": {

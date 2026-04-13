@@ -11,7 +11,7 @@ import { handlePageError } from "@/lib/handle-page-error";
 import TicketsTabs from "@/ui/components/tickets/tickets-tabs.client";
 
 type SearchParams = {
-  scope?: "mine" | "assigned" | "all";
+  scope?: "mine" | "assigned" | "all" | "external";
   projectId?: string;
   status?: "OPEN" | "PENDING" | "RESOLVED";
   page?: string;
@@ -30,7 +30,9 @@ export default async function TicketsPage({ searchParams }: Props) {
 
   const scopeParam = (await searchParams)?.scope;
   const scope =
-    scopeParam === "assigned" || scopeParam === "all" ? scopeParam : "mine";
+    scopeParam === "assigned" || scopeParam === "all" || scopeParam === "external"
+      ? scopeParam
+      : "mine";
   const projectId = (await searchParams)?.projectId ?? null;
   const status = (await searchParams)?.status;
   const page = Math.max(1, Number.parseInt((await searchParams)?.page ?? "1", 10) || 1);

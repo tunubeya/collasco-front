@@ -1859,7 +1859,8 @@
         "tabs": {
           "mine": "Criados por mim",
           "assigned": "Atribuídos a mim",
-          "all": "Todos"
+          "all": "Todos",
+          "external": "Externos"
         },
         "project": {
           "all": "Todos os projetos"
@@ -1888,7 +1889,9 @@
           "assignedTo": "Atribuído a {name}",
           "sections": "{count, plural, one {# seção} other {# seções}}",
           "unassigned": "Sem responsável",
-          "unknown": "Desconhecido"
+          "unknown": "Desconhecido",
+          "externalUser": "Usuário externo",
+          "externalTag": "Externo"
         }
       },
       "create": {

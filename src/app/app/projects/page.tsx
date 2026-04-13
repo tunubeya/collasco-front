@@ -3,15 +3,13 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
-import { fetchGetUserProfile, fetchProjectsMine } from "@/lib/data";
+import { fetchProjectsMine } from "@/lib/data";
 import { RoutesEnum } from "@/lib/utils";
 import { getSession } from "@/lib/session";
 import ProjectsList from "@/ui/components/projects/projects-list.client";
 import { handlePageError } from "@/lib/handle-page-error";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { Plus } from "lucide-react";
-import { listProjectRoles } from "@/lib/api/project-roles";
-import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 
 type SearchParams = {
   page?: string;
@@ -50,34 +48,9 @@ export default async function ProjectsPage({ searchParams }: Props) {
   const total = Math.max(0, Number(result?.total) || items.length);
   const currentPage = Math.max(1, Number(result?.page) || page);
   const currentLimit = Math.max(1, Number(result?.limit) || limit);
-  let currentUserId: string | null = null;
-  try {
-    const profile = await fetchGetUserProfile(token);
-    currentUserId = profile.id;
-  } catch (error) {
-    await handlePageError(error);
-  }
-
   const canReadByProjectId: Record<string, boolean> = {};
   for (const project of items) {
-    try {
-      const roles = await listProjectRoles(token, project.id);
-      const roleId = resolveMemberRoleId({
-        project,
-        members: project.members ?? null,
-        currentUserId,
-        roles,
-      });
-      const permissionKeys = resolveRolePermissions(roles, roleId);
-      const permissionSet = new Set(permissionKeys);
-      canReadByProjectId[project.id] = hasPermission(
-        permissionSet,
-        "project.read",
-      );
-    } catch {
-      // If role permissions cannot be fetched, assume no read access
-      canReadByProjectId[project.id] = false;
-    }
+    canReadByProjectId[project.id] = project.hasAccess ?? true;
   }
 
   return (

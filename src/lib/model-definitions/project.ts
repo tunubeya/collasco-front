@@ -9,6 +9,7 @@ export type Project = {
   status: ProjectStatus;
   repositoryUrl: string | null;
   visibility: Visibility;
+  hasAccess?: boolean;
   deadline: ISODateString | null;
   createdAt: ISODateString;
   updatedAt: ISODateString;

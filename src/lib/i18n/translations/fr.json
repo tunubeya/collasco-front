@@ -40,16 +40,7 @@
       "kpi_2": "Tableaux de bord en temps réel",
       "tagline": "Collasco — Structurez le parcours de vos clients. Construisez la confiance.",
       "title": "Concevez de meilleurs logiciels, ensemble.",
-      "description": "Donnez à vos clients plus qu'une facture. Montrez-leur ce que vous avez construit ensemble — clair, validé et prêt à utiliser.",
-      "nodeLabel": "Nœud",
-      "nodes": {
-        "team": "Équipe",
-        "qa": "QA",
-        "design": "Design",
-        "customer": "Client",
-        "release": "Lancement",
-        "feedback": "Retours"
-      }
+      "description": "Donnez à vos clients plus qu'une facture. Montrez-leur ce que vous avez construit ensemble — clair, validé et prêt à utiliser."
     },
     "how": {
       "title": "Comment ça marche",

@@ -40,16 +40,7 @@
       "kpi_2": "Real-time dashboards",
       "tagline": "Collasco — Structure your customer journey. Build customer confidence.",
       "title": "Build better software, together.",
-      "description": "Give your customers more than a bill. Show them what you built together — clear, validated and ready to use.",
-      "nodeLabel": "Node",
-      "nodes": {
-        "team": "Team",
-        "qa": "QA",
-        "design": "Design",
-        "customer": "Customer",
-        "release": "Release",
-        "feedback": "Feedback"
-      }
+      "description": "Give your customers more than a bill. Show them what you built together — clear, validated and ready to use."
     },
     "how": {
       "title": "How it works",

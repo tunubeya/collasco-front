@@ -40,16 +40,7 @@
       "kpi_2": "Realtime dashboards",
       "tagline": "Collasco — Structureer de reis van uw klant. Bouw vertrouwen.",
       "title": "Bouw betere software, samen.",
-      "description": "Geef uw klanten meer dan een factuur. Toon wat jullie samen hebben gebouwd — duidelijk, gevalideerd en klaar voor gebruik.",
-      "nodeLabel": "Knooppunt",
-      "nodes": {
-        "team": "Team",
-        "qa": "QA",
-        "design": "Design",
-        "customer": "Klant",
-        "release": "Release",
-        "feedback": "Feedback"
-      }
+      "description": "Geef uw klanten meer dan een factuur. Toon wat jullie samen hebben gebouwd — duidelijk, gevalideerd en klaar voor gebruik."
     },
     "how": {
       "title": "Hoe het werkt",

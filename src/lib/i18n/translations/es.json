@@ -40,16 +40,7 @@
       "kpi_2": "Paneles en tiempo real",
       "tagline": "Collasco — Estructura el viaje de tu cliente. Construye confianza.",
       "title": "Construyan mejor software, juntos.",
-      "description": "Dale a tus clientes más que una factura. Muéstrales lo que construyeron juntos: claro, validado y listo para usar.",
-      "nodeLabel": "Nodo",
-      "nodes": {
-        "team": "Equipo",
-        "qa": "QA",
-        "design": "Diseño",
-        "customer": "Cliente",
-        "release": "Lanzamiento",
-        "feedback": "Retroalimentación"
-      }
+      "description": "Dale a tus clientes más que una factura. Muéstrales lo que construyeron juntos: claro, validado y listo para usar."
     },
     "how": {
       "title": "Cómo funciona",

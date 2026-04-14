@@ -40,16 +40,7 @@
       "kpi_2": "Painéis em tempo real",
       "tagline": "Collasco — Estruture a jornada do seu cliente. Construa confiança.",
       "title": "Construam software melhor, juntos.",
-      "description": "Dê aos seus clientes mais do que uma fatura. Mostre o que vocês construíram juntos — claro, validado e pronto para usar.",
-      "nodeLabel": "Nó",
-      "nodes": {
-        "team": "Time",
-        "qa": "QA",
-        "design": "Design",
-        "customer": "Cliente",
-        "release": "Lançamento",
-        "feedback": "Feedback"
-      }
+      "description": "Dê aos seus clientes mais do que uma fatura. Mostre o que vocês construíram juntos — claro, validado e pronto para usar."
     },
     "how": {
       "title": "Como funciona",

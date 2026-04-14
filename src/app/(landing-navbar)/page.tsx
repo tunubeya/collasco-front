@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import BetaProgramForm from '@/ui/components/landing/beta-program-form';
 
@@ -11,8 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t('comingSoon.description')
   };
 }
-
-const heroNodeKeys = ['team', 'qa', 'design', 'customer', 'release', 'feedback'] as const;
 
 const personas = [
   { icon: '🧩', key: 'productManagers' },
@@ -93,15 +92,15 @@ export default async function LandingPage() {
             </div>
           </div>
           <div className="flex-1">
-            <div className="mx-auto grid max-w-lg grid-cols-3 gap-6 rounded-3xl border border-primary/20 bg-background/60 p-10 shadow-2xl">
-              {heroNodeKeys.map((labelKey) => (
-                <div key={labelKey} className="flex flex-col items-center gap-2 text-center group">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[color:var(--color-border)] bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.25),_transparent)] p-2 text-sm font-semibold transition-all duration-300 group-hover:scale-105 group-hover:border-primary/50">
-                    {t(`hero.nodes.${labelKey}`)}
-                  </div>
-                  <span className="text-xs text-[color:var(--color-muted-fg)]">{t('hero.nodeLabel')}</span>
-                </div>
-              ))}
+            <div className="mx-auto rounded-3xl border border-primary/20 bg-background/60 p-2 shadow-2xl overflow-hidden">
+              <Image
+                src="/Images/Reciprocity.jpg"
+                alt="Collasco Workflow"
+                width={600}
+                height={400}
+                className="w-full h-auto rounded-2xl object-cover"
+                priority={false}
+              />
             </div>
           </div>
         </div>

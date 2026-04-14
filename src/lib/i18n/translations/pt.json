@@ -6,1436 +6,1176 @@
     }
   },
   "landing": {
-    "metadata_title": "Collasco | Estruture a jornada do seu cliente. Construa confiança.",
+    "metadata_title": "Collasco | Estructura el viaje de tu cliente. Construye confianza.",
     "comingSoon": {
-      "title": "Em breve",
-      "description": "Estamos preparando uma nova experiência. Volte em breve."
+      "title": "Próximamente",
+      "description": "Estamos preparando una nueva experiencia. Vuelve pronto."
     },
     "cta": {
-      "tryPlatform": "Experimente a plataforma",
-      "joinBeta": "Participe do programa beta",
-      "becomeEarlyAdopter": "Torne-se um early adopter",
-      "scheduleEmailSubject": "Experimente a plataforma",
-      "scheduleEmailBody": "Olá equipe Collasco, gostaria de agendar um horário para experimentar a plataforma."
+      "tryPlatform": "Probar la plataforma",
+      "joinBeta": "Únete al programa beta",
+      "becomeEarlyAdopter": "Conviértete en early adopter",
+      "scheduleEmailSubject": "Probar la plataforma",
+      "scheduleEmailBody": "Hola equipo de Collasco, me gustaría agendar un tiempo para probar la plataforma."
     },
     "betaForm": {
-      "emailSubject": "Participe do programa beta da Collasco",
-      "nameLabel": "Nome",
-      "namePlaceholder": "Informe seu nome",
-      "emailLabel": "E-mail",
-      "emailPlaceholder": "Informe seu e-mail",
-      "organizationLabel": "Organização",
-      "organizationPlaceholder": "Informe sua organização",
-      "challengesLabel": "Quais desafíos de colaboração você enfrenta?",
-      "challengesPlaceholder": "Conte-nos sobre o seu processo"
+      "emailSubject": "Únete al programa beta de Collasco",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Ingresa tu nombre",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Ingresa tu correo",
+      "organizationLabel": "Organización",
+      "organizationPlaceholder": "Ingresa tu organización",
+      "challengesLabel": "¿Qué desafíos de colaboración enfrentas?",
+      "challengesPlaceholder": "Cuéntanos sobre tu proceso"
     },
-"hero": {
-      "title_01": "Qualidade",
+    "hero": {
+      "title_01": "Calidad",
       "title_02": "que realmente",
-      "title_03": "flui",
-      "subtitle_01": "Controle de documentos, auditorias e CAPA em um só lugar.",
-      "subtitle_02": "Criado para equipes que valorizam clareza e conformidade.",
-      "kpi_0": "Estrutura pronta para ISO",
-      "kpi_1": "Trilhas de auditoria em segundos",
-      "kpi_2": "Painéis em tempo real",
+      "title_03": "fluye",
+      "subtitle_01": "Control documental, auditorías y acciones correctivas en un solo lugar.",
+      "subtitle_02": "Diseñado para equipos que valoran la claridad y el cumplimiento.",
+      "kpi_0": "Estructura lista para ISO",
+      "kpi_1": "Trazabilidad de auditoría en segundos",
+      "kpi_2": "Paneles en tiempo real",
       "tagline": "Collasco — Estruture a jornada do seu cliente. Construa confiança.",
-      "title": "Construam software melhor, juntos.",
+      "title": "Construyan mejor software, juntos.",
       "description": "Dê aos seus clientes mais do que uma fatura. Mostre o que vocês construíram juntos — claro, validado e pronto para usar.",
-      "nodeLabel": "Nó",
+      "nodeLabel": "Nodo",
       "nodes": {
-        "team": "Time",
+        "team": "Equipo",
         "qa": "QA",
-        "design": "Design",
+        "design": "Diseño",
         "customer": "Cliente",
-        "release": "Lançamento",
-        "feedback": "Feedback"
+        "release": "Lanzamiento",
+        "feedback": "Retroalimentación"
       }
-    }
     },
     "how": {
-      "title": "Como funciona",
-      "subtitle": "Configure em minutos, cresça junto com seus processos.",
+      "title": "Cómo funciona",
+      "subtitle": "Configura en minutos, escala con tus procesos.",
       "steps": [
         {
           "number": "1",
-          "title": "Configurar",
-          "description": "Defina áreas, funções e permissões."
+          "title": "Configura",
+          "description": "Define áreas, roles y permisos."
         },
         {
           "number": "2",
-          "title": "Controlar",
-          "description": "Gerencie documentos, auditorias e não conformidades."
+          "title": "Controla",
+          "description": "Gestiona documentos, auditorías y no conformidades."
         },
         {
           "number": "3",
-          "title": "Melhorar",
-          "description": "Automatize CAPA e acompanhe seus indicadores."
+          "title": "Mejora",
+          "description": "Automatiza CAPA y haz seguimiento a tus indicadores."
         }
       ]
     },
     "docs": {
-      "title": "Controle de Documentos",
-      "subtitle": "Versionamento, aprovações e rastreabilidade sem caos.",
+      "title": "Control Documental",
+      "subtitle": "Versionado, aprobaciones y trazabilidad sin caos.",
       "features": [
-        "Histórico de versões e aprovações",
-        "Modelos e fluxos de revisão",
-        "Permissões granulares por função ou área",
-        "Registros de mudanças e exportações prontas para auditoria"
+        "Historial de versiones y aprobaciones",
+        "Plantillas y flujos de revisión",
+        "Permisos granulares por rol o área",
+        "Registros de cambios y exportaciones listas para auditoría"
       ]
     },
     "capa": {
-      "title": "Auditorias e CAPA",
-      "subtitle": "Detecte, corrija e previna problemas rapidamente.",
-      "description": "Crie achados a partir de auditorias, atribua responsáveis, defina prazos e automatize ações corretivas e preventivas.",
+      "title": "Auditorías y CAPA",
+      "subtitle": "Detecta, corrige y prevén problemas rápidamente.",
+      "description": "Crea hallazgos desde auditorías, asigna responsables, define plazos y automatiza acciones correctivas y preventivas.",
       "highlights": [
-        "Checklists de auditoria",
-        "Análise de causa raiz",
-        "Planos de ação con prazos definidos",
-        "Anexos de evidências"
+        "Listas de verificación de auditoría",
+        "Análisis de causa raíz",
+        "Planes de acción con tiempos definidos",
+        "Adjuntos de evidencia"
       ]
     },
     "dash": {
-      "title": "Painéis e Conformidade",
-      "subtitle": "Veja o essencial e identifique gargalos.",
-      "description": "KPIs principais: ações em atraso, tempos de aprovação, não conformidades por área e muito mais.",
+      "title": "Paneles e Indicadores",
+      "subtitle": "Visualiza lo esencial y detecta cuellos de botella.",
+      "description": "KPIs clave: acciones vencidas, tiempos de aprobación, no conformidades por área y más.",
       "benefits": {
-        "title": "Por que as equipes escolhem o Collasco",
-        "0": "Clareza em auditorias e inspeções",
-        "1": "Responsabilidade e rastreabilidade",
-        "2": "Melhoria contínua visível para todos"
+        "title": "Por qué los equipos eligen Collasco",
+        "0": "Claridad en auditorías e inspecciones",
+        "1": "Responsabilidad y trazabilidad",
+        "2": "Mejora continua visible para todos"
       }
     },
     "vision": {
-      "label": "A visão",
-      "title": "Por que Collasco",
-      "description1": "Construir software é mais do que escrever código ou gerenciar tickets. Trata-se de construir os recursos certos por meio de feedback contínuo da sua equipe e dos seus clientes.",
-      "description2": "Collasco — abreviação de collaboration e co-creation — transforma isso em um processo estruturado e compartilhado em uma única plataforma. Assim, sua equipe permanece focada e seus clientes ganham confiança no que você entrega."
+      "label": "La visión",
+      "title": "Por qué Collasco",
+      "description1": "Construir software es más que escribir código o gestionar tickets. Se trata de construir las funciones correctas a través de la retroalimentación continua de tu equipo y tus clientes.",
+      "description2": "Collasco —abreviatura de collaboration y co-creation— convierte esto en un proceso estructurado y compartido en una sola plataforma. Así tu equipo se mantiene enfocado y tus clientes ganan confianza en lo que entregan."
     },
     "personas": {
-      "label": "Para quem",
-      "title": "Feito para equipes que querem clareza e controle no que constroem e entregam.",
-      "description": "Collasco traz seus clientes para o ciclo completo do software.",
+      "label": "Para quién",
+      "title": "Diseñado para equipos que quieren claridad y control en lo que construyen y entregan.",
+      "description": "Collasco trae a tus clientes al ciclo completo del software.",
       "items": {
         "productManagers": {
-          "title": "Product Managers e líderes de projeto",
-          "description": "Mantém stakeholders alinhados em torno de requisitos, decisões e progresso."
+          "title": "Product Managers y líderes de proyecto",
+          "description": "Mantén a los stakeholders alineados en torno a requisitos, decisiones y progreso."
         },
         "developers": {
-          "title": "Desenvolvedores e testers",
-          "description": "Todo o contexto necessário para cada mudança, teste e release."
+          "title": "Desarrolladores y testers",
+          "description": "Todo el contexto necesario para cada cambio, prueba y release."
         },
         "customers": {
-          "title": "Clientes e usuários",
-          "description": "Entendem o que está sendo construído — e confiam em como é entregue."
+          "title": "Clientes y usuarios",
+          "description": "Entienden qué se está construyendo — y confían en cómo se entrega."
         },
         "qualityTeams": {
-          "title": "Equipes de qualidade e compliance",
-          "description": "Rastreabilidade e documentação sem ferramentas extras."
+          "title": "Equipos de calidad y cumplimiento",
+          "description": "Trazabilidad y documentación sin herramientas extra."
         }
       }
     },
     "features": {
-      "label": "O que a Collasco faz",
-      "title": "Um processo estruturado e compartilhado em uma plataforma",
-      "description": "Conecta requisitos, comunicação, validação e entrega em um fluxo contínuo.",
+      "label": "Qué hace Collasco",
+      "title": "Un proceso estructurado y compartido en una plataforma",
+      "description": "Conecta requisitos, comunicación, validación y entrega en un flujo continuo.",
       "clusters": {
         "captureAlign": {
-          "title": "Capturar e Alinhar",
+          "title": "Capturar y Alinear",
           "items": {
             "supportTickets": {
-              "title": "Tickets de suporte",
-              "description": "Colete feedback antecipadamente e conecte tickets diretamente à sua base de conhecimento."
+              "title": "Tickets de soporte",
+              "description": "Recolecta retroalimentación temprano y conecta tickets directamente a tu base de conocimiento."
             },
             "structuredCommunication": {
-              "title": "Comunicação estruturada",
-              "description": "Mantenha discussões em contexto, para que as decisões nunca sejam perdidas."
+              "title": "Comunicación estructurada",
+              "description": "Mantén discusiones en contexto, para que las decisiones nunca se pierdan."
             }
           }
         },
         "validateControl": {
-          "title": "Validar e Controlar",
+          "title": "Validar y Controlar",
           "items": {
             "testingWorkflows": {
-              "title": "Fluxos de testes",
-              "description": "Transforme validação em um processo estruturado e repetível."
+              "title": "Flujos de testing",
+              "description": "Convierte la validación en un proceso estructurado y repetible."
             },
             "reviewApprovals": {
-              "title": "Revisões e aprovações",
-              "description": "Defina quem valida o quê e mantenha cada decisão rastreável."
+              "title": "Revisiones y aprobaciones",
+              "description": "Define quién valida qué y mantén cada decisión trazable."
             },
             "changeControl": {
-              "title": "Captura e controle de mudanças",
-              "description": "Capture cada mudança de código e exija validação antes do release."
+              "title": "Captura y control de cambios",
+              "description": "Captura cada cambio de código y fuerza validación antes del release."
             }
           }
         },
         "documentDeliver": {
-          "title": "Documentar e Entregar",
+          "title": "Documentar y Entregar",
           "items": {
             "versionDocs": {
-              "title": "Documentos de versões e releases",
-              "description": "Crie notas de release transparentes e auditáveis e acompanhe cada mudança."
+              "title": "Documentación de versiones y releases",
+              "description": "Crea notas de release transparentes y auditables y haz seguimiento a cada cambio."
             },
             "manuals": {
-              "title": "Manuais e arquivos de qualidade",
-              "description": "Gere documentação IQ/OQ/PQ a partir de uma base de conhecimento única e consistente."
+              "title": "Manuales y archivos de calidad",
+              "description": "Genera documentación IQ/OQ/PQ desde una única base de conocimiento consistente."
             },
             "aiSupport": {
-              "title": "Suporte com IA",
-              "description": "Padronize e automatize documentação entre equipes e stakeholders."
+              "title": "Asistencia con IA",
+              "description": "Estandariza y automatiza documentación entre equipos y stakeholders."
             }
           }
         }
       }
     },
     "promise": {
-      "label": "Nossa promessa",
-      "title": "Traga seus clientes para o ciclo completo do software, de requisitos a entrega e além.",
-      "description": "Dê clareza em cada etapa, para que possam confiar no que você entrega."
+      "label": "Nuestro compromiso",
+      "title": "Trae a tus clientes al ciclo completo del software, desde requisitos hasta entrega y más allá.",
+      "description": "Dales claridad en cada paso, para que puedan confiar en lo que entregas."
     },
     "stayConnected": {
-      "label": "Mantenha-se conectado",
-      "title": "Acesso antecipado e contato",
-      "description": "Estamos construindo o primeiro protitipo e convidando equipes para compartilhar dores e testar a Collasco desde cedo.",
-      "integrationsLabel": "Integrações:",
-      "integrationsValue": "Funciona junto com o GitHub."
+      "label": "Mantente conectado",
+      "title": "Acceso temprano y contacto",
+      "description": "Estamos construyendo el primer prototipo e invitando a equipos a compartir sus dolores y probar Collasco desde temprano.",
+      "integrationsLabel": "Integraciones:",
+      "integrationsValue": "Funciona junto a GitHub."
     },
     "footer": {
-      "copyright": "© 2025 Collasco — Colaboração e Cocriação de Software",
-      "contactLabel": "Contato:"
+      "copyright": "© 2025 Collasco — Colaboración y Co-Creación de Software",
+      "contactLabel": "Contacto:"
     }
   },
   "auth": {
-    "register": {
-      "registerButton": "Criar conta",
-      "title_01": "Crie sua conta",
-      "description_01": "Comece agora! Cadastre-se em segundos.",
-      "emailLabel": "E-mail",
-      "emailPlaceholder": "exemplo: usuario@empresa.com",
-      "passwordLabel": "Senha",
-      "passwordPlaceholder": "Escolha uma senha forte",
-      "passwordDescription": "(Pelo menos 8 caracteres, com letras e números)",
-      "confirmPasswordLabel": "Confirmar senha",
-      "confirmPasswordPlaceholder": "Repita a senha",
-      "haveAccount": "Já tem uma conta?",
-      "login": "Entrar",
-      "acceptTerms": { "first": "Aceito os ", "second": " e as " },
-      "termsAndConditions": "Termos e Condições",
-      "privacyPolicies": "Políticas de Privacidade",
-      "toast": {
-        "success": "Conta criada com sucesso!",
-        "error": "Ocorreu um erro ao registrar."
-      },
-      "alreadyHaveStore": "Você já pertence a um espaço de trabalho. ",
-      "login_account": "Entrar",
-      "loading": "Carregando..."
-    },
-    "login": {
-      "title_01": "Acesse sua conta",
-      "description_01": "Digite seus dados para gerenciar seu sistema QMS.",
-      "emailLabel": "E-mail",
-      "emailPlaceholder": "exemplo: usuario@empresa.com",
-      "passwordLabel": "Senha",
-      "passwordPlaceholder": "Digite sua senha",
-      "forgotPassword": "Esqueceu sua senha?",
-      "recover": "Recuperar",
-      "noAccount": "Não tem uma conta?",
-      "createAccount": "Criar conta",
-      "alreadyAccount": "Já tem uma conta?",
-      "loginButton": "Entrar",
-      "logout": "Sair",
-      "alternativeLogin": "Ou continue com o Google",
-      "googleLogin": "Entrar con Google",
-      "googleLoginSuccess": "Sessão iniciada com Google",
-      "googleLoginError": "Erro ao entrar com Google",
-      "toast": {
-        "success": "Login realizado com sucesso!",
-        "error": "Ocorreu um erro ao fazer login."
-      },
-      "loading": "Carregando..."
-    },
-    "forgot-password": {
-      "title": "Recuperar senha",
-      "description": "Digite seu e-mail para receber um código de recuperação.",
-      "emailPlaceholder": "E-mail",
-      "recoverButton": "Enviar código",
-      "recoverButtonSent": "Código enviado",
-      "toast": {
-        "success": "Verifique sua caixa de entrada. Enviamos um código.",
-        "error": "Erro ao enviar o código de recuperação."
-      }
-    },
-    "reset-password": {
-      "title": "Redefinir senha",
-      "description": "Digite uma nova senha que atenda aos requisitos.",
-      "passwordLabel": "Nova senha",
-      "passwordPlaceholder": "Escolha uma senha forte",
-      "passwordDescription": "(Pelo menos 8 caracteres, com letras e números)",
-      "confirmPasswordLabel": "Confirmar senha",
-      "confirmPasswordPlaceholder": "Repita a senha",
-      "recoverButton": "Atualizar senha",
-      "toast": {
-        "success": "Sua senha foi atualizada.",
-        "error": "Ocorreu um erro ao redefinir a senha."
-      }
-    }
-  },
-  "support": {
-    "metadata_title": "Suporte | Collasco",
-    "title": "Central de Suporte",
-    "description": "Envie-nos seus comentários, sugestões ou problemas. Sua opinião é importante para nós.",
-    "subjectPlaceholder": "Asunto",
-    "descriptionPlaceholder": "Descreva sua dúvida...",
-    "sendButton": "Enviar Mensagem"
-  },
-  "plans": {
-    "metadata_title": "Planos | Collasco",
-    "title": "Escolha o seu plano Collasco",
-    "description": "Selecione o plano que melhor atende às suas necessidades. Comece grátis e faça upgrade conforme crescer.",
-    "planPeriodMonth": "/mês",
-    "planPeriodYear": "/ano",
-
-    "monthly": {
-      "label": "Mais Popular",
-      "title": "Plano Mensal",
-      "feature1": "Acesso total a todos os recursos",
-      "feature2": "Cancele a qualquer momento"
-    },
-    "yearly": {
-      "label": "Melhor Custo-Benefício",
-      "title": "Plano Anual",
-      "feature1": "Economize até 20% em comparação ao mensal",
-      "feature2": "Suporte prioritário incluído"
-    },
-
-    "subscribe-button": {
-      "subscribeButton": "Assinar",
-      "subscribedButton": "Assinado",
-      "comingSoon": "Em breve..."
-    }
-  },
-  "privacy-policies": {
-    "title": "Políticas de Privacidade",
-    "policies": [
-      {
-        "title": "1. Controlador de Dados Pessoais",
-        "description": "Collasco SRL\n* Endereço: Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail : Collasco@gmail.com"
-      },
-      {
-        "title": "2. Dados Pessoais que Coletamos",
-        "description": "Coletamos os seguintes tipos de informação:\n* Dados de registro: Nome, e-mail, telefone e senha.\n* Dados de faturamento: Número de identificação fiscal (NIT), endereço fiscal.\n* Dados de uso: Informações sobre como você interage com nossa plataforma.\n* Dados opcionais: Que você decide nos fornecer, como referências de contato."
-      },
-      {
-        "title": "3. Finalidades do Processamento de Dados",
-        "description": "Seus dados pessoais serão utilizados para:\n* Fornecer os serviços contratados em nossa plataforma.\n* Gerenciar faturamento e cumprimento de obrigações legaiss.\n* Melhorar sua experiência de usuário através da personalização.\n* Enviar informações sobre promoções, sempre com seu consentimento prévio."
-      },
-      {
-        "title": "4. Base Legal para o Processamento de Dados",
-        "description": "O processamento de seus dados pessoais é realizado com base em:\n* Consentimento expresso: Concedido ao se registrar ou usar nosso serviço.\n* Cumprimento de obrigações legais: Em conformidade com a legislação boliviana vigente.\n* Execução de um contrato: Necessário para fornecer nossos serviços."
-      },
-      {
-        "title": "5. Compartilhamento de Dados",
-        "description": "Podemos compartilhar seus dados pessoais com terceiros, como:\n* Provedores de serviços de tecnologia e armazenamento em nuvem.\n* Entidades governamentais quando exigido por lei.\n* Em todos os casos, garantimos que esses terceiros cumprem com altos padrões de proteção de dados."
-      },
-      {
-        "title": "6. Transferências Internacionais de Dados",
-        "description": "Embora nossa base principal seja na Bolívia, alguns provedores podem estar localizados em outros países. Quando transferências internacionais de dados forem realizadas, garantimos que medidas de proteção adequadas sejam implementadas de acordo con a regulamentação aplicável."
-      },
-      {
-        "title": "7. Segurança dos Seus Dados",
-        "description": "Implementamos medidas técnicas e organizativas para proteger seus dados contra acessos não autorizados, perdas ou divulgação indevida. No entanto, nenhuma medida de segurança é completamente infalível, por isso recomendamos proteger sua senha e não compartilhar informações sensíveis desnecessariamente."
-      },
-      {
-        "title": "8. Seus Direitos",
-        "description": "De acordo com a legislação boliviana, você tem o direito de:\n* Acesso: Solicitar informações sobre os dados que armazenamos sobre você.\n* Rectificação: Corrigir dados incorretos o incompletos.\n* Cancelamento: Solicitar a exclusão de seus dados, exceção quando houver uma obrigação legal de retê-los.\n* Oposição: Recusar o processamento de seus dados para certas finalidades.\n* Você pode exercer esses direitos entrando em contato conosco em Collasco@gmail.com, indicando seu nome completo, documento de identidade e o direito que deseja exercer."
-      },
-      {
-        "title": "9. Retenção de Dados",
-        "description": "Retemos seus dados pessoais apenas pelo tempo necessário para cumprir as finalidades descritas, ou conforme exigido pela legislação vigente."
-      },
-      {
-        "title": "10. Modificações a esta Política",
-        "description": "Reservamo-nos o direito de atualizar esta política de privacidade a qualquer momento. Notificaremos quaisquer alterações através de nossa plataforma ou por e-mail.\nObrigado por confiar na Collasco. Sua privacidade é essencial para nós."
-      }
-    ]
-  },
-  "terms-and-conditions": {
-    "title": "Termos e Condições",
-    "conditions": [
-      {
-        "title": "Condições de Uso",
-        "description": "O seguinte conteúdo não pode ser publicado na plataforma web Collasco.\n\n* A publicação de qualquer material ilegal de acordo com as leis vigentes no Estado Plurinacional da Bolívia não é permitida.\n* A divulgação de nudez ou material pornográfico neste site é estritamente proibida.\n* A troca, promoção ou venda de substâncias entorpecentes ilegais é estritamente proibida.\n* Nenhum conteúdo explícito ilegal será tolerado, incluindo, mas não se limitando a, incitação à violência, ódio, assédio ou discriminação.\n* Não é permitido oferecer ou solicitar qualquer tipo de armas de fogo ou armas brancas através deste serviço web.\n* Todos os usuários devem respeitar os direitos autorais e não fazer upload, compartilhar ou distribuir conteúdo digital que não seja autorizado por seus detentores de direitos autorais.\n* É estritamente proibido usar este serviço web com intenções fraudulentas, incluindo, mas não se limitando a, phishing, fraude de identidade ou qualquer outro tipo de atividade enganosa.\n* Além das restrições mencionadas acima, os usuários devem cumprir todas as leis e regulamentos locais, nacionais e internacionais aplicáveis ao usar este serviço web.\n* O não cumprimento de qualquer uma destas condições de uso pode resultar na suspensão ou exclusão de sua conta e na tomada de medidas legaiss, conforme apropriado.\n* Reservamo-nos o direito de modificar estas condições de uso a qualquer momento e recomendamos revisá-las periodicamente para estar ciente de quaisquer alterações."
-      },
-      {
-        "title": "Prohibições",
-        "description": "As seguintes proibições se aplicam ao uso da plataforma Collasco.\n\n* Proibição de Fraude: É estritamente proibido o uso das lojas virtuais da Mercagi para qualquer atividade fraudulenta na internet. Os afiliados devem operar suas lojas com total transparência e honestidade.\n* Responsabilidade do Afiliado: Os afiliados são totalmente responsáveis por qualquer dano ou prejuízo causado por sua loja virtual. A Mercagi se isenta de qualquer responsabilidade decorrente das ações ou conteúdo das lojas afiliadas.\n* Proibição de Venda de Cursos com Direitos Autorais: Não é permitido o uso das lojas para revender cursos online protegidos por direitos autorais, a menos que haja autorização expressa para isso.\n* Venda de Produtos Ilegais: A venda de itens roubados ou contrabandeados é proibida. A Mercagi se reserva o direito de tomar medidas legaiss contra qualquer afiliado que se envolva nessas práticas.\n* Consequências de Reclamações e Denúncias: Em caso de recebimento de múltiplas reclamações ou denúncias verificadas sobre fraudes o atividades ilegais em uma loja, a Mercagi se reserva o direito de excluir a loja do afiliado sem possibilidade de reativação."
-      }
-    ]
-  },
-  "who-we-are": {
-    "metadata_title": "Quem Somos? | Collasco",
-    "history": {
-      "title": "Nuestra História",
-      "paragraph1": "O Collasco nasceu da necessidade de um sistema QMS (Quality Management System) acessível, simples e econômico, que ajude empresas a melhorar seus processos e empreendedores a digitalizar suas operações com facilidade.",
-      "paragraph2": "Foi criado por dois jovens visionários: um boliviano e um belga, que uniram forças ao observar como era desafiador para muitas empresas implementar sistemas de qualidade eficazes e gerenciar seu crescimento de forma digital.",
-      "paragraph3": "O nome \"Collasco\" reflete a agilidade, acessibilidade e simplicidade com que qualquer organização pode profissionalizar seus processos e manter o controle em um só lugar."
-    },
-    "misionTitle": "MISSÃO",
-    "mision": "Oferecer uma plataforma QMS fácil de usar e acessível que ajude empresas a organizar seus processos, garantir conformidade e crescer de forma sustentável, tudo em um só lugar.",
-    "visionTitle": "VISÃO",
-    "vision": "Tornar-se uma referência global em soluções QMS acessíveis e práticas, capacitando empresas de todos os tamanhos a digitalizar, otimizar e melhorar continuamente suas operações."
-  },
-  "app": {
-    "common": {
-      "create": "Criar",
-      "save": "Salvar",
-      "projectStatus": {
-        "ACTIVE": "Ativo",
-        "ON_HOLD": "Em pausa",
-        "FINISHED": "Concluído"
-      },
-      "visibility": {
-        "PRIVATE": "Privado",
-        "PUBLIC": "Público"
-      },
-      "featureStatus": {
-        "PENDING": "Pendente",
-        "IN_PROGRESS": "Em andamento",
-        "DONE": "Concluída"
-      },
-      "featurePriority": {
-        "LOW": "Baixa",
-        "MEDIUM": "Média",
-        "HIGH": "Alta"
-      },
-      "breadcrumbs": {
-        "projects": "Projetos",
-        "modules": "Módulos",
-        "features": "Features",
-        "dashboard": "Dashboard"
-      }
-    },
-    "home": {
-      "title": "Bem-vindo de volta, {role} 👋",
-      "subtitlePrefix": "Este é o seu espaço principal. Daqui você pode gerenciar seus",
-      "subtitleBetween": "e",
-      "subtitleSuffix": ".",
-      "roleFallback": "Usuário",
-      "projectsInline": "projetos",
-      "settingsInline": "configurações",
-      "projects": {
-        "title": "📂 Projetos",
-        "description": "Veja, organize e gerencie seus projetos e módulos."
-      },
-      "settings": {
-        "title": "⚙️ Configurações",
-        "description": "Atualize seu perfil, senha e preferências de API."
-      }
-    },
-    "settings": {
-      "nav": {
-        "profile": "Perfil",
-        "general": "Geral"
-      },
-      "profile": {
-        "pageTitle": "Perfil",
-        "title": "Informações pessoais",
-        "save": "Salvar alterações",
-        "hint": "As alterações são aplicadas imediatamente.",
-        "alerts": {
-          "success": "Perfil atualizado com sucesso.",
-          "error": "Não foi possível atualizar seu perfil."
+    "auth": {
+      "register": {
+        "registerButton": "Criar conta",
+        "title_01": "Crie sua conta",
+        "description_01": "Comece agora! Cadastre-se em segundos.",
+        "emailLabel": "E-mail",
+        "emailPlaceholder": "exemplo: usuario@empresa.com",
+        "passwordLabel": "Senha",
+        "passwordPlaceholder": "Escolha uma senha forte",
+        "passwordDescription": "(Pelo menos 8 caracteres, com letras e números)",
+        "confirmPasswordLabel": "Confirmar senha",
+        "confirmPasswordPlaceholder": "Repita a senha",
+        "haveAccount": "Já tem uma conta?",
+        "login": "Entrar",
+        "acceptTerms": {
+          "first": "Aceito os ",
+          "second": " e as "
         },
-        "errors": {
-          "nameRequired": "Informe seu nome.",
-          "emailInvalid": "Informe um e-mail válido."
+        "termsAndConditions": "Termos e Condições",
+        "privacyPolicies": "Políticas de Privacidade",
+        "toast": {
+          "success": "Conta criada com sucesso!",
+          "error": "Ocorreu um erro ao registrar."
         },
-        "name": { "title": "Nome" },
-        "email": { "title": "E-mail" },
-        "password": {
-          "title": "Senha",
-          "current": "Senha atual",
-          "new": "Nova senha",
-          "confirm": "Confirmar senha",
-          "rules": "Pelo menos 8 caracteres, com letras e números",
-          "save": "Atualizar senha",
-          "hint": "Refine a segurança com uma senha mais forte.",
-          "alerts": {
-            "success": "Senha atualizada com sucesso.",
-            "validation": "Revise os campos destacados.",
-            "invalidPassword": "Não foi possível atualizar a senha.",
-            "invalidCurrentPassword": "A senha atual está incorreta.",
-            "serverError": "Ocorreu um erro ao atualizar a senha.",
-            "error": "Não foi possível atualizar a senha."
-          },
-          "errors": {
-            "current": "Informe a senha atual.",
-            "new": "A nova senha deve ter pelo menos 8 caracteres.",
-            "confirm": "As senhas devem coincidir."
-          }
+        "alreadyHaveStore": "Você já pertence a um espaço de trabalho. ",
+        "login_account": "Entrar",
+        "loading": "Carregando..."
+      },
+      "login": {
+        "title_01": "Acesse sua conta",
+        "description_01": "Digite seus dados para gerenciar seu sistema QMS.",
+        "emailLabel": "E-mail",
+        "emailPlaceholder": "exemplo: usuario@empresa.com",
+        "passwordLabel": "Senha",
+        "passwordPlaceholder": "Digite sua senha",
+        "forgotPassword": "Esqueceu sua senha?",
+        "recover": "Recuperar",
+        "noAccount": "Não tem uma conta?",
+        "createAccount": "Criar conta",
+        "alreadyAccount": "Já tem uma conta?",
+        "loginButton": "Entrar",
+        "logout": "Sair",
+        "alternativeLogin": "Ou continue com o Google",
+        "googleLogin": "Entrar con Google",
+        "googleLoginSuccess": "Sessão iniciada com Google",
+        "googleLoginError": "Erro ao entrar com Google",
+        "toast": {
+          "success": "Login realizado com sucesso!",
+          "error": "Ocorreu um erro ao fazer login."
+        },
+        "loading": "Carregando..."
+      },
+      "forgot-password": {
+        "title": "Recuperar senha",
+        "description": "Digite seu e-mail para receber um código de recuperação.",
+        "emailPlaceholder": "E-mail",
+        "recoverButton": "Enviar código",
+        "recoverButtonSent": "Código enviado",
+        "toast": {
+          "success": "Verifique sua caixa de entrada. Enviamos um código.",
+          "error": "Erro ao enviar o código de recuperação."
         }
       },
-      "general": {
-        "pageTitle": "Geral",
-        "api": {
-          "title": "Token de API",
-          "subtitle": "Use-o para integrar o Collasco com outras ferramentas.",
-          "placeholder": "Gere seu token de API pelo backend."
-        },
-        "copy": "Copiar",
-        "copySuccess": "Copiado!",
-        "preferences": {
-          "title": "Preferências",
-          "darkMode": {
-            "label": "Modo escuro",
-            "desc": "Usar o tema escuro no aplicativo"
-          }
-        },
-        "alerts": {
-          "success": "Preferências atualizadas.",
-          "error": "Não foi possível atualizar suas preferências."
-        },
-        "save": "Salvar alterações",
-        "hint": "Suas preferências son salvas instantaneamente.",
-        "github": {
-          "title": "Token do GitHub",
-          "subtitle": "Armazene um token de acesso pessoal com escopo repo para vincular repositórios privados.",
-          "maskedLabel": "Token armazenado",
-          "maskedHint": "Há um token armazenado. Você pode sobrescrevê-lo ou removê-lo abaixo.",
-          "inputLabel": "Token de acesso pessoal",
-          "placeholder": "ghp_xxxxxxxxxxxxxxxxx",
-          "save": "Salvar token",
-          "disconnect": "Remover token",
-          "noToken": "Nenhum token salvo ainda.",
-          "alerts": {
-            "saved": "Token do GitHub salvo.",
-            "removed": "Token do GitHub removido.",
-            "error": "Não foi possível atualizar o token do GitHub.",
-            "validation": "Informe um token de acesso pessoal válido."
-          },
-          "errors": {
-            "required": "Informe seu token de acesso pessoal."
-          }
+      "reset-password": {
+        "title": "Redefinir senha",
+        "description": "Digite uma nova senha que atenda aos requisitos.",
+        "passwordLabel": "Nova senha",
+        "passwordPlaceholder": "Escolha uma senha forte",
+        "passwordDescription": "(Pelo menos 8 caracteres, com letras e números)",
+        "confirmPasswordLabel": "Confirmar senha",
+        "confirmPasswordPlaceholder": "Repita a senha",
+        "recoverButton": "Atualizar senha",
+        "toast": {
+          "success": "Sua senha foi atualizada.",
+          "error": "Ocorreu um erro ao redefinir a senha."
         }
       }
     },
-    "projects": {
-      "list": {
-        "title": "Projetos",
-        "subtitle": "Acompanhe suas iniciativas e módulos.",
-        "create": "Novo projeto",
-        "noAccess": "Sem acesso",
-        "empty": {
-          "title": "Nenhum projeto encontrado.",
-          "cta": "Crie seu primeiro projeto"
+    "support": {
+      "metadata_title": "Suporte | Collasco",
+      "title": "Central de Suporte",
+      "description": "Envie-nos seus comentários, sugestões ou problemas. Sua opinião é importante para nós.",
+      "subjectPlaceholder": "Asunto",
+      "descriptionPlaceholder": "Descreva sua dúvida...",
+      "sendButton": "Enviar Mensagem"
+    },
+    "plans": {
+      "metadata_title": "Planos | Collasco",
+      "title": "Escolha o seu plano Collasco",
+      "description": "Selecione o plano que melhor atende às suas necessidades. Comece grátis e faça upgrade conforme crescer.",
+      "planPeriodMonth": "/mês",
+      "planPeriodYear": "/ano",
+      "monthly": {
+        "label": "Mais Popular",
+        "title": "Plano Mensal",
+        "feature1": "Acesso total a todos os recursos",
+        "feature2": "Cancele a qualquer momento"
+      },
+      "yearly": {
+        "label": "Melhor Custo-Benefício",
+        "title": "Plano Anual",
+        "feature1": "Economize até 20% em comparação ao mensal",
+        "feature2": "Suporte prioritário incluído"
+      },
+      "subscribe-button": {
+        "subscribeButton": "Assinar",
+        "subscribedButton": "Assinado",
+        "comingSoon": "Em breve..."
+      }
+    },
+    "privacy-policies": {
+      "title": "Políticas de Privacidade",
+      "policies": [
+        {
+          "title": "1. Controlador de Dados Pessoais",
+          "description": "Collasco SRL\n* Endereço: Calle A. Quijarro 7, Cochabamba, Bolivia\n* E-mail : Collasco@gmail.com"
         },
-        "updatedAt": "Atualizado em {date}",
-        "pagination": {
-          "aria": "Paginação de projetos",
-          "previous": "Anterior",
-          "next": "Próximo"
+        {
+          "title": "2. Dados Pessoais que Coletamos",
+          "description": "Coletamos os seguintes tipos de informação:\n* Dados de registro: Nome, e-mail, telefone e senha.\n* Dados de faturamento: Número de identificação fiscal (NIT), endereço fiscal.\n* Dados de uso: Informações sobre como você interage com nossa plataforma.\n* Dados opcionais: Que você decide nos fornecer, como referências de contato."
+        },
+        {
+          "title": "3. Finalidades do Processamento de Dados",
+          "description": "Seus dados pessoais serão utilizados para:\n* Fornecer os serviços contratados em nossa plataforma.\n* Gerenciar faturamento e cumprimento de obrigações legaiss.\n* Melhorar sua experiência de usuário através da personalização.\n* Enviar informações sobre promoções, sempre com seu consentimento prévio."
+        },
+        {
+          "title": "4. Base Legal para o Processamento de Dados",
+          "description": "O processamento de seus dados pessoais é realizado com base em:\n* Consentimento expresso: Concedido ao se registrar ou usar nosso serviço.\n* Cumprimento de obrigações legais: Em conformidade com a legislação boliviana vigente.\n* Execução de um contrato: Necessário para fornecer nossos serviços."
+        },
+        {
+          "title": "5. Compartilhamento de Dados",
+          "description": "Podemos compartilhar seus dados pessoais com terceiros, como:\n* Provedores de serviços de tecnologia e armazenamento em nuvem.\n* Entidades governamentais quando exigido por lei.\n* Em todos os casos, garantimos que esses terceiros cumprem com altos padrões de proteção de dados."
+        },
+        {
+          "title": "6. Transferências Internacionais de Dados",
+          "description": "Embora nossa base principal seja na Bolívia, alguns provedores podem estar localizados em outros países. Quando transferências internacionais de dados forem realizadas, garantimos que medidas de proteção adequadas sejam implementadas de acordo con a regulamentação aplicável."
+        },
+        {
+          "title": "7. Segurança dos Seus Dados",
+          "description": "Implementamos medidas técnicas e organizativas para proteger seus dados contra acessos não autorizados, perdas ou divulgação indevida. No entanto, nenhuma medida de segurança é completamente infalível, por isso recomendamos proteger sua senha e não compartilhar informações sensíveis desnecessariamente."
+        },
+        {
+          "title": "8. Seus Direitos",
+          "description": "De acordo com a legislação boliviana, você tem o direito de:\n* Acesso: Solicitar informações sobre os dados que armazenamos sobre você.\n* Rectificação: Corrigir dados incorretos o incompletos.\n* Cancelamento: Solicitar a exclusão de seus dados, exceção quando houver uma obrigação legal de retê-los.\n* Oposição: Recusar o processamento de seus dados para certas finalidades.\n* Você pode exercer esses direitos entrando em contato conosco em Collasco@gmail.com, indicando seu nome completo, documento de identidade e o direito que deseja exercer."
+        },
+        {
+          "title": "9. Retenção de Dados",
+          "description": "Retemos seus dados pessoais apenas pelo tempo necessário para cumprir as finalidades descritas, ou conforme exigido pela legislação vigente."
+        },
+        {
+          "title": "10. Modificações a esta Política",
+          "description": "Reservamo-nos o direito de atualizar esta política de privacidade a qualquer momento. Notificaremos quaisquer alterações através de nossa plataforma ou por e-mail.\nObrigado por confiar na Collasco. Sua privacidade é essencial para nós."
         }
-      },
-      "errors": {
-        "title": "Não foi possível carregar os proyectos",
-        "description": "Atualize a página ou tente novamente mais tarde.",
-        "retry": "Tentar novamente"
-      },
-      "detail": {
-        "updated": "Última atualização: {date}",
-        "tabs": {
-          "structure": "Estrutura",
-          "documentation": "Documentação",
-          "attachments": "Anexos",
-          "dashboard": "Painel",
-          "qa": "Execuções QA",
-          "members": "Membros",
-          "labels": "Etiquetas",
-          "manual": "Manual",
-          "trash": "Lixeira"
+      ]
+    },
+    "terms-and-conditions": {
+      "title": "Termos e Condições",
+      "conditions": [
+        {
+          "title": "Condições de Uso",
+          "description": "O seguinte conteúdo não pode ser publicado na plataforma web Collasco.\n\n* A publicação de qualquer material ilegal de acordo com as leis vigentes no Estado Plurinacional da Bolívia não é permitida.\n* A divulgação de nudez ou material pornográfico neste site é estritamente proibida.\n* A troca, promoção ou venda de substâncias entorpecentes ilegais é estritamente proibida.\n* Nenhum conteúdo explícito ilegal será tolerado, incluindo, mas não se limitando a, incitação à violência, ódio, assédio ou discriminação.\n* Não é permitido oferecer ou solicitar qualquer tipo de armas de fogo ou armas brancas através deste serviço web.\n* Todos os usuários devem respeitar os direitos autorais e não fazer upload, compartilhar ou distribuir conteúdo digital que não seja autorizado por seus detentores de direitos autorais.\n* É estritamente proibido usar este serviço web com intenções fraudulentas, incluindo, mas não se limitando a, phishing, fraude de identidade ou qualquer outro tipo de atividade enganosa.\n* Além das restrições mencionadas acima, os usuários devem cumprir todas as leis e regulamentos locais, nacionais e internacionais aplicáveis ao usar este serviço web.\n* O não cumprimento de qualquer uma destas condições de uso pode resultar na suspensão ou exclusão de sua conta e na tomada de medidas legaiss, conforme apropriado.\n* Reservamo-nos o direito de modificar estas condições de uso a qualquer momento e recomendamos revisá-las periodicamente para estar ciente de quaisquer alterações."
         },
-        "actions": {
-          "edit": "Editar",
-          "delete": "Excluir",
-          "addModule": "Adicionar módulo",
-          "viewDashboard": "Ir para o dashboard",
-          "backToProject": "Voltar ao proyecto"
-        },
-        "modules": {
-          "title": "Módulos",
-          "empty": "Nenhum módulo por enquanto.",
-          "sortOrder": "Ordem #{order}",
-          "noDescription": "Sem descrição disponível",
-          "expandAll": "Expandir tudo",
-          "collapseAll": "Colapsar tudo"
-        },
-        "description": {
-          "empty": "Nenhuma descrição disponível."
+        {
+          "title": "Prohibições",
+          "description": "As seguintes proibições se aplicam ao uso da plataforma Collasco.\n\n* Proibição de Fraude: É estritamente proibido o uso das lojas virtuais da Mercagi para qualquer atividade fraudulenta na internet. Os afiliados devem operar suas lojas com total transparência e honestidade.\n* Responsabilidade do Afiliado: Os afiliados são totalmente responsáveis por qualquer dano ou prejuízo causado por sua loja virtual. A Mercagi se isenta de qualquer responsabilidade decorrente das ações ou conteúdo das lojas afiliadas.\n* Proibição de Venda de Cursos com Direitos Autorais: Não é permitido o uso das lojas para revender cursos online protegidos por direitos autorais, a menos que haja autorização expressa para isso.\n* Venda de Produtos Ilegais: A venda de itens roubados ou contrabandeados é proibida. A Mercagi se reserva o direito de tomar medidas legaiss contra qualquer afiliado que se envolva nessas práticas.\n* Consequências de Reclamações e Denúncias: Em caso de recebimento de múltiplas reclamações ou denúncias verificadas sobre fraudes o atividades ilegais em uma loja, a Mercagi se reserva o direito de excluir a loja do afiliado sem possibilidade de reativação."
         }
+      ]
+    },
+    "who-we-are": {
+      "metadata_title": "Quem Somos? | Collasco",
+      "history": {
+        "title": "Nuestra História",
+        "paragraph1": "O Collasco nasceu da necessidade de um sistema QMS (Quality Management System) acessível, simples e econômico, que ajude empresas a melhorar seus processos e empreendedores a digitalizar suas operações com facilidade.",
+        "paragraph2": "Foi criado por dois jovens visionários: um boliviano e um belga, que uniram forças ao observar como era desafiador para muitas empresas implementar sistemas de qualidade eficazes e gerenciar seu crescimento de forma digital.",
+        "paragraph3": "O nome \"Collasco\" reflete a agilidade, acessibilidade e simplicidade com que qualquer organização pode profissionalizar seus processos e manter o controle em um só lugar."
       },
-      "trash": {
-        "tabs": {
+      "misionTitle": "MISSÃO",
+      "mision": "Oferecer uma plataforma QMS fácil de usar e acessível que ajude empresas a organizar seus processos, garantir conformidade e crescer de forma sustentável, tudo em um só lugar.",
+      "visionTitle": "VISÃO",
+      "vision": "Tornar-se uma referência global em soluções QMS acessíveis e práticas, capacitando empresas de todos os tamanhos a digitalizar, otimizar e melhorar continuamente suas operações."
+    },
+    "app": {
+      "common": {
+        "create": "Criar",
+        "save": "Salvar",
+        "projectStatus": {
+          "ACTIVE": "Ativo",
+          "ON_HOLD": "Em pausa",
+          "FINISHED": "Concluído"
+        },
+        "visibility": {
+          "PRIVATE": "Privado",
+          "PUBLIC": "Público"
+        },
+        "featureStatus": {
+          "PENDING": "Pendente",
+          "IN_PROGRESS": "Em andamento",
+          "DONE": "Concluída"
+        },
+        "featurePriority": {
+          "LOW": "Baixa",
+          "MEDIUM": "Média",
+          "HIGH": "Alta"
+        },
+        "breadcrumbs": {
           "projects": "Projetos",
           "modules": "Módulos",
           "features": "Features",
-          "labels": "Etiquetas"
-        },
-        "actions": {
-          "reload": "Recarregas",
-          "restore": "Restaurar",
-          "restoring": "Restauração..."
-        },
-        "messages": {
-          "loading": "Chargement...",
-          "loadError": "Não foi possível carregar os itens excluídos.",
-          "restoreSuccess": "Item restaurado.",
-          "restoreError": "Não foi possível restaurar o item.",
-          "restoreParentFirst": "Restaure o módulo pai primeiro.",
-          "unnamed": "Sem nome"
-        },
-        "empty": {
-          "projects": "Nenhum projeto excluído.",
-          "modules": "Nenhum módulo excluído.",
-          "features": "Nenhuma feature excluída.",
-          "labels": "Nenhuma etiqueta excluída."
-        },
-        "meta": {
-          "deletedByAt": "Excluído por {name} · {date}",
-          "deletedBy": "Excluído por {name}",
-          "deletedAt": "Excluído {date}"
-        },
-        "badges": {
-          "requiresModule": "Requer módulo restaurado"
+          "dashboard": "Dashboard"
         }
       },
-      "attachments": {
-        "title": "Anexos do projeto",
-        "subtitle": "Anexos de documentação agrupados por etiqueta.",
-        "actions": {
-          "reload": "Recarregar",
-          "loading": "Carregando...",
-          "viewEntity": "Ver item"
+      "home": {
+        "title": "Bem-vindo de volta, {role} 👋",
+        "subtitlePrefix": "Este é o seu espaço principal. Daqui você pode gerenciar seus",
+        "subtitleBetween": "e",
+        "subtitleSuffix": ".",
+        "roleFallback": "Usuário",
+        "projectsInline": "projetos",
+        "settingsInline": "configurações",
+        "projects": {
+          "title": "📂 Projetos",
+          "description": "Veja, organize e gerencie seus projetos e módulos."
         },
-        "messages": {
-          "loading": "Carregando anexos...",
-          "empty": "Ainda não há anexos.",
-          "loadError": "Não foi possível carregar os anexos."
-        },
-        "labels": {
-          "unknown": "Etiqueta desconhecida",
-          "count": "{count, plural, one {# anexo} other {# anexos}}"
-        },
-        "meta": {
-          "createdByAt": "Enviado por {name} · {date}",
-          "createdAt": "Enviado {date}"
-        },
-        "entity": {
-          "project": "Projeto",
-          "module": "Módulo",
-          "feature": "Feature"
+        "settings": {
+          "title": "⚙️ Configurações",
+          "description": "Atualize seu perfil, senha e preferências de API."
         }
       },
-      "manual": {
-        "noDescription": "Nenhuma descrição disponível.",
-        "attachments": {
-          "open": "Abrir"
+      "settings": {
+        "nav": {
+          "profile": "Perfil",
+          "general": "Geral"
         },
-        "labelsNavbar": {
-          "title": "Preferências do manual",
-          "subtitle": "Escolha quais rótulos aparecem no manual.",
-          "loading": "Carregando rótulos...",
-          "empty": "Este projeto ainda não tem rótulos visíveis.",
-          "sections": {
-            "selected": "Visíveis no manual",
-            "available": "Ocultos",
-            "visibleCount": "{count, plural, one {# rótulo} other {# rótulos}}",
-            "hiddenCount": "{count, plural, one {# rótulo} other {# rótulos}}"
+        "profile": {
+          "pageTitle": "Perfil",
+          "title": "Informações pessoais",
+          "save": "Salvar alterações",
+          "hint": "As alterações são aplicadas imediatamente.",
+          "alerts": {
+            "success": "Perfil atualizado com sucesso.",
+            "error": "Não foi possível atualizar seu perfil."
           },
-          "selectedEmpty": "Nenhum rótulo está visível ainda.",
-          "availableEmpty": "Todos os rótulos já estão visíveis.",
-          "mandatory": "Obrigatória",
-          "actions": {
-            "selectAll": "Selecionar tudo",
-            "selectNone": "Selecionar nenhum"
+          "errors": {
+            "nameRequired": "Informe seu nome.",
+            "emailInvalid": "Informe um e-mail válido."
           },
-          "messages": {
-            "loadError": "Não conseguimos carregar os rótulos.",
-            "saveError": "Não foi posible actualizar suas preferências.",
-            "saved": "Preferências atualizadas."
-          }
-        },
-        "filters": {
-          "label": "Exibir",
-          "content": "Apenas com conteúdo",
-          "all": "Mostrar tudo"
-        },
-        "states": {
-          "notApplicable": "Não aplicável",
-          "empty": "Sem conteúdo."
-        },
-        "linkedFeatures": {
-          "references": "Referencia",
-          "referencedBy": "Referenciada por"
-        },
-        "share": {
-          "label": "Compartilhar",
-          "title": "Compartilhar manual",
-          "description": "Escolha quais rótulos estarão disponíveis no link público.",
-          "rootTitle": "Escopo",
-          "rootHint": "Este link começará aqui.",
-          "rootTypeLabel": "Escopo",
-          "rootTypeProject": "Projeto (manual completo)",
-          "rootTypeModule": "Módulo",
-          "rootTypeFeature": "Feature",
-          "rootSelectModule": "Selecione um módulo",
-          "rootSelectFeature": "Selecione um feature",
-          "rootEmptyModules": "Não há módulos disponíveis.",
-          "rootEmptyFeatures": "Não há features disponíveis.",
-          "rootError": "Selecione um módulo ou um feature.",
-          "rootLabel": "Escopo: {scope}",
-          "rootLabelProject": "Projeto",
-          "rootLabelModule": "Módulo: {name}",
-          "rootLabelFeature": "Feature: {name}",
-          "rootUnknown": "Desconhecido",
-          "commentLabel": "Comentário (opcional)",
-          "commentPlaceholder": "Para equipe QA / cliente ACME",
-          "commentHint": "Visível para quem tiver o link. Máx 500 caracteres.",
-          "commentError": "O comentário deve ter no máximo 500 caracteres.",
-          "loading": "Carregando links...",
-          "loadError": "Não foi possível carregar os links.",
-          "labelsTitle": "Rótulos para compartilhar",
-          "labelsHint": "Selecione os rótulos incluídos no manual público.",
-          "labelsEmpty": "Não há rótulos disponíveis para compartilhar.",
-          "labelsFallback": "Sem rótulos",
-          "linksTitle": "Links criados",
-          "linksHint": "Você pode copiar ou revogar links existentes.",
-          "linksEmpty": "Ainda não há links.",
-          "create": "Criar link",
-          "creating": "Criando...",
-          "created": "Link criado.",
-          "createError": "Não foi possível criar o link.",
-          "copy": "Copiar link",
-          "copied": "Link copiado.",
-          "copyError": "Não foi possível copiar o link.",
-          "revoke": "Revogar",
-          "revoked": "Link revogado.",
-          "revokedLabel": "Revogado",
-          "revokeError": "Não foi possível revogar o link.",
-          "close": "Fechar"
-        },
-        "loading": "Carregando manual...",
-        "publicNotFound": "Este link não existe ou foi revogado.",
-        "publicRevoked": "Este link foi revogado e não tem mais acesso.",
-        "publicForbidden": "Você não tem acesso a este manual.",
-        "error": "Não conseguimos carregar o manual.",
-        "retry": "Tentar novamente"
-      },
-      "members": {
-        "title": "Membros do projeto",
-        "subtitle": "Convide colaboradores, ajuste papéis e controle o acesso.",
-        "tabs": {
-          "members": "Membros",
-          "roles": "Papéis"
-        },
-        "actions": {
-          "add": "Adicionar membro",
-          "remove": "Remover",
-          "cancel": "Cancelar",
-          "save": "Salvar",
-          "saving": "Salvando..."
-        },
-        "badges": {
-          "you": "Você"
-        },
-        "table": {
-          "member": "Membro",
-          "role": "Papel",
-          "joined": "Entrou em",
-          "actions": "Ações",
-          "unknown": "Usuário desconhecido"
-        },
-        "empty": {
-          "title": "Nenhum membro ainda",
-          "description": "Convide sua equipe para colaborar neste projeto."
-        },
-        "fields": {
-          "email": "Email",
-          "role": "Papel"
-        },
-        "placeholders": {
-          "email": "user@mail.com"
-        },
-        "hints": {
-          "email": "Digite o email do usuário já existente na plataforma."
-        },
-        "roles": {
-          "owner": "Proprietário",
-          "maintainer": "Mantenedor",
-          "developer": "Desenvolvedor",
-          "viewer": "Leitor"
-        },
-        "messages": {
-          "loadError": "Não foi possível carregar os miembros.",
-          "addError": "Não foi possível adicionar esse membro.",
-          "added": "Membro adicionado.",
-          "roleUpdated": "Papel atualizado.",
-          "updateError": "Não foi possível atualizar o papel.",
-          "removed": "Membro removido.",
-          "removeError": "Não foi possível remover o membro.",
-          "removeConfirm": "Deseja remover {name} do projeto?",
-          "ownerOnly": "Somente o proprietário pode gerenciar os membros.",
-          "manageOnly": "Somente papéis com permissão podem gerenciar membros."
-        },
-        "addDialog": {
-          "title": "Convidar membro",
-          "description": "Informe o email do usuário e o papel que ele terá."
-        },
-        "validation": {
-          "email": "Informe o email do usuário."
-        }
-      },
-      "labels": {
-        "title": "Etiquetas personalizadas",
-        "subtitle": "Configure as etiquetas de QA e defina quem pode ver ou editar o conteúdo marcado.",
-        "actions": {
-          "add": "Nova etiqueta",
-          "edit": "Editar",
-          "delete": "Excluir",
-          "save": "Salvar",
-          "saving": "Salvando...",
-          "cancel": "Cancelar"
-        },
-        "messages": {
-          "loadError": "Não foi possível carregar as etiquetas.",
-          "saveError": "Não foi possível salvar a etiqueta.",
-          "created": "Etiqueta criada.",
-          "updated": "Etiqueta atualizada.",
-          "deleted": "Etiqueta excluída.",
-          "deleteError": "Não fue possível excluir a etiqueta.",
-          "deleteConfirm": "Excluir a etiqueta \"{name}\"?",
-          "ownerOnly": "Somente o proprietário pode modificar as etiquetas.",
-          "manageOnly": "Somente papéis com permissão podem modificar as etiquetas."
-        },
-        "table": {
-          "name": "Etiqueta",
-          "mandatory": "Obrigatória",
-          "mandatoryYes": "Sim",
-          "mandatoryNo": "Não",
-          "visibleToRoles": "Visível para",
-          "readOnlyRoles": "Somente leitura",
-          "noReadOnly": "Todos os papéis visíveis podem editar.",
-          "actions": "Ações"
-        },
-        "reorder": {
-          "moveUp": "Mover para cima",
-          "moveDown": "Mover para baixo",
-          "success": "Ordem atualizada.",
-          "error": "Não foi possível reordenar esta etiqueta."
-        },
-        "empty": {
-          "title": "Ainda não há etiquetas",
-          "action": "Criar etiqueta"
-        },
-        "fields": {
-          "name": "Nome",
-          "namePlaceholder": "ex. Aprovação de privacidade",
-          "instructions": "Instruções",
-          "instructionsPlaceholder": "Descreva o que deve ser documentado aqui.",
-          "instructionsHint": "Isso será mostrado aos usuários ao preencher o label.",
-          "isMandatory": "Campo obrigatório",
-          "isNotApplicableByDefault": "Marcar como não aplicável por padrão",
-          "visibleToRoles": "Papéis com acesso",
-          "visibleToRolesHint": "Escolha quem pode ver itens com esta etiqueta.",
-          "readOnlyRoles": "Papéis somente leitura",
-          "readOnlyRolesHint": "Eles verão a etiqueta, mas não poderão editar o conteúdo."
-        },
-        "dialog": {
-          "createTitle": "Nova etiqueta",
-          "editTitle": "Editar etiqueta",
-          "description": "Defina visibilidade e permissões para esta etiqueta."
-        },
-        "validation": {
-          "name": "Informe um nome."
-        },
-        "roleNames": {
-          "OWNER": "Proprietário",
-          "MAINTAINER": "Mantenedor",
-          "DEVELOPER": "Desenvolvedor",
-          "VIEWER": "Leitor",
-          "TESTER": "Testador"
-        }
-      },
-      "roles": {
-        "title": "Papéis do projeto",
-        "subtitle": "Crie papéis e defina quais permissões eles terão.",
-        "actions": {
-          "add": "Novo papel",
-          "edit": "Editar",
-          "delete": "Excluir",
-          "save": "Salvar",
-          "saving": "Salvando..."
-        },
-        "table": {
-          "role": "Papel",
-          "description": "Descrição",
-          "permissions": "Permissões",
-          "members": "Membros",
-          "actions": "Ações"
-        },
-        "badges": {
-          "owner": "Owner",
-          "default": "Padrão"
-        },
-        "empty": {
-          "title": "Ainda não há papéis",
-          "description": "Crie um papel para começar a atribuir permissões."
-        },
-        "messages": {
-          "loadError": "Não foi possível carregar os papéis.",
-          "saveError": "Não foi possível salvar o papel.",
-          "created": "Papel criado.",
-          "updated": "Papel atualizado.",
-          "deleted": "Papel excluído.",
-          "deleteError": "Não foi possível excluir o papel.",
-          "deleteConfirm": "Excluir o papel \"{name}\"?",
-          "cannotDelete": "Papéis owner ou com membros não podem ser excluídos.",
-          "manageOnly": "Somente papéis com permissão podem gerenciar papéis.",
-          "loading": "Carregando papéis..."
-        },
-        "dialog": {
-          "createTitle": "Novo papel",
-          "editTitle": "Editar papel",
-          "description": "Defina as permissões deste papel.",
-          "permissionGroups": {
-            "project": {
-              "label": "Projeto",
-              "description": "Gestão e configuração geral do projeto."
-            },
-            "module": {
-              "label": "Módulos",
-              "description": "Controle da estrutura de módulos e submódulos."
-            },
-            "feature": {
-              "label": "Funcionalidades",
-              "description": "Gestão de itens de trabalho individuais."
-            },
-            "ticket": {
-              "label": "Tickets",
-              "description": "Acompanhar issues, solicitações e respostas."
-            },
-            "qa": {
-              "label": "QA & Testes",
-              "description": "Casos de teste, execuções e resultados de qualidade."
-            },
-            "labels": {
-              "label": "Etiquetas",
-              "description": "Configuração de etiquetas dinâmicas e visibilidade."
-            },
-            "other": {
-              "label": "Otros",
-              "description": "Permissões adicionais do sistema."
-            }
-          },
-          "permissionsList": {
-            "project_read": {
-              "label": "Ver projeto",
-              "description": "Acesso básico para ver as informações do projeto."
-            },
-            "project_update": {
-              "label": "Editar projeto",
-              "description": "Modificar nome, descrição e configurações gerais."
-            },
-            "project_delete": {
-              "label": "Excluir projeto",
-              "description": "Capacidade de excluir o projeto e sua lixeira."
-            },
-            "project_manage_members": {
-              "label": "Gerenciar membros",
-              "description": "Convidar ou remover pessoas da equipe."
-            },
-            "project_manage_roles": {
-              "label": "Gerenciar papéis",
-              "description": "Criar e configurar as permissões dos papéis."
-            },
-            "project_manage_share_links": {
-              "label": "Gerenciar links de compartilhamento",
-              "description": "Criar e revogar links públicos para o manual."
-            },
-            "project_manage_integrations": {
-              "label": "Gerenciar integrações",
-              "description": "Configurar conexões externas como GitHub."
-            },
-            "module_read": {
-              "label": "Ver módulos",
-              "description": "Permite ver os detalhes do módulo."
-            },
-            "module_write": {
-              "label": "Gerenciar módulos",
-              "description": "Criar, editar e organizar a hierarquia de módulos."
-            },
-            "feature_read": {
-              "label": "Ver funcionalidades",
-              "description": "Acesso para ver os detalhes de cada funcionalidade."
-            },
-            "feature_write": {
-              "label": "Gerenciar funcionalidades",
-              "description": "Criar e editar funcionalidades dentro dos módulos."
-            },
-            "ticket_read_own": {
-              "label": "Ver tickets próprios",
-              "description": "Ver tickets criados pelo usuário."
-            },
-            "ticket_read_all": {
-              "label": "Ver todos os tickets",
-              "description": "Acesso aos tickets de todo o projeto."
-            },
-            "ticket_create": {
-              "label": "Criar tickets",
-              "description": "Criar novos tickets no projeto."
-            },
-            "ticket_respond": {
-              "label": "Responder tickets",
-              "description": "Adicionar respostas ou comentários aos tickets."
-            },
-            "ticket_manage": {
-              "label": "Gerenciar tickets",
-              "description": "Atribuir, mudar status e editar tickets."
-            },
-            "qa_read": {
-              "label": "Ver QA",
-              "description": "Consultar casos de teste e resultados de execução."
-            },
-            "qa_write": {
-              "label": "Gerenciar QA",
-              "description": "Criar casos de teste e registrar execuções."
-            },
-            "labels_manage": {
-              "label": "Gerenciar etiquetas",
-              "description": "Configurar etiquetas de QA personalizadas."
-            }
-          }
-        },
-        "form": {
-          "name": "Nome do papel",
-          "namePlaceholder": "ex. QA Lead",
-          "description": "Descrição",
-          "descriptionPlaceholder": "Opcional",
-          "permissions": "Permissões",
-          "permissionsCount": "{count} selecionadas"
-        },
-        "validation": {
-          "name": "Informe o nome do papel."
-        }
-      },
-      "documentation": {
-        "title": "Documentação por etiqueta",
-        "subtitle": "Registre as evidências em rich text que cada papel pode ver ou editar.",
-        "empty": "Nenhuma seção disponível para o seu papel.",
-        "badges": {
-          "mandatory": "Obrigatória",
-          "readOnly": "Somente leitura",
-          "notApplicable": "Não aplicável"
-        },
-        "labels": {
-          "updatedAt": "Atualizado {date}"
-        },
-        "fields": {
-          "notApplicable": "Marcado como não aplicável",
-          "notApplicableHint": "Oculte esta etiqueta para esta feature ou módulo.",
-          "instructions": "Instruções",
-          "editorLabel": "Conteúdo",
-          "editorPlaceholder": "Documente o contexto, validações ou decisões.",
-          "editorHelper": "Use rich text para manter suas evidências legíveis."
-        },
-        "states": {
-          "notApplicable": "Esta etiqueta está marcada como não aplicável.",
-          "empty": "Ainda não há conteúdo."
-        },
-        "messages": {
-          "loadError": "Não foi possível carregar a documentação.",
-          "saved": "Documentação salva.",
-          "saveError": "Não foi possível salvar esta etiqueta."
-        },
-        "actions": {
-          "edit": "Editar conteúdo",
-          "save": "Salvar",
-          "cancel": "Cancelar",
-          "markNotApplicable": "Marcar como N/A",
-          "markApplicable": "Marcar como aplicável"
-        },
-        "images": {
-          "toggle": "Mostrar imagens",
-          "title": "Anexar imagem",
-          "sectionTitle": "Imagens",
-          "empty": "Nenhuma imagem adicionada ainda.",
-          "tagHint": "Referencie uma imagem com [nome:small] ou [nome:300xauto].",
-          "fields": {
-            "name": "Nome da imagem",
-            "file": "Arquivo"
-          },
-          "placeholders": {
-            "name": "fluxo-login"
-          },
-          "actions": {
-            "upload": "Enviar",
-            "delete": "Excluir",
-            "editName": "Editar nome da imagem",
-            "saveName": "Salvar nome",
-            "cancelEdit": "Cancelar edição",
-            "confirmDelete": "Excluir imagem",
-            "cancelDelete": "Cancelar"
-          },
-          "confirm": {
-            "title": "Excluir esta imagem?",
-            "description": "Esta ação não pode ser desfeita."
-          },
-          "messages": {
-            "uploaded": "Imagem enviada.",
-            "duplicateName": "Já existe uma imagem com esse nome para este rótulo. Escolha outro nome.",
-            "uploadError": "Não foi possível enviar a imagem.",
-            "renamed": "Nome da imagem atualizado.",
-            "renameError": "Não foi possível atualizar o nome da imagem.",
-            "deleted": "Imagem excluída.",
-            "deleteError": "Não foi possível excluir a imagem."
-          },
-          "validation": {
-            "name": "Informe um nome para a imagem.",
-            "file": "Selecione uma imagem.",
-            "fileTooLarge": "A imagem deve ter 2MB ou menos."
-          },
-          "loadError": "Não foi possível carregar as imagens."
-        },
-        "attachments": {
-          "title": "Anexos",
-          "hint": "Envie imagens ou arquivos. Tags de imagem: [nome:small] ou [nome:300xauto].",
-          "sectionTitle": "Anexos",
-          "empty": "Nenhum anexo adicionado ainda.",
-          "fields": {
-            "name": "Nome do anexo",
-            "file": "Arquivo"
-          },
-          "placeholders": {
-            "name": "login-flow"
-          },
-          "actions": {
-            "upload": "Enviar",
-            "add": "Adicionar anexo"
-          },
-          "messages": {
-            "uploaded": "Anexo enviado.",
-            "duplicateName": "Já existe um anexo com esse nome para este projeto. Escolha outro nome.",
-            "uploadError": "Não foi possível enviar o anexo."
-          },
-          "validation": {
-            "name": "Informe um nome para o anexo.",
-            "file": "Selecione um arquivo.",
-            "fileTooLarge": "O arquivo deve ter 2 MB ou menos."
-          }
-        },
-        "files": {
-          "sectionTitle": "Arquivos",
-          "actions": {
-            "open": "Abrir",
-            "delete": "Excluir"
-          }
-        },
-        "validation": {
-          "content": "Informe algum conteúdo ou marque como não aplicável."
-        }
-      },
-      "detailErrors": {
-        "title": "Falha ao carregar o projeto",
-        "description": "Não foi possível obter o projeto. Tente novamente.",
-        "retry": "Tentar novamente",
-        "backToList": "Voltar aos projetos"
-      },
-      "description": {
-        "empty": "Nenhuma descrição disponível."
-      },
-      "form": {
-        "fields": {
           "name": {
-            "label": "Nome do projeto",
-            "placeholder": "ex. Implementação QMS"
+            "title": "Nome"
+          },
+          "email": {
+            "title": "E-mail"
+          },
+          "password": {
+            "title": "Senha",
+            "current": "Senha atual",
+            "new": "Nova senha",
+            "confirm": "Confirmar senha",
+            "rules": "Pelo menos 8 caracteres, com letras e números",
+            "save": "Atualizar senha",
+            "hint": "Refine a segurança com uma senha mais forte.",
+            "alerts": {
+              "success": "Senha atualizada com sucesso.",
+              "validation": "Revise os campos destacados.",
+              "invalidPassword": "Não foi possível atualizar a senha.",
+              "invalidCurrentPassword": "A senha atual está incorreta.",
+              "serverError": "Ocorreu um erro ao atualizar a senha.",
+              "error": "Não foi possível atualizar a senha."
+            },
+            "errors": {
+              "current": "Informe a senha atual.",
+              "new": "A nova senha deve ter pelo menos 8 caracteres.",
+              "confirm": "As senhas devem coincidir."
+            }
+          }
+        },
+        "general": {
+          "pageTitle": "Geral",
+          "api": {
+            "title": "Token de API",
+            "subtitle": "Use-o para integrar o Collasco com outras ferramentas.",
+            "placeholder": "Gere seu token de API pelo backend."
+          },
+          "copy": "Copiar",
+          "copySuccess": "Copiado!",
+          "preferences": {
+            "title": "Preferências",
+            "darkMode": {
+              "label": "Modo escuro",
+              "desc": "Usar o tema escuro no aplicativo"
+            }
+          },
+          "alerts": {
+            "success": "Preferências atualizadas.",
+            "error": "Não foi possível atualizar suas preferências."
+          },
+          "save": "Salvar alterações",
+          "hint": "Suas preferências son salvas instantaneamente.",
+          "github": {
+            "title": "Token do GitHub",
+            "subtitle": "Armazene um token de acesso pessoal com escopo repo para vincular repositórios privados.",
+            "maskedLabel": "Token armazenado",
+            "maskedHint": "Há um token armazenado. Você pode sobrescrevê-lo ou removê-lo abaixo.",
+            "inputLabel": "Token de acesso pessoal",
+            "placeholder": "ghp_xxxxxxxxxxxxxxxxx",
+            "save": "Salvar token",
+            "disconnect": "Remover token",
+            "noToken": "Nenhum token salvo ainda.",
+            "alerts": {
+              "saved": "Token do GitHub salvo.",
+              "removed": "Token do GitHub removido.",
+              "error": "Não foi possível atualizar o token do GitHub.",
+              "validation": "Informe um token de acesso pessoal válido."
+            },
+            "errors": {
+              "required": "Informe seu token de acesso pessoal."
+            }
+          }
+        }
+      },
+      "projects": {
+        "list": {
+          "title": "Projetos",
+          "subtitle": "Acompanhe suas iniciativas e módulos.",
+          "create": "Novo projeto",
+          "noAccess": "Sem acesso",
+          "empty": {
+            "title": "Nenhum projeto encontrado.",
+            "cta": "Crie seu primeiro projeto"
+          },
+          "updatedAt": "Atualizado em {date}",
+          "pagination": {
+            "aria": "Paginação de projetos",
+            "previous": "Anterior",
+            "next": "Próximo"
+          }
+        },
+        "errors": {
+          "title": "Não foi possível carregar os proyectos",
+          "description": "Atualize a página ou tente novamente mais tarde.",
+          "retry": "Tentar novamente"
+        },
+        "detail": {
+          "updated": "Última atualização: {date}",
+          "tabs": {
+            "structure": "Estrutura",
+            "documentation": "Documentação",
+            "attachments": "Anexos",
+            "dashboard": "Painel",
+            "qa": "Execuções QA",
+            "members": "Membros",
+            "labels": "Etiquetas",
+            "manual": "Manual",
+            "trash": "Lixeira"
+          },
+          "actions": {
+            "edit": "Editar",
+            "delete": "Excluir",
+            "addModule": "Adicionar módulo",
+            "viewDashboard": "Ir para o dashboard",
+            "backToProject": "Voltar ao proyecto"
+          },
+          "modules": {
+            "title": "Módulos",
+            "empty": "Nenhum módulo por enquanto.",
+            "sortOrder": "Ordem #{order}",
+            "noDescription": "Sem descrição disponível",
+            "expandAll": "Expandir tudo",
+            "collapseAll": "Colapsar tudo"
           },
           "description": {
-            "label": "Descrição",
-            "placeholder": "Descrição opcional"
-          },
-          "repository": {
-            "label": "URL do repositório",
-            "placeholder": "https://github.com/org/repo"
-          },
-          "status": { "label": "Status" },
-          "visibility": { "label": "Visibilidade" }
-        },
-        "richText": {
-          "bold": "Negrito",
-          "italic": "Itálico",
-          "underline": "Subnhado",
-          "bulletList": "Lista com marcadores",
-          "orderedList": "Lista numerada",
-          "clear": "Limpar formatação",
-          "helper": "Use a barra ou atalhos (Ctrl/Cmd + B/I/U). Shift+Enter adiciona uma quebra suave."
-        },
-        "errors": {
-          "required": "Este campo é obrigatório.",
-          "validation": "Revise as informações.",
-          "generic": "Algo deu errado."
-        },
-        "hint": "Você poderá ajustar os detalhes depois."
-      },
-      "edit": {
-        "title": "Editar projeto",
-        "updated": "Última atualização: {date}",
-        "dangerZone": {
-          "title": "Excluir projeto",
-          "description": "Esta ação não pode ser desfeita.",
-          "delete": "Excluir projeto"
-        }
-      },
-      "new": { "title": "Criar projeto" },
-      "module": {
-        "header": {
-          "project": "Projeto: {name}",
-          "updated": "Última atualização: {date}"
-        },
-        "badges": {
-          "root": "Módulo raíz"
-        },
-        "actions": {
-          "edit": "Editar",
-          "delete": "Excluir",
-          "backToParent": "Voltar ao módulo pai",
-          "addChild": "Adicionar submódulo",
-          "addFeature": "Adicionar feature"
-        },
-        "reorder": {
-          "moveUp": "Mover para cima",
-          "moveDown": "Mover para baixo",
-          "featureMoved": "Feature reordenada.",
-          "moduleMoved": "Módulo reordenado.",
-          "error": "Não foi possível reordenar."
-        },
-        "children": {
-          "title": "Submódulos & Features",
-          "empty": "Nenhum submódulo no momento.",
-          "sortOrder": "Ordre #{order}"
-        },
-        "features": {
-          "title": "Features",
-          "empty": "Nenhuma feature no momento."
-        },
-        "new": {
-          "title": "Criar módulo"
-        },
-        "form": {
-          "fields": {
-            "name": {
-              "label": "Nome do módulo",
-              "placeholder": "ex. Checkout"
-            },
-            "description": {
-              "label": "Description",
-              "placeholder": "Descrição opcional"
-            },
-          "parent": {
-            "label": "Módulo pai",
-            "rootOption": "Módulo raíz",
-            "hint": "Deixe em branco para criar um módulo raíz."
+            "empty": "Nenhuma descrição disponível."
           }
         },
-        "richText": {
-          "bold": "Negrito",
-          "italic": "Itálico",
-          "underline": "Subnhado",
-          "bulletList": "Lista com marcadores",
-          "orderedList": "Lista numerada",
-          "clear": "Limpar formatação",
-          "helper": "Use a barra ou atalhos (Ctrl/Cmd + B/I/U). Shift+Enter adiciona uma quebra suave."
-        },
-          "errors": {
-            "required": "Este campo é obrigatório.",
-            "invalidParent": "Não é possível usar o próprio módulo como pai.",
-            "validation": "Revise as informações.",
-            "generic": "Algo deu errado."
+        "trash": {
+          "tabs": {
+            "projects": "Projetos",
+            "modules": "Módulos",
+            "features": "Features",
+            "labels": "Etiquetas"
           },
-          "hint": "Você poderá reorganizar os módulos depois."
-        },
-        "edit": {
-          "title": "Editar módulo",
-          "subtitle": "Atualizando {name}",
-          "dangerZone": {
-            "title": "Excluir módulo",
-            "description": "Excluir um módulo também remove seus submódulos e features.",
-            "delete": "Excluir módulo"
+          "actions": {
+            "reload": "Recarregas",
+            "restore": "Restaurar",
+            "restoring": "Restauração..."
+          },
+          "messages": {
+            "loading": "Chargement...",
+            "loadError": "Não foi possível carregar os itens excluídos.",
+            "restoreSuccess": "Item restaurado.",
+            "restoreError": "Não foi possível restaurar o item.",
+            "restoreParentFirst": "Restaure o módulo pai primeiro.",
+            "unnamed": "Sem nome"
+          },
+          "empty": {
+            "projects": "Nenhum projeto excluído.",
+            "modules": "Nenhum módulo excluído.",
+            "features": "Nenhuma feature excluída.",
+            "labels": "Nenhuma etiqueta excluída."
+          },
+          "meta": {
+            "deletedByAt": "Excluído por {name} · {date}",
+            "deletedBy": "Excluído por {name}",
+            "deletedAt": "Excluído {date}"
+          },
+          "badges": {
+            "requiresModule": "Requer módulo restaurado"
           }
         },
-        "description": {
-          "empty": "Nenhuma descrição informada."
+        "attachments": {
+          "title": "Anexos do projeto",
+          "subtitle": "Anexos de documentação agrupados por etiqueta.",
+          "actions": {
+            "reload": "Recarregar",
+            "loading": "Carregando...",
+            "viewEntity": "Ver item"
+          },
+          "messages": {
+            "loading": "Carregando anexos...",
+            "empty": "Ainda não há anexos.",
+            "loadError": "Não foi possível carregar os anexos."
+          },
+          "labels": {
+            "unknown": "Etiqueta desconhecida",
+            "count": "{count, plural, one {# anexo} other {# anexos}}"
+          },
+          "meta": {
+            "createdByAt": "Enviado por {name} · {date}",
+            "createdAt": "Enviado {date}"
+          },
+          "entity": {
+            "project": "Projeto",
+            "module": "Módulo",
+            "feature": "Feature"
+          }
         },
-        "errors": {
-          "title": "Falha ao carregar o módulo",
-          "description": "Não foi possível obter o módulo. Tente novamente.",
-          "retry": "Tentar novamente",
-          "back": "Voltar ao projeto"
-        }
-      },
-      "feature": {
-        "header": {
-          "project": "Projeto: {name}",
-          "updated": "Última atualização: {date}",
-          "viewModule": "Ver módulo"
+        "manual": {
+          "noDescription": "Nenhuma descrição disponível.",
+          "attachments": {
+            "open": "Abrir"
+          },
+          "labelsNavbar": {
+            "title": "Preferências do manual",
+            "subtitle": "Escolha quais rótulos aparecem no manual.",
+            "loading": "Carregando rótulos...",
+            "empty": "Este projeto ainda não tem rótulos visíveis.",
+            "sections": {
+              "selected": "Visíveis no manual",
+              "available": "Ocultos",
+              "visibleCount": "{count, plural, one {# rótulo} other {# rótulos}}",
+              "hiddenCount": "{count, plural, one {# rótulo} other {# rótulos}}"
+            },
+            "selectedEmpty": "Nenhum rótulo está visível ainda.",
+            "availableEmpty": "Todos os rótulos já estão visíveis.",
+            "mandatory": "Obrigatória",
+            "actions": {
+              "selectAll": "Selecionar tudo",
+              "selectNone": "Selecionar nenhum"
+            },
+            "messages": {
+              "loadError": "Não conseguimos carregar os rótulos.",
+              "saveError": "Não foi posible actualizar suas preferências.",
+              "saved": "Preferências atualizadas."
+            }
+          },
+          "filters": {
+            "label": "Exibir",
+            "content": "Apenas com conteúdo",
+            "all": "Mostrar tudo"
+          },
+          "states": {
+            "notApplicable": "Não aplicável",
+            "empty": "Sem conteúdo."
+          },
+          "linkedFeatures": {
+            "references": "Referencia",
+            "referencedBy": "Referenciada por"
+          },
+          "share": {
+            "label": "Compartilhar",
+            "title": "Compartilhar manual",
+            "description": "Escolha quais rótulos estarão disponíveis no link público.",
+            "rootTitle": "Escopo",
+            "rootHint": "Este link começará aqui.",
+            "rootTypeLabel": "Escopo",
+            "rootTypeProject": "Projeto (manual completo)",
+            "rootTypeModule": "Módulo",
+            "rootTypeFeature": "Feature",
+            "rootSelectModule": "Selecione um módulo",
+            "rootSelectFeature": "Selecione um feature",
+            "rootEmptyModules": "Não há módulos disponíveis.",
+            "rootEmptyFeatures": "Não há features disponíveis.",
+            "rootError": "Selecione um módulo ou um feature.",
+            "rootLabel": "Escopo: {scope}",
+            "rootLabelProject": "Projeto",
+            "rootLabelModule": "Módulo: {name}",
+            "rootLabelFeature": "Feature: {name}",
+            "rootUnknown": "Desconhecido",
+            "commentLabel": "Comentário (opcional)",
+            "commentPlaceholder": "Para equipe QA / cliente ACME",
+            "commentHint": "Visível para quem tiver o link. Máx 500 caracteres.",
+            "commentError": "O comentário deve ter no máximo 500 caracteres.",
+            "loading": "Carregando links...",
+            "loadError": "Não foi possível carregar os links.",
+            "labelsTitle": "Rótulos para compartilhar",
+            "labelsHint": "Selecione os rótulos incluídos no manual público.",
+            "labelsEmpty": "Não há rótulos disponíveis para compartilhar.",
+            "labelsFallback": "Sem rótulos",
+            "linksTitle": "Links criados",
+            "linksHint": "Você pode copiar ou revogar links existentes.",
+            "linksEmpty": "Ainda não há links.",
+            "create": "Criar link",
+            "creating": "Criando...",
+            "created": "Link criado.",
+            "createError": "Não foi possível criar o link.",
+            "copy": "Copiar link",
+            "copied": "Link copiado.",
+            "copyError": "Não foi possível copiar o link.",
+            "revoke": "Revogar",
+            "revoked": "Link revogado.",
+            "revokedLabel": "Revogado",
+            "revokeError": "Não foi possível revogar o link.",
+            "close": "Fechar"
+          },
+          "loading": "Carregando manual...",
+          "publicNotFound": "Este link não existe ou foi revogado.",
+          "publicRevoked": "Este link foi revogado e não tem mais acesso.",
+          "publicForbidden": "Você não tem acesso a este manual.",
+          "error": "Não conseguimos carregar o manual.",
+          "retry": "Tentar novamente"
         },
-        "actions": {
-          "edit": "Editar",
-          "delete": "Excluir",
-          "addTicket": "Ticket"
-        },
-        "ticketDialog": {
-          "title": "Novo ticket",
-          "description": "Crie um ticket vinculado a esta feature.",
-          "defaults": {
-            "title": "Novo ticket"
+        "members": {
+          "title": "Membros do projeto",
+          "subtitle": "Convide colaboradores, ajuste papéis e controle o acesso.",
+          "tabs": {
+            "members": "Membros",
+            "roles": "Papéis"
+          },
+          "actions": {
+            "add": "Adicionar membro",
+            "remove": "Remover",
+            "cancel": "Cancelar",
+            "save": "Salvar",
+            "saving": "Salvando..."
+          },
+          "badges": {
+            "you": "Você"
+          },
+          "table": {
+            "member": "Membro",
+            "role": "Papel",
+            "joined": "Entrou em",
+            "actions": "Ações",
+            "unknown": "Usuário desconhecido"
+          },
+          "empty": {
+            "title": "Nenhum membro ainda",
+            "description": "Convide sua equipe para colaborar neste projeto."
           },
           "fields": {
-            "feature": "Feature",
-            "title": "Título",
-            "content": "Descrição"
+            "email": "Email",
+            "role": "Papel"
           },
           "placeholders": {
-            "title": "Descreva o problema",
-            "content": "Adicione os detalhes do ticket..."
+            "email": "user@mail.com"
           },
-          "actions": {
-            "cancel": "Cancelar",
-            "create": "Criar ticket",
-            "creating": "Criando..."
+          "hints": {
+            "email": "Digite o email do usuário já existente na plataforma."
+          },
+          "roles": {
+            "owner": "Proprietário",
+            "maintainer": "Mantenedor",
+            "developer": "Desenvolvedor",
+            "viewer": "Leitor"
           },
           "messages": {
-            "error": "Não foi possível criar o ticket.",
-            "success": "Ticket criado."
+            "loadError": "Não foi possível carregar os miembros.",
+            "addError": "Não foi possível adicionar esse membro.",
+            "added": "Membro adicionado.",
+            "roleUpdated": "Papel atualizado.",
+            "updateError": "Não foi possível atualizar o papel.",
+            "removed": "Membro removido.",
+            "removeError": "Não foi possível remover o membro.",
+            "removeConfirm": "Deseja remover {name} do projeto?",
+            "ownerOnly": "Somente o proprietário pode gerenciar os membros.",
+            "manageOnly": "Somente papéis com permissão podem gerenciar membros."
+          },
+          "addDialog": {
+            "title": "Convidar membro",
+            "description": "Informe o email do usuário e o papel que ele terá."
+          },
+          "validation": {
+            "email": "Informe o email do usuário."
           }
         },
-        "tabs": {
-          "info": "Documentação",
-          "issues": "Issues vinculados",
-          "versions": "Versões",
-          "tickets": "Tickets",
-          "qa": "Testes",
-          "linked": "Features vinculadas",
-          "manual": "Manual"
-        },
-        "tickets": {
-          "title": "Tickets",
-          "subtitle": "Tickets vinculados a esta feature.",
-          "loading": "Carregando tickets...",
-          "empty": "Não há tickets para esta feature.",
-          "error": "Não foi possível carregar os tickets."
-        },
-        "description": {
-          "title": "Descrição",
-          "empty": "Nenhuma descripción informada."
-        },
-        "issues": {
-          "title": "Issues e PR vinculados",
-          "issueLink": "Issue",
-          "pullRequestLink": "Pull request",
-          "empty": "Nenhum item vinculado."
-        },
-        "linked": {
-          "title": "Features vinculadas",
-          "description": "Mantenha o trabalho relacionado sincronizado com links bidirecionais.",
-          "empty": "Esta feature ainda não possui vínculos.",
+        "labels": {
+          "title": "Etiquetas personalizadas",
+          "subtitle": "Configure as etiquetas de QA e defina quem pode ver ou editar o conteúdo marcado.",
           "actions": {
-            "add": "Feature",
-            "cancel": "Cancelar",
-            "edit": "Editar vínculo"
+            "add": "Nova etiqueta",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "save": "Salvar",
+            "saving": "Salvando...",
+            "cancel": "Cancelar"
+          },
+          "messages": {
+            "loadError": "Não foi possível carregar as etiquetas.",
+            "saveError": "Não foi possível salvar a etiqueta.",
+            "created": "Etiqueta criada.",
+            "updated": "Etiqueta atualizada.",
+            "deleted": "Etiqueta excluída.",
+            "deleteError": "Não fue possível excluir a etiqueta.",
+            "deleteConfirm": "Excluir a etiqueta \"{name}\"?",
+            "ownerOnly": "Somente o proprietário pode modificar as etiquetas.",
+            "manageOnly": "Somente papéis com permissão podem modificar as etiquetas."
+          },
+          "table": {
+            "name": "Etiqueta",
+            "mandatory": "Obrigatória",
+            "mandatoryYes": "Sim",
+            "mandatoryNo": "Não",
+            "visibleToRoles": "Visível para",
+            "readOnlyRoles": "Somente leitura",
+            "noReadOnly": "Todos os papéis visíveis podem editar.",
+            "actions": "Ações"
+          },
+          "reorder": {
+            "moveUp": "Mover para cima",
+            "moveDown": "Mover para baixo",
+            "success": "Ordem atualizada.",
+            "error": "Não foi possível reordenar esta etiqueta."
+          },
+          "empty": {
+            "title": "Ainda não há etiquetas",
+            "action": "Criar etiqueta"
+          },
+          "fields": {
+            "name": "Nome",
+            "namePlaceholder": "ex. Aprovação de privacidade",
+            "instructions": "Instruções",
+            "instructionsPlaceholder": "Descreva o que deve ser documentado aqui.",
+            "instructionsHint": "Isso será mostrado aos usuários ao preencher o label.",
+            "isMandatory": "Campo obrigatório",
+            "isNotApplicableByDefault": "Marcar como não aplicável por padrão",
+            "visibleToRoles": "Papéis com acesso",
+            "visibleToRolesHint": "Escolha quem pode ver itens com esta etiqueta.",
+            "readOnlyRoles": "Papéis somente leitura",
+            "readOnlyRolesHint": "Eles verão a etiqueta, mas não poderão editar o conteúdo."
+          },
+          "dialog": {
+            "createTitle": "Nova etiqueta",
+            "editTitle": "Editar etiqueta",
+            "description": "Defina visibilidade e permissões para esta etiqueta."
+          },
+          "validation": {
+            "name": "Informe um nome."
+          },
+          "roleNames": {
+            "OWNER": "Proprietário",
+            "MAINTAINER": "Mantenedor",
+            "DEVELOPER": "Desenvolvedor",
+            "VIEWER": "Leitor",
+            "TESTER": "Testador"
+          }
+        },
+        "roles": {
+          "title": "Papéis do projeto",
+          "subtitle": "Crie papéis e defina quais permissões eles terão.",
+          "actions": {
+            "add": "Novo papel",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "save": "Salvar",
+            "saving": "Salvando..."
+          },
+          "table": {
+            "role": "Papel",
+            "description": "Descrição",
+            "permissions": "Permissões",
+            "members": "Membros",
+            "actions": "Ações"
+          },
+          "badges": {
+            "owner": "Owner",
+            "default": "Padrão"
+          },
+          "empty": {
+            "title": "Ainda não há papéis",
+            "description": "Crie um papel para começar a atribuir permissões."
+          },
+          "messages": {
+            "loadError": "Não foi possível carregar os papéis.",
+            "saveError": "Não foi possível salvar o papel.",
+            "created": "Papel criado.",
+            "updated": "Papel atualizado.",
+            "deleted": "Papel excluído.",
+            "deleteError": "Não foi possível excluir o papel.",
+            "deleteConfirm": "Excluir o papel \"{name}\"?",
+            "cannotDelete": "Papéis owner ou com membros não podem ser excluídos.",
+            "manageOnly": "Somente papéis com permissão podem gerenciar papéis.",
+            "loading": "Carregando papéis..."
+          },
+          "dialog": {
+            "createTitle": "Novo papel",
+            "editTitle": "Editar papel",
+            "description": "Defina as permissões deste papel.",
+            "permissionGroups": {
+              "project": {
+                "label": "Projeto",
+                "description": "Gestão e configuração geral do projeto."
+              },
+              "module": {
+                "label": "Módulos",
+                "description": "Controle da estrutura de módulos e submódulos."
+              },
+              "feature": {
+                "label": "Funcionalidades",
+                "description": "Gestão de itens de trabalho individuais."
+              },
+              "ticket": {
+                "label": "Tickets",
+                "description": "Acompanhar issues, solicitações e respostas."
+              },
+              "qa": {
+                "label": "QA & Testes",
+                "description": "Casos de teste, execuções e resultados de qualidade."
+              },
+              "labels": {
+                "label": "Etiquetas",
+                "description": "Configuração de etiquetas dinâmicas e visibilidade."
+              },
+              "other": {
+                "label": "Otros",
+                "description": "Permissões adicionais do sistema."
+              }
+            },
+            "permissionsList": {
+              "project_read": {
+                "label": "Ver projeto",
+                "description": "Acesso básico para ver as informações do projeto."
+              },
+              "project_update": {
+                "label": "Editar projeto",
+                "description": "Modificar nome, descrição e configurações gerais."
+              },
+              "project_delete": {
+                "label": "Excluir projeto",
+                "description": "Capacidade de excluir o projeto e sua lixeira."
+              },
+              "project_manage_members": {
+                "label": "Gerenciar membros",
+                "description": "Convidar ou remover pessoas da equipe."
+              },
+              "project_manage_roles": {
+                "label": "Gerenciar papéis",
+                "description": "Criar e configurar as permissões dos papéis."
+              },
+              "project_manage_share_links": {
+                "label": "Gerenciar links de compartilhamento",
+                "description": "Criar e revogar links públicos para o manual."
+              },
+              "project_manage_integrations": {
+                "label": "Gerenciar integrações",
+                "description": "Configurar conexões externas como GitHub."
+              },
+              "module_read": {
+                "label": "Ver módulos",
+                "description": "Permite ver os detalhes do módulo."
+              },
+              "module_write": {
+                "label": "Gerenciar módulos",
+                "description": "Criar, editar e organizar a hierarquia de módulos."
+              },
+              "feature_read": {
+                "label": "Ver funcionalidades",
+                "description": "Acesso para ver os detalhes de cada funcionalidade."
+              },
+              "feature_write": {
+                "label": "Gerenciar funcionalidades",
+                "description": "Criar e editar funcionalidades dentro dos módulos."
+              },
+              "ticket_read_own": {
+                "label": "Ver tickets próprios",
+                "description": "Ver tickets criados pelo usuário."
+              },
+              "ticket_read_all": {
+                "label": "Ver todos os tickets",
+                "description": "Acesso aos tickets de todo o projeto."
+              },
+              "ticket_create": {
+                "label": "Criar tickets",
+                "description": "Criar novos tickets no projeto."
+              },
+              "ticket_respond": {
+                "label": "Responder tickets",
+                "description": "Adicionar respostas ou comentários aos tickets."
+              },
+              "ticket_manage": {
+                "label": "Gerenciar tickets",
+                "description": "Atribuir, mudar status e editar tickets."
+              },
+              "qa_read": {
+                "label": "Ver QA",
+                "description": "Consultar casos de teste e resultados de execução."
+              },
+              "qa_write": {
+                "label": "Gerenciar QA",
+                "description": "Criar casos de teste e registrar execuções."
+              },
+              "labels_manage": {
+                "label": "Gerenciar etiquetas",
+                "description": "Configurar etiquetas de QA personalizadas."
+              }
+            }
           },
           "form": {
-            "title": "Vincular feature",
-            "subtitle": "Selecione uma feature existente do mesmo projeto.",
-            "feature": "Feature",
-            "featurePlaceholder": "Selecione uma feature",
-            "reason": "Motivo (opcional)",
-            "reasonPlaceholder": "Por que estão relacionadas?",
-            "reasonHelp": "Máx. 500 caracteres.",
-            "submit": "Vincular feature",
-            "errors": {
-              "targetRequired": "Escolha outra feature para criar o vínculo."
-            }
+            "name": "Nome do papel",
+            "namePlaceholder": "ex. QA Lead",
+            "description": "Descrição",
+            "descriptionPlaceholder": "Opcional",
+            "permissions": "Permissões",
+            "permissionsCount": "{count} selecionadas"
           },
-          "editForm": {
-            "title": "Editar vínculo",
-            "subtitle": "Atualize a nota ou mova o vínculo para outra feature.",
-            "featurePlaceholder": "Manter feature actual",
-            "submit": "Salvar alterações"
+          "validation": {
+            "name": "Informe o nome do papel."
+          }
+        },
+        "documentation": {
+          "title": "Documentação por etiqueta",
+          "subtitle": "Registre as evidências em rich text que cada papel pode ver ou editar.",
+          "empty": "Nenhuma seção disponível para o seu papel.",
+          "badges": {
+            "mandatory": "Obrigatória",
+            "readOnly": "Somente leitura",
+            "notApplicable": "Não aplicável"
           },
-          "list": {
-            "edit": "Editar vínculo",
-            "remove": "Remover vínculo",
-            "unknownModule": "Módulo desconhecido",
-            "filters": {
-              "label": "Mostrar",
-              "all": "Todas",
-              "references": "Referências",
-              "referencedBy": "Referenciadas por"
-            },
-            "groups": {
-              "references": "Referências ({count})",
-              "referencedBy": "Referenciadas por ({count})"
-            },
-            "direction": {
-              "references": "Referencia {name}",
-              "referencedBy": "Referenciado por {name}"
-            }
+          "labels": {
+            "updatedAt": "Atualizado {date}"
+          },
+          "fields": {
+            "notApplicable": "Marcado como não aplicável",
+            "notApplicableHint": "Oculte esta etiqueta para esta feature ou módulo.",
+            "instructions": "Instruções",
+            "editorLabel": "Conteúdo",
+            "editorPlaceholder": "Documente o contexto, validações ou decisões.",
+            "editorHelper": "Use rich text para manter suas evidências legíveis."
+          },
+          "states": {
+            "notApplicable": "Esta etiqueta está marcada como não aplicável.",
+            "empty": "Ainda não há conteúdo."
           },
           "messages": {
-            "linked": "Feature vinculada.",
-            "updated": "Vínculo actualizado.",
-            "removed": "Vínculo removido.",
-            "noChanges": "Nenhuma alteração para salvar.",
-            "error": "Não foi posible actualizar as features vinculadas."
+            "loadError": "Não foi possível carregar a documentação.",
+            "saved": "Documentação salva.",
+            "saveError": "Não foi possível salvar esta etiqueta."
+          },
+          "actions": {
+            "edit": "Editar conteúdo",
+            "save": "Salvar",
+            "cancel": "Cancelar",
+            "markNotApplicable": "Marcar como N/A",
+            "markApplicable": "Marcar como aplicável"
+          },
+          "images": {
+            "toggle": "Mostrar imagens",
+            "title": "Anexar imagem",
+            "sectionTitle": "Imagens",
+            "empty": "Nenhuma imagem adicionada ainda.",
+            "tagHint": "Referencie uma imagem com [nome:small] ou [nome:300xauto].",
+            "fields": {
+              "name": "Nome da imagem",
+              "file": "Arquivo"
+            },
+            "placeholders": {
+              "name": "fluxo-login"
+            },
+            "actions": {
+              "upload": "Enviar",
+              "delete": "Excluir",
+              "editName": "Editar nome da imagem",
+              "saveName": "Salvar nome",
+              "cancelEdit": "Cancelar edição",
+              "confirmDelete": "Excluir imagem",
+              "cancelDelete": "Cancelar"
+            },
+            "confirm": {
+              "title": "Excluir esta imagem?",
+              "description": "Esta ação não pode ser desfeita."
+            },
+            "messages": {
+              "uploaded": "Imagem enviada.",
+              "duplicateName": "Já existe uma imagem com esse nome para este rótulo. Escolha outro nome.",
+              "uploadError": "Não foi possível enviar a imagem.",
+              "renamed": "Nome da imagem atualizado.",
+              "renameError": "Não foi possível atualizar o nome da imagem.",
+              "deleted": "Imagem excluída.",
+              "deleteError": "Não foi possível excluir a imagem."
+            },
+            "validation": {
+              "name": "Informe um nome para a imagem.",
+              "file": "Selecione uma imagem.",
+              "fileTooLarge": "A imagem deve ter 2MB ou menos."
+            },
+            "loadError": "Não foi possível carregar as imagens."
+          },
+          "attachments": {
+            "title": "Anexos",
+            "hint": "Envie imagens ou arquivos. Tags de imagem: [nome:small] ou [nome:300xauto].",
+            "sectionTitle": "Anexos",
+            "empty": "Nenhum anexo adicionado ainda.",
+            "fields": {
+              "name": "Nome do anexo",
+              "file": "Arquivo"
+            },
+            "placeholders": {
+              "name": "login-flow"
+            },
+            "actions": {
+              "upload": "Enviar",
+              "add": "Adicionar anexo"
+            },
+            "messages": {
+              "uploaded": "Anexo enviado.",
+              "duplicateName": "Já existe um anexo com esse nome para este projeto. Escolha outro nome.",
+              "uploadError": "Não foi possível enviar o anexo."
+            },
+            "validation": {
+              "name": "Informe um nome para o anexo.",
+              "file": "Selecione um arquivo.",
+              "fileTooLarge": "O arquivo deve ter 2 MB ou menos."
+            }
+          },
+          "files": {
+            "sectionTitle": "Arquivos",
+            "actions": {
+              "open": "Abrir",
+              "delete": "Excluir"
+            }
+          },
+          "validation": {
+            "content": "Informe algum conteúdo ou marque como não aplicável."
           }
         },
-        "versions": {
-          "title": "Versions",
-          "label": "v{version}",
-          "rollback": "Reversão",
-          "empty": "Nenhuma versão publicada."
+        "detailErrors": {
+          "title": "Falha ao carregar o projeto",
+          "description": "Não foi possível obter o projeto. Tente novamente.",
+          "retry": "Tentar novamente",
+          "backToList": "Voltar aos projetos"
         },
-        "new": {
-          "title": "Criar feature"
-        },
-        "edit": {
-          "title": "Editar feature",
-          "subtitle": "Atualizando {name}",
-          "dangerZone": {
-            "title": "Excluir feature",
-            "description": "Excluir uma feature remove todo o seu histórico.",
-            "delete": "Excluir feature"
-          }
+        "description": {
+          "empty": "Nenhuma descrição disponível."
         },
         "form": {
           "fields": {
             "name": {
-              "label": "Nome da feature",
-              "placeholder": "ex. 3DS v2"
+              "label": "Nome do projeto",
+              "placeholder": "ex. Implementação QMS"
             },
             "description": {
               "label": "Descrição",
               "placeholder": "Descrição opcional"
             },
-            "module": {
-              "label": "Módulo",
-              "placeholder": "Selecione um módulo"
+            "repository": {
+              "label": "URL do repositório",
+              "placeholder": "https://github.com/org/repo"
             },
             "status": {
               "label": "Status"
             },
-            "priority": {
-              "label": "Prioridade",
-              "placeholder": "Sem prioridade (opcional)"
+            "visibility": {
+              "label": "Visibilidade"
             }
           },
           "richText": {
@@ -1445,897 +1185,1169 @@
             "bulletList": "Lista com marcadores",
             "orderedList": "Lista numerada",
             "clear": "Limpar formatação",
-            "helper": "Use la barra ou os atalhos (Ctrl/Cmd + B/I/U) para formatar. Shift+Enter adiciona una quebra suave."
+            "helper": "Use a barra ou atalhos (Ctrl/Cmd + B/I/U). Shift+Enter adiciona uma quebra suave."
           },
           "errors": {
             "required": "Este campo é obrigatório.",
             "validation": "Revise as informações.",
             "generic": "Algo deu errado."
           },
-          "hint": "Mantenha o texto objetivo para agilizar revisões."
+          "hint": "Você poderá ajustar os detalhes depois."
         },
-        "errors": {
-          "title": "Falha ao carregar a feature",
-          "description": "Não foi possível obter a feature. Tente nuevamente.",
-          "retry": "Tentar novamente",
-          "back": "Voltar ao módulo"
-        }
-      }
-    },
-    "qa": {
-      "title": "Garantia de qualidade",
-      "description": "Gerencie casos de teste, execuções e a saúde desta feature.",
-      "tabs": {
-        "ariaLabel": "Seções de QA",
-        "cases": "Casos de teste",
-        "runs": "Execuções",
-        "health": "Saúde"
-      },
-      "cases": {
-        "errors": {
-          "load": "Não foi possível carregar os casos de teste.",
-          "create": "Não foi possível criar o caso.",
-          "update": "Não fue possível actualizar o caso.",
-          "validation": "Informe o título do caso de teste."
-        },
-        "alerts": {
-          "created": "Caso de teste criado.",
-          "updated": "Caso actualizado.",
-          "archived": "Caso arquivado.",
-          "restored": "Caso restaurado."
-        },
-        "actions": {
-          "add": "Adicionar caso de teste",
-          "showArchived": "Mostrar arquivados"
-        },
-        "labels": {
-          "refreshing": "Atualizando..."
-        },
-        "table": {
-          "title": "Título",
-          "updated": "Última atualização",
-          "status": "Status",
-          "actions": "Ações",
-          "edit": "Editar",
-          "archive": "Arquivar",
-          "unarchive": "Desarquivar"
-        },
-        "status": {
-          "active": "Ativo",
-          "archived": "Arquivado"
-        },
-        "empty": {
-          "title": "Ainda não há casos",
-          "description": "Documente os passos de validação para manter a cobertura sob controle.",
-          "cta": "Adicionar caso de teste"
-        },
-        "dialogs": {
-          "cancel": "Cancelar",
-          "add": {
-            "title": "Adicionar caso de teste",
-            "description": "Registre os detalhes do cenário. Cada linha em Passos vira uma etapa ordenada.",
-            "save": "Salvar caso",
-            "saving": "Salvando..."
-          },
-          "edit": {
-            "title": "Editar caso de teste",
-            "description": "Atualize o cenário ou arquive quando não for mais necessário.",
-            "archiveToggle": "Marcar como archivado",
-            "save": "Salvar alterações",
-            "saving": "Salvando..."
+        "edit": {
+          "title": "Editar projeto",
+          "updated": "Última atualização: {date}",
+          "dangerZone": {
+            "title": "Excluir projeto",
+            "description": "Esta ação não pode ser desfeita.",
+            "delete": "Excluir projeto"
           }
         },
-        "fields": {
-          "title": "Título",
-          "steps": "Passos",
-          "expectedResult": "Resultado esperado"
+        "new": {
+          "title": "Criar projeto"
         },
-        "placeholders": {
-          "title": "Login con credenciais inválidas",
-          "steps": "Abrir tela de login\nInformar e-mail inválido\nEnviar o formulário",
-          "expectedResult": "O usuário vê uma mensagem de erro com orientações."
+        "module": {
+          "header": {
+            "project": "Projeto: {name}",
+            "updated": "Última atualização: {date}"
+          },
+          "badges": {
+            "root": "Módulo raíz"
+          },
+          "actions": {
+            "edit": "Editar",
+            "delete": "Excluir",
+            "backToParent": "Voltar ao módulo pai",
+            "addChild": "Adicionar submódulo",
+            "addFeature": "Adicionar feature"
+          },
+          "reorder": {
+            "moveUp": "Mover para cima",
+            "moveDown": "Mover para baixo",
+            "featureMoved": "Feature reordenada.",
+            "moduleMoved": "Módulo reordenado.",
+            "error": "Não foi possível reordenar."
+          },
+          "children": {
+            "title": "Submódulos & Features",
+            "empty": "Nenhum submódulo no momento.",
+            "sortOrder": "Ordre #{order}"
+          },
+          "features": {
+            "title": "Features",
+            "empty": "Nenhuma feature no momento."
+          },
+          "new": {
+            "title": "Criar módulo"
+          },
+          "form": {
+            "fields": {
+              "name": {
+                "label": "Nome do módulo",
+                "placeholder": "ex. Checkout"
+              },
+              "description": {
+                "label": "Description",
+                "placeholder": "Descrição opcional"
+              },
+              "parent": {
+                "label": "Módulo pai",
+                "rootOption": "Módulo raíz",
+                "hint": "Deixe em branco para criar um módulo raíz."
+              }
+            },
+            "richText": {
+              "bold": "Negrito",
+              "italic": "Itálico",
+              "underline": "Subnhado",
+              "bulletList": "Lista com marcadores",
+              "orderedList": "Lista numerada",
+              "clear": "Limpar formatação",
+              "helper": "Use a barra ou atalhos (Ctrl/Cmd + B/I/U). Shift+Enter adiciona uma quebra suave."
+            },
+            "errors": {
+              "required": "Este campo é obrigatório.",
+              "invalidParent": "Não é possível usar o próprio módulo como pai.",
+              "validation": "Revise as informações.",
+              "generic": "Algo deu errado."
+            },
+            "hint": "Você poderá reorganizar os módulos depois."
+          },
+          "edit": {
+            "title": "Editar módulo",
+            "subtitle": "Atualizando {name}",
+            "dangerZone": {
+              "title": "Excluir módulo",
+              "description": "Excluir um módulo também remove seus submódulos e features.",
+              "delete": "Excluir módulo"
+            }
+          },
+          "description": {
+            "empty": "Nenhuma descrição informada."
+          },
+          "errors": {
+            "title": "Falha ao carregar o módulo",
+            "description": "Não foi possível obter o módulo. Tente novamente.",
+            "retry": "Tentar novamente",
+            "back": "Voltar ao projeto"
+          }
         },
-        "hints": {
-          "steps": "Escreva um passo por linha."
+        "feature": {
+          "header": {
+            "project": "Projeto: {name}",
+            "updated": "Última atualização: {date}",
+            "viewModule": "Ver módulo"
+          },
+          "actions": {
+            "edit": "Editar",
+            "delete": "Excluir",
+            "addTicket": "Ticket"
+          },
+          "ticketDialog": {
+            "title": "Novo ticket",
+            "description": "Crie um ticket vinculado a esta feature.",
+            "defaults": {
+              "title": "Novo ticket"
+            },
+            "fields": {
+              "feature": "Feature",
+              "title": "Título",
+              "content": "Descrição"
+            },
+            "placeholders": {
+              "title": "Descreva o problema",
+              "content": "Adicione os detalhes do ticket..."
+            },
+            "actions": {
+              "cancel": "Cancelar",
+              "create": "Criar ticket",
+              "creating": "Criando..."
+            },
+            "messages": {
+              "error": "Não foi possível criar o ticket.",
+              "success": "Ticket criado."
+            }
+          },
+          "tabs": {
+            "info": "Documentação",
+            "issues": "Issues vinculados",
+            "versions": "Versões",
+            "tickets": "Tickets",
+            "qa": "Testes",
+            "linked": "Features vinculadas",
+            "manual": "Manual"
+          },
+          "tickets": {
+            "title": "Tickets",
+            "subtitle": "Tickets vinculados a esta feature.",
+            "loading": "Carregando tickets...",
+            "empty": "Não há tickets para esta feature.",
+            "error": "Não foi possível carregar os tickets."
+          },
+          "description": {
+            "title": "Descrição",
+            "empty": "Nenhuma descripción informada."
+          },
+          "issues": {
+            "title": "Issues e PR vinculados",
+            "issueLink": "Issue",
+            "pullRequestLink": "Pull request",
+            "empty": "Nenhum item vinculado."
+          },
+          "linked": {
+            "title": "Features vinculadas",
+            "description": "Mantenha o trabalho relacionado sincronizado com links bidirecionais.",
+            "empty": "Esta feature ainda não possui vínculos.",
+            "actions": {
+              "add": "Feature",
+              "cancel": "Cancelar",
+              "edit": "Editar vínculo"
+            },
+            "form": {
+              "title": "Vincular feature",
+              "subtitle": "Selecione uma feature existente do mesmo projeto.",
+              "feature": "Feature",
+              "featurePlaceholder": "Selecione uma feature",
+              "reason": "Motivo (opcional)",
+              "reasonPlaceholder": "Por que estão relacionadas?",
+              "reasonHelp": "Máx. 500 caracteres.",
+              "submit": "Vincular feature",
+              "errors": {
+                "targetRequired": "Escolha outra feature para criar o vínculo."
+              }
+            },
+            "editForm": {
+              "title": "Editar vínculo",
+              "subtitle": "Atualize a nota ou mova o vínculo para outra feature.",
+              "featurePlaceholder": "Manter feature actual",
+              "submit": "Salvar alterações"
+            },
+            "list": {
+              "edit": "Editar vínculo",
+              "remove": "Remover vínculo",
+              "unknownModule": "Módulo desconhecido",
+              "filters": {
+                "label": "Mostrar",
+                "all": "Todas",
+                "references": "Referências",
+                "referencedBy": "Referenciadas por"
+              },
+              "groups": {
+                "references": "Referências ({count})",
+                "referencedBy": "Referenciadas por ({count})"
+              },
+              "direction": {
+                "references": "Referencia {name}",
+                "referencedBy": "Referenciado por {name}"
+              }
+            },
+            "messages": {
+              "linked": "Feature vinculada.",
+              "updated": "Vínculo actualizado.",
+              "removed": "Vínculo removido.",
+              "noChanges": "Nenhuma alteração para salvar.",
+              "error": "Não foi posible actualizar as features vinculadas."
+            }
+          },
+          "versions": {
+            "title": "Versions",
+            "label": "v{version}",
+            "rollback": "Reversão",
+            "empty": "Nenhuma versão publicada."
+          },
+          "new": {
+            "title": "Criar feature"
+          },
+          "edit": {
+            "title": "Editar feature",
+            "subtitle": "Atualizando {name}",
+            "dangerZone": {
+              "title": "Excluir feature",
+              "description": "Excluir uma feature remove todo o seu histórico.",
+              "delete": "Excluir feature"
+            }
+          },
+          "form": {
+            "fields": {
+              "name": {
+                "label": "Nome da feature",
+                "placeholder": "ex. 3DS v2"
+              },
+              "description": {
+                "label": "Descrição",
+                "placeholder": "Descrição opcional"
+              },
+              "module": {
+                "label": "Módulo",
+                "placeholder": "Selecione um módulo"
+              },
+              "status": {
+                "label": "Status"
+              },
+              "priority": {
+                "label": "Prioridade",
+                "placeholder": "Sem prioridade (opcional)"
+              }
+            },
+            "richText": {
+              "bold": "Negrito",
+              "italic": "Itálico",
+              "underline": "Subnhado",
+              "bulletList": "Lista com marcadores",
+              "orderedList": "Lista numerada",
+              "clear": "Limpar formatação",
+              "helper": "Use la barra ou os atalhos (Ctrl/Cmd + B/I/U) para formatar. Shift+Enter adiciona una quebra suave."
+            },
+            "errors": {
+              "required": "Este campo é obrigatório.",
+              "validation": "Revise as informações.",
+              "generic": "Algo deu errado."
+            },
+            "hint": "Mantenha o texto objetivo para agilizar revisões."
+          },
+          "errors": {
+            "title": "Falha ao carregar a feature",
+            "description": "Não foi possível obter a feature. Tente nuevamente.",
+            "retry": "Tentar novamente",
+            "back": "Voltar ao módulo"
+          }
         }
       },
-      "runs": {
-        "errors": {
-          "load": "Não foi possível carregar as execuções recentes.",
-          "create": "Não foi possível criar a execução.",
-          "loadRun": "Não foi possível abrir essa execução.",
-          "validation": "Revise as informações.",
-          "missingFields": "Preencha: {fields}.",
-          "updateResults": "Não foi possível salvar os resultados."
+      "qa": {
+        "title": "Garantia de qualidade",
+        "description": "Gerencie casos de teste, execuções e a saúde desta feature.",
+        "tabs": {
+          "ariaLabel": "Seções de QA",
+          "cases": "Casos de teste",
+          "runs": "Execuções",
+          "health": "Saúde"
         },
-        "hints": {
-          "name": "Nome curto para identificar a execução.",
-          "environment": "Ambiente onde foi executada (ex.: Staging)."
-        },
-        "alerts": {
-          "created": "Execução criada."
-        },
-        "title": "Execuções",
-        "subtitle": "Acompanhe o histórico de execução e registre evidências.",
-        "actions": {
-          "newRun": "Nova execução"
-        },
-        "filters": {
-          "label": "Tipo",
-          "all": "Todas as execuções",
-          "project": "Execuções do projeto",
-          "feature": "Execuções por feature"
-        },
-        "empty": {
-          "title": "Nenhuma execução registrada",
-          "description": "Crie a primeira execução para começar a medir a taxa de aprovação.",
-          "cta": "Criar execução"
-        },
-        "noFeatures": "Adicione uma feature com casos antes de criar uma execução de projeto.",
-        "list": {
-          "runFallback": "Execução {id}",
-          "open": "Abrir",
-          "runBy": "Executado por {name}"
-        },
-        "summary": {
-          "total": "{count} casos",
-          "passed": "{count} aprovados"
-        },
-        "panel": {
-          "untitled": "Execução sem título",
-          "createdAt": "Criada em {date}",
-          "runBy": "Executada por {name}",
-          "scope": "{scope, select, FEATURE {Execução por feature} PROJECT {Execução do projeto} other {Execução {scope}}}",
-          "entries": "Casos seleccionados",
-          "removeCase": "Remover caso",
-          "fields": {
+        "cases": {
+          "errors": {
+            "load": "Não foi possível carregar os casos de teste.",
+            "create": "Não foi possível criar o caso.",
+            "update": "Não fue possível actualizar o caso.",
+            "validation": "Informe o título do caso de teste."
+          },
+          "alerts": {
+            "created": "Caso de teste criado.",
+            "updated": "Caso actualizado.",
+            "archived": "Caso arquivado.",
+            "restored": "Caso restaurado."
+          },
+          "actions": {
+            "add": "Adicionar caso de teste",
+            "showArchived": "Mostrar arquivados"
+          },
+          "labels": {
+            "refreshing": "Atualizando..."
+          },
+          "table": {
+            "title": "Título",
+            "updated": "Última atualização",
             "status": "Status",
-            "note": "Nota",
-            "steps": "Passos"
+            "actions": "Ações",
+            "edit": "Editar",
+            "archive": "Arquivar",
+            "unarchive": "Desarquivar"
           },
-          "statusPlaceholder": "Selecione um status",
-          "testCasePlaceholder": "Selecione um caso de teste",
-          "notePlaceholder": "Notas ou links de evidência opcionais...",
+          "status": {
+            "active": "Ativo",
+            "archived": "Arquivado"
+          },
           "empty": {
-            "title": "Sem resultados ainda",
-            "description": "Adicione os casos pendentes na cobertura ou atualize um existente."
+            "title": "Ainda não há casos",
+            "description": "Documente os passos de validação para manter a cobertura sob controle.",
+            "cta": "Adicionar caso de teste"
           },
-          "coverage": {
-            "title": "{executed} de {total} casos ejecutados",
-            "pending": "{count} casos pendentes",
-            "complete": "Cobertura completa",
-            "allExecuted": "Todos os testes foram ejecutados",
-            "addResult": "Adicionar resultado",
-            "showPending": "Mostrar pendentes",
-            "hidePending": "Ocultar pendentes"
+          "dialogs": {
+            "cancel": "Cancelar",
+            "add": {
+              "title": "Adicionar caso de teste",
+              "description": "Registre os detalhes do cenário. Cada linha em Passos vira uma etapa ordenada.",
+              "save": "Salvar caso",
+              "saving": "Salvando..."
+            },
+            "edit": {
+              "title": "Editar caso de teste",
+              "description": "Atualize o cenário ou arquive quando não for mais necessário.",
+              "archiveToggle": "Marcar como archivado",
+              "save": "Salvar alterações",
+              "saving": "Salvando..."
+            }
           },
-          "closedTag": "Encerrado",
-          "statusBadge": {
-            "OPEN": "Execução aberta",
-            "CLOSED": "Execução encerrada"
+          "fields": {
+            "title": "Título",
+            "steps": "Passos",
+            "expectedResult": "Resultado esperado"
+          },
+          "placeholders": {
+            "title": "Login con credenciais inválidas",
+            "steps": "Abrir tela de login\nInformar e-mail inválido\nEnviar o formulário",
+            "expectedResult": "O usuário vê uma mensagem de erro com orientações."
+          },
+          "hints": {
+            "steps": "Escreva um passo por linha."
+          }
+        },
+        "runs": {
+          "errors": {
+            "load": "Não foi possível carregar as execuções recentes.",
+            "create": "Não foi possível criar a execução.",
+            "loadRun": "Não foi possível abrir essa execução.",
+            "validation": "Revise as informações.",
+            "missingFields": "Preencha: {fields}.",
+            "updateResults": "Não foi possível salvar os resultados."
+          },
+          "hints": {
+            "name": "Nome curto para identificar a execução.",
+            "environment": "Ambiente onde foi executada (ex.: Staging)."
+          },
+          "alerts": {
+            "created": "Execução criada."
+          },
+          "title": "Execuções",
+          "subtitle": "Acompanhe o histórico de execução e registre evidências.",
+          "actions": {
+            "newRun": "Nova execução"
+          },
+          "filters": {
+            "label": "Tipo",
+            "all": "Todas as execuções",
+            "project": "Execuções do projeto",
+            "feature": "Execuções por feature"
+          },
+          "empty": {
+            "title": "Nenhuma execução registrada",
+            "description": "Crie a primeira execução para começar a medir a taxa de aprovação.",
+            "cta": "Criar execução"
+          },
+          "noFeatures": "Adicione uma feature com casos antes de criar uma execução de projeto.",
+          "list": {
+            "runFallback": "Execução {id}",
+            "open": "Abrir",
+            "runBy": "Executado por {name}"
           },
           "summary": {
             "total": "{count} casos",
-            "passed": "{count} aprovados",
-            "passRate": "{rate}% de aprovação"
+            "passed": "{count} aprovados"
           },
-          "saving": "Salvando...",
-          "saved": "Salvo",
-          "saveError": "Falha ao salvar",
-          "actions": {
-            "close": "Encerrar execução",
-            "closing": "Encerrando...",
-            "closed": "Execução encerrada."
-          }
-        },
-        "dialogs": {
-          "cancel": "Cancelar",
-          "newRun": {
-            "title": "Nova execução",
-            "description": "Dê contexto para alinhar o time sobre esta execução.",
-            "create": "Criar execução",
-            "creating": "Criando..."
-          }
-        },
-        "fields": {
-          "name": "Nome",
-          "environment": "Ambiente",
-          "notes": "Notas"
-        },
-        "placeholders": {
-          "name": "Suíte de regressão - sprint",
-          "environment": "Ex. Staging",
-          "notes": "Contexto opcional o critérios de entrada."
-        },
-        "resultStatus": {
-          "NOT_STARTED": "Não iniciado",
-          "NOT_WORKING": "Não funciona",
-          "MINOR_ISSUE": "Com problema menor",
-          "PASSED": "Aprovado"
-        },
-        "labels": {
-          "refreshing": "Atualizando..."
-        }
-      },
-      "dashboard": {
-        "title": "Dashboard de QA",
-        "subtitle": "Acompanhe a cobertura, a saúde das features e as execuções abertas.",
-        "errors": {
-          "load": "Não foi possível carregar o dashboard de QA.",
-          "detail": "Não foi possível carregar o conjunto de dados selecionado."
-        },
-        "metrics": {
-          "totalFeatures": "Total de features",
-          "featuresMissingDescription": "Descrição ausente",
-          "entitiesMissingMandatoryDocumentation": "Doc. obrigatória faltando",
-          "featuresWithoutTestCases": "Sem casos de teste",
-          "featuresWithRuns": "Com execuções",
-          "testCoverageRatio": "Cobertura",
-          "openRuns": "Execuções abertas",
-          "runsWithFullPass": "Aprovação total",
-          "averagePassRate": "Taxa de aprovação"
-        },
-        "coverage": {
-          "title": "Cobertura do projeto",
-          "description": "Última cobertura registrada para este projeto.",
-          "caption": "{executed} de {total} features con execuções registradas.",
-          "coveredBadge": "{value} de cobertura",
-          "pendingBadge": "{count} docs pendentes"
-        },
-        "featureHealth": {
-          "title": "Saúde da feature",
-          "description": "Taxa de aprovação mais recente por feature.",
-          "empty": "Ainda não há dados de saúde.",
-          "noRuns": "Sem execuções",
-          "notAvailable": "N/D",
-          "lastRunLabel": "Última execução",
-          "stats": {
-            "executed": "{count} ejecutados",
-            "passed": "{count} aprovados",
-            "failed": "{count} reprovados"
+          "panel": {
+            "untitled": "Execução sem título",
+            "createdAt": "Criada em {date}",
+            "runBy": "Executada por {name}",
+            "scope": "{scope, select, FEATURE {Execução por feature} PROJECT {Execução do projeto} other {Execução {scope}}}",
+            "entries": "Casos seleccionados",
+            "removeCase": "Remover caso",
+            "fields": {
+              "status": "Status",
+              "note": "Nota",
+              "steps": "Passos"
+            },
+            "statusPlaceholder": "Selecione um status",
+            "testCasePlaceholder": "Selecione um caso de teste",
+            "notePlaceholder": "Notas ou links de evidência opcionais...",
+            "empty": {
+              "title": "Sem resultados ainda",
+              "description": "Adicione os casos pendentes na cobertura ou atualize um existente."
+            },
+            "coverage": {
+              "title": "{executed} de {total} casos ejecutados",
+              "pending": "{count} casos pendentes",
+              "complete": "Cobertura completa",
+              "allExecuted": "Todos os testes foram ejecutados",
+              "addResult": "Adicionar resultado",
+              "showPending": "Mostrar pendentes",
+              "hidePending": "Ocultar pendentes"
+            },
+            "closedTag": "Encerrado",
+            "statusBadge": {
+              "OPEN": "Execução aberta",
+              "CLOSED": "Execução encerrada"
+            },
+            "summary": {
+              "total": "{count} casos",
+              "passed": "{count} aprovados",
+              "passRate": "{rate}% de aprovação"
+            },
+            "saving": "Salvando...",
+            "saved": "Salvo",
+            "saveError": "Falha ao salvar",
+            "actions": {
+              "close": "Encerrar execução",
+              "closing": "Encerrando...",
+              "closed": "Execução encerrada."
+            }
           },
-          "labels": {
-            "missing": "Casos pendentes para testar",
-            "passed": "Testado e aprovado",
-            "failed": "Testado e não aprovado"
+          "dialogs": {
+            "cancel": "Cancelar",
+            "newRun": {
+              "title": "Nova execução",
+              "description": "Dê contexto para alinhar o time sobre esta execução.",
+              "create": "Criar execução",
+              "creating": "Criando..."
+            }
           },
-          "missingAlert": "{count, plural, =0 {Existem casos não ejecutados na última execução} one {{count} caso não foi ejecutado na última execução} other {{count} casos não foram ejecutados na última ejecución}}"
-        },
-        "featureCoverage": {
-          "title": "Cobertura por feature",
-          "description": "Casos ejecutados vs pendentes por feature.",
-          "empty": "Ainda não há execuções para calcular a cobertura.",
-          "latestRun": "Última execução {date}",
-          "coverageLabel": "{executed} de {total} casos ejecutados",
-          "missingLabel": "{count} casos pendentes",
-          "noRuns": "Sem execuções registradas",
-          "cta": "Ver cobertura por feature",
-          "noCases": "Sem casos ativos"
-        },
-        "missingDescription": {
-          "title": "Features sem descrição",
-          "description": "Identifique o que precisa de documentação.",
-          "empty": "Todas as features têm descrição.",
-          "caption": "Documente o escopo funcional para destravar o QA.",
-          "badge": "Descrição ausente",
-          "filter": {
-            "label": "Mostrar",
-            "all": "Todos",
-            "features": "Features",
-            "modules": "Módulos"
-          },
-          "entityType": {
-            "FEATURE": "Feature",
-            "MODULE": "Módulo"
-          }
-        },
-        "mandatoryDocumentationMissing": {
-          "title": "Documentação obrigatória faltando",
-          "description": "Entidades com etiquetas obrigatórias sem contenido.",
-          "empty": "Toda a documentação obrigatória está completa.",
-          "caption": "Complete a documentação obrigatória para seguir.",
-          "filter": {
-            "label": "Mostrar",
-            "all": "Todos",
-            "features": "Features",
-            "modules": "Módulos",
-            "projects": "Proyectos"
-          },
-          "labels": {
-            "missing": "Etiquetas faltantes",
-            "labelPrefix": "#"
-          },
-          "entityType": {
-            "FEATURE": "Feature",
-            "MODULE": "Módulo",
-            "PROJECT": "Projeto"
-          }
-        },
-        "featuresWithoutTestCases": {
-          "title": "Features sem casos de teste",
-          "description": "Identifique o que ainda não tem validação.",
-          "empty": "Todas las features possuem casos de teste.",
-          "caption": "Adicione pelo menos um caso para garantir rastreabilidade.",
-          "badge": "Sem testes"
-        },
-        "openRuns": {
-          "title": "Execuções abertas",
-          "description": "Execuções em andamento que precisam de atenção.",
-          "empty": "Nenhuma execução abierta no momento."
-        },
-        "runsWithFullPass": {
-          "title": "Execuções com aprovação total",
-          "description": "Execuções com 100% de aprovação.",
-          "empty": "Ainda não há execuções com aprovação total.",
-          "badge": "100% aprovadas"
-        },
-        "runs": {
-          "coverageLabel": "{executed} de {total} casos ejecutados"
-        },
-        "detail": {
-          "title": "Detalhes da métrica",
-          "subtitle": "Selecione uma métrica para inspecionar os dados.",
-          "empty": "Escolha uma métrica acima para carregar a lista.",
-          "cta": "Ver detalhes",
-          "showPanel": "Expandir detalhes",
-          "openInNewTab": "Abrir em uma nova aba",
-          "openFeature": "Ir para a feature",
-          "back": "Voltar ao dashboard",
-          "sortLabel": "Ordenar por cobertura",
-          "sortDesc": "Alta → Baixa",
-          "sortAsc": "Baixa → Alta",
-          "pagination": {
-            "previous": "Anterior",
-            "next": "Próximo"
-          }
-        },
-        "empty": {
-          "title": "Ainda não há dados de QA",
-          "description": "Crie pelo menos uma execução para liberar o dashboard.",
-          "retry": "Tentar nuevamente"
-        }
-      },
-      "health": {
-        "errors": {
-          "load": "Não foi posible carregar a saúde da feature."
-        },
-        "empty": {
-          "title": "Sem dados de saúde",
-          "description": "Execute pelo menos uma rodada para calcular a taxa de aprovação e as tendências."
-        },
-        "metrics": {
-          "passRate": "Taxa de aprovação",
-          "lastRun": "Última execução",
-          "coverage": "Cobertura mais recente",
-          "coverageValue": "{executed} de {total} casos ejecutados",
-          "passRateHint": "Calculada sobre {executed} de {total} casos ejecutados na última execução.",
-          "coverageComplete": "Todos los casos foram ejecutados na última execução.",
-          "coverageIncomplete": "{remaining, plural, one {{remaining} caso não foi ejecutado} other {{remaining} casos não foram ejecutados}}",
-          "flaky": "Casos instáveis",
-          "flakyValue": "{count} casos instáveis",
-          "notAvailable": "N/D"
-        },
-        "trend": {
-          "title": "Tendência de aprovação",
-          "subtitle": "Últimas ejecuções e seu percentual de aprovação."
-        }
-      }
-    },
-    "notifications": {
-      "list": {
-        "title": "Notificações",
-        "subtitle": "Atualizações e atividade relacionadas ao seu trabalho.",
-        "summary": "Não lidas: {count}",
-        "markAll": "Marcar todas como lidas",
-        "markRead": "Marcar como lida",
-        "delete": "Excluir",
-        "empty": {
-          "title": "Nenhuma notificação ainda."
-        },
-        "pagination": {
-          "aria": "Paginação de notificações",
-          "previous": "Anterior",
-          "next": "Próxima"
-        },
-        "types": {
-          "INFO": "Info",
-          "SUCCESS": "Sucesso",
-          "WARNING": "Aviso",
-          "ERROR": "Erro"
-        },
-        "errors": {
-          "action": "Não foi possível atualizar a notificação."
-        }
-      }
-    },
-    "tickets": {
-      "list": {
-        "title": "Tickets",
-        "subtitle": "Acompanhe problemas, solicitações e atualizações.",
-        "tabs": {
-          "mine": "Criados por mim",
-          "assigned": "Atribuídos a mim",
-          "all": "Todos",
-          "external": "Externos"
-        },
-        "project": {
-          "all": "Todos os projetos"
-        },
-        "projectsTitle": "Projetos",
-        "actions": {
-          "newTicket": "Novo ticket"
-        },
-        "filters": {
-          "allStatuses": "Todos os status"
-        },
-        "empty": "Nenhum ticket encontrado.",
-        "pagination": {
-          "aria": "Paginação de tickets",
-          "previous": "Anterior",
-          "next": "Próxima"
-        },
-        "statuses": {
-          "OPEN": "Aberto",
-          "PENDING": "Pendente",
-          "RESOLVED": "Resolvido",
-          "CLOSED": "Fechado"
-        },
-        "meta": {
-          "createdBy": "Criado por {name}",
-          "assignedTo": "Atribuído a {name}",
-          "sections": "{count, plural, one {# seção} other {# seções}}",
-          "unassigned": "Sem responsável",
-          "unknown": "Desconhecido",
-          "externalUser": "Usuário externo",
-          "externalTag": "Externo"
-        }
-      },
-      "create": {
-        "title": "Novo ticket",
-        "description": "Crie um ticket para este projeto.",
-        "defaults": {
-          "title": "Novo ticket"
-        },
-        "fields": {
-          "title": "Título",
-          "content": "Descrição",
-          "feature": "Feature (opcional)"
-        },
-        "placeholders": {
-          "title": "Descreva o problema",
-          "content": "Adicione os detalhes do ticket...",
-          "feature": "Buscar feature..."
-        },
-        "actions": {
-          "create": "Novo ticket",
-          "save": "Criar ticket",
-          "creating": "Criando...",
-          "cancel": "Cancelar"
-        },
-        "messages": {
-          "success": "Ticket criado.",
-          "error": "Não foi possível criar o ticket.",
-          "projectRequired": "Selecione um projeto antes de criar um ticket.",
-          "loadingFeatures": "Buscando features..."
-        }
-      },
-      "detail": {
-        "breadcrumb": {
-          "ticket": "Ticket",
-          "featureFallback": "Feature"
-        },
-        "sections": {
-          "details": "Detalhes",
-          "activity": "Atividade",
-          "add": "Adicionar resposta"
-        },
-        "activitySort": {
-          "recent": "Mais recente",
-          "oldest": "Mais antigo"
-        },
-        "fields": {
-          "title": "Título",
-          "status": "Status",
-          "assignee": "Atribuído a",
-          "feature": "Feature",
-          "type": "Tipo",
-          "content": "Conteúdo"
-        },
-        "placeholders": {
-          "feature": "Buscar feature...",
-          "content": "Escreva sua resposta..."
-        },
-        "actions": {
-          "save": "Salvar alterações",
-          "saving": "Salvando...",
-          "edit": "Editar",
-          "cancel": "Cancelar",
-          "expand": "Expandir",
-          "collapse": "Recolher",
-          "delete": "Excluir",
-          "confirmDelete": "Excluir ticket",
-          "deleting": "Excluindo...",
-          "addSection": "Enviar"
-        },
-        "delete": {
-          "title": "Excluir ticket?",
-          "description": "Isso removerá o ticket e suas imagens."
-        },
-        "meta": {
-          "createdBy": "Criado por {name}",
-          "assignedTo": "Atribuído a {name}",
-          "createdAt": "Criado em {date}",
-          "updatedAt": "Atualizado em {date}",
-          "sectionsCount": "{count, plural, one {# seção} other {# seções}}"
-        },
-        "assignee": {
-          "unassigned": "Sem responsável",
-          "unknown": "Desconhecido"
-        },
-        "externalUser": "Usuário externo",
-        "sectionTypes": {
-          "DESCRIPTION": "Descrição",
-          "RESPONSE": "Resposta",
-          "COMMENT": "Comentário"
-        },
-        "messages": {
-          "updated": "Ticket atualizado.",
-          "updateError": "Não foi possível atualizar o ticket.",
-          "deleted": "Ticket excluído.",
-          "deleteError": "Não foi possível excluir o ticket.",
-          "descriptionRequired": "A descrição é obrigatória.",
-          "sectionAdded": "Resposta adicionada.",
-          "sectionError": "Não foi possível adicionar a resposta.",
-          "sectionUpdated": "Seção atualizada.",
-          "sectionUpdateError": "Não foi possível atualizar a seção.",
-          "noChanges": "Não há alterações para salvar.",
-          "loadingFeatures": "Buscando features..."
-        },
-        "empty": "Ainda não há atividade.",
-        "images": {
-          "title": "Imagens",
-          "hint": "Use [nome:small] ou [nome:300xauto] para inserir imagens.",
-          "toggle": "Mostrar imagens",
           "fields": {
-            "name": "Nome da imagem",
-            "file": "Arquivo"
+            "name": "Nome",
+            "environment": "Ambiente",
+            "notes": "Notas"
           },
           "placeholders": {
-            "name": "captura-login"
+            "name": "Suíte de regressão - sprint",
+            "environment": "Ex. Staging",
+            "notes": "Contexto opcional o critérios de entrada."
           },
-          "actions": {
-            "upload": "Enviar",
-            "uploading": "Enviando...",
-            "copy": "Copiar tag",
-            "delete": "Excluir",
-            "deleting": "Excluindo..."
+          "resultStatus": {
+            "NOT_STARTED": "Não iniciado",
+            "NOT_WORKING": "Não funciona",
+            "MINOR_ISSUE": "Com problema menor",
+            "PASSED": "Aprovado"
           },
-          "token": "Use [{name}]",
-          "loading": "Carregando imagens...",
-          "empty": "Ainda não há imagens.",
-          "validation": "Nome e arquivo são obrigatórios.",
-          "validationTooLarge": "O tamanho máximo é 5MB.",
-          "uploaded": "Imagem enviada.",
-          "uploadError": "Não foi possível enviar a imagem.",
-          "deleted": "Imagem excluída.",
-          "deleteError": "Não foi possível excluir a imagem.",
-          "loadError": "Não foi possível carregar as imagens."
-        },
-        "attachments": {
-          "title": "Anexos",
-          "hint": "Imagens suportam tamanhos. Arquivos aparecem para download.",
-          "actions": {
-            "add": "Adicionar anexo"
+          "labels": {
+            "refreshing": "Atualizando..."
           }
         },
-        "files": {
-          "title": "Arquivos",
-          "empty": "Ainda não há arquivos.",
+        "dashboard": {
+          "title": "Dashboard de QA",
+          "subtitle": "Acompanhe a cobertura, a saúde das features e as execuções abertas.",
+          "errors": {
+            "load": "Não foi possível carregar o dashboard de QA.",
+            "detail": "Não foi possível carregar o conjunto de dados selecionado."
+          },
+          "metrics": {
+            "totalFeatures": "Total de features",
+            "featuresMissingDescription": "Descrição ausente",
+            "entitiesMissingMandatoryDocumentation": "Doc. obrigatória faltando",
+            "featuresWithoutTestCases": "Sem casos de teste",
+            "featuresWithRuns": "Com execuções",
+            "testCoverageRatio": "Cobertura",
+            "openRuns": "Execuções abertas",
+            "runsWithFullPass": "Aprovação total",
+            "averagePassRate": "Taxa de aprovação"
+          },
+          "coverage": {
+            "title": "Cobertura do projeto",
+            "description": "Última cobertura registrada para este projeto.",
+            "caption": "{executed} de {total} features con execuções registradas.",
+            "coveredBadge": "{value} de cobertura",
+            "pendingBadge": "{count} docs pendentes"
+          },
+          "featureHealth": {
+            "title": "Saúde da feature",
+            "description": "Taxa de aprovação mais recente por feature.",
+            "empty": "Ainda não há dados de saúde.",
+            "noRuns": "Sem execuções",
+            "notAvailable": "N/D",
+            "lastRunLabel": "Última execução",
+            "stats": {
+              "executed": "{count} ejecutados",
+              "passed": "{count} aprovados",
+              "failed": "{count} reprovados"
+            },
+            "labels": {
+              "missing": "Casos pendentes para testar",
+              "passed": "Testado e aprovado",
+              "failed": "Testado e não aprovado"
+            },
+            "missingAlert": "{count, plural, =0 {Existem casos não ejecutados na última execução} one {{count} caso não foi ejecutado na última execução} other {{count} casos não foram ejecutados na última ejecución}}"
+          },
+          "featureCoverage": {
+            "title": "Cobertura por feature",
+            "description": "Casos ejecutados vs pendentes por feature.",
+            "empty": "Ainda não há execuções para calcular a cobertura.",
+            "latestRun": "Última execução {date}",
+            "coverageLabel": "{executed} de {total} casos ejecutados",
+            "missingLabel": "{count} casos pendentes",
+            "noRuns": "Sem execuções registradas",
+            "cta": "Ver cobertura por feature",
+            "noCases": "Sem casos ativos"
+          },
+          "missingDescription": {
+            "title": "Features sem descrição",
+            "description": "Identifique o que precisa de documentação.",
+            "empty": "Todas as features têm descrição.",
+            "caption": "Documente o escopo funcional para destravar o QA.",
+            "badge": "Descrição ausente",
+            "filter": {
+              "label": "Mostrar",
+              "all": "Todos",
+              "features": "Features",
+              "modules": "Módulos"
+            },
+            "entityType": {
+              "FEATURE": "Feature",
+              "MODULE": "Módulo"
+            }
+          },
+          "mandatoryDocumentationMissing": {
+            "title": "Documentação obrigatória faltando",
+            "description": "Entidades com etiquetas obrigatórias sem contenido.",
+            "empty": "Toda a documentação obrigatória está completa.",
+            "caption": "Complete a documentação obrigatória para seguir.",
+            "filter": {
+              "label": "Mostrar",
+              "all": "Todos",
+              "features": "Features",
+              "modules": "Módulos",
+              "projects": "Proyectos"
+            },
+            "labels": {
+              "missing": "Etiquetas faltantes",
+              "labelPrefix": "#"
+            },
+            "entityType": {
+              "FEATURE": "Feature",
+              "MODULE": "Módulo",
+              "PROJECT": "Projeto"
+            }
+          },
+          "featuresWithoutTestCases": {
+            "title": "Features sem casos de teste",
+            "description": "Identifique o que ainda não tem validação.",
+            "empty": "Todas las features possuem casos de teste.",
+            "caption": "Adicione pelo menos um caso para garantir rastreabilidade.",
+            "badge": "Sem testes"
+          },
+          "openRuns": {
+            "title": "Execuções abertas",
+            "description": "Execuções em andamento que precisam de atenção.",
+            "empty": "Nenhuma execução abierta no momento."
+          },
+          "runsWithFullPass": {
+            "title": "Execuções com aprovação total",
+            "description": "Execuções com 100% de aprovação.",
+            "empty": "Ainda não há execuções com aprovação total.",
+            "badge": "100% aprovadas"
+          },
+          "runs": {
+            "coverageLabel": "{executed} de {total} casos ejecutados"
+          },
+          "detail": {
+            "title": "Detalhes da métrica",
+            "subtitle": "Selecione uma métrica para inspecionar os dados.",
+            "empty": "Escolha uma métrica acima para carregar a lista.",
+            "cta": "Ver detalhes",
+            "showPanel": "Expandir detalhes",
+            "openInNewTab": "Abrir em uma nova aba",
+            "openFeature": "Ir para a feature",
+            "back": "Voltar ao dashboard",
+            "sortLabel": "Ordenar por cobertura",
+            "sortDesc": "Alta → Baixa",
+            "sortAsc": "Baixa → Alta",
+            "pagination": {
+              "previous": "Anterior",
+              "next": "Próximo"
+            }
+          },
+          "empty": {
+            "title": "Ainda não há dados de QA",
+            "description": "Crie pelo menos uma execução para liberar o dashboard.",
+            "retry": "Tentar nuevamente"
+          }
+        },
+        "health": {
+          "errors": {
+            "load": "Não foi posible carregar a saúde da feature."
+          },
+          "empty": {
+            "title": "Sem dados de saúde",
+            "description": "Execute pelo menos uma rodada para calcular a taxa de aprovação e as tendências."
+          },
+          "metrics": {
+            "passRate": "Taxa de aprovação",
+            "lastRun": "Última execução",
+            "coverage": "Cobertura mais recente",
+            "coverageValue": "{executed} de {total} casos ejecutados",
+            "passRateHint": "Calculada sobre {executed} de {total} casos ejecutados na última execução.",
+            "coverageComplete": "Todos los casos foram ejecutados na última execução.",
+            "coverageIncomplete": "{remaining, plural, one {{remaining} caso não foi ejecutado} other {{remaining} casos não foram ejecutados}}",
+            "flaky": "Casos instáveis",
+            "flakyValue": "{count} casos instáveis",
+            "notAvailable": "N/D"
+          },
+          "trend": {
+            "title": "Tendência de aprovação",
+            "subtitle": "Últimas ejecuções e seu percentual de aprovação."
+          }
+        }
+      },
+      "notifications": {
+        "list": {
+          "title": "Notificações",
+          "subtitle": "Atualizações e atividade relacionadas ao seu trabalho.",
+          "summary": "Não lidas: {count}",
+          "markAll": "Marcar todas como lidas",
+          "markRead": "Marcar como lida",
+          "delete": "Excluir",
+          "empty": {
+            "title": "Nenhuma notificação ainda."
+          },
+          "pagination": {
+            "aria": "Paginação de notificações",
+            "previous": "Anterior",
+            "next": "Próxima"
+          },
+          "types": {
+            "INFO": "Info",
+            "SUCCESS": "Sucesso",
+            "WARNING": "Aviso",
+            "ERROR": "Erro"
+          },
+          "errors": {
+            "action": "Não foi possível atualizar a notificação."
+          }
+        }
+      },
+      "tickets": {
+        "list": {
+          "title": "Tickets",
+          "subtitle": "Acompanhe problemas, solicitações e atualizações.",
+          "tabs": {
+            "mine": "Criados por mim",
+            "assigned": "Atribuídos a mim",
+            "all": "Todos",
+            "external": "Externos"
+          },
+          "project": {
+            "all": "Todos os projetos"
+          },
+          "projectsTitle": "Projetos",
           "actions": {
-            "open": "Abrir",
+            "newTicket": "Novo ticket"
+          },
+          "filters": {
+            "allStatuses": "Todos os status"
+          },
+          "empty": "Nenhum ticket encontrado.",
+          "pagination": {
+            "aria": "Paginação de tickets",
+            "previous": "Anterior",
+            "next": "Próxima"
+          },
+          "statuses": {
+            "OPEN": "Aberto",
+            "PENDING": "Pendente",
+            "RESOLVED": "Resolvido",
+            "CLOSED": "Fechado"
+          },
+          "meta": {
+            "createdBy": "Criado por {name}",
+            "assignedTo": "Atribuído a {name}",
+            "sections": "{count, plural, one {# seção} other {# seções}}",
+            "unassigned": "Sem responsável",
+            "unknown": "Desconhecido",
+            "externalUser": "Usuário externo",
+            "externalTag": "Externo"
+          }
+        },
+        "create": {
+          "title": "Novo ticket",
+          "description": "Crie um ticket para este projeto.",
+          "defaults": {
+            "title": "Novo ticket"
+          },
+          "fields": {
+            "title": "Título",
+            "content": "Descrição",
+            "feature": "Feature (opcional)"
+          },
+          "placeholders": {
+            "title": "Descreva o problema",
+            "content": "Adicione os detalhes do ticket...",
+            "feature": "Buscar feature..."
+          },
+          "actions": {
+            "create": "Novo ticket",
+            "save": "Criar ticket",
+            "creating": "Criando...",
+            "cancel": "Cancelar"
+          },
+          "messages": {
+            "success": "Ticket criado.",
+            "error": "Não foi possível criar o ticket.",
+            "projectRequired": "Selecione um projeto antes de criar um ticket.",
+            "loadingFeatures": "Buscando features..."
+          }
+        },
+        "detail": {
+          "breadcrumb": {
+            "ticket": "Ticket",
+            "featureFallback": "Feature"
+          },
+          "sections": {
+            "details": "Detalhes",
+            "activity": "Atividade",
+            "add": "Adicionar resposta"
+          },
+          "activitySort": {
+            "recent": "Mais recente",
+            "oldest": "Mais antigo"
+          },
+          "fields": {
+            "title": "Título",
+            "status": "Status",
+            "assignee": "Atribuído a",
+            "feature": "Feature",
+            "type": "Tipo",
+            "content": "Conteúdo"
+          },
+          "placeholders": {
+            "feature": "Buscar feature...",
+            "content": "Escreva sua resposta..."
+          },
+          "actions": {
+            "save": "Salvar alterações",
+            "saving": "Salvando...",
+            "edit": "Editar",
+            "cancel": "Cancelar",
+            "expand": "Expandir",
+            "collapse": "Recolher",
             "delete": "Excluir",
-            "deleting": "Excluindo..."
+            "confirmDelete": "Excluir ticket",
+            "deleting": "Excluindo...",
+            "addSection": "Enviar"
+          },
+          "delete": {
+            "title": "Excluir ticket?",
+            "description": "Isso removerá o ticket e suas imagens."
+          },
+          "meta": {
+            "createdBy": "Criado por {name}",
+            "assignedTo": "Atribuído a {name}",
+            "createdAt": "Criado em {date}",
+            "updatedAt": "Atualizado em {date}",
+            "sectionsCount": "{count, plural, one {# seção} other {# seções}}"
+          },
+          "assignee": {
+            "unassigned": "Sem responsável",
+            "unknown": "Desconhecido"
+          },
+          "externalUser": "Usuário externo",
+          "sectionTypes": {
+            "DESCRIPTION": "Descrição",
+            "RESPONSE": "Resposta",
+            "COMMENT": "Comentário"
+          },
+          "messages": {
+            "updated": "Ticket atualizado.",
+            "updateError": "Não foi possível atualizar o ticket.",
+            "deleted": "Ticket excluído.",
+            "deleteError": "Não foi possível excluir o ticket.",
+            "descriptionRequired": "A descrição é obrigatória.",
+            "sectionAdded": "Resposta adicionada.",
+            "sectionError": "Não foi possível adicionar a resposta.",
+            "sectionUpdated": "Seção atualizada.",
+            "sectionUpdateError": "Não foi possível atualizar a seção.",
+            "noChanges": "Não há alterações para salvar.",
+            "loadingFeatures": "Buscando features..."
+          },
+          "empty": "Ainda não há atividade.",
+          "images": {
+            "title": "Imagens",
+            "hint": "Use [nome:small] ou [nome:300xauto] para inserir imagens.",
+            "toggle": "Mostrar imagens",
+            "fields": {
+              "name": "Nome da imagem",
+              "file": "Arquivo"
+            },
+            "placeholders": {
+              "name": "captura-login"
+            },
+            "actions": {
+              "upload": "Enviar",
+              "uploading": "Enviando...",
+              "copy": "Copiar tag",
+              "delete": "Excluir",
+              "deleting": "Excluindo..."
+            },
+            "token": "Use [{name}]",
+            "loading": "Carregando imagens...",
+            "empty": "Ainda não há imagens.",
+            "validation": "Nome e arquivo são obrigatórios.",
+            "validationTooLarge": "O tamanho máximo é 5MB.",
+            "uploaded": "Imagem enviada.",
+            "uploadError": "Não foi possível enviar a imagem.",
+            "deleted": "Imagem excluída.",
+            "deleteError": "Não foi possível excluir a imagem.",
+            "loadError": "Não foi possível carregar as imagens."
+          },
+          "attachments": {
+            "title": "Anexos",
+            "hint": "Imagens suportam tamanhos. Arquivos aparecem para download.",
+            "actions": {
+              "add": "Adicionar anexo"
+            }
+          },
+          "files": {
+            "title": "Arquivos",
+            "empty": "Ainda não há arquivos.",
+            "actions": {
+              "open": "Abrir",
+              "delete": "Excluir",
+              "deleting": "Excluindo..."
+            }
+          },
+          "notifications": {
+            "title": "Notificações",
+            "subtitle": "Assine este ticket.",
+            "notify": "Receber no app",
+            "notifySaving": "Salvando...",
+            "email": "Receber e-mails",
+            "emailSaving": "Salvando...",
+            "notifySuccess": "Você receberá notificações no app para este ticket.",
+            "notifyRemoved": "Notificações no app desativadas para este ticket.",
+            "notifyError": "Não foi possível ativar as notificações no app.",
+            "notifyRemoveError": "Não foi possível desativar as notificações no app.",
+            "emailSuccess": "Você receberá e-mails para este ticket.",
+            "emailRemoved": "Notificações por e-mail desativadas para este ticket.",
+            "emailError": "Não foi possível ativar as notificações por e-mail.",
+            "emailRemoveError": "Não foi possível desativar as notificações por e-mail."
+          }
+        },
+        "publicShare": {
+          "title": "Links públicos de tickets",
+          "description": "Crie links para que usuários externos enviem tickets.",
+          "actionLabel": "Compartilhar tickets públicos",
+          "projectRequired": "Selecione um projeto para compartilhar tickets.",
+          "loading": "Carregando links...",
+          "loadError": "Não foi possível carregar os links.",
+          "linksEmpty": "Ainda não há links.",
+          "linkLabel": "Link público",
+          "nameLabel": "Nome do link",
+          "namePlaceholder": "Onboarding cliente",
+          "cancel": "Cancelar",
+          "create": "Criar link",
+          "creating": "Criando...",
+          "created": "Link criado.",
+          "createError": "Não foi possível criar o link.",
+          "copy": "Copiar link",
+          "copied": "Link copiado.",
+          "copyError": "Não foi possível copiar o link.",
+          "refresh": "Atualizar",
+          "refreshed": "Link atualizado.",
+          "refreshError": "Não foi possível atualizar o link.",
+          "revoke": "Revogar",
+          "revoked": "Link revogado.",
+          "revokedLabel": "Revogado",
+          "revokeError": "Não foi possível revogar o link.",
+          "close": "Fechar"
+        },
+        "public": {
+          "link": {
+            "loading": "Validando link...",
+            "notFound": "Este link não existe ou foi revogado.",
+            "revoked": "Este link foi revogado.",
+            "error": "Não foi possível validar este link.",
+            "projectLabel": "Projeto",
+            "projectFallback": "Projeto desconhecido"
+          },
+          "create": {
+            "title": "Enviar um ticket",
+            "subtitle": "Compartilhe detalhes para que a equipe possa ajudar.",
+            "fields": {
+              "title": "Título",
+              "content": "Detalhes",
+              "email": "Email"
+            },
+            "placeholders": {
+              "title": "Descreva o problema",
+              "content": "Adicione detalhes, passos ou contexto...",
+              "email": "voce@email.com"
+            },
+            "submit": "Enviar ticket",
+            "creating": "Enviando...",
+            "missing": "Preencha todos os campos.",
+            "success": "Ticket criado.",
+            "error": "Não foi possível criar o ticket.",
+            "followUpTitle": "Link de acompanhamento pronto",
+            "followUpHint": "Salve este link para acompanhar e responder.",
+            "copy": "Copiar link",
+            "copied": "Link copiado.",
+            "copyError": "Não foi possível copiar o link.",
+            "openFollowUp": "Abrir acompanhamento"
+          },
+          "follow": {
+            "title": "Acompanhar ticket",
+            "subtitle": "Veja atualizações e responda à equipe.",
+            "loading": "Carregando ticket...",
+            "notFound": "Não encontramos este ticket.",
+            "revoked": "Este link de acompanhamento foi revogado.",
+            "error": "Não foi possível carregar este ticket.",
+            "ticketFallback": "Ticket",
+            "authorFallback": "Você",
+            "externalAuthor": "Usuário externo",
+            "projectLabel": "Projeto: {name}",
+            "projectFallback": "Projeto desconhecido",
+            "createdAt": "Criado em {date}",
+            "activity": "Atividade",
+            "empty": "Ainda não há atividade.",
+            "emptyContent": "Sem conteúdo.",
+            "images": "Imagens",
+            "addResponse": "Adicionar resposta",
+            "fields": {
+              "type": "Tipo",
+              "content": "Mensagem"
+            },
+            "placeholders": {
+              "content": "Escreva sua mensagem..."
+            },
+            "submit": "Enviar",
+            "saving": "Enviando...",
+            "missing": "Informe uma mensagem.",
+            "sectionAdded": "Mensagem enviada.",
+            "sectionError": "Não foi possível enviar a mensagem.",
+            "addImage": "Adicionar imagem",
+            "selectImage": "Escolher imagem",
+            "noImage": "Nenhuma imagem selecionada.",
+            "upload": "Enviar",
+            "uploading": "Enviando...",
+            "imageTooLarge": "O tamanho máximo é 5MB.",
+            "imageUploaded": "Imagem enviada.",
+            "imageError": "Não foi possível enviar a imagem."
+          }
+        }
+      },
+      "sidebar": {
+        "menuAdmin": "Menu de administração",
+        "adminPanel": "Painel de Administração",
+        "home": "Início",
+        "projectSection": "Projetos",
+        "tickets": "Tickets",
+        "notifications": "Notificações",
+        "settingSection": "Configurações",
+        "support": "Ajuda e suporte",
+        "logout": "Sair",
+        "lightMode": "Modo claro",
+        "darkMode": "Modo escuro"
+      },
+      "admin": {
+        "title": "Painel de Administração",
+        "subtitle": "Gerencie usuários, permissões e configurações globais do sistema.",
+        "cards": {
+          "users": {
+            "title": "Usuários",
+            "description": "Gerencie contas, funções e acessos."
+          },
+          "settings": {
+            "title": "Configurações",
+            "description": "Defina parâmetros globais e políticas."
           }
         },
         "notifications": {
           "title": "Notificações",
-          "subtitle": "Assine este ticket.",
-          "notify": "Receber no app",
-          "notifySaving": "Salvando...",
-          "email": "Receber e-mails",
-          "emailSaving": "Salvando...",
-          "notifySuccess": "Você receberá notificações no app para este ticket.",
-          "notifyRemoved": "Notificações no app desativadas para este ticket.",
-          "notifyError": "Não foi possível ativar as notificações no app.",
-          "notifyRemoveError": "Não foi possível desativar as notificações no app.",
-          "emailSuccess": "Você receberá e-mails para este ticket.",
-          "emailRemoved": "Notificações por e-mail desativadas para este ticket.",
-          "emailError": "Não foi possível ativar as notificações por e-mail.",
-          "emailRemoveError": "Não foi possível desativar as notificações por e-mail."
-        }
-      },
-      "publicShare": {
-        "title": "Links públicos de tickets",
-        "description": "Crie links para que usuários externos enviem tickets.",
-        "actionLabel": "Compartilhar tickets públicos",
-        "projectRequired": "Selecione um projeto para compartilhar tickets.",
-        "loading": "Carregando links...",
-        "loadError": "Não foi possível carregar os links.",
-        "linksEmpty": "Ainda não há links.",
-        "linkLabel": "Link público",
-        "nameLabel": "Nome do link",
-        "namePlaceholder": "Onboarding cliente",
-        "cancel": "Cancelar",
-        "create": "Criar link",
-        "creating": "Criando...",
-        "created": "Link criado.",
-        "createError": "Não foi possível criar o link.",
-        "copy": "Copiar link",
-        "copied": "Link copiado.",
-        "copyError": "Não foi possível copiar o link.",
-        "refresh": "Atualizar",
-        "refreshed": "Link atualizado.",
-        "refreshError": "Não foi possível atualizar o link.",
-        "revoke": "Revogar",
-        "revoked": "Link revogado.",
-        "revokedLabel": "Revogado",
-        "revokeError": "Não foi possível revogar o link.",
-        "close": "Fechar"
-      },
-      "public": {
-        "link": {
-          "loading": "Validando link...",
-          "notFound": "Este link não existe ou foi revogado.",
-          "revoked": "Este link foi revogado.",
-          "error": "Não foi possível validar este link.",
-          "projectLabel": "Projeto",
-          "projectFallback": "Projeto desconhecido"
-        },
-        "create": {
-          "title": "Enviar um ticket",
-          "subtitle": "Compartilhe detalhes para que a equipe possa ajudar.",
+          "subtitle": "Envie mensagens para todos, por projeto ou para um usuário específico.",
+          "scopes": {
+            "all": "Todos os usuários",
+            "project": "Por projeto",
+            "user": "Usuário específico"
+          },
           "fields": {
             "title": "Título",
-            "content": "Detalhes",
-            "email": "Email"
-          },
-          "placeholders": {
-            "title": "Descreva o problema",
-            "content": "Adicione detalhes, passos ou contexto...",
-            "email": "voce@email.com"
-          },
-          "submit": "Enviar ticket",
-          "creating": "Enviando...",
-          "missing": "Preencha todos os campos.",
-          "success": "Ticket criado.",
-          "error": "Não foi possível criar o ticket.",
-          "followUpTitle": "Link de acompanhamento pronto",
-          "followUpHint": "Salve este link para acompanhar e responder.",
-          "copy": "Copiar link",
-          "copied": "Link copiado.",
-          "copyError": "Não foi possível copiar o link.",
-          "openFollowUp": "Abrir acompanhamento"
-        },
-        "follow": {
-          "title": "Acompanhar ticket",
-          "subtitle": "Veja atualizações e responda à equipe.",
-          "loading": "Carregando ticket...",
-          "notFound": "Não encontramos este ticket.",
-          "revoked": "Este link de acompanhamento foi revogado.",
-          "error": "Não foi possível carregar este ticket.",
-          "ticketFallback": "Ticket",
-          "authorFallback": "Você",
-          "externalAuthor": "Usuário externo",
-          "projectLabel": "Projeto: {name}",
-          "projectFallback": "Projeto desconhecido",
-          "createdAt": "Criado em {date}",
-          "activity": "Atividade",
-          "empty": "Ainda não há atividade.",
-          "emptyContent": "Sem conteúdo.",
-          "images": "Imagens",
-          "addResponse": "Adicionar resposta",
-          "fields": {
+            "message": "Mensagem",
             "type": "Tipo",
-            "content": "Mensagem"
+            "project": "Projeto",
+            "roles": "Funções (opcional)",
+            "userEmail": "Email do usuário"
           },
           "placeholders": {
-            "content": "Escreva sua mensagem..."
+            "title": "Ex. Manutenção programada",
+            "message": "Escreva a mensagem...",
+            "project": "Selecione um projeto",
+            "userEmail": "usuario@email.com"
           },
-          "submit": "Enviar",
-          "saving": "Enviando...",
-          "missing": "Informe uma mensagem.",
-          "sectionAdded": "Mensagem enviada.",
-          "sectionError": "Não foi possível enviar a mensagem.",
-          "addImage": "Adicionar imagem",
-          "selectImage": "Escolher imagem",
-          "noImage": "Nenhuma imagem selecionada.",
-          "upload": "Enviar",
-          "uploading": "Enviando...",
-          "imageTooLarge": "O tamanho máximo é 5MB.",
-          "imageUploaded": "Imagem enviada.",
-          "imageError": "Não foi possível enviar a imagem."
+          "loadingRoles": "Carregando funções...",
+          "emptyRoles": "Sem funções disponíveis",
+          "hint": "Você pode selecionar múltiplas funções.",
+          "send": "Enviar notificação",
+          "sending": "Enviando...",
+          "successAll": "Notificação enviada para {count} usuários.",
+          "successProject": "Notificação enviada para {count} usuários do projeto.",
+          "successUser": "Notificação enviada para o usuário.",
+          "error": "Não foi possível enviar a notificação.",
+          "errors": {
+            "roles": "Não foi possível carregar as funções."
+          }
         }
       }
     },
-    "sidebar": {
-      "menuAdmin": "Menu de administração",
-      "adminPanel": "Painel de Administração",
-      "home": "Início",
-      "projectSection": "Projetos",
-      "tickets": "Tickets",
-      "notifications": "Notificações",
-      "settingSection": "Configurações",
-      "support": "Ajuda e suporte",
-      "logout": "Sair",
-      "lightMode": "Modo claro",
-      "darkMode": "Modo escuro"
-    },
-    "admin": {
-      "title": "Painel de Administração",
-      "subtitle": "Gerencie usuários, permissões e configurações globais do sistema.",
-      "cards": {
-        "users": {
-          "title": "Usuários",
-          "description": "Gerencie contas, funções e acessos."
+    "ui": {
+      "i18n": {
+        "langSelector": {
+          "label": "Idioma",
+          "en": "Inglês",
+          "es": "Espanhol",
+          "pt": "Português",
+          "fr": "Francês",
+          "nl": "Holandês"
+        }
+      },
+      "dialog": {
+        "delete": {
+          "cancel": "Cancelar",
+          "delete": "Excluir"
         },
-        "settings": {
-          "title": "Configurações",
-          "description": "Defina parâmetros globais e políticas."
+        "back-button": {
+          "label": "Voltar"
+        }
+      },
+      "form": {
+        "phone-number": {
+          "label": "Número de telefone"
+        },
+        "upload-image": {
+          "uploadTitle": "Clique para enviar",
+          "uploadSubtitle": "ou arraste e solte",
+          "uploadTypes": "JPG, JPEG, PNG com menos de 3 MB",
+          "fileTooLarge": "O arquivo é muito grande. Máximo de 3 MB permitido.",
+          "invalidFileType": "Tipo de arquivo inválido. Somente imagens são permitidas"
+        }
+      },
+      "navbar": {
+        "mobile-menu-drawer": {
+          "menu": "Menu",
+          "close": "Fechar"
+        },
+        "landing": {
+          "whoWeAre": "Quem somos?",
+          "plans": "Planos",
+          "support": "Suporte"
+        },
+        "profile-menu-client": {
+          "logout": "Sair"
+        },
+        "profile-menu": {
+          "logout": "Sair"
         }
       },
       "notifications": {
         "title": "Notificações",
-        "subtitle": "Envie mensagens para todos, por projeto ou para um usuário específico.",
-        "scopes": {
-          "all": "Todos os usuários",
-          "project": "Por projeto",
-          "user": "Usuário específico"
-        },
-        "fields": {
-          "title": "Título",
-          "message": "Mensagem",
-          "type": "Tipo",
-          "project": "Projeto",
-          "roles": "Funções (opcional)",
-          "userEmail": "Email do usuário"
-        },
-        "placeholders": {
-          "title": "Ex. Manutenção programada",
-          "message": "Escreva a mensagem...",
-          "project": "Selecione um projeto",
-          "userEmail": "usuario@email.com"
-        },
-        "loadingRoles": "Carregando funções...",
-        "emptyRoles": "Sem funções disponíveis",
-        "hint": "Você pode selecionar múltiplas funções.",
-        "send": "Enviar notificação",
-        "sending": "Enviando...",
-        "successAll": "Notificação enviada para {count} usuários.",
-        "successProject": "Notificação enviada para {count} usuários do projeto.",
-        "successUser": "Notificação enviada para o usuário.",
-        "error": "Não foi possível enviar a notificação.",
+        "loading": "Carregando...",
+        "viewAll": "Ver todas",
+        "empty": "Sem notificações",
+        "markAll": "Marcar todas como lidas",
+        "markRead": "Marcar como lida",
+        "delete": "Excluir",
         "errors": {
-          "roles": "Não foi possível carregar as funções."
+          "load": "Não foi possível carregar as notificações.",
+          "action": "Não foi possível atualizar a notificação."
         }
-      }
-    }
-  },
-  "ui": {
-    "i18n": {
-      "langSelector": {
-        "label": "Idioma",
-        "en": "Inglês",
-        "es": "Espanhol",
-        "pt": "Português",
-        "fr": "Francês",
-        "nl": "Holandês"
-      }
-    },
-    "dialog": {
-      "delete": {
-        "cancel": "Cancelar",
-        "delete": "Excluir"
       },
-      "back-button": {
-        "label": "Voltar"
+      "footer": {
+        "privacy": "Políticas de Privacidade",
+        "terms": "Termos e Condições",
+        "connect": "Conecte-se conosco",
+        "rights": "© 2025 Collasco. Todos os direitos reservados."
+      },
+      "pricing-card": {
+        "planPeriod": "/mês",
+        "subscribeButton": "Contrato",
+        "free": "Grátis"
       }
     },
-    "form": {
-      "phone-number": {
-        "label": "Número de telefone"
+    "error-pages": {
+      "error": {
+        "title": "Erro",
+        "description": "Desculpe, ocorreu um erro inesperado. Tente novamente mais tarde.",
+        "button": "Voltar à página principal"
       },
-      "upload-image": {
-        "uploadTitle": "Clique para enviar",
-        "uploadSubtitle": "ou arraste e solte",
-        "uploadTypes": "JPG, JPEG, PNG com menos de 3 MB",
-        "fileTooLarge": "O arquivo é muito grande. Máximo de 3 MB permitido.",
-        "invalidFileType": "Tipo de arquivo inválido. Somente imagens são permitidas"
+      "error-unauthorized": {
+        "title": "Acesso restrito",
+        "description": "Desculpe, você não tem acesso. Tente fazer login.",
+        "button": "Voltar"
+      },
+      "not-found": {
+        "title": "Não encontrada",
+        "description": "A página que você está procurando não existe ou foi movida.",
+        "button": "Ir para a página inicial"
       }
     },
-    "navbar": {
-      "mobile-menu-drawer": {
-        "menu": "Menu",
-        "close": "Fechar"
+    "lib": {
+      "actions": {
+        "invalidCredentials": "E-mail ou senha incorretos.",
+        "somethingWentWrong": "Algo deu errado. Por favor, tente novamente mais tarde.",
+        "emailAlreadyExists": "O e-mail já está cadastrado.",
+        "invalidEmail": "Este e-mail não está cadastrado.",
+        "wrongCurrentPassword": "A senha atual está incorreta."
       },
-      "landing": {
-        "whoWeAre": "Quem somos?",
-        "plans": "Planos",
-        "support": "Suporte"
+      "data": {
+        "loadCategoryVariantsError": "Erro ao carregar variantes da categoria"
       },
-      "profile-menu-client": {
-        "logout": "Sair"
-      },
-      "profile-menu": {
-        "logout": "Sair"
+      "validation-schemas": {
+        "requiredField": "O campo é obrigatório",
+        "invalidEmail": "Insira um e-mail válido.",
+        "invalidPhoneNumber": {
+          "required": "O número de telefone é obrigatório.",
+          "invalid": "Número de telefone inválido."
+        },
+        "invalidPassword": {
+          "noNumbers": "Insira pelo menos um número.",
+          "noLetters": "Insira pelo menos uma letra.",
+          "lessChars": "Insira pelo menos 8 caracteres.",
+          "notMatch": "As senhas não coincidem."
+        },
+        "invalidLength": "O campo deve ter pelo menos 3 letras."
       }
-    },
-    "notifications": {
-      "title": "Notificações",
-      "loading": "Carregando...",
-      "viewAll": "Ver todas",
-      "empty": "Sem notificações",
-      "markAll": "Marcar todas como lidas",
-      "markRead": "Marcar como lida",
-      "delete": "Excluir",
-      "errors": {
-        "load": "Não foi possível carregar as notificações.",
-        "action": "Não foi possível atualizar a notificação."
-      }
-    },
-    "footer": {
-      "privacy": "Políticas de Privacidade",
-      "terms": "Termos e Condições",
-      "connect": "Conecte-se conosco",
-      "rights": "© 2025 Collasco. Todos os direitos reservados."
-    },
-    "pricing-card": {
-      "planPeriod": "/mês",
-      "subscribeButton": "Contrato",
-      "free": "Grátis"
-    }
-  },
-  "error-pages": {
-    "error": {
-      "title": "Erro",
-      "description": "Desculpe, ocorreu um erro inesperado. Tente novamente mais tarde.",
-      "button": "Voltar à página principal"
-    },
-    "error-unauthorized": {
-      "title": "Acesso restrito",
-      "description": "Desculpe, você não tem acesso. Tente fazer login.",
-      "button": "Voltar"
-    },
-    "not-found": {
-      "title": "Não encontrada",
-      "description": "A página que você está procurando não existe ou foi movida.",
-      "button": "Ir para a página inicial"
-    }
-  },
-  "lib": {
-    "actions": {
-      "invalidCredentials": "E-mail ou senha incorretos.",
-      "somethingWentWrong": "Algo deu errado. Por favor, tente novamente mais tarde.",
-      "emailAlreadyExists": "O e-mail já está cadastrado.",
-      "invalidEmail": "Este e-mail não está cadastrado.",
-      "wrongCurrentPassword": "A senha atual está incorreta."
-    },
-    "data": {
-      "loadCategoryVariantsError": "Erro ao carregar variantes da categoria"
-    },
-    "validation-schemas": {
-      "requiredField": "O campo é obrigatório",
-      "invalidEmail": "Insira um e-mail válido.",
-      "invalidPhoneNumber": {
-        "required": "O número de telefone é obrigatório.",
-        "invalid": "Número de telefone inválido."
-      },
-      "invalidPassword": {
-        "noNumbers": "Insira pelo menos um número.",
-        "noLetters": "Insira pelo menos uma letra.",
-        "lessChars": "Insira pelo menos 8 caracteres.",
-        "notMatch": "As senhas não coincidem."
-      },
-      "invalidLength": "O campo deve ter pelo menos 3 letras."
     }
   }
 }

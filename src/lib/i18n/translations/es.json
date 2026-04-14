@@ -127,14 +127,10 @@
           "title": "Clientes y usuarios",
           "description": "Entienden qué se está construyendo — y confían en cómo se entrega."
         },
-        "qualityTeams": {
+"qualityTeams": {
           "title": "Equipos de calidad y cumplimiento",
           "description": "Trazabilidad y documentación sin herramientas extra."
         }
-      }
-    }
-      }
-    }
       }
     },
     "features": {

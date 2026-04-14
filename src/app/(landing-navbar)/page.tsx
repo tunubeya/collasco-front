@@ -21,17 +21,34 @@ const personas = [
   { icon: '🧾', key: 'qualityTeams' }
 ] as const;
 
-const featureHighlights = [
-  { icon: '✅', key: 'testingWorkflows' },
-  { icon: '🔍', key: 'reviewApprovals' },
-  { icon: '🧾', key: 'versionDocs' },
-  { icon: '📘', key: 'manuals' },
-  { icon: '💬', key: 'structuredCommunication' },
-  { icon: '🔄', key: 'changeControl' },
-  { icon: '🤖', key: 'aiSupport' }
+const featureClusters = [
+  {
+    key: 'captureAlign',
+    icon: '📥',
+    items: [
+      { icon: '🎫', key: 'supportTickets' },
+      { icon: '💬', key: 'structuredCommunication' }
+    ]
+  },
+  {
+    key: 'validateControl',
+    icon: '✅',
+    items: [
+      { icon: '🧪', key: 'testingWorkflows' },
+      { icon: '🔍', key: 'reviewApprovals' },
+      { icon: '🔄', key: 'changeControl' }
+    ]
+  },
+  {
+    key: 'documentDeliver',
+    icon: '📦',
+    items: [
+      { icon: '🧾', key: 'versionDocs' },
+      { icon: '📘', key: 'manuals' },
+      { icon: '🤖', key: 'aiSupport' }
+    ]
+  }
 ] as const;
-
-const differentiators = ['jira', 'notion', 'linear'] as const;
 
 export default async function LandingPage() {
   const t = await getTranslations('landing');
@@ -89,17 +106,11 @@ export default async function LandingPage() {
 
       {/* Vision */}
       <section className="mx-auto max-w-5xl px-6 py-16 md:py-20">
-        <div className="grid gap-10 md:grid-cols-[2fr,1fr]">
-          <div className="space-y-4">
-            <p className="text-sm font-semibold uppercase text-primary">{t('vision.label')}</p>
-            <h2 className="text-3xl font-semibold">{t('vision.title')}</h2>
-            <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description1')}</p>
-            <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description2')}</p>
-          </div>
-          <div className="rounded-2xl border border-[color:var(--color-border)] bg-surface p-6 shadow-sm">
-            <p className="text-sm font-semibold uppercase text-primary">{t('vision.cardLabel')}</p>
-            <blockquote className="mt-4 text-2xl font-medium">{t('vision.quote')}</blockquote>
-          </div>
+        <div className="space-y-4">
+          <p className="text-sm font-semibold uppercase text-primary">{t('vision.label')}</p>
+          <h2 className="text-3xl font-semibold">{t('vision.title')}</h2>
+          <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description1')}</p>
+          <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description2')}</p>
         </div>
       </section>
 
@@ -135,46 +146,31 @@ export default async function LandingPage() {
           <h2 className="text-3xl font-semibold">{t('features.title')}</h2>
           <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('features.description')}</p>
         </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {featureHighlights.map((feature) => (
-            <div
-              key={feature.key}
-              className="flex h-full flex-col gap-3 rounded-2xl border border-[color:var(--color-border)] bg-surface/50 p-6"
-            >
-              <div className="text-2xl">{feature.icon}</div>
-              <h3 className="text-xl font-semibold">{t(`features.items.${feature.key}.title`)}</h3>
-              <p className="text-sm text-[color:var(--color-muted-fg)]">
-                {t(`features.items.${feature.key}.description`)}
-              </p>
+        <div className="mt-10 grid gap-8 md:grid-cols-3">
+          {featureClusters.map((cluster) => (
+            <div key={cluster.key} className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">{cluster.icon}</span>
+                <h3 className="text-lg font-semibold">{t(`features.clusters.${cluster.key}.title`)}</h3>
+              </div>
+              <div className="space-y-3">
+                {cluster.items.map((item) => (
+                  <div
+                    key={item.key}
+                    className="flex gap-3 rounded-xl border border-[color:var(--color-border)] bg-surface/50 p-4"
+                  >
+                    <span className="text-xl">{item.icon}</span>
+                    <div>
+                      <h4 className="font-semibold">{t(`features.clusters.${cluster.key}.items.${item.key}.title`)}</h4>
+                      <p className="text-sm text-[color:var(--color-muted-fg)]">
+                        {t(`features.clusters.${cluster.key}.items.${item.key}.description`)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Differentiators */}
-      <section className="bg-[color:var(--color-primary-soft)]/40 py-16 md:py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase text-primary">{t('differentiators.label')}</p>
-            <h2 className="text-3xl font-semibold">{t('differentiators.title')}</h2>
-            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('differentiators.description')}</p>
-          </div>
-          <div className="mt-12 space-y-6">
-            {differentiators.map((itemKey) => (
-              <div
-                key={itemKey}
-                className="rounded-2xl border border-[color:var(--color-border)] bg-background/80 p-6 shadow-sm"
-              >
-                <h3 className="text-xl font-semibold">{t(`differentiators.items.${itemKey}.tool`)}</h3>
-                <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
-                  {t(`differentiators.items.${itemKey}.challenge`)}
-                </p>
-                <p className="mt-4 text-base font-medium text-primary">
-                  {t(`differentiators.items.${itemKey}.edge`)}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

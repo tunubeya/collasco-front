@@ -1,12 +1,12 @@
 {
   "metadata": {
     "root": {
-      "title": "Collasco | Gestion de la qualité qui s’écoule",
-      "description": "Collasco est un QMS moderne pour gérer les documents, les audits et les actions correctives en un seul endroit. Idéal pour les équipes qui ont besoin de clarté, de conformité et d’amélioration continue."
+      "title": "Collasco | Structurez le parcours de vos clients. Construisez la confiance.",
+      "description": "Collasco est un QMS moderne pour gérer les documents, les audits et les actions correctives en un seul endroit. Idéal pour les équipes qui ont besoin de clarté, de conformité et d'amélioration continue."
     }
   },
   "landing": {
-    "metadata_title": "Collasco | Gestion de la qualité qui s’écoule",
+    "metadata_title": "Collasco | Structurez le parcours de vos clients. Construisez la confiance.",
     "comingSoon": {
       "title": "Bientôt disponible",
       "description": "Nous préparons une nouvelle expérience. Revenez bientôt."
@@ -38,9 +38,9 @@
       "kpi_0": "Structure prête pour ISO",
       "kpi_1": "Pistes d’audit en quelques secondes",
       "kpi_2": "Tableaux de bord en temps réel",
-      "tagline": "Collasco — Qualité collaborative",
+      "tagline": "Collasco — Structurez le parcours de vos clients. Construisez la confiance.",
       "title": "Concevez de meilleurs logiciels, ensemble.",
-      "description": "Collasco aide les équipes, les clients et les développeurs à co-creer avec clarté — de l’idée à la livraison. Nous transformons le développement logiciel en un processus structuré, transparent et orienté qualité.",
+      "description": "Donnez à vos clients plus qu'une facture. Montrez-leur ce que vous avez construit ensemble — clair, validé et prêt à utiliser.",
       "nodeLabel": "Nœud",
       "nodes": {
         "team": "Équipe",
@@ -107,15 +107,13 @@
     "vision": {
       "label": "La vision",
       "title": "Pourquoi Collasco",
-      "description1": "Construire un logiciel est plus que coder ou ouvrir un outil de tickets. C’est de la collaboration, de la co-création et du savoir partagé entre équipes, tests, validations et améliorations. Collasco apporte structure et sens à cette collaboration afin que chaque équipe travaille avec confiance.",
-      "description2": "Clients, développeurs, designers, QA et équipes conformité voient enfin le même processus, las mêmes vérités et la même progression.",
-      "cardLabel": "Quand la collaboration est structurée",
-      "quote": "« Quand la communication fait partie du processus, la qualité vient naturellement. »"
+      "description1": "Construire un logiciel est plus que écrire du code ou gérer des tickets. Il s'agit de construire les bonnes fonctionnalités grâce aux retours continus de votre équipe et de vos clients.",
+      "description2": "Collasco — abréviation de collaboration et co-creation — transforme cela en un processus structuré et partagé sur une plateforme unique. Ainsi, votre équipe reste concentrée et vos clients gagnent confiance en ce que vous livrez."
     },
     "personas": {
       "label": "Pour qui",
-      "title": "Conçu pour les équipes qui placent la qualité au centre",
-      "description": "Que vous livriez un SaaS ou des projets sur mesure, Collasco aligne tout le monde autour d’un même processus partagé.",
+      "title": "Conçu pour les équipes qui veulent clarté et contrôle dans ce qu'ils construisent et livrent.",
+      "description": "Collasco intègre vos clients dans le cycle complet du logiciel.",
       "items": {
         "productManagers": {
           "title": "Product & chefs de projet",
@@ -137,65 +135,62 @@
     },
     "features": {
       "label": "Ce que fait Collasco",
-      "title": "Un environnement structuré pour collaborer",
-      "description": "Reliez collaboration, qualité, documentation et contrôle des changements dans un même flux.",
-      "items": {
-        "testingWorkflows": {
-          "title": "Workflows de tests",
-          "description": "Gerez les tests d’acceptation client, les bêtas et les validations design avec des rapports structurés."
+      "title": "Un processus structuré et partagé sur une plateforme",
+      "description": "Connectez exigences, communication, validation et livraison dans un flux continu.",
+      "clusters": {
+        "captureAlign": {
+          "title": "Capturer et Aligner",
+          "items": {
+            "supportTickets": {
+              "title": "Tickets de support",
+              "description": "Recueillez les retours tôt et connectez les tickets directement à votre base de connaissances."
+            },
+            "structuredCommunication": {
+              "title": "Communication structurée",
+              "description": "Gardez les discussions en contexte, pour que les décisions ne soient jamais perdues."
+            }
+          }
         },
-        "reviewApprovals": {
-          "title": "Revues & validations",
-          "description": "Définissez qui valide quoi et gardez chaque décision traçable pour les audits."
+        "validateControl": {
+          "title": "Valider et Contrôler",
+          "items": {
+            "testingWorkflows": {
+              "title": "Workflows de tests",
+              "description": "Transformez la validation en un processus structuré et répétable."
+            },
+            "reviewApprovals": {
+              "title": "Revues et validations",
+              "description": "Définissez qui valide quoi et gardez chaque décision traçable."
+            },
+            "changeControl": {
+              "title": "Capture et contrôle des changements",
+              "description": "Capturez chaque modification de code et enforcez la validation avant la release."
+            }
+          }
         },
-        "versionDocs": {
-          "title": "Docs de version & release",
-          "description": "Créez des notes de version et une documentation des changements transparentes et auditables."
-        },
-        "manuals": {
-          "title": "Manuels & dossiers qualité",
-          "description": "Générez la documentation IQ/OQ/PQ depuis une base de connaissances unique et cohérente."
-        },
-        "structuredCommunication": {
-          "title": "Communication structurée",
-          "description": "Discutez des changements dans leur contexte pour que les retours fassent partie du processus."
-        },
-        "changeControl": {
-          "title": "Capture & contrôle des changements",
-          "description": "Détectez chaque changement de code et assurez son passage dans tout le cycle de validation."
-        },
-        "aiSupport": {
-          "title": "Assistance IA",
-          "description": "Traduisez, standardisez et automatisez la documentation entre équipes et parties prenantes."
-        }
-      }
-    },
-    "differentiators": {
-      "label": "Pourquoi Collasco",
-      "title": "Ce qui nous différencie",
-      "description": "Collasco comble l’écart entre outils techniques et gestion de la qualité collaborative.",
-      "items": {
-        "jira": {
-          "tool": "Jira / GitHub Projects",
-          "challenge": "Parfait pour les développeurs, mais trop technique pour les parties prenantes.",
-          "edge": "Collasco rend l’information compréhensible et orientée processus pour tout le monde."
-        },
-        "notion": {
-          "tool": "Notion / Confluence",
-          "challenge": "Flexible mais peu structuré et difficile à reproduire.",
-          "edge": "Collasco intègre la collaboration dans un flux cohérent et répétable."
-        },
-        "linear": {
-          "tool": "Linear",
-          "challenge": "Optimisé pour livrer du code, pas pour co-creer.",
-          "edge": "Collasco aligne chaque rôle dans une boucle de collaboration orientée qualité."
+        "documentDeliver": {
+          "title": "Documenter et Livrer",
+          "items": {
+            "versionDocs": {
+              "title": "Docs de version et release",
+              "description": "Créez des notes de release transparentes et auditables et suivez chaque changement."
+            },
+            "manuals": {
+              "title": "Manuels et dossiers qualité",
+              "description": "Générez la documentation IQ/OQ/PQ depuis une base de connaissances unique et cohérente."
+            },
+            "aiSupport": {
+              "title": "Assistance IA",
+              "description": "Standardisez et automatisez la documentation entre équipes et parties prenantes."
+            }
+          }
         }
       }
     },
     "promise": {
       "label": "Notre promesse",
-      "title": "Faites du développement logiciel un processus répétable, traçable et orienté qualité.",
-      "description": "Gardez l’aspect humain de la collaboration tout en garantissant structure, validation et documentation à chaque étape."
+      "title": "Intégrez vos clients dans le cycle complet du logiciel, des exigences à la livraison et au-delà.",
+      "description": "Donnez-leur clarté à chaque étape, pour qu'ils puissent faire confiance à ce que vous livrez."
     },
     "stayConnected": {
       "label": "Restez connectés",
@@ -223,7 +218,10 @@
       "confirmPasswordPlaceholder": "Saisissez à nouveau le mot de passe",
       "haveAccount": "Vous avez déjà un compte ?",
       "login": "Se connecter",
-      "acceptTerms": { "first": "J’accepte les ", "second": " et les " },
+      "acceptTerms": {
+        "first": "J’accepte les ",
+        "second": " et les "
+      },
       "termsAndConditions": "Conditions générales",
       "privacyPolicies": "Politiques de confidentialité",
       "toast": {
@@ -452,8 +450,12 @@
           "nameRequired": "Veuillez saisir votre nom.",
           "emailInvalid": "Veuillez saisir un e-mail valide."
         },
-        "name": { "title": "Nom" },
-        "email": { "title": "E-mail" },
+        "name": {
+          "title": "Nom"
+        },
+        "email": {
+          "title": "E-mail"
+        },
         "password": {
           "title": "Mot de passe",
           "current": "Mot de passe actuel",
@@ -1169,8 +1171,12 @@
             "label": "URL du dépôt",
             "placeholder": "https://github.com/org/repo"
           },
-          "status": { "label": "Statut" },
-          "visibility": { "label": "Visibilité" }
+          "status": {
+            "label": "Statut"
+          },
+          "visibility": {
+            "label": "Visibilité"
+          }
         },
         "richText": {
           "bold": "Gras",
@@ -1197,7 +1203,9 @@
           "delete": "Supprimer le projet"
         }
       },
-      "new": { "title": "Créer un projet" },
+      "new": {
+        "title": "Créer un projet"
+      },
       "module": {
         "header": {
           "project": "Projet : {name}",
@@ -1242,21 +1250,21 @@
               "label": "Description",
               "placeholder": "Description optionnelle"
             },
-          "parent": {
-            "label": "Module parent",
-            "rootOption": "Module racine",
-            "hint": "Laissez vide pour créer un module racine."
-          }
-        },
-        "richText": {
-          "bold": "Gras",
-          "italic": "Italique",
-          "underline": "Souligné",
-          "bulletList": "Liste à puces",
-          "orderedList": "Liste numérotée",
-          "clear": "Effacer le format",
-          "helper": "Utilisez la barre ou les raccourcis (Ctrl/Cmd + B/I/U). Shift+Entrée ajoute un saut souple."
-        },
+            "parent": {
+              "label": "Module parent",
+              "rootOption": "Module racine",
+              "hint": "Laissez vide pour créer un module racine."
+            }
+          },
+          "richText": {
+            "bold": "Gras",
+            "italic": "Italique",
+            "underline": "Souligné",
+            "bulletList": "Liste à puces",
+            "orderedList": "Liste numérotée",
+            "clear": "Effacer le format",
+            "helper": "Utilisez la barre ou les raccourcis (Ctrl/Cmd + B/I/U). Shift+Entrée ajoute un saut souple."
+          },
           "errors": {
             "required": "Ce champ est obligatoire.",
             "invalidParent": "Impossible d’utiliser le module comme parent de lui-même.",

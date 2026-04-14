@@ -1,12 +1,12 @@
 {
   "metadata": {
     "root": {
-      "title": "Collasco | Gestão da Qualidade que flui",
-      "description": "Collasco é um sistema moderno de gestão da qualidade para controlar documentos, auditorias e ações corretivas em um só lugar. Ideal para equipes que buscam clareza, conformidade e melhoria contínua."
+      "title": "Collasco | Estruture a jornada do seu cliente. Construa confiança.",
+      "description": "Collasco é um sistema moderno de gestão da qualidade para controlar documentos, auditorias e ações corretivas em um só lugar. Ideal para equipes que precisam de clareza, conformidade e melhoria contínua."
     }
   },
   "landing": {
-    "metadata_title": "Collasco | Gestão da Qualidade que flui",
+    "metadata_title": "Collasco | Estruture a jornada do seu cliente. Construa confiança.",
     "comingSoon": {
       "title": "Em breve",
       "description": "Estamos preparando uma nova experiência. Volte em breve."
@@ -29,18 +29,18 @@
       "challengesLabel": "Quais desafíos de colaboração você enfrenta?",
       "challengesPlaceholder": "Conte-nos sobre o seu processo"
     },
-    "hero": {
+"hero": {
       "title_01": "Qualidade",
       "title_02": "que realmente",
       "title_03": "flui",
       "subtitle_01": "Controle de documentos, auditorias e CAPA em um só lugar.",
-      "subtitle_02": "Feito para equipes que valorizam clareza e conformidade.",
+      "subtitle_02": "Criado para equipes que valorizam clareza e conformidade.",
       "kpi_0": "Estrutura pronta para ISO",
-      "kpi_1": "Rastreabilidade de auditoria em segundos",
+      "kpi_1": "Trilhas de auditoria em segundos",
       "kpi_2": "Painéis em tempo real",
-      "tagline": "Collasco — Qualidade colaborativa",
+      "tagline": "Collasco — Estruture a jornada do seu cliente. Construa confiança.",
       "title": "Construam software melhor, juntos.",
-      "description": "Collasco ajuda equipes, clientes e desenvolvedores a cocriar com clareza — da ideia à entrega. Transformamos o desenvolvimento de software em um processo estruturado, transparente e orientado à qualidade.",
+      "description": "Dê aos seus clientes mais do que uma fatura. Mostre o que vocês construíram juntos — claro, validado e pronto para usar.",
       "nodeLabel": "Nó",
       "nodes": {
         "team": "Time",
@@ -50,6 +50,7 @@
         "release": "Lançamento",
         "feedback": "Feedback"
       }
+    }
     },
     "how": {
       "title": "Como funciona",
@@ -107,19 +108,17 @@
     "vision": {
       "label": "A visão",
       "title": "Por que Collasco",
-      "description1": "Construir software é mais do que escrever código ou abrir um gerenciador de tarefas. É colaboração, cocriação e conhecimento compartilhado entre equipes, testes, validações e melhorias. A Collasco dá estrutura e significado a essa colaboração para que cada equipe trabalhe com confiança.",
-      "description2": "Clientes, desenvolvedores, designers, QA e compliance finalmente veem o mesmo processo, as mesmas verdades e o mesmo progresso.",
-      "cardLabel": "Quando a colaboração tem estrutura",
-      "quote": "“Quando a comunicação faz parte do processo, a qualidade vem naturalmente.”"
+      "description1": "Construir software é mais do que escrever código ou gerenciar tickets. Trata-se de construir os recursos certos por meio de feedback contínuo da sua equipe e dos seus clientes.",
+      "description2": "Collasco — abreviação de collaboration e co-creation — transforma isso em um processo estruturado e compartilhado em uma única plataforma. Assim, sua equipe permanece focada e seus clientes ganham confiança no que você entrega."
     },
     "personas": {
       "label": "Para quem",
-      "title": "Feito para equipes que cuidam da qualidade",
-      "description": "Seja para lançar um SaaS ou entregar projetos sob medida, a Collasco alinha todos em um único processo compartilhado.",
+      "title": "Feito para equipes que querem clareza e controle no que constroem e entregam.",
+      "description": "Collasco traz seus clientes para o ciclo completo do software.",
       "items": {
         "productManagers": {
           "title": "Product Managers e líderes de projeto",
-          "description": "Clareza para cada stakeholder e marco."
+          "description": "Mantém stakeholders alinhados em torno de requisitos, decisões e progresso."
         },
         "developers": {
           "title": "Desenvolvedores e testers",
@@ -127,7 +126,7 @@
         },
         "customers": {
           "title": "Clientes e usuários",
-          "description": "Visibilidade sobre o que está sendo validado e entregue."
+          "description": "Entendem o que está sendo construído — e confiam em como é entregue."
         },
         "qualityTeams": {
           "title": "Equipes de qualidade e compliance",
@@ -137,65 +136,62 @@
     },
     "features": {
       "label": "O que a Collasco faz",
-      "title": "Um ambiente estruturado para colaborar",
-      "description": "Conecte colaboração, qualidade, documentação e controle de mudanças em um único fluxo.",
-      "items": {
-        "testingWorkflows": {
-          "title": "Fluxos de testes",
-          "description": "Gerencie testes de aceitação com clientes, betas e validações de design com relatórios estruturados."
+      "title": "Um processo estruturado e compartilhado em uma plataforma",
+      "description": "Conecta requisitos, comunicação, validação e entrega em um fluxo contínuo.",
+      "clusters": {
+        "captureAlign": {
+          "title": "Capturar e Alinhar",
+          "items": {
+            "supportTickets": {
+              "title": "Tickets de suporte",
+              "description": "Colete feedback antecipadamente e conecte tickets diretamente à sua base de conhecimento."
+            },
+            "structuredCommunication": {
+              "title": "Comunicação estruturada",
+              "description": "Mantenha discussões em contexto, para que as decisões nunca sejam perdidas."
+            }
+          }
         },
-        "reviewApprovals": {
-          "title": "Revisões e aprovações",
-          "description": "Defina quem valida o quê e mantenha cada decisão rastreável para auditorias."
+        "validateControl": {
+          "title": "Validar e Controlar",
+          "items": {
+            "testingWorkflows": {
+              "title": "Fluxos de testes",
+              "description": "Transforme validação em um processo estruturado e repetível."
+            },
+            "reviewApprovals": {
+              "title": "Revisões e aprovações",
+              "description": "Defina quem valida o quê e mantenha cada decisão rastreável."
+            },
+            "changeControl": {
+              "title": "Captura e controle de mudanças",
+              "description": "Capture cada mudança de código e exija validação antes do release."
+            }
+          }
         },
-        "versionDocs": {
-          "title": "Documentos de versões e releases",
-          "description": "Crie notas e documentação de mudanças transparentes e auditáveis."
-        },
-        "manuals": {
-          "title": "Manuais e arquivos de qualidade",
-          "description": "Gere documentação IQ/OQ/PQ a partir de uma base de conhecimento única e consistente."
-        },
-        "structuredCommunication": {
-          "title": "Comunicação estruturada",
-          "description": "Converse sobre mudanças em contexto para que o feedback faça parte do processo."
-        },
-        "changeControl": {
-          "title": "Captura e controle de mudanças",
-          "description": "Detecte cada alteração de código e garanta que percorra todo o ciclo de validação."
-        },
-        "aiSupport": {
-          "title": "Suporte com IA",
-          "description": "Traduza, padronize e automatize documentação entre equipes e stakeholders."
-        }
-      }
-    },
-    "differentiators": {
-      "label": "Por que Collasco",
-      "title": "O que nos diferencia",
-      "description": "A Collasco aproxima ferramentas técnicas de uma gestão de qualidade colaborativa.",
-      "items": {
-        "jira": {
-          "tool": "Jira / GitHub Projects",
-          "challenge": "Ótimo para desenvolvedores, mas técnico demais para outras áreas.",
-          "edge": "A Collasco torna tudo compreensível e orientado a processos para todos."
-        },
-        "notion": {
-          "tool": "Notion / Confluence",
-          "challenge": "Flexível, mas desestruturado e difícil de repetir.",
-          "edge": "A Collasco integra a colaboração em um fluxo consistente e repetível."
-        },
-        "linear": {
-          "tool": "Linear",
-          "challenge": "Otimizado para enviar código, não para cocriar.",
-          "edge": "A Collasco alinha cada função em um ciclo de colaboração orientado à qualidade."
+        "documentDeliver": {
+          "title": "Documentar e Entregar",
+          "items": {
+            "versionDocs": {
+              "title": "Documentos de versões e releases",
+              "description": "Crie notas de release transparentes e auditáveis e acompanhe cada mudança."
+            },
+            "manuals": {
+              "title": "Manuais e arquivos de qualidade",
+              "description": "Gere documentação IQ/OQ/PQ a partir de uma base de conhecimento única e consistente."
+            },
+            "aiSupport": {
+              "title": "Suporte com IA",
+              "description": "Padronize e automatize documentação entre equipes e stakeholders."
+            }
+          }
         }
       }
     },
     "promise": {
       "label": "Nossa promessa",
-      "title": "Transforme o desenvolvimento de software em um processo repetível, rastreável e orientado à qualidade.",
-      "description": "Mantenha o lado humano da colaboração enquanto garante estrutura, validação e documentação em cada etapa."
+      "title": "Traga seus clientes para o ciclo completo do software, de requisitos a entrega e além.",
+      "description": "Dê clareza em cada etapa, para que possam confiar no que você entrega."
     },
     "stayConnected": {
       "label": "Mantenha-se conectado",

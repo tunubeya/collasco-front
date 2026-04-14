@@ -1,12 +1,12 @@
 {
   "metadata": {
     "root": {
-      "title": "Collasco | Quality Management that flows",
+      "title": "Collasco | Structure your customer journey. Build customer confidence.",
       "description": "Collasco is a modern QMS for managing documents, audits, and corrective actions in one place. Ideal for teams that need clarity, compliance, and continuous improvement."
     }
   },
   "landing": {
-    "metadata_title": "Collasco | Quality Management that flows",
+    "metadata_title": "Collasco | Structure your customer journey. Build customer confidence.",
     "comingSoon": {
       "title": "Coming soon",
       "description": "We're preparing a new experience. Check back soon."
@@ -38,9 +38,9 @@
       "kpi_0": "ISO-ready structure",
       "kpi_1": "Audit trails in seconds",
       "kpi_2": "Real-time dashboards",
-      "tagline": "Collasco — Collaborative Quality",
+      "tagline": "Collasco — Structure your customer journey. Build customer confidence.",
       "title": "Build better software, together.",
-      "description": "Collasco helps teams, customers, and developers co-create with clarity — from idea to delivery. We turn software development into a structured, transparent, and quality-driven process.",
+      "description": "Give your customers more than a bill. Show them what you built together — clear, validated and ready to use.",
       "nodeLabel": "Node",
       "nodes": {
         "team": "Team",
@@ -107,19 +107,17 @@
     "vision": {
       "label": "The Vision",
       "title": "Why Collasco",
-      "description1": "Building software is more than writing code or opening an issue tracker. It is about collaboration, co-creation, and shared knowledge across teams, tests, validations, and improvements. Collasco gives structure and meaning to that collaboration so every team can work with confidence.",
-      "description2": "Customers, developers, designers, QA, and compliance teams finally see the same process, the same truths, and the same progress.",
-      "cardLabel": "When collaboration is structured",
-      "quote": "“When communication becomes part of the process, quality follows naturally.”"
+      "description1": "Building software is more than writing code or managing tickets. It's about building the right features through continuous feedback from both your team and your customers.",
+      "description2": "Collasco—short for collaboration and co-creation—turns this into a structured, shared process into a single, structured platform. So your team stays focused, and your customers gain confidence in what you deliver."
     },
     "personas": {
       "label": "For Whom",
-      "title": "Built for teams who care about quality",
-      "description": "Whether you ship a SaaS product or deliver bespoke projects, Collasco aligns everyone around one shared process.",
+      "title": "Built for teams who want clarity and control in what they build and deliver.",
+      "description": "Collasco brings your customers into the full software lifecycle.",
       "items": {
         "productManagers": {
           "title": "Product & Project Managers",
-          "description": "Clarity across every stakeholder and milestone."
+          "description": "Keep stakeholders aligned around requirements, decisions, and progress."
         },
         "developers": {
           "title": "Developers & Testers",
@@ -127,7 +125,7 @@
         },
         "customers": {
           "title": "Customers & Users",
-          "description": "Insight into what is being validated and delivered."
+          "description": "Understand what's being built—and trust how it's delivered."
         },
         "qualityTeams": {
           "title": "Quality & Compliance Teams",
@@ -137,65 +135,62 @@
     },
     "features": {
       "label": "What Collasco does",
-      "title": "A structured environment for collaboration",
-      "description": "Connect collaboration, quality, documentation, and change control inside one flow.",
-      "items": {
-        "testingWorkflows": {
-          "title": "Testing workflows",
-          "description": "Manage customer acceptance, beta, and design validation tests with structured reporting."
+      "title": "A structured, shared process in one platform",
+      "description": "Connect requirements, communication, validation, and delivery into one continuous flow.",
+      "clusters": {
+        "captureAlign": {
+          "title": "Capture & Align",
+          "items": {
+            "supportTickets": {
+              "title": "Support Tickets",
+              "description": "Collect feedback early and connect tickets directly to your knowledge base."
+            },
+            "structuredCommunication": {
+              "title": "Structured communication",
+              "description": "Keep discussions in context, so decisions are never lost."
+            }
+          }
         },
-        "reviewApprovals": {
-          "title": "Review & approvals",
-          "description": "Define who validates what and keep every decision traceable for audits."
+        "validateControl": {
+          "title": "Validate & Control",
+          "items": {
+            "testingWorkflows": {
+              "title": "Testing workflows",
+              "description": "Turn validation into a structured, repeatable process."
+            },
+            "reviewApprovals": {
+              "title": "Review & approvals",
+              "description": "Define who validates what and keep every decision traceable."
+            },
+            "changeControl": {
+              "title": "Change capture & control",
+              "description": "Capture every code change and enforce validation before release."
+            }
+          }
         },
-        "versionDocs": {
-          "title": "Version & release docs",
-          "description": "Create transparent, auditable release notes and change documentation."
-        },
-        "manuals": {
-          "title": "Manuals & quality files",
-          "description": "Generate IQ/OQ/PQ documentation from a single, consistent knowledge base."
-        },
-        "structuredCommunication": {
-          "title": "Structured communication",
-          "description": "Discuss changes in context so that feedback becomes part of the process."
-        },
-        "changeControl": {
-          "title": "Change capture & control",
-          "description": "Detect every code change and ensure it flows through the full validation cycle."
-        },
-        "aiSupport": {
-          "title": "AI support",
-          "description": "Translate, standardize, and automate documentation across teams and stakeholders."
-        }
-      }
-    },
-    "differentiators": {
-      "label": "Why Collasco",
-      "title": "What makes us different",
-      "description": "Collasco bridges the gap between technical tools and collaborative quality management.",
-      "items": {
-        "jira": {
-          "tool": "Jira / GitHub Projects",
-          "challenge": "Great for developers, but too technical for stakeholders.",
-          "edge": "Collasco makes it understandable and process-oriented for everyone."
-        },
-        "notion": {
-          "tool": "Notion / Confluence",
-          "challenge": "Flexible, but unstructured and difficult to repeat.",
-          "edge": "Collasco embeds collaboration into one consistent, repeatable flow."
-        },
-        "linear": {
-          "tool": "Linear",
-          "challenge": "Optimized for shipping code, not co-creation.",
-          "edge": "Collasco aligns each role in a quality-driven collaboration loop."
+        "documentDeliver": {
+          "title": "Document & Deliver",
+          "items": {
+            "versionDocs": {
+              "title": "Version & release docs",
+              "description": "Create transparent, auditable release notes and track every change."
+            },
+            "manuals": {
+              "title": "Manuals & quality files",
+              "description": "Generate IQ/OQ/PQ documentation from a single, consistent knowledge base."
+            },
+            "aiSupport": {
+              "title": "AI support",
+              "description": "Standardize and automate documentation across teams and stakeholders."
+            }
+          }
         }
       }
     },
     "promise": {
       "label": "Our promise",
-      "title": "Turn software development into a repeatable, traceable, quality-driven process.",
-      "description": "Keep the human side of collaboration while guaranteeing structure, validation, and documentation at every step."
+      "title": "Bring your customers into the full software lifecycle—from requirements to delivery and beyond.",
+      "description": "Give them clarity at every step, so they can trust what you deliver."
     },
     "stayConnected": {
       "label": "Stay connected",

@@ -110,7 +110,7 @@
       "description1": "Construir software es más que escribir código o gestionar tickets. Se trata de construir las funciones correctas a través de la retroalimentación continua de tu equipo y tus clientes.",
       "description2": "Collasco —abreviatura de collaboration y co-creation— convierte esto en un proceso estructurado y compartido en una sola plataforma. Así tu equipo se mantiene enfocado y tus clientes ganan confianza en lo que entregan."
     },
-"personas": {
+    "personas": {
       "label": "Para quién",
       "title": "Diseñado para equipos que quieren claridad y control en lo que construyen y entregan.",
       "description": "Collasco trae a tus clientes al ciclo completo del software.",
@@ -127,7 +127,7 @@
           "title": "Clientes y usuarios",
           "description": "Entienden qué se está construyendo — y confían en cómo se entrega."
         },
-"qualityTeams": {
+        "qualityTeams": {
           "title": "Equipos de calidad y cumplimiento",
           "description": "Trazabilidad y documentación sin herramientas extra."
         }
@@ -202,6 +202,31 @@
     "footer": {
       "copyright": "© 2025 Collasco — Colaboración y Co-Creación de Software",
       "contactLabel": "Contacto:"
+    },
+    "trustedBy": {
+      "label": "Empresas que confían en nosotros",
+      "companies": [
+        {
+          "name": "TechCorp",
+          "icon": "🏢"
+        },
+        {
+          "name": "InnovateLab",
+          "icon": "💡"
+        },
+        {
+          "name": "ScaleUp",
+          "icon": "📈"
+        },
+        {
+          "name": "BuildIO",
+          "icon": "🔧"
+        },
+        {
+          "name": "CloudSys",
+          "icon": "☁️"
+        }
+      ]
     }
   },
   "auth": {
@@ -218,7 +243,10 @@
       "confirmPasswordPlaceholder": "Repite la contraseña",
       "haveAccount": "¿Ya tienes una cuenta?",
       "login": "Iniciar sesión",
-      "acceptTerms": { "first": "Acepto los ", "second": " y las " },
+      "acceptTerms": {
+        "first": "Acepto los ",
+        "second": " y las "
+      },
       "termsAndConditions": "Términos y Condiciones",
       "privacyPolicies": "Políticas de Privacidad",
       "toast": {
@@ -293,7 +321,6 @@
     "description": "Selecciona el plan que mejor se adapte a tus necesidades. Empieza gratis y mejora a medida que creces.",
     "planPeriodMonth": "/mes",
     "planPeriodYear": "/año",
-
     "monthly": {
       "label": "Más Popular",
       "title": "Plan Mensual",
@@ -306,7 +333,6 @@
       "feature1": "Ahorra hasta un 20% en comparación con el mensual",
       "feature2": "Soporte prioritario incluido"
     },
-
     "subscribe-button": {
       "subscribeButton": "Suscribirse",
       "subscribedButton": "Suscrito",
@@ -449,8 +475,12 @@
           "nameRequired": "Ingresa tu nombre.",
           "emailInvalid": "Ingresa un correo válido."
         },
-        "name": { "title": "Nombre" },
-        "email": { "title": "Correo electrónico" },
+        "name": {
+          "title": "Nombre"
+        },
+        "email": {
+          "title": "Correo electrónico"
+        },
         "password": {
           "title": "Contraseña",
           "current": "Contraseña actual",
@@ -634,7 +664,7 @@
           "feature": "Feature"
         }
       },
-    "manual": {
+      "manual": {
         "noDescription": "Sin descripción disponible.",
         "attachments": {
           "open": "Abrir"
@@ -676,7 +706,7 @@
           "references": "Referencia a",
           "referencedBy": "Referenciada por"
         },
-    "share": {
+        "share": {
           "label": "Compartir",
           "title": "Compartir manual",
           "description": "Elige las etiquetas que estarán disponibles en el enlace público.",
@@ -720,16 +750,16 @@
           "revoked": "Enlace revocado.",
           "revokedLabel": "Revocado",
           "revokeError": "No pudimos revocar el enlace.",
-      "close": "Cerrar"
-    },
-    "loading": "Cargando manual...",
-    "publicNotFound": "El enlace no existe o ya fue revocado.",
-    "publicRevoked": "Este enlace fue revocado y ya no tiene acceso.",
-    "publicForbidden": "No tienes acceso a este manual.",
-    "error": "No pudimos cargar el manual.",
-    "retry": "Reintentar"
-  },
-    "members": {
+          "close": "Cerrar"
+        },
+        "loading": "Cargando manual...",
+        "publicNotFound": "El enlace no existe o ya fue revocado.",
+        "publicRevoked": "Este enlace fue revocado y ya no tiene acceso.",
+        "publicForbidden": "No tienes acceso a este manual.",
+        "error": "No pudimos cargar el manual.",
+        "retry": "Reintentar"
+      },
+      "members": {
         "title": "Miembros del proyecto",
         "subtitle": "Gestiona quién tiene acceso al proyecto y qué rol cumple.",
         "tabs": {
@@ -1166,8 +1196,12 @@
             "label": "URL del repositorio",
             "placeholder": "https://github.com/org/repo"
           },
-          "status": { "label": "Estado" },
-          "visibility": { "label": "Visibilidad" }
+          "status": {
+            "label": "Estado"
+          },
+          "visibility": {
+            "label": "Visibilidad"
+          }
         },
         "richText": {
           "bold": "Negrita",
@@ -1194,7 +1228,9 @@
           "delete": "Eliminar proyecto"
         }
       },
-      "new": { "title": "Crear proyecto" },
+      "new": {
+        "title": "Crear proyecto"
+      },
       "module": {
         "header": {
           "project": "Proyecto: {name}",
@@ -1239,21 +1275,21 @@
               "label": "Descripción",
               "placeholder": "Descripción opcional"
             },
-          "parent": {
-            "label": "Módulo padre",
-            "rootOption": "Módulo raíz",
-            "hint": "Déjalo vacío para crear un módulo raíz."
-          }
-        },
-        "richText": {
-          "bold": "Negrita",
-          "italic": "Cursiva",
-          "underline": "Subrayado",
-          "bulletList": "Lista con viñetas",
-          "orderedList": "Lista numerada",
-          "clear": "Limpiar formato",
-          "helper": "Usa la barra o atajos (Ctrl/Cmd + B/I/U). Shift+Enter agrega un salto suave."
-        },
+            "parent": {
+              "label": "Módulo padre",
+              "rootOption": "Módulo raíz",
+              "hint": "Déjalo vacío para crear un módulo raíz."
+            }
+          },
+          "richText": {
+            "bold": "Negrita",
+            "italic": "Cursiva",
+            "underline": "Subrayado",
+            "bulletList": "Lista con viñetas",
+            "orderedList": "Lista numerada",
+            "clear": "Limpiar formato",
+            "helper": "Usa la barra o atajos (Ctrl/Cmd + B/I/U). Shift+Enter agrega un salto suave."
+          },
           "errors": {
             "required": "Este campo es obligatorio.",
             "invalidParent": "No puedes usar el mismo módulo como padre.",
@@ -1647,41 +1683,41 @@
           "environment": "Ej. Staging",
           "notes": "Contexto opcional o criterios de entrada."
         },
-          "resultStatus": {
-            "NOT_STARTED": "No iniciado",
-            "NOT_WORKING": "No funciona",
-            "MINOR_ISSUE": "Con incidencia menor",
-            "PASSED": "Aprobado"
-          },
-          "labels": {
-            "refreshing": "Actualizando"
-          }
+        "resultStatus": {
+          "NOT_STARTED": "No iniciado",
+          "NOT_WORKING": "No funciona",
+          "MINOR_ISSUE": "Con incidencia menor",
+          "PASSED": "Aprobado"
         },
-        "dashboard": {
-          "title": "Panel de QA",
-          "subtitle": "Visualiza cobertura, salud de features y ejecuciones recientes.",
-          "errors": {
-            "load": "No pudimos cargar el panel de QA.",
-            "detail": "No pudimos cargar los datos seleccionados."
-          },
-          "metrics": {
+        "labels": {
+          "refreshing": "Actualizando"
+        }
+      },
+      "dashboard": {
+        "title": "Panel de QA",
+        "subtitle": "Visualiza cobertura, salud de features y ejecuciones recientes.",
+        "errors": {
+          "load": "No pudimos cargar el panel de QA.",
+          "detail": "No pudimos cargar los datos seleccionados."
+        },
+        "metrics": {
           "totalFeatures": "Features totales",
           "featuresMissingDescription": "Sin descripción",
           "entitiesMissingMandatoryDocumentation": "Doc. obligatoria faltante",
           "featuresWithoutTestCases": "Sin casos de prueba",
           "featuresWithRuns": "Con ejecuciones",
-            "testCoverageRatio": "Cobertura",
-            "openRuns": "Ejecuciones abiertas",
-            "runsWithFullPass": "Aprobación total",
-            "averagePassRate": "Tasa de aprobación"
-          },
-          "coverage": {
-            "title": "Cobertura del proyecto",
-            "description": "Última cobertura registrada para el proyecto.",
-            "caption": "{executed} de {total} features con ejecuciones registradas.",
-            "coveredBadge": "{value} de cobertura",
-            "pendingBadge": "{count} sin documentación"
-          },
+          "testCoverageRatio": "Cobertura",
+          "openRuns": "Ejecuciones abiertas",
+          "runsWithFullPass": "Aprobación total",
+          "averagePassRate": "Tasa de aprobación"
+        },
+        "coverage": {
+          "title": "Cobertura del proyecto",
+          "description": "Última cobertura registrada para el proyecto.",
+          "caption": "{executed} de {total} features con ejecuciones registradas.",
+          "coveredBadge": "{value} de cobertura",
+          "pendingBadge": "{count} sin documentación"
+        },
         "featureHealth": {
           "title": "Salud por feature",
           "description": "Tasa de aprobación más reciente por feature.",
@@ -1758,20 +1794,20 @@
           "caption": "Agrega al menos un caso para garantizar trazabilidad.",
           "badge": "Sin test cases"
         },
-          "openRuns": {
-            "title": "Ejecuciones abiertas",
-            "description": "Runs que siguen en progreso.",
-            "empty": "No hay ejecuciones abiertas."
-          },
-          "runsWithFullPass": {
-            "title": "Ejecuciones con full pass",
-            "description": "Runs con 100% de aprobación.",
-            "empty": "Aún no hay ejecuciones con full pass.",
-            "badge": "100% aprobado"
-          },
-          "runs": {
-            "coverageLabel": "{executed} de {total} casos ejecutados"
-          },
+        "openRuns": {
+          "title": "Ejecuciones abiertas",
+          "description": "Runs que siguen en progreso.",
+          "empty": "No hay ejecuciones abiertas."
+        },
+        "runsWithFullPass": {
+          "title": "Ejecuciones con full pass",
+          "description": "Runs con 100% de aprobación.",
+          "empty": "Aún no hay ejecuciones con full pass.",
+          "badge": "100% aprobado"
+        },
+        "runs": {
+          "coverageLabel": "{executed} de {total} casos ejecutados"
+        },
         "detail": {
           "title": "Detalle de métricas",
           "subtitle": "Selecciona una métrica para revisar sus datos.",
@@ -1789,16 +1825,16 @@
             "next": "Siguiente"
           }
         },
-          "empty": {
-            "title": "Sin datos de QA",
-            "description": "Registra al menos una ejecución para ver el panel.",
-            "retry": "Reintentar"
-          }
+        "empty": {
+          "title": "Sin datos de QA",
+          "description": "Registra al menos una ejecución para ver el panel.",
+          "retry": "Reintentar"
+        }
+      },
+      "health": {
+        "errors": {
+          "load": "No pudimos cargar la salud del feature."
         },
-        "health": {
-          "errors": {
-            "load": "No pudimos cargar la salud del feature."
-          },
         "empty": {
           "title": "Sin datos de salud",
           "description": "Realiza al menos una ejecución para calcular la tasa de aprobación y tendencias."

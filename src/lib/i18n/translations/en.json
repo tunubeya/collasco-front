@@ -192,6 +192,16 @@
       "title": "Bring your customers into the full software lifecycle—from requirements to delivery and beyond.",
       "description": "Give them clarity at every step, so they can trust what you deliver."
     },
+    "trustedBy": {
+      "label": "Trusted by teams at",
+      "companies": [
+        { "name": "TechCorp", "icon": "🏢" },
+        { "name": "InnovateLab", "icon": "💡" },
+        { "name": "ScaleUp", "icon": "📈" },
+        { "name": "BuildIO", "icon": "🔧" },
+        { "name": "CloudSys", "icon": "☁️" }
+      ]
+    },
     "stayConnected": {
       "label": "Stay connected",
       "title": "Early access & contact",

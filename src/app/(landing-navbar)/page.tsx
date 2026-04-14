@@ -25,6 +25,7 @@ const featureClusters = [
   {
     key: 'captureAlign',
     icon: '📥',
+    color: 'text-blue-500',
     items: [
       { icon: '🎫', key: 'supportTickets' },
       { icon: '💬', key: 'structuredCommunication' }
@@ -33,6 +34,7 @@ const featureClusters = [
   {
     key: 'validateControl',
     icon: '✅',
+    color: 'text-emerald-500',
     items: [
       { icon: '🧪', key: 'testingWorkflows' },
       { icon: '🔍', key: 'reviewApprovals' },
@@ -42,6 +44,7 @@ const featureClusters = [
   {
     key: 'documentDeliver',
     icon: '📦',
+    color: 'text-violet-500',
     items: [
       { icon: '🧾', key: 'versionDocs' },
       { icon: '📘', key: 'manuals' },
@@ -77,13 +80,13 @@ export default async function LandingPage() {
                 href={scheduleMeetingUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30 transition hover:-translate-y-0.5"
+                className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
               >
                 {t('cta.tryPlatform')}
               </a>
               <Link
                 href="/login"
-                className="rounded-full border border-[color:var(--color-border)] px-6 py-3 text-sm font-semibold transition hover:-translate-y-0.5"
+                className="rounded-full border border-[color:var(--color-border)] px-6 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md"
               >
                 {t('cta.joinBeta')}
               </Link>
@@ -92,8 +95,8 @@ export default async function LandingPage() {
           <div className="flex-1">
             <div className="mx-auto grid max-w-lg grid-cols-3 gap-6 rounded-3xl border border-primary/20 bg-background/60 p-10 shadow-2xl">
               {heroNodeKeys.map((labelKey) => (
-                <div key={labelKey} className="flex flex-col items-center gap-2 text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[color:var(--color-border)] bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.25),_transparent)] p-2 text-sm font-semibold">
+                <div key={labelKey} className="flex flex-col items-center gap-2 text-center group">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[color:var(--color-border)] bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.25),_transparent)] p-2 text-sm font-semibold transition-all duration-300 group-hover:scale-105 group-hover:border-primary/50">
                     {t(`hero.nodes.${labelKey}`)}
                   </div>
                   <span className="text-xs text-[color:var(--color-muted-fg)]">{t('hero.nodeLabel')}</span>
@@ -106,11 +109,13 @@ export default async function LandingPage() {
 
       {/* Vision */}
       <section className="mx-auto max-w-5xl px-6 py-16 md:py-20">
-        <div className="space-y-4">
+        <div className="space-y-6">
           <p className="text-sm font-semibold uppercase text-primary">{t('vision.label')}</p>
           <h2 className="text-3xl font-semibold">{t('vision.title')}</h2>
-          <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description1')}</p>
-          <p className="text-lg text-[color:var(--color-muted-fg)]">{t('vision.description2')}</p>
+          <div className="space-y-4">
+            <p className="text-lg text-[color:var(--color-muted-fg)] leading-relaxed">{t('vision.description1')}</p>
+            <p className="text-lg text-[color:var(--color-muted-fg)] leading-relaxed">{t('vision.description2')}</p>
+          </div>
         </div>
       </section>
 
@@ -126,9 +131,9 @@ export default async function LandingPage() {
             {personas.map((persona) => (
               <div
                 key={persona.key}
-                className="rounded-2xl border border-[color:var(--color-border)] bg-background/80 p-6 shadow-sm"
+                className="group rounded-2xl border border-[color:var(--color-border)] bg-background/80 p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30"
               >
-                <div className="text-3xl">{persona.icon}</div>
+                <div className="text-3xl transform transition-transform group-hover:scale-110">{persona.icon}</div>
                 <h3 className="mt-4 text-lg font-semibold">{t(`personas.items.${persona.key}.title`)}</h3>
                 <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
                   {t(`personas.items.${persona.key}.description`)}
@@ -144,30 +149,33 @@ export default async function LandingPage() {
         <div className="text-center">
           <p className="text-sm font-semibold uppercase text-primary">{t('features.label')}</p>
           <h2 className="text-3xl font-semibold">{t('features.title')}</h2>
-          <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('features.description')}</p>
+          <p className="mt-4 text-lg text-[color:var(--color-muted-fg)] max-w-2xl mx-auto">{t('features.description')}</p>
         </div>
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           {featureClusters.map((cluster) => (
-            <div key={cluster.key} className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{cluster.icon}</span>
-                <h3 className="text-lg font-semibold">{t(`features.clusters.${cluster.key}.title`)}</h3>
-              </div>
-              <div className="space-y-3">
-                {cluster.items.map((item) => (
-                  <div
-                    key={item.key}
-                    className="flex gap-3 rounded-xl border border-[color:var(--color-border)] bg-surface/50 p-4"
-                  >
-                    <span className="text-xl">{item.icon}</span>
-                    <div>
-                      <h4 className="font-semibold">{t(`features.clusters.${cluster.key}.items.${item.key}.title`)}</h4>
-                      <p className="text-sm text-[color:var(--color-muted-fg)]">
-                        {t(`features.clusters.${cluster.key}.items.${item.key}.description`)}
-                      </p>
+            <div key={cluster.key} className="relative rounded-2xl border border-[color:var(--color-border)] bg-surface/30 p-6 transition-all duration-300 hover:shadow-lg">
+              <div className={`absolute top-0 left-0 w-1 h-full rounded-l-2xl bg-gradient-to-b ${cluster.key === 'captureAlign' ? 'from-blue-400 to-blue-600' : cluster.key === 'validateControl' ? 'from-emerald-400 to-emerald-600' : 'from-violet-400 to-violet-600'}`} />
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 pl-3">
+                  <span className="text-2xl">{cluster.icon}</span>
+                  <h3 className="text-lg font-semibold">{t(`features.clusters.${cluster.key}.title`)}</h3>
+                </div>
+                <div className="space-y-3">
+                  {cluster.items.map((item) => (
+                    <div
+                      key={item.key}
+                      className="flex gap-3 rounded-xl border border-[color:var(--color-border)] bg-background/50 p-4 transition-all duration-300 hover:border-primary/30 hover:bg-background"
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <div>
+                        <h4 className="font-semibold">{t(`features.clusters.${cluster.key}.items.${item.key}.title`)}</h4>
+                        <p className="text-sm text-[color:var(--color-muted-fg)]">
+                          {t(`features.clusters.${cluster.key}.items.${item.key}.description`)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           ))}
@@ -183,10 +191,26 @@ export default async function LandingPage() {
           href={scheduleMeetingUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-8 inline-flex rounded-full bg-primary px-8 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30 transition hover:-translate-y-0.5"
+          className="mt-8 inline-flex rounded-full bg-primary px-8 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30 transition hover:-translate-y-0.5 hover:shadow-xl"
         >
           {t('cta.becomeEarlyAdopter')}
         </a>
+      </section>
+
+      {/* Trusted by */}
+      <section className="bg-[color:var(--color-primary-soft)]/20 py-12 border-y border-[color:var(--color-border)]">
+        <div className="mx-auto max-w-6xl px-6 text-center">
+          <p className="text-sm font-medium uppercase tracking-wider text-[color:var(--color-muted-fg)]">
+            {t('trustedBy.label')}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60">
+            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">🏢</span><span>TechCorp</span></div>
+            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">💡</span><span>InnovateLab</span></div>
+            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">📈</span><span>ScaleUp</span></div>
+            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">🔧</span><span>BuildIO</span></div>
+            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">☁️</span><span>CloudSys</span></div>
+          </div>
+        </div>
       </section>
 
       {/* Stay connected */}
@@ -196,10 +220,12 @@ export default async function LandingPage() {
             <p className="text-sm font-semibold uppercase text-primary">{t('stayConnected.label')}</p>
             <h2 className="mt-4 text-3xl font-semibold">{t('stayConnected.title')}</h2>
             <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('stayConnected.description')}</p>
-            <p className="mt-6 font-semibold">
-              {t('stayConnected.integrationsLabel')}{' '}
-              <span className="font-normal">{t('stayConnected.integrationsValue')}</span>
-            </p>
+            <div className="mt-8 inline-flex items-center gap-3 rounded-full border border-[color:var(--color-border)] bg-background/80 px-5 py-3">
+              <span className="text-sm font-semibold uppercase text-[color:var(--color-muted-fg)]">
+                {t('stayConnected.integrationsLabel')}{' '}
+              </span>
+              <span className="font-medium">{t('stayConnected.integrationsValue')}</span>
+            </div>
           </div>
           <BetaProgramForm />
         </div>

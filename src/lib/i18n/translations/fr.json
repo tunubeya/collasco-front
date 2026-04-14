@@ -2,7 +2,7 @@
   "metadata": {
     "root": {
       "title": "Collasco | Structurez le parcours de vos clients. Construisez la confiance.",
-      "description": "Collasco est un QMS moderne pour gérer les documents, les audits et les actions correctives en un seul endroit. Idéal pour les équipes qui ont besoin de clarté, de conformité et d'amélioration continue."
+      "description": "Collasco est un QMS moderne pour gérer les documents, les audits et les actions correctives en un seul endroit. Idéal pour les équipes qui ont besoin de clarté, de conformité et d’amélioration continue."
     }
   },
   "landing": {
@@ -107,12 +107,12 @@
     "vision": {
       "label": "La vision",
       "title": "Pourquoi Collasco",
-      "description1": "Construire un logiciel est plus que écrire du code ou gérer des tickets. Il s'agit de construire les bonnes fonctionnalités grâce aux retours continus de votre équipe et de vos clients.",
+      "description1": "Construire un logiciel c'est plus qu'écrire du code ou gérer des tickets. Il s'agit de construire les bonnes fonctionnalités grâce aux retours continus de votre équipe et de vos clients.",
       "description2": "Collasco — abréviation de collaboration et co-creation — transforme cela en un processus structuré et partagé sur une plateforme unique. Ainsi, votre équipe reste concentrée et vos clients gagnent confiance en ce que vous livrez."
     },
     "personas": {
       "label": "Pour qui",
-      "title": "Conçu pour les équipes qui veulent clarté et contrôle dans ce qu'ils construisent et livrent.",
+      "title": "Conçu pour les équipes qui veulent clarté et contrôle dans ce qu-ils construisent et livrent.",
       "description": "Collasco intègre vos clients dans le cycle complet du logiciel.",
       "items": {
         "productManagers": {
@@ -202,6 +202,31 @@
     "footer": {
       "copyright": "© 2025 Collasco — Collaboration & Co-création logicielle",
       "contactLabel": "Contact :"
+    },
+    "trustedBy": {
+      "label": "Équipes qui nous font confiance",
+      "companies": [
+        {
+          "name": "TechCorp",
+          "icon": "🏢"
+        },
+        {
+          "name": "InnovateLab",
+          "icon": "💡"
+        },
+        {
+          "name": "ScaleUp",
+          "icon": "📈"
+        },
+        {
+          "name": "BuildIO",
+          "icon": "🔧"
+        },
+        {
+          "name": "CloudSys",
+          "icon": "☁️"
+        }
+      ]
     }
   },
   "auth": {

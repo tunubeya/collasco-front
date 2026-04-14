@@ -104,7 +104,7 @@
         "2": "Continue verbetering zichtbaar voor iedereen"
       }
     },
-"vision": {
+    "vision": {
       "label": "De visie",
       "title": "Waarom Collasco",
       "description1": "Software bouwen is meer dan code schrijven of tickets beheren. Het draait om de juiste functies bouwen door continue feedback van uw team en klanten.",
@@ -117,7 +117,7 @@
       "items": {
         "productManagers": {
           "title": "Product- en projectmanagers",
-          "description": "Houd stakeholders afgestemd op vereisten, beslissingen en voortgang."
+          "description": "Helderheid voor elke stakeholder en mijlpaal."
         },
         "developers": {
           "title": "Ontwikkelaars en testers",
@@ -125,7 +125,7 @@
         },
         "customers": {
           "title": "Klanten en gebruikers",
-          "description": "Begrijp wat er wordt gebouwd — en vertrouw op hoe het wordt geleverd."
+          "description": "Inzicht in wat er gevalideerd en geleverd wordt."
         },
         "qualityTeams": {
           "title": "Kwaliteits- en compliance teams",
@@ -192,91 +192,6 @@
       "title": "Breng uw klanten in de volledige softwarecyclus — van vereisten tot levering en verder.",
       "description": "Geef hen helderheid in elke stap, zodat ze kunnen vertrouwen wat u levert."
     },
-    "personas": {
-      "label": "Voor wie",
-      "title": "Gebouwd voor teams die om kwaliteit geven",
-      "description": "Of je nu een SaaS of maatwerk levert, Collasco brengt iedereen op één shared proces.",
-      "items": {
-        "productManagers": {
-          "title": "Product- en projectmanagers",
-          "description": "Helderheid voor elke stakeholder en mijlpaal."
-        },
-        "developers": {
-          "title": "Ontwikkelaars en testers",
-          "description": "Alle context die nodig is voor elke wijziging, test en release."
-        },
-        "customers": {
-          "title": "Klanten en gebruikers",
-          "description": "Inzicht in wat er gevalideerd en geleverd wordt."
-        },
-        "qualityTeams": {
-          "title": "Kwaliteits- en compliance teams",
-          "description": "Traceerbaarheid en documentatie zonder extra tools."
-        }
-      }
-    },
-    "features": {
-      "label": "Wat Collasco doet",
-      "title": "Een gestructureerde omgeving voor samenwerking",
-      "description": "Verbind samenwerking, kwaliteit, documentatie en change management in één flow.",
-      "items": {
-        "testingWorkflows": {
-          "title": "Testworkflows",
-          "description": "Beheer klantacceptatie, beta’s en designvalidaties met gestructureerde rapportage."
-        },
-        "reviewApprovals": {
-          "title": "Reviews & goedkeuringen",
-          "description": "Bepaal wie wat valideert en houd elke beslissing audit-proof."
-        },
-        "versionDocs": {
-          "title": "Versie- & release-documentatie",
-          "description": "Maak transparante, controleerbare releasenotes en documentatie van wijzigingen."
-        },
-        "manuals": {
-          "title": "Manuals & kwaliteitsdossiers",
-          "description": "Genereer IQ/OQ/PQ-documentatie vanuit één consistente kennisbasis."
-        },
-        "structuredCommunication": {
-          "title": "Gestructureerde communicatie",
-          "description": "Bespreek wijzigingen in context zodat feedback onderdeel van het proces wordt."
-        },
-        "changeControl": {
-          "title": "Wijzigingen vastleggen en beheren",
-          "description": "Detecteer elke codewijziging en laat die het volledige validatietraject doorlopen."
-        },
-        "aiSupport": {
-          "title": "AI-ondersteuning",
-          "description": "Vertaal, standaardiseer en automatiseer documentatie tussen teams en stakeholders."
-        }
-      }
-    },
-    "differentiators": {
-      "label": "Waarom Collasco",
-      "title": "Wat ons uniek maakt",
-      "description": "Collasco overbrugt de kloof tussen technische tools and collaboratief kwaliteitsbeheer.",
-      "items": {
-        "jira": {
-          "tool": "Jira / GitHub Projects",
-          "challenge": "Geweldig voor ontwikkelaars, maar te technisch voor stakeholders.",
-          "edge": "Collasco maakt het begrijpelijk en procesgericht voor iedereen."
-        },
-        "notion": {
-          "tool": "Notion / Confluence",
-          "challenge": "Flexibel, maar ongestructureerd en lastig te herhalen.",
-          "edge": "Collasco verankert samenwerking in één consistent, herhaalbaar proces."
-        },
-        "linear": {
-          "tool": "Linear",
-          "challenge": "Geoptimaliseerd voor code shippen, niet voor co-creatie.",
-          "edge": "Collasco brengt elke rol op één lijn in een kwaliteitsgedreven samenwerkingslus."
-        }
-      }
-    },
-    "promise": {
-      "label": "Onze belofte",
-      "title": "Maak van softwareontwikkeling een herhaalbaar, traceerbaar en kwaliteitsgedreven proces.",
-      "description": "Behoud de menselijke kant van samenwerking terwijl je structuur, validatie en documentatie in elke stap garandeert."
-    },
     "stayConnected": {
       "label": "Blijf verbonden",
       "title": "Vroege toegang & contact",
@@ -287,6 +202,31 @@
     "footer": {
       "copyright": "© 2025 Collasco — Samenwerking & Software Co-Creation",
       "contactLabel": "Contact:"
+    },
+    "trustedBy": {
+      "label": "Vertrouwd door teams bij",
+      "companies": [
+        {
+          "name": "TechCorp",
+          "icon": "🏢"
+        },
+        {
+          "name": "InnovateLab",
+          "icon": "💡"
+        },
+        {
+          "name": "ScaleUp",
+          "icon": "📈"
+        },
+        {
+          "name": "BuildIO",
+          "icon": "🔧"
+        },
+        {
+          "name": "CloudSys",
+          "icon": "☁️"
+        }
+      ]
     }
   },
   "auth": {
@@ -303,7 +243,10 @@
       "confirmPasswordPlaceholder": "Voer wachtwoord opnieuw in",
       "haveAccount": "Heb je al een account?",
       "login": "Inloggen",
-      "acceptTerms": { "first": "Ik accepteer de ", "second": " en de " },
+      "acceptTerms": {
+        "first": "Ik accepteer de ",
+        "second": " en de "
+      },
       "termsAndConditions": "Algemene voorwaarden",
       "privacyPolicies": "Privacybeleid",
       "toast": {
@@ -532,8 +475,12 @@
           "nameRequired": "Vul je naam in.",
           "emailInvalid": "Voer een geldig e-mailadres in."
         },
-        "name": { "title": "Naam" },
-        "email": { "title": "E-mail" },
+        "name": {
+          "title": "Naam"
+        },
+        "email": {
+          "title": "E-mail"
+        },
         "password": {
           "title": "Wachtwoord",
           "current": "Huidig wachtwoord",
@@ -1249,8 +1196,12 @@
             "label": "Repository-URL",
             "placeholder": "https://github.com/org/repo"
           },
-          "status": { "label": "Status" },
-          "visibility": { "label": "Zichtbaarheid" }
+          "status": {
+            "label": "Status"
+          },
+          "visibility": {
+            "label": "Zichtbaarheid"
+          }
         },
         "richText": {
           "bold": "Vet",
@@ -1277,7 +1228,9 @@
           "delete": "Project verwijderen"
         }
       },
-      "new": { "title": "Project aanmaken" },
+      "new": {
+        "title": "Project aanmaken"
+      },
       "module": {
         "header": {
           "project": "Project: {name}",
@@ -1322,21 +1275,21 @@
               "label": "Beschrijving",
               "placeholder": "Optionele beschrijving"
             },
-          "parent": {
-            "label": "Bovenliggende module",
-            "rootOption": "Hoofdmodule",
-            "hint": "Laat leeg om een hoofdmodule te maken."
-          }
-        },
-        "richText": {
-          "bold": "Vet",
-          "italic": "Cursief",
-          "underline": "Onderstrepen",
-          "bulletList": "Lijst met marcadores",
-          "orderedList": "Genummerde lijst",
-          "clear": "Limpar formatação",
-          "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
-        },
+            "parent": {
+              "label": "Bovenliggende module",
+              "rootOption": "Hoofdmodule",
+              "hint": "Laat leeg om een hoofdmodule te maken."
+            }
+          },
+          "richText": {
+            "bold": "Vet",
+            "italic": "Cursief",
+            "underline": "Onderstrepen",
+            "bulletList": "Lijst met marcadores",
+            "orderedList": "Genummerde lijst",
+            "clear": "Limpar formatação",
+            "helper": "Gebruik de werkbalk of sneltoetsen (Ctrl/Cmd + B/I/U). Shift+Enter voegt een zachte regel toe."
+          },
           "errors": {
             "required": "Dit veld is verplicht.",
             "invalidParent": "Een module kan niet zichzelf als ouder hebben.",

@@ -99,7 +99,29 @@
       "label": "The Vision",
       "title": "Why Collasco",
       "description1": "Building software is more than writing code or managing tickets. It's about building the right features through continuous feedback from both your team and your customers.",
-      "description2": "Collasco—short for collaboration and co-creation—turns this into a structured, shared process into a single, structured platform. So your team stays focused, and your customers gain confidence in what you deliver."
+      "description2": "Collasco—short for collaboration and co-creation—turns this into a structured, shared process in a single, structured platform. So your team stays focused, and your customers gain confidence in what you deliver."
+    },
+    "differentiators": {
+      "label": "Why Collasco",
+      "title": "What makes us different",
+      "description": "Collasco bridges the gap between technical tools and collaborative quality management.",
+      "items": {
+        "jira": {
+          "tool": "Jira / GitHub Projects",
+          "challenge": "Great for developers, but too technical for stakeholders.",
+          "edge": "Collasco makes it understandable and process-oriented for everyone."
+        },
+        "notion": {
+          "tool": "Notion / Confluence",
+          "challenge": "Flexible, but unstructured and difficult to repeat.",
+          "edge": "Collasco embeds collaboration into one consistent, repeatable flow."
+        },
+        "linear": {
+          "tool": "Linear",
+          "challenge": "Optimized for shipping code, not co-creation.",
+          "edge": "Collasco aligns each role in a quality-driven collaboration loop."
+        }
+      }
     },
     "personas": {
       "label": "For Whom",

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
+import { CheckCircle2 } from 'lucide-react';
 import BetaProgramForm from '@/ui/components/landing/beta-program-form';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -118,6 +119,52 @@ export default async function LandingPage() {
         </div>
       </section>
 
+{/* Differentiators */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-16">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{t('differentiators.label')}</p>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">{t('differentiators.title')}</h2>
+            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('differentiators.description')}</p>
+          </div>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-3">
+            <div className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
+                <span className="text-2xl">🐛</span>
+              </div>
+              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.jira.tool')}</h3>
+              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.jira.challenge')}</p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm">{t('differentiators.items.jira.edge')}</span>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
+                <span className="text-2xl">📝</span>
+              </div>
+              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.notion.tool')}</h3>
+              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.notion.challenge')}</p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm">{t('differentiators.items.notion.edge')}</span>
+              </div>
+            </div>
+            <div className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.linear.tool')}</h3>
+              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.linear.challenge')}</p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm">{t('differentiators.items.linear.edge')}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Personas */}
       <section className="bg-surface py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
@@ -194,22 +241,6 @@ export default async function LandingPage() {
         >
           {t('cta.becomeEarlyAdopter')}
         </a>
-      </section>
-
-      {/* Trusted by */}
-      <section className="bg-[color:var(--color-primary-soft)]/20 py-12 border-y border-[color:var(--color-border)]">
-        <div className="mx-auto max-w-6xl px-6 text-center">
-          <p className="text-sm font-medium uppercase tracking-wider text-[color:var(--color-muted-fg)]">
-            {t('trustedBy.label')}
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60">
-            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">🏢</span><span>TechCorp</span></div>
-            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">💡</span><span>InnovateLab</span></div>
-            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">📈</span><span>ScaleUp</span></div>
-            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">🔧</span><span>BuildIO</span></div>
-            <div className="flex items-center gap-2 text-lg font-semibold"><span className="text-2xl">☁️</span><span>CloudSys</span></div>
-          </div>
-        </div>
       </section>
 
       {/* Stay connected */}

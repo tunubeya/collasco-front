@@ -101,6 +101,28 @@
       "description1": "Construir software es más que escribir código o gestionar tickets. Se trata de construir las funciones correctas a través de la retroalimentación continua de tu equipo y tus clientes.",
       "description2": "Collasco —abreviatura de collaboration y co-creation— convierte esto en un proceso estructurado y compartido en una sola plataforma. Así tu equipo se mantiene enfocado y tus clientes ganan confianza en lo que entregan."
     },
+    "differentiators": {
+      "label": "Por qué Collasco",
+      "title": "Qué nos hace diferentes",
+      "description": "Collasco cierra la brecha entre herramientas técnicas y la gestión de calidad colaborativa.",
+      "items": {
+        "jira": {
+          "tool": "Jira / GitHub Projects",
+          "challenge": "Excelente para desarrolladores, pero muy técnico para stakeholders.",
+          "edge": "Collasco lo hace entendible y orientado al proceso para todos."
+        },
+        "notion": {
+          "tool": "Notion / Confluence",
+          "challenge": "Flexible, pero sin estructura y difícil de repetir.",
+          "edge": "Collasco integra la colaboración en un flujo consistente y repetible."
+        },
+        "linear": {
+          "tool": "Linear",
+          "challenge": "Optimizado para enviar código, no para co-creación.",
+          "edge": "Collasco alinea cada rol en un ciclo de colaboración centrado en calidad."
+        }
+      }
+    },
     "personas": {
       "label": "Para quién",
       "title": "Diseñado para equipos que quieren claridad y control en lo que construyen y entregan.",

@@ -101,6 +101,28 @@
       "description1": "Software bouwen is meer dan code schrijven of tickets beheren. Het draait om de juiste functies bouwen door continue feedback van uw team en klanten.",
       "description2": "Collasco — afkorting voor collaboration en co-creation — verandert dit in een gestructureerd, gedeeld proces in één platform. Zo blijft uw team gefocust en winnen uw klanten vertrouwen in wat u levert."
     },
+    "differentiators": {
+      "label": "Waarom Collasco",
+      "title": "Wat ons anders maakt",
+      "description": "Collasco overbrugt de kloof tussen technische tools en collaboratief kwaliteitsbeheer.",
+      "items": {
+        "jira": {
+          "tool": "Jira / GitHub Projects",
+          "challenge": "Geweldig voor ontwikkelaars, maar te technisch voor stakeholders.",
+          "edge": "Collasco maakt het begrijpelijk en procesgericht voor iedereen."
+        },
+        "notion": {
+          "tool": "Notion / Confluence",
+          "challenge": "Flexibel, maar ongestructureerd en moeilijk te herhalen.",
+          "edge": "Collasco integreert samenwerking in één consistent, herhaalbaar flow."
+        },
+        "linear": {
+          "tool": "Linear",
+          "challenge": "Geoptimaliseerd voor het verzenden van code, niet voor co-creatie.",
+          "edge": "Collasco lijn elke rol uit in een kwaliteitsgerichte samenwerkingslus."
+        }
+      }
+    },
     "personas": {
       "label": "Voor wie",
       "title": "Gebouwd voor teams die helderheid en controle willen in wat ze bouwen en leveren.",

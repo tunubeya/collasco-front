@@ -136,7 +136,7 @@ export default function WhoWeArePage() {
             >
               <MessageSquare className="h-10 w-10 text-primary mb-6" />
               <blockquote className="text-xl font-medium italic leading-9 text-[color:var(--color-foreground)]">
-                "Our mission is to give teams the tools they need to build customer confidence through transparent, validated processes."
+                &ldquo;Our mission is to give teams the tools they need to build customer confidence through transparent, validated processes.&rdquo;
               </blockquote>
             </motion.div>
           </motion.div>

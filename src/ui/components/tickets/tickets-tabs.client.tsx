@@ -30,11 +30,13 @@ type Pagination = {
 type Props = {
   token: string;
   scope: TicketsScope;
+  currentScope: TicketsScope;
   items: Ticket[];
   pagination: Pagination;
   projectId?: string | null;
   projects: Project[];
   status: TicketStatus | null;
+  currentUserId?: string | null;
 };
 
 const TAB_ICON = {
@@ -45,13 +47,14 @@ const TAB_ICON = {
 } as const;
 
 export default function TicketsTabs({
-  token,
-  scope,
+  currentScope,
   items,
   pagination,
   projectId,
   projects,
   status,
+  currentUserId,
+  token,
 }: Props) {
   const t = useTranslations("app.tickets.list");
   const tShare = useTranslations("app.tickets.publicShare");
@@ -145,14 +148,24 @@ export default function TicketsTabs({
           <div className="flex flex-wrap gap-2">
             {tabs.map((item) => {
               const Icon = TAB_ICON[item];
-              const active = item === scope;
+              const active = item === currentScope;
+              const tabItems = items.filter((t) => {
+                if (item === "mine") return currentUserId ? t.createdBy?.id === currentUserId : false;
+                if (item === "assigned") return currentUserId ? t.assignee?.id === currentUserId : false;
+                if (item === "external") return !t.createdBy;
+                return true;
+              });
+              const unreadCount = tabItems.reduce(
+                (sum, t) => sum + (t.unreadCount ?? 0),
+                0
+              );
               return (
                 <button
                   key={item}
                   type="button"
                   onClick={() => setScope(item)}
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
+                    "relative inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
                     active
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border bg-muted text-muted-foreground hover:bg-background"
@@ -161,6 +174,18 @@ export default function TicketsTabs({
                 >
                   <Icon className="h-4 w-4" />
                   {t(`tabs.${item}`)}
+                  {unreadCount > 0 && (
+                    <span
+                      className={cn(
+                        "absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-bold",
+                        active
+                          ? "bg-primary-foreground text-primary"
+                          : "bg-destructive text-destructive-foreground"
+                      )}
+                    >
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -219,12 +244,14 @@ export default function TicketsTabs({
               const createdBy = isExternal
                 ? t("meta.externalUser")
                 : ticket.createdBy?.name ?? t("meta.unknown");
+              const isUnread = (ticket.unreadCount ?? 0) > 0;
               return (
                 <li
                   key={ticket.id}
                   className={cn(
                     "px-4 py-4",
-                    isExternal && "bg-amber-50/60"
+                    isExternal && "bg-amber-50/60",
+                    isUnread && "font-bold"
                   )}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-4">

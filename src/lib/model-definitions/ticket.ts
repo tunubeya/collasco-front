@@ -34,6 +34,8 @@ export type Ticket = {
   sectionsCount?: number;
   createdAt: ISODateString;
   updatedAt?: ISODateString;
+  version?: number;
+  unreadCount?: number;
 };
 
 export type TicketSection = {

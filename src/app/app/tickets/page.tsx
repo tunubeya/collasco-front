@@ -8,6 +8,7 @@ import {
 import { RoutesEnum } from "@/lib/utils";
 import { getSession } from "@/lib/session";
 import { handlePageError } from "@/lib/handle-page-error";
+import { fetchGetUserProfile } from "@/lib/data";
 import TicketsTabs from "@/ui/components/tickets/tickets-tabs.client";
 
 type SearchParams = {
@@ -27,6 +28,14 @@ export default async function TicketsPage({ searchParams }: Props) {
   if (!session?.token) redirect(RoutesEnum.LOGIN);
   const token = session.token;
   const t = await getTranslations("app.tickets.list");
+
+  let currentUserId: string | null = null;
+  try {
+    const profile = await fetchGetUserProfile(token);
+    currentUserId = profile.id;
+  } catch (error) {
+    console.error("[TicketsPage] profile load error:", error);
+  }
 
   const scopeParam = (await searchParams)?.scope;
   const scope =
@@ -63,7 +72,7 @@ export default async function TicketsPage({ searchParams }: Props) {
       page,
       limit,
       status,
-      scope,
+      scope: "all",
       projectId: projectId ?? undefined,
     });
   } catch (error) {
@@ -89,6 +98,7 @@ export default async function TicketsPage({ searchParams }: Props) {
       <TicketsTabs
         token={token}
         scope={scope}
+        currentScope={scope}
         items={items}
         pagination={{
           total,
@@ -98,6 +108,7 @@ export default async function TicketsPage({ searchParams }: Props) {
         projects={projects}
         projectId={projectId}
         status={status ?? null}
+        currentUserId={currentUserId}
       />
     </div>
   );

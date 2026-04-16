@@ -117,8 +117,12 @@ export function FeatureTicketsTab({
                 ticket.assignee?.name ?? tList("meta.unassigned");
               const createdBy =
                 ticket.createdBy?.name ?? tList("meta.unknown");
+              const isUnread = (ticket.unreadCount ?? 0) > 0;
               return (
-                <li key={ticket.id} className="px-4 py-4">
+                <li
+                  key={ticket.id}
+                  className={cn("px-4 py-4", isUnread && "font-bold")}
+                >
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-2">

@@ -28,6 +28,7 @@ import {
   uploadPublicTicketImage,
   type PublicTicketFollowResponse,
 } from "@/lib/api/public-tickets";
+import { MISSING_TICKET_DESCRIPTION } from "@/lib/tickets-constants";
 import { cn } from "@/lib/utils";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { Switch } from "@/ui/components/form/switch";
@@ -39,6 +40,10 @@ type Props = {
 
 const SECTION_TYPES: TicketSectionType[] = ["RESPONSE", "COMMENT"];
 const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
+const isMissingDescription = (value?: string | null) => {
+  const trimmed = value?.trim() ?? "";
+  return !trimmed || trimmed === MISSING_TICKET_DESCRIPTION;
+};
 
 function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
@@ -92,6 +97,11 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, setTitleValue] = useState("");
   const [titleSaving, setTitleSaving] = useState(false);
+  const [descriptionDraft, setDescriptionDraft] = useState("");
+  const [descriptionSeed, setDescriptionSeed] = useState("");
+  const [descriptionEditorKey, setDescriptionEditorKey] = useState(0);
+  const [descriptionSaving, setDescriptionSaving] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
 
   const loadTicket = useCallback(async () => {
     setLoading(true);
@@ -159,6 +169,63 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     });
     return map;
   }, [images]);
+
+  const descriptionSection = useMemo(
+    () => sections.find((section) => section.type === "DESCRIPTION"),
+    [sections]
+  );
+
+  const showDescriptionRequired = isMissingDescription(descriptionSection?.content);
+  const showDescriptionEditor = showDescriptionRequired || isEditingDescription;
+
+  useEffect(() => {
+    if (descriptionSection?.content && !isMissingDescription(descriptionSection.content)) {
+      setDescriptionDraft(descriptionSection.content);
+      setDescriptionSeed(descriptionSection.content);
+    } else {
+      setDescriptionDraft("");
+      setDescriptionSeed("");
+    }
+    setDescriptionEditorKey((prev) => prev + 1);
+    if (!descriptionSection || isMissingDescription(descriptionSection.content)) {
+      setIsEditingDescription(false);
+    }
+  }, [descriptionSection]);
+
+  const handleSaveDescription = useCallback(async () => {
+    if (!descriptionDraft.trim() || descriptionSaving) return;
+    setDescriptionSaving(true);
+    try {
+      const content = descriptionDraft.trim();
+      if (descriptionSection?.id) {
+        const updated = await updatePublicTicketSection(
+          followUpToken,
+          descriptionSection.id,
+          { content }
+        );
+        setDescriptionSeed(updated.content);
+      } else {
+        const created = await addPublicTicketSection(followUpToken, {
+          type: "DESCRIPTION",
+          content,
+        });
+        setDescriptionSeed(created.content);
+      }
+      toast.success(tDetail("messages.sectionUpdated"));
+      setIsEditingDescription(false);
+      await loadTicket();
+    } catch (err) {
+      console.error("Failed to save public description", err);
+      toast.error(tDetail("messages.sectionUpdateError"));
+    } finally {
+      setDescriptionSaving(false);
+    }
+  }, [descriptionDraft, descriptionSaving, descriptionSection?.id, followUpToken, loadTicket, tDetail]);
+
+  const handleCancelDescriptionEdit = useCallback(() => {
+    setDescriptionDraft(descriptionSeed);
+    setIsEditingDescription(false);
+  }, [descriptionSeed]);
 
   const richTextLabels = useMemo(
     () => ({
@@ -388,109 +455,174 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
             <div className="mt-4 space-y-3">
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-sm font-semibold">{t("follow.activity")}</h3>
-                <div className="flex items-center gap-3">
-                  <select
-                    value={activityOrder}
-                    onChange={(event) =>
-                      setActivityOrder(event.target.value as "recent" | "oldest")
-                    }
-                    className="rounded-md border px-3 py-1.5 pr-8 text-sm"
-                  >
-                    <option value="recent">{tDetail("activitySort.recent")}</option>
-                    <option value="oldest">{tDetail("activitySort.oldest")}</option>
-                  </select>
-                  <Switch
-                    checked={showImages}
-                    onChange={(event) => setShowImages(event.target.checked)}
-                    label={tDetail("images.toggle")}
-                  />
-                </div>
-              </div>
-              {sections.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t("follow.empty")}</p>
-              ) : (
-                <div className="space-y-3">
-                  {sections.map((section) => (
-                    <div
-                      key={section.id}
-                      className="rounded-lg border px-3 py-2"
+                {!showDescriptionRequired ? (
+                  <div className="flex items-center gap-3">
+                    <select
+                      value={activityOrder}
+                      onChange={(event) =>
+                        setActivityOrder(event.target.value as "recent" | "oldest")
+                      }
+                      className="rounded-md border px-3 py-1.5 pr-8 text-sm"
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                          <span className="font-semibold">
-                            {tDetail(`sectionTypes.${section.type}`, {
-                              default: section.type,
-                            })}
-                          </span>
-                          <span>
-                            {format.dateTime(new Date(section.createdAt), {
-                              dateStyle: "medium",
-                              timeStyle: "short",
-                            })}
-                          </span>
-                          <span>·</span>
-                          <span className="truncate">
-                            {section.author?.name || t("follow.externalAuthor")}
-                          </span>
-                        </div>
-                        {!section.lockedAt &&
-                        !section.lockedById &&
-                        editingSectionId !== section.id ? (
-                          <button
-                            type="button"
-                            className="rounded border px-2 py-1 text-[10px] hover:bg-muted"
-                            onClick={() => handleEditSection(section)}
-                          >
-                            {tDetail("actions.edit")}
-                          </button>
-                        ) : null}
-                      </div>
-                      {editingSectionId === section.id ? (
-                        <div className="mt-2 space-y-2">
-                          <RichTextEditor
-                            key={`public-section-${editingEditorKey}`}
-                            name={`public-section-${section.id}`}
-                            label={tDetail("fields.content")}
-                            placeholder={tDetail("placeholders.content")}
-                            defaultValue={editingSeed}
-                            labels={richTextLabels}
-                            onValueChange={setEditingContent}
-                            hideLabel
-                          />
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              type="button"
-                              className="rounded border px-2 py-1 text-xs hover:bg-muted"
-                              onClick={handleCancelEdit}
-                              disabled={editingSaving}
-                            >
-                              {tDetail("actions.cancel")}
-                            </button>
-                            <button
-                              type="button"
-                              className="rounded border px-2 py-1 text-xs hover:bg-muted disabled:opacity-70"
-                              onClick={() => void handleSaveSection()}
-                              disabled={editingSaving || !editingContent.trim()}
-                            >
-                              {editingSaving
-                                ? tDetail("actions.saving")
-                                : tDetail("actions.save")}
-                            </button>
-                          </div>
-                        </div>
+                      <option value="recent">{tDetail("activitySort.recent")}</option>
+                      <option value="oldest">{tDetail("activitySort.oldest")}</option>
+                    </select>
+                    <Switch
+                      checked={showImages}
+                      onChange={(event) => setShowImages(event.target.checked)}
+                      label={tDetail("images.toggle")}
+                    />
+                  </div>
+                ) : null}
+              </div>
+
+              {showDescriptionEditor ? (
+                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      {showDescriptionRequired ? (
+                        <>
+                          <p className="text-sm font-semibold text-amber-900">
+                            {tDetail("messages.descriptionRequired")}
+                          </p>
+                          <p className="mt-1 text-xs text-amber-800">
+                            {tDetail("sectionTypes.DESCRIPTION")}
+                          </p>
+                        </>
                       ) : (
-                        <RichTextPreview
-                          value={section.content}
-                          emptyLabel={t("follow.emptyContent")}
-                          className="mt-2"
-                          imageMap={showImages ? imageMap : null}
-                          fileOpenLabel={tDetail("files.actions.open")}
-                        />
+                        <p className="text-sm font-semibold text-amber-900">
+                          {tDetail("sectionTypes.DESCRIPTION")}
+                        </p>
                       )}
                     </div>
-                  ))}
+                    {!showDescriptionRequired ? (
+                      <button
+                        type="button"
+                        className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                        onClick={handleCancelDescriptionEdit}
+                        disabled={descriptionSaving}
+                      >
+                        {tDetail("actions.cancel")}
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="mt-3">
+                    <RichTextEditor
+                      key={`public-description-${descriptionEditorKey}`}
+                      name="public-description"
+                      label={tDetail("sectionTypes.DESCRIPTION")}
+                      placeholder={tDetail("placeholders.content")}
+                      defaultValue={descriptionSeed}
+                      labels={richTextLabels}
+                      onValueChange={setDescriptionDraft}
+                      hideLabel
+                    />
+                  </div>
+                  <div className="mt-3 flex justify-end">
+                    <button
+                      type="button"
+                      className={cn(
+                        "inline-flex items-center rounded-md border px-3 py-1.5 text-xs font-medium",
+                        !descriptionDraft.trim() || descriptionSaving
+                          ? "cursor-not-allowed opacity-70"
+                          : "hover:bg-muted"
+                      )}
+                      onClick={() => void handleSaveDescription()}
+                      disabled={!descriptionDraft.trim() || descriptionSaving}
+                    >
+                      {descriptionSaving ? tDetail("actions.saving") : tDetail("actions.save")}
+                    </button>
+                  </div>
                 </div>
-              )}
+              ) : null}
+
+              {!showDescriptionRequired ? (
+                sections.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">{t("follow.empty")}</p>
+                ) : (
+                  <div className="space-y-3">
+                    {sections.map((section) => (
+                      <div
+                        key={section.id}
+                        className="rounded-lg border px-3 py-2"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            <span className="font-semibold">
+                              {tDetail(`sectionTypes.${section.type}`, {
+                                default: section.type,
+                              })}
+                            </span>
+                            <span>
+                              {format.dateTime(new Date(section.createdAt), {
+                                dateStyle: "medium",
+                                timeStyle: "short",
+                              })}
+                            </span>
+                            <span>·</span>
+                            <span className="truncate">
+                              {section.author?.name || t("follow.externalAuthor")}
+                            </span>
+                          </div>
+                          {!section.lockedAt &&
+                          !section.lockedById &&
+                          editingSectionId !== section.id ? (
+                            <button
+                              type="button"
+                              className="rounded border px-2 py-1 text-[10px] hover:bg-muted"
+                              onClick={() => handleEditSection(section)}
+                            >
+                              {tDetail("actions.edit")}
+                            </button>
+                          ) : null}
+                        </div>
+                        {editingSectionId === section.id ? (
+                          <div className="mt-2 space-y-2">
+                            <RichTextEditor
+                              key={`public-section-${editingEditorKey}`}
+                              name={`public-section-${section.id}`}
+                              label={tDetail("fields.content")}
+                              placeholder={tDetail("placeholders.content")}
+                              defaultValue={editingSeed}
+                              labels={richTextLabels}
+                              onValueChange={setEditingContent}
+                              hideLabel
+                            />
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                type="button"
+                                className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                                onClick={handleCancelEdit}
+                                disabled={editingSaving}
+                              >
+                                {tDetail("actions.cancel")}
+                              </button>
+                              <button
+                                type="button"
+                                className="rounded border px-2 py-1 text-xs hover:bg-muted disabled:opacity-70"
+                                onClick={() => void handleSaveSection()}
+                                disabled={editingSaving || !editingContent.trim()}
+                              >
+                                {editingSaving
+                                  ? tDetail("actions.saving")
+                                  : tDetail("actions.save")}
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <RichTextPreview
+                            value={section.content}
+                            emptyLabel={t("follow.emptyContent")}
+                            className="mt-2"
+                            imageMap={showImages ? imageMap : null}
+                            fileOpenLabel={tDetail("files.actions.open")}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )
+              ) : null}
             </div>
 
           </section>

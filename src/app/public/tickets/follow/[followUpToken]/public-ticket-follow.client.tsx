@@ -14,6 +14,7 @@ import {
   FileVideo,
   FileAudio,
   File,
+  Pencil
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -22,6 +23,7 @@ import {
   addPublicTicketSection,
   fetchPublicTicketFollow,
   PublicTicketError,
+  updatePublicTicket,
   updatePublicTicketSection,
   uploadPublicTicketImage,
   type PublicTicketFollowResponse,
@@ -87,6 +89,9 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const [imageName, setImageName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleValue, setTitleValue] = useState("");
+  const [titleSaving, setTitleSaving] = useState(false);
 
   const loadTicket = useCallback(async () => {
     setLoading(true);
@@ -276,6 +281,35 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     tDetail,
   ]);
 
+  const handleStartEditTitle = useCallback(() => {
+    setTitleValue(ticket?.title ?? "");
+    setEditingTitle(true);
+  }, [ticket?.title]);
+
+  const handleSaveTitle = useCallback(async () => {
+    if (!titleValue.trim()) {
+      toast.error(tDetail("messages.titleRequired"));
+      return;
+    }
+    setTitleSaving(true);
+    try {
+      await updatePublicTicket(followUpToken, { title: titleValue.trim() });
+      toast.success(tDetail("messages.titleUpdated"));
+      setEditingTitle(false);
+      await loadTicket();
+    } catch (err) {
+      console.error("Failed to update title", err);
+      toast.error(tDetail("messages.titleUpdateError"));
+    } finally {
+      setTitleSaving(false);
+    }
+  }, [followUpToken, loadTicket, tDetail, titleValue]);
+
+  const handleCancelTitle = useCallback(() => {
+    setEditingTitle(false);
+    setTitleValue("");
+  }, []);
+
   return (
     <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-10">
       <header className="space-y-2">
@@ -296,9 +330,44 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
         <div className="space-y-6">
           <section className="rounded-2xl border bg-background p-6 shadow-sm">
             <div className="space-y-2">
-              <h2 className="text-lg font-semibold">
-                {ticket?.title ?? t("follow.ticketFallback")}
-              </h2>
+              {editingTitle ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={titleValue}
+                    onChange={(e) => setTitleValue(e.target.value)}
+                    className="flex-1 rounded-md border px-3 py-1.5 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-primary"
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={() => void handleSaveTitle()}
+                    disabled={titleSaving}
+                    className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
+                  >
+                    {titleSaving ? "..." : tDetail("messages.save")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleCancelTitle()}
+                    className="rounded-md border px-3 py-1.5 text-sm font-medium"
+                  >
+                    {tDetail("messages.cancel")}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg font-semibold flex-1">
+                    {ticket?.title ?? t("follow.ticketFallback")}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => handleStartEditTitle()}
+                    className="rounded-md bg-primary p-1.5 text-primary-foreground hover:bg-primary/90">
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                </div>
+              )}
               <p className="text-xs text-muted-foreground">
                 {t("follow.projectLabel", {
                   name: data?.projectName ?? ticket?.project?.name ?? t("follow.projectFallback"),

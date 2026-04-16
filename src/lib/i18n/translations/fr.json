@@ -2038,7 +2038,12 @@
           "sectionUpdated": "Section mise à jour.",
           "sectionUpdateError": "Impossible de mettre à jour la section.",
           "noChanges": "Aucun changement à enregistrer.",
-          "loadingFeatures": "Recherche des features..."
+          "loadingFeatures": "Recherche des features...",
+          "titleRequired": "Le titre est obligatoire.",
+          "titleUpdated": "Titre mis à jour.",
+          "titleUpdateError": "Impossible de mettre à jour le titre.",
+          "save": "Enregistrer",
+          "cancel": "Annuler"
         },
         "empty": "Aucune activité pour le moment.",
         "images": {
@@ -2144,13 +2149,11 @@
           "title": "Soumettre un ticket",
           "subtitle": "Partagez les détails pour que l'équipe puisse aider.",
           "fields": {
-            "title": "Titre",
-            "content": "Détails",
+            "name": "Nom",
             "email": "Email"
           },
           "placeholders": {
-            "title": "Décrivez le problème",
-            "content": "Ajoutez des détails, étapes ou contexte...",
+            "name": "Votre nom",
             "email": "vous@email.com"
           },
           "submit": "Envoyer le ticket",
@@ -2159,11 +2162,12 @@
           "success": "Ticket créé.",
           "error": "Impossible de créer le ticket.",
           "followUpTitle": "Lien de suivi prêt",
-          "followUpHint": "Conservez ce lien pour suivre et répondre.",
+          "followUpHint": "Conservez ce lien pour suivre et modifier votre ticket.",
           "copy": "Copier le lien",
           "copied": "Lien copié.",
           "copyError": "Impossible de copier le lien.",
-          "openFollowUp": "Ouvrir le suivi"
+          "openFollowUp": "Ouvrir le suivi",
+          "defaultTitle": "Nouveau ticket"
         },
         "follow": {
           "title": "Suivre votre ticket",

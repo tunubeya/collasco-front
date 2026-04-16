@@ -58,7 +58,7 @@ export async function validatePublicTicketLink(
 
 export async function createPublicTicket(
   token: string,
-  payload: { title: string; content: string; email: string }
+  payload: { title: string; content: string; email: string; name?: string }
 ): Promise<PublicCreateTicketResponse> {
   const res = await fetch(`${apiUrl}/public/tickets/links/${token}`, {
     method: "POST",
@@ -149,4 +149,19 @@ export async function uploadPublicTicketImage(
     await parsePublicError(res, "Failed to upload ticket image");
   }
   return (await res.json()) as TicketImage;
+}
+
+export async function updatePublicTicket(
+  followUpToken: string,
+  payload: { title?: string }
+): Promise<TicketDetail> {
+  const res = await fetch(`${apiUrl}/public/tickets/follow/${followUpToken}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    await parsePublicError(res, "Failed to update ticket");
+  }
+  return (await res.json()) as TicketDetail;
 }

@@ -2012,7 +2012,12 @@
           "sectionUpdated": "Section updated.",
           "sectionUpdateError": "We couldn't update the section.",
           "noChanges": "No changes to save.",
-          "loadingFeatures": "Searching features..."
+          "loadingFeatures": "Searching features...",
+          "titleRequired": "Title required.",
+          "titleUpdated": "Title updated.",
+          "titleUpdateError": "We couldn't update the title.",
+          "save": "Save",
+          "cancel": "Cancel"
         },
         "empty": "No activity yet.",
         "images": {
@@ -2118,13 +2123,11 @@
           "title": "Submit a ticket",
           "subtitle": "Share details so the team can help you.",
           "fields": {
-            "title": "Title",
-            "content": "Details",
+            "name": "Name",
             "email": "Email"
           },
           "placeholders": {
-            "title": "Describe the issue",
-            "content": "Add details, steps, or context...",
+            "name": "Your name",
             "email": "you@email.com"
           },
           "submit": "Submit ticket",
@@ -2133,11 +2136,12 @@
           "success": "Ticket created.",
           "error": "We couldn't create the ticket.",
           "followUpTitle": "Follow-up link ready",
-          "followUpHint": "Save this link to track updates and reply.",
+          "followUpHint": "Save this link to track updates and edit your ticket.",
           "copy": "Copy link",
           "copied": "Link copied.",
           "copyError": "We couldn't copy the link.",
-          "openFollowUp": "Open follow-up"
+          "openFollowUp": "Open follow-up",
+          "defaultTitle": "New ticket"
         },
         "follow": {
           "title": "Follow your ticket",

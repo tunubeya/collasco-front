@@ -2038,7 +2038,12 @@
           "sectionUpdated": "Sectie bijgewerkt.",
           "sectionUpdateError": "Sectie kon niet worden bijgewerkt.",
           "noChanges": "Geen wijzigingen om op te slaan.",
-          "loadingFeatures": "Features zoeken..."
+          "loadingFeatures": "Features zoeken...",
+          "titleRequired": "Titel is verplicht.",
+          "titleUpdated": "Titel bijgewerkt.",
+          "titleUpdateError": "Titel kon niet worden bijgewerkt.",
+          "save": "Opslaan",
+          "cancel": "Annuleren"
         },
         "empty": "Nog geen activiteit.",
         "images": {
@@ -2144,13 +2149,11 @@
           "title": "Ticket indienen",
           "subtitle": "Deel details zodat het team kan helpen.",
           "fields": {
-            "title": "Titel",
-            "content": "Details",
+            "name": "Naam",
             "email": "Email"
           },
           "placeholders": {
-            "title": "Beschrijf het probleem",
-            "content": "Voeg details, stappen of context toe...",
+            "name": "Jouw naam",
             "email": "jij@email.com"
           },
           "submit": "Ticket indienen",
@@ -2159,11 +2162,12 @@
           "success": "Ticket aangemaakt.",
           "error": "We konden het ticket niet maken.",
           "followUpTitle": "Follow-up link klaar",
-          "followUpHint": "Bewaar deze link om updates te volgen en te antwoorden.",
+          "followUpHint": "Bewaar deze link om updates te volgen en je ticket te bewerken.",
           "copy": "Link kopiëren",
           "copied": "Link gekopieerd.",
           "copyError": "We konden de link niet kopiëren.",
-          "openFollowUp": "Follow-up openen"
+          "openFollowUp": "Follow-up openen",
+          "defaultTitle": "Nieuw ticket"
         },
         "follow": {
           "title": "Ticket volgen",

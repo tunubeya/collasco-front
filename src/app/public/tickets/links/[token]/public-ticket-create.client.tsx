@@ -12,7 +12,6 @@ import {
   type PublicTicketLinkInfo,
 } from "@/lib/api/public-tickets";
 import { cn } from "@/lib/utils";
-import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 
 type Props = {
   token: string;
@@ -20,13 +19,10 @@ type Props = {
 
 export function PublicTicketCreateClient({ token }: Props) {
   const t = useTranslations("app.tickets.public");
-  const tRichText = useTranslations("app.projects.form.richText");
   const [linkInfo, setLinkInfo] = useState<PublicTicketLinkInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [contentSeed] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [followUpToken, setFollowUpToken] = useState<string | null>(null);
@@ -38,18 +34,6 @@ export function PublicTicketCreateClient({ token }: Props) {
       window.location.origin
     ).toString();
   }, [followUpToken]);
-
-  const richTextLabels = useMemo(
-    () => ({
-      bold: tRichText("bold"),
-      italic: tRichText("italic"),
-      underline: tRichText("underline"),
-      bulletList: tRichText("bulletList"),
-      orderedList: tRichText("orderedList"),
-      clear: tRichText("clear"),
-    }),
-    [tRichText]
-  );
 
   const loadLink = useCallback(async () => {
     setLoading(true);
@@ -85,16 +69,17 @@ export function PublicTicketCreateClient({ token }: Props) {
   const handleSubmit = useCallback(async () => {
     if (submitting) return;
     if (followUpToken) return;
-    if (!title.trim() || !content.trim() || !email.trim()) {
+    if (!name.trim() || !email.trim()) {
       toast.error(t("create.missing"));
       return;
     }
     setSubmitting(true);
     try {
       const result = await createPublicTicket(token, {
-        title: title.trim(),
-        content: content.trim(),
+        title: t("create.defaultTitle"),
+        content: "",
         email: email.trim(),
+        name: name.trim(),
       });
       setFollowUpToken(result.followUpToken);
       toast.success(t("create.success"));
@@ -104,7 +89,7 @@ export function PublicTicketCreateClient({ token }: Props) {
     } finally {
       setSubmitting(false);
     }
-  }, [content, email, followUpToken, submitting, t, title, token]);
+  }, [email, followUpToken, name, submitting, t, token]);
 
   const handleCopy = useCallback(async () => {
     if (!followUpUrl) return;
@@ -188,28 +173,15 @@ export function PublicTicketCreateClient({ token }: Props) {
             <>
               <div className="grid gap-4">
                 <label className="space-y-2 text-sm">
-                  <span className="font-medium">{t("create.fields.title")}</span>
+                  <span className="font-medium">{t("create.fields.name")}</span>
                   <input
                     type="text"
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                    placeholder={t("create.placeholders.title")}
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder={t("create.placeholders.name")}
                     className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </label>
-
-                <div className="space-y-2 text-sm">
-                  <span className="font-medium">{t("create.fields.content")}</span>
-                  <RichTextEditor
-                    name="public-ticket-content"
-                    label={t("create.fields.content")}
-                    placeholder={t("create.placeholders.content")}
-                    defaultValue={contentSeed}
-                    labels={richTextLabels}
-                    onValueChange={setContent}
-                    hideLabel
-                  />
-                </div>
 
                 <label className="space-y-2 text-sm">
                   <span className="font-medium">{t("create.fields.email")}</span>

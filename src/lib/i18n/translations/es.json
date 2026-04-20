@@ -1592,6 +1592,7 @@
         "errors": {
           "load": "No pudimos cargar las ejecuciones recientes.",
           "create": "No pudimos crear la ejecución.",
+          "delete": "No pudimos eliminar la ejecución.",
           "loadRun": "No pudimos abrir esa ejecución.",
           "validation": "Revisa la información ingresada.",
           "missingFields": "Completa: {fields}.",
@@ -1602,12 +1603,14 @@
           "environment": "Dónde se ejecutó (ej. Staging)."
         },
         "alerts": {
-          "created": "Ejecución creada."
+          "created": "Ejecución creada.",
+          "deleted": "Ejecución eliminada."
         },
         "title": "Ejecuciones",
         "subtitle": "Controla el historial de ejecución y registra evidencia.",
         "actions": {
-          "newRun": "Nueva ejecución"
+          "newRun": "Nueva ejecución",
+          "delete": "Eliminar"
         },
         "filters": {
           "label": "Tipo",
@@ -1704,6 +1707,13 @@
         },
         "labels": {
           "refreshing": "Actualizando"
+        },
+        "delete": {
+          "confirm": "¿Eliminar la ejecución \"{name}\"?",
+          "title": "Eliminar ejecución",
+          "description": "Esta acción eliminará de forma permanente la ejecución \"{name}\".",
+          "cancel": "Cancelar",
+          "confirmAction": "Eliminar"
         }
       },
       "dashboard": {

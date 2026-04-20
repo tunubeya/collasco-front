@@ -1566,6 +1566,7 @@
         "errors": {
           "load": "We couldn't load recent test runs.",
           "create": "We couldn't create the test run.",
+          "delete": "We couldn't delete the test run.",
           "loadRun": "We couldn't open that run.",
           "validation": "Please review the information.",
           "missingFields": "Please fill in: {fields}.",
@@ -1576,12 +1577,14 @@
           "environment": "Where the run was executed (e.g. Staging)."
         },
         "alerts": {
-          "created": "Test run created."
+          "created": "Test run created.",
+          "deleted": "Test run deleted."
         },
         "title": "Test runs",
         "subtitle": "Track execution history and capture evidence.",
         "actions": {
-          "newRun": "New test run"
+          "newRun": "New test run",
+          "delete": "Delete"
         },
         "filters": {
           "label": "Scope",
@@ -1678,6 +1681,13 @@
         },
         "labels":{
           "refreshing":"Refreshing..."
+        },
+        "delete": {
+          "confirm": "Delete the \"{name}\" test run?",
+          "title": "Delete test run",
+          "description": "This action will permanently delete the \"{name}\" test run.",
+          "cancel": "Cancel",
+          "confirmAction": "Delete"
         }
       },
       "dashboard": {

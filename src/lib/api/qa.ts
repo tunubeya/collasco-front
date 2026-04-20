@@ -701,6 +701,23 @@ export async function updateTestRun(
   }
 }
 
+export async function deleteTestRun(
+  token: string,
+  runId: string
+): Promise<void> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/test-runs/${runId}`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function listTestRuns(
   token: string,
   featureId: string,

@@ -1592,6 +1592,7 @@
         "errors": {
           "load": "Não foi possível carregar as execuções recentes.",
           "create": "Não foi possível criar a execução.",
+          "delete": "Não foi possível excluir a execução.",
           "loadRun": "Não foi possível abrir essa execução.",
           "validation": "Revise as informações.",
           "missingFields": "Preencha: {fields}.",
@@ -1602,12 +1603,14 @@
           "environment": "Ambiente onde foi executada (ex.: Staging)."
         },
         "alerts": {
-          "created": "Execução criada."
+          "created": "Execução criada.",
+          "deleted": "Execução excluída."
         },
         "title": "Execuções",
         "subtitle": "Acompanhe o histórico de execução e registre evidências.",
         "actions": {
-          "newRun": "Nova execução"
+          "newRun": "Nova execução",
+          "delete": "Excluir"
         },
         "filters": {
           "label": "Tipo",
@@ -1704,6 +1707,13 @@
         },
         "labels": {
           "refreshing": "Atualizando..."
+        },
+        "delete": {
+          "confirm": "Excluir a execução \"{name}\"?",
+          "title": "Excluir execução",
+          "description": "Esta ação excluirá permanentemente a execução \"{name}\".",
+          "cancel": "Cancelar",
+          "confirmAction": "Excluir"
         }
       },
       "dashboard": {

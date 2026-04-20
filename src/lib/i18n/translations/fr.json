@@ -1592,6 +1592,7 @@
         "errors": {
           "load": "Impossible de charger les dernières campagnes.",
           "create": "Impossible de créer la campagne.",
+          "delete": "Impossible de supprimer la campagne.",
           "loadRun": "Impossible d’ouvrir cette campagne.",
           "validation": "Vérifiez les informations saisies.",
           "missingFields": "Renseignez : {fields}.",
@@ -1602,12 +1603,14 @@
           "environment": "Environnement utilisé (ex : Préproduction)."
         },
         "alerts": {
-          "created": "Campagne créée."
+          "created": "Campagne créée.",
+          "deleted": "Campagne supprimée."
         },
         "title": "Campagnes",
         "subtitle": "Suivez l’historique d’exécution et collectez les preuves.",
         "actions": {
-          "newRun": "Nouvelle campagne"
+          "newRun": "Nouvelle campagne",
+          "delete": "Supprimer"
         },
         "filters": {
           "label": "Type",
@@ -1704,6 +1707,13 @@
         },
         "labels": {
           "refreshing": "Actualisation..."
+        },
+        "delete": {
+          "confirm": "Supprimer la campagne \"{name}\" ?",
+          "title": "Supprimer la campagne",
+          "description": "Cette action supprimera définitivement la campagne \"{name}\".",
+          "cancel": "Annuler",
+          "confirmAction": "Supprimer"
         }
       },
       "dashboard": {

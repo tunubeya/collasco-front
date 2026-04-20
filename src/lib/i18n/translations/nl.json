@@ -1592,6 +1592,7 @@
         "errors": {
           "load": "Recente runs konden niet worden geladen.",
           "create": "De run kon niet worden aangemaakt.",
+          "delete": "De run kon niet worden verwijderd.",
           "loadRun": "De run kon niet worden geopend.",
           "validation": "Controleer de ingevoerde gegevens.",
           "missingFields": "Vul in: {fields}.",
@@ -1602,12 +1603,14 @@
           "environment": "In welke omgeving uitgevoerd (bijv. Staging)."
         },
         "alerts": {
-          "created": "Run aangemaakt."
+          "created": "Run aangemaakt.",
+          "deleted": "Run verwijderd."
         },
         "title": "Test-runs",
         "subtitle": "Volg de uitvoeringshistorie en verzamel bewijsmateriaal.",
         "actions": {
-          "newRun": "Nieuwe run"
+          "newRun": "Nieuwe run",
+          "delete": "Verwijderen"
         },
         "filters": {
           "label": "Type",
@@ -1629,6 +1632,13 @@
         "summary": {
           "total": "{count} cases",
           "passed": "{count} geslaagd"
+        },
+        "delete": {
+          "confirm": "Run \"{name}\" verwijderen?",
+          "title": "Run verwijderen",
+          "description": "Deze actie verwijdert run \"{name}\" permanent.",
+          "cancel": "Annuleren",
+          "confirmAction": "Verwijderen"
         },
         "panel": {
           "untitled": "Run zonder titel",

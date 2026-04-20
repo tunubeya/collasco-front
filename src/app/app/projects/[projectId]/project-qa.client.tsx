@@ -12,16 +12,24 @@ import {
   QaRunScope,
   QaTestRunDetail,
   createProjectTestRun,
+  deleteTestRun,
   listProjectTestRuns,
 } from "@/lib/api/qa";
 import { Button } from "@/ui/components/button";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeading,
+} from "@/ui/components/dialog/dialog";
 import { RESULT_STATUSES } from "@/app/app/projects/[projectId]/features/[featureId]/feature-qa.client";
 import { FeatureOption } from "./project-qa.types";
 import { NewProjectRunDialog } from "./project-qa-dialog.client";
 import { SummaryBadge, EmptyState, Skeleton, ScopeBadge } from "./project-qa-shared";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Plus } from "lucide-react";
+import { Loader2, Plus, Trash2 } from "lucide-react";
 
 const RUNS_LIMIT = 10;
 
@@ -49,6 +57,8 @@ export function ProjectQA({
   const [isLoading, setIsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [scopeFilter, setScopeFilter] = useState<QaRunScope>("ALL");
+  const [deletingRunId, setDeletingRunId] = useState<string | null>(null);
+  const [runPendingDelete, setRunPendingDelete] = useState<QaProjectRunListItem | null>(null);
 
   const loadRuns = useCallback(async () => {
     setIsLoading(true);
@@ -125,6 +135,29 @@ export function ProjectQA({
       router.push(`/app/projects/${projectId}/test-runs/${runId}`);
     },
     [projectId, router]
+  );
+
+  const handleDeleteRun = useCallback(
+    async (run: QaProjectRunListItem) => {
+      if (!canManageQa) return;
+
+      setDeletingRunId(run.id);
+      try {
+        await deleteTestRun(token, run.id);
+        setRuns((prev) => prev.filter((item) => item.id !== run.id));
+        toast.success(t("alerts.deleted"));
+        setRunPendingDelete((current) => (current?.id === run.id ? null : current));
+        return true;
+      } catch (error) {
+        toast.error(t("errors.delete"), {
+          description: error instanceof Error ? error.message : undefined,
+        });
+        return false;
+      } finally {
+        setDeletingRunId(null);
+      }
+    },
+    [canManageQa, t, token]
   );
 
   const runListContent = useMemo(() => {
@@ -221,6 +254,58 @@ export function ProjectQA({
                   >
                     {t("list.open")}
                   </Button>
+                  {canManageQa && (
+                    <Dialog
+                      open={runPendingDelete?.id === run.id}
+                      onOpenChange={(open) => setRunPendingDelete(open ? run : null)}
+                    >
+                      <button
+                        type="button"
+                        className="rounded border border-border bg-background p-2 text-muted-foreground transition hover:text-destructive disabled:opacity-40"
+                        onClick={() => setRunPendingDelete(run)}
+                        disabled={deletingRunId === run.id}
+                        aria-label={t("actions.delete")}
+                        title={t("actions.delete")}
+                      >
+                        {deletingRunId === run.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+                        ) : (
+                          <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                        )}
+                      </button>
+                      <DialogContent className="m-4 w-full max-w-md rounded-2xl bg-background p-6 shadow-lg">
+                        <div className="space-y-3">
+                          <DialogHeading className="text-lg font-semibold">
+                            {t("delete.title")}
+                          </DialogHeading>
+                          <DialogDescription className="text-sm text-muted-foreground">
+                            {t("delete.description", {
+                              name: run.name?.trim() || t("list.runFallback", { id: run.id }),
+                            })}
+                          </DialogDescription>
+                        </div>
+                        <div className="mt-6 flex justify-end gap-2">
+                          <DialogClose>
+                            {t("delete.cancel")}
+                          </DialogClose>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => void handleDeleteRun(run)}
+                            disabled={deletingRunId === run.id}
+                          >
+                            {deletingRunId === run.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                            ) : (
+                              <Trash2 className="h-4 w-4" aria-hidden />
+                            )}
+                            {t("delete.confirmAction")}
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
                 </div>
               </div>
             </li>
@@ -228,7 +313,7 @@ export function ProjectQA({
         })}
       </ul>
     );
-  }, [canManageQa, formatter, hasFeatures, isLoading, openRunPage, runs, t]);
+  }, [canManageQa, deletingRunId, formatter, handleDeleteRun, hasFeatures, isLoading, openRunPage, runPendingDelete?.id, runs, t]);
 
   return (
     <section className="rounded-xl border bg-background shadow-sm">

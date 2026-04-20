@@ -1635,6 +1635,7 @@
         },
         "summary": {
           "total": "{count} casos",
+          "failed": "{count} fallidos",
           "passed": "{count} aprobados"
         },
         "panel": {

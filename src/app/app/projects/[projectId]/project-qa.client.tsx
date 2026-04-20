@@ -194,6 +194,9 @@ export function ProjectQA({
             0
           );
           const passed = run.summary?.PASSED ?? 0;
+          const failed =
+            (run.summary?.NOT_WORKING ?? 0) +
+            (run.summary?.MINOR_ISSUE ?? 0);
           const runDate = formatter.dateTime(new Date(run.runDate), {
             dateStyle: "medium",
             timeStyle: "short",
@@ -211,7 +214,10 @@ export function ProjectQA({
             <li
               key={run.id}
               className={cn(
-                "rounded-xl border p-4 transition hover:border-primary"
+                "rounded-xl border p-4 transition",
+                failed > 0
+                  ? "border-red-200 bg-red-50/40 hover:border-red-300"
+                  : "hover:border-primary"
               )}
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -243,6 +249,12 @@ export function ProjectQA({
                     />
                   )}
                   <SummaryBadge label={t("summary.total", { count: total })} />
+                  {failed > 0 && (
+                    <SummaryBadge
+                      label={t("summary.failed", { count: failed })}
+                      tone="danger"
+                    />
+                  )}
                   <SummaryBadge
                     label={t("summary.passed", { count: passed })}
                     tone="success"

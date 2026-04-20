@@ -1609,6 +1609,7 @@
         },
         "summary": {
           "total": "{count} cases",
+          "failed": "{count} failed",
           "passed": "{count} passed"
         },
         "panel": {

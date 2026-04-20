@@ -99,8 +99,25 @@ export function PublicManualClient({
   const [viewMode, setViewMode] = useState<"content" | "all">("content");
   const [rootType, setRootType] = useState<"PROJECT" | "MODULE" | "FEATURE" | null>(null);
   const [rootId, setRootId] = useState<string | null>(null);
+  const [hashTargetId, setHashTargetId] = useState<string | null>(null);
   const imagesCacheRef = useRef<Record<string, string> | null>(null);
   const imagesPromiseRef = useRef<Promise<Record<string, string>> | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const syncHashTarget = () => {
+      const rawHash = window.location.hash.replace(/^#/, "").trim();
+      const decodedHash = rawHash ? decodeURIComponent(rawHash) : "";
+      setHashTargetId(decodedHash || null);
+    };
+
+    syncHashTarget();
+    window.addEventListener("hashchange", syncHashTarget);
+    return () => {
+      window.removeEventListener("hashchange", syncHashTarget);
+    };
+  }, []);
 
   useEffect(() => {
     if (!localeParam) return;
@@ -385,6 +402,7 @@ export function PublicManualClient({
       {!isLoading && !error && outlineRoot && (
         <ManualOutline
           root={outlineRoot}
+          focusId={hashTargetId ?? undefined}
           fallbackDescription={tManual("noDescription")}
           expandLabel={tProjectDetail("modules.expandAll", {
             default: "Expand all",

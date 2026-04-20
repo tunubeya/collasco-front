@@ -36,6 +36,8 @@ type ManualTabContentProps = {
   canShareManual?: boolean;
   shareRootType?: "PROJECT" | "MODULE" | "FEATURE";
   shareRootId?: string | null;
+  shareHashTargetId?: string | null;
+  shareHashTargetType?: "MODULE" | "FEATURE" | null;
 };
 
 export function ManualTabContent({
@@ -53,6 +55,8 @@ export function ManualTabContent({
   canShareManual = false,
   shareRootType = "PROJECT",
   shareRootId,
+  shareHashTargetId,
+  shareHashTargetType,
 }: ManualTabContentProps) {
   const tManual = useTranslations("app.projects.manual");
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -184,6 +188,8 @@ export function ManualTabContent({
           onOpenChange={setIsShareOpen}
           initialRootType={shareRootType}
           initialRootId={shareRootId}
+          hashTargetId={shareHashTargetId}
+          hashTargetType={shareHashTargetType}
           lockRoot
         />
       )}

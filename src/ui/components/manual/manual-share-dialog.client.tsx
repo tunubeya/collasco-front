@@ -33,6 +33,8 @@ type ManualShareDialogProps = {
   initialRootType?: RootType;
   initialRootId?: string | null;
   lockRoot?: boolean;
+  hashTargetId?: string | null;
+  hashTargetType?: Exclude<RootType, "PROJECT"> | null;
 };
 
 type RootType = "PROJECT" | "MODULE" | "FEATURE";
@@ -48,6 +50,8 @@ export function ManualShareDialog({
   initialRootType = "PROJECT",
   initialRootId,
   lockRoot = true,
+  hashTargetId,
+  hashTargetType,
 }: ManualShareDialogProps) {
   const tManual = useTranslations("app.projects.manual");
   const tShare = useTranslations("app.projects.manual.share");
@@ -63,6 +67,7 @@ export function ManualShareDialog({
   const [rootType, setRootType] = useState<RootType>(initialRootType);
   const [rootId, setRootId] = useState("");
   const [rootError, setRootError] = useState<string | null>(null);
+  const [projectLinks, setProjectLinks] = useState<ManualShareLink[]>([]);
   const [moduleOptions, setModuleOptions] = useState<RootOption[]>([]);
   const [featureOptions, setFeatureOptions] = useState<RootOption[]>([]);
 
@@ -115,13 +120,17 @@ export function ManualShareDialog({
     try {
       const scope: ManualShareScope = rootType;
       const canLoadLinks = scope === "PROJECT" || Boolean(rootId);
-      const [labelOptions, linkResponse, structureRes] = await Promise.all([
+      const shouldLoadProjectLinks = scope !== "PROJECT" && Boolean(hashTargetId);
+      const [labelOptions, linkResponse, projectLinkResponse, structureRes] = await Promise.all([
         listProjectDocumentationLabels(token, projectId),
         canLoadLinks
           ? listManualShareLinks(token, projectId, {
               scope,
               rootId: scope === "PROJECT" ? undefined : rootId || undefined,
             })
+          : Promise.resolve({ items: [] }),
+        shouldLoadProjectLinks
+          ? listManualShareLinks(token, projectId, { scope: "PROJECT" })
           : Promise.resolve({ items: [] }),
         fetchWithAuth(
           `${apiUrl}/projects/${projectId}/structure?limit=2000&sort=sortOrder`,
@@ -131,6 +140,7 @@ export function ManualShareDialog({
       ]);
       setLabels(labelOptions ?? []);
       setLinks(linkResponse.items ?? []);
+      setProjectLinks(projectLinkResponse.items ?? []);
       if (structureRes.ok) {
         const payload = (await structureRes.json()) as ProjectStructureResponse;
         const modules = payload.modules ?? [];
@@ -144,7 +154,7 @@ export function ManualShareDialog({
     } finally {
       setIsLoading(false);
     }
-  }, [projectId, rootId, rootType, tShare, token]);
+  }, [hashTargetId, projectId, rootId, rootType, tShare, token]);
 
   useEffect(() => {
     if (open) {
@@ -222,17 +232,20 @@ export function ManualShareDialog({
   );
 
   const copyLink = useCallback(
-    async (linkId: string) => {
+    async (linkId: string, anchorId?: string | null) => {
       const url = new URL(
         `/public/manual/shared/${linkId}`,
         window.location.origin,
-      ).toString();
+      );
+      if (anchorId) {
+        url.hash = encodeURIComponent(anchorId);
+      }
       try {
         if (navigator?.clipboard?.writeText) {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(url.toString());
         } else {
           const textarea = document.createElement("textarea");
-          textarea.value = url;
+          textarea.value = url.toString();
           textarea.style.position = "fixed";
           textarea.style.opacity = "0";
           document.body.appendChild(textarea);
@@ -249,6 +262,20 @@ export function ManualShareDialog({
     },
     [tShare],
   );
+
+  const contextualProjectLinks = useMemo(
+    () =>
+      projectLinks.filter(
+        (link) => (link.rootType ?? "PROJECT") === "PROJECT",
+      ),
+    [projectLinks],
+  );
+
+  const contextualCopyLabel = useMemo(() => {
+    if (hashTargetType === "FEATURE") return tShare("copyWithFeature");
+    if (hashTargetType === "MODULE") return tShare("copyWithModule");
+    return tShare("copy");
+  }, [hashTargetType, tShare]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -474,6 +501,78 @@ export function ManualShareDialog({
                   })}
                 </div>
               )}
+
+              {hashTargetId && hashTargetType && contextualProjectLinks.length > 0 ? (
+                <div className="space-y-2 border-t border-border/60 pt-4">
+                  <div>
+                    <p className="text-sm font-semibold">
+                      {tShare("projectLinksTitle")}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {tShare("projectLinksHint")}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {contextualProjectLinks.map((link) => {
+                      const isRevoked = Boolean(link.isRevoked || link.revokedAt);
+                      const labelNames =
+                        link.labels?.map((label) => label.name).join(", ") ??
+                        link.labelIds.join(", ");
+                      const createdAt = formatter.dateTime(new Date(link.createdAt), {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      });
+                      return (
+                        <div
+                          key={`project-${link.id}`}
+                          className={cn(
+                            "rounded-lg border px-3 py-2 text-sm",
+                            isRevoked
+                              ? "border-border/60 bg-muted/40 text-muted-foreground"
+                              : "border-border bg-background",
+                          )}
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                              <p className="font-medium">
+                                {labelNames || tShare("labelsFallback")}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {createdAt}
+                              </p>
+                              {link.comment ? (
+                                <p className="mt-1 text-xs text-muted-foreground">
+                                  {link.comment}
+                                </p>
+                              ) : null}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                className="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+                                onClick={() => void copyLink(link.id)}
+                                disabled={isRevoked}
+                              >
+                                <Link2 className="h-3.5 w-3.5" aria-hidden />
+                                {tShare("copy")}
+                              </button>
+                              <button
+                                type="button"
+                                className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-2 py-1 text-xs font-medium text-primary hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-60"
+                                onClick={() => void copyLink(link.id, hashTargetId)}
+                                disabled={isRevoked}
+                              >
+                                <Link2 className="h-3.5 w-3.5" aria-hidden />
+                                {contextualCopyLabel}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
         )}

@@ -163,6 +163,8 @@ export function ModuleTabs({
             canShareManual={canShareManual}
             shareRootType="MODULE"
             shareRootId={module.id}
+            shareHashTargetId={module.id}
+            shareHashTargetType="MODULE"
           />
         </div>
       )}

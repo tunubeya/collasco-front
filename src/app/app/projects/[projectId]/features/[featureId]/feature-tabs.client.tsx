@@ -296,6 +296,8 @@ export function FeatureTabs({
             canShareManual={canShareManual}
             shareRootType="FEATURE"
             shareRootId={feature.id}
+            shareHashTargetId={feature.id}
+            shareHashTargetType="FEATURE"
           />
         </div>
       )}

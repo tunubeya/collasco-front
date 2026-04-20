@@ -150,6 +150,11 @@ export function ManualOutline({
     [root],
   );
 
+  useEffect(() => {
+    if (!focusId) return;
+    handleNavigateTo(focusId);
+  }, [focusId, handleNavigateTo]);
+
   const resolvedLinkedLabels = useMemo(() => {
     if (!linkedLabel) {
       return { references: "References", referencedBy: "Referenced by" };

@@ -236,6 +236,9 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
                         <p className="text-sm text-[color:var(--color-muted-fg)]">
                           {t(`features.clusters.${cluster.key}.items.${item.key}.description`)}
                         </p>
+                        <p className="mt-2 text-xs italic text-[color:var(--color-muted-fg)]/90">
+                          {t(`features.clusters.${cluster.key}.items.${item.key}.example`)}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
@@ -261,6 +264,9 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
                 <h3 className="text-lg font-semibold">{t('features.ai.title')}</h3>
                 <p className="mt-2 text-sm leading-7 text-[color:var(--color-muted-fg)]">
                   {t('features.ai.description')}
+                </p>
+                <p className="mt-2 text-xs italic text-[color:var(--color-muted-fg)]/90">
+                  {t('features.ai.example')}
                 </p>
               </div>
             </div>

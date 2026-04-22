@@ -63,28 +63,32 @@ export default async function LandingPage() {
       label: t('features.label'),
       title: t('features.title'),
       description: t('features.description'),
+      ai: {
+        title: t('features.ai.title'),
+        description: t('features.ai.description'),
+        example: t('features.ai.example')
+      },
       clusters: {
         captureAlign: {
           title: t('features.clusters.captureAlign.title'),
           items: {
-            supportTickets: { title: t('features.clusters.captureAlign.items.supportTickets.title'), description: t('features.clusters.captureAlign.items.supportTickets.description') },
-            structuredCommunication: { title: t('features.clusters.captureAlign.items.structuredCommunication.title'), description: t('features.clusters.captureAlign.items.structuredCommunication.description') }
+            supportTickets: { title: t('features.clusters.captureAlign.items.supportTickets.title'), description: t('features.clusters.captureAlign.items.supportTickets.description'), example: t('features.clusters.captureAlign.items.supportTickets.example') },
+            structuredCommunication: { title: t('features.clusters.captureAlign.items.structuredCommunication.title'), description: t('features.clusters.captureAlign.items.structuredCommunication.description'), example: t('features.clusters.captureAlign.items.structuredCommunication.example') }
           }
         },
         validateControl: {
           title: t('features.clusters.validateControl.title'),
           items: {
-            testingWorkflows: { title: t('features.clusters.validateControl.items.testingWorkflows.title'), description: t('features.clusters.validateControl.items.testingWorkflows.description') },
-            reviewApprovals: { title: t('features.clusters.validateControl.items.reviewApprovals.title'), description: t('features.clusters.validateControl.items.reviewApprovals.description') },
-            changeControl: { title: t('features.clusters.validateControl.items.changeControl.title'), description: t('features.clusters.validateControl.items.changeControl.description') }
+            testingWorkflows: { title: t('features.clusters.validateControl.items.testingWorkflows.title'), description: t('features.clusters.validateControl.items.testingWorkflows.description'), example: t('features.clusters.validateControl.items.testingWorkflows.example') },
+            reviewApprovals: { title: t('features.clusters.validateControl.items.reviewApprovals.title'), description: t('features.clusters.validateControl.items.reviewApprovals.description'), example: t('features.clusters.validateControl.items.reviewApprovals.example') },
+            changeControl: { title: t('features.clusters.validateControl.items.changeControl.title'), description: t('features.clusters.validateControl.items.changeControl.description'), example: t('features.clusters.validateControl.items.changeControl.example') }
           }
         },
         documentDeliver: {
           title: t('features.clusters.documentDeliver.title'),
           items: {
-            versionDocs: { title: t('features.clusters.documentDeliver.items.versionDocs.title'), description: t('features.clusters.documentDeliver.items.versionDocs.description') },
-            manuals: { title: t('features.clusters.documentDeliver.items.manuals.title'), description: t('features.clusters.documentDeliver.items.manuals.description') },
-            aiSupport: { title: t('features.clusters.documentDeliver.items.aiSupport.title'), description: t('features.clusters.documentDeliver.items.aiSupport.description') }
+            versionDocs: { title: t('features.clusters.documentDeliver.items.versionDocs.title'), description: t('features.clusters.documentDeliver.items.versionDocs.description'), example: t('features.clusters.documentDeliver.items.versionDocs.example') },
+            manuals: { title: t('features.clusters.documentDeliver.items.manuals.title'), description: t('features.clusters.documentDeliver.items.manuals.description'), example: t('features.clusters.documentDeliver.items.manuals.example') }
           }
         }
       }

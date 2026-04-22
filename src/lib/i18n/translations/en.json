@@ -152,7 +152,8 @@
       "description": "Collasco is a platform that connects requirements, validation, documentation and delivery into one structured workflow — shared between your team and your customer.",
       "ai": {
         "title": "AI",
-        "description": "AI helps transform raw input/outputs (tickets, feedback, pull requests) into structured requirements, documentation and release notes."
+        "description": "AI helps transform raw input/outputs (tickets, feedback, pull requests) into structured requirements, documentation and release notes.",
+        "example": "e.g. turn a support ticket into a structured requirement"
       },
       "clusters": {
         "captureAlign": {
@@ -160,11 +161,13 @@
           "items": {
             "supportTickets": {
               "title": "Support Tickets",
-              "description": "Collect feedback early and connect tickets directly to your knowledge base."
+              "description": "Capture feedback early and link it directly to features and documentation — so input turns into structured improvements.",
+              "example": "e.g. turn a customer issue into a tracked feature request"
             },
             "structuredCommunication": {
-              "title": "Structured communication",
-              "description": "Keep discussions in context, so decisions are never lost."
+              "title": "Structured Communication",
+              "description": "Discuss changes directly within the related feature, requirement or validation — so context is preserved and misunderstandings or missed decisions are avoided.",
+              "example": "e.g. discuss a change directly within the related feature"
             }
           }
         },
@@ -173,15 +176,18 @@
           "items": {
             "testingWorkflows": {
               "title": "Testing workflows",
-              "description": "Turn validation into a structured, repeatable process."
+              "description": "Manage acceptance, beta and validation tests in a structured flow — with clear results, traceability and ownership.",
+              "example": "e.g. run a customer acceptance test before releasing a feature"
             },
             "reviewApprovals": {
               "title": "Review & approvals",
-              "description": "Define who validates what and keep every decision traceable."
+              "description": "Assign who validates what within each feature or release — so every decision is clear, accountable and auditable.",
+              "example": "e.g. assign a stakeholder to validate a feature before release"
             },
             "changeControl": {
               "title": "Change capture & control",
-              "description": "Capture every code change and enforce validation before release."
+              "description": "Detect and link every code change to its related feature and validation flow — ensuring nothing bypasses the process.",
+              "example": "e.g. link a code commit to its feature and validation flow"
             }
           }
         },
@@ -190,11 +196,13 @@
           "items": {
             "versionDocs": {
               "title": "Version & release docs",
-              "description": "Create transparent, auditable release notes and track every change."
+              "description": "Document changes per release in a structured and consistent way — so every delivery is transparent and traceable.",
+              "example": "e.g. generate release notes based on validated changes"
             },
             "manuals": {
               "title": "Manuals & quality files",
-              "description": "Generate IQ/OQ/PQ documentation from a single, consistent knowledge base."
+              "description": "Generate IQ/OQ/PQ and user documentation from the same structured source — ensuring consistency across all stakeholders.",
+              "example": "e.g. create IQ/OQ/PQ documentation from approved features"
             }
           }
         }

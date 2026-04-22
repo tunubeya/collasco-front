@@ -149,7 +149,11 @@
     "features": {
       "label": "What Collasco does",
       "title": "A structured, shared process in one platform",
-      "description": "Connect requirements, communication, validation, and delivery into one continuous flow.",
+      "description": "Collasco is a platform that connects requirements, validation, documentation and delivery into one structured workflow — shared between your team and your customer.",
+      "ai": {
+        "title": "AI",
+        "description": "AI helps transform raw input/outputs (tickets, feedback, pull requests) into structured requirements, documentation and release notes."
+      },
       "clusters": {
         "captureAlign": {
           "title": "Capture & Align",
@@ -191,10 +195,6 @@
             "manuals": {
               "title": "Manuals & quality files",
               "description": "Generate IQ/OQ/PQ documentation from a single, consistent knowledge base."
-            },
-            "aiSupport": {
-              "title": "AI support",
-              "description": "Standardize and automate documentation across teams and stakeholders."
             }
           }
         }

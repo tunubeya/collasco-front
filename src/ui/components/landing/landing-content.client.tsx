@@ -36,8 +36,7 @@ const featureClusters = [
     icon: '📦',
     items: [
       { icon: '🧾', key: 'versionDocs' },
-      { icon: '📘', key: 'manuals' },
-      { icon: '🤖', key: 'aiSupport' }
+      { icon: '📘', key: 'manuals' }
     ]
   }
 ] as const;
@@ -244,6 +243,28 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
               </div>
             </motion.div>
           ))}
+        </motion.div>
+        <motion.div
+          className="mt-8"
+          initial={fadeInUp.initial}
+          whileInView={fadeInUp.whileInView}
+          viewport={fadeInUp.viewport}
+          transition={fadeInUp.transition}
+        >
+          <div className="relative rounded-2xl border border-[color:var(--color-border)] bg-primary/[0.06] p-6">
+            <div className="absolute top-0 left-0 h-full w-1 rounded-l-2xl bg-gradient-to-b from-amber-400 to-orange-500" />
+            <div className="flex items-start gap-4 pl-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-xl">
+                <span>🤖</span>
+              </div>
+              <div className="max-w-3xl">
+                <h3 className="text-lg font-semibold">{t('features.ai.title')}</h3>
+                <p className="mt-2 text-sm leading-7 text-[color:var(--color-muted-fg)]">
+                  {t('features.ai.description')}
+                </p>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </section>
 

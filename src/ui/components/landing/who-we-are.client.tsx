@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { 
   Users, 
   Target, 
@@ -33,7 +34,7 @@ const team = [
     role: 'Product', 
     email: 'thomas@orderflow.be', 
     linkedin: 'https://www.linkedin.com/in/tcleenewerck/',
-    initials: 'T',
+    photo: '/persons/Thomas.jpg',
     description: 'Focuses on product strategy and user experience to ensure clarity in every feature.'
   },
   { 
@@ -41,7 +42,7 @@ const team = [
     role: 'Architecture', 
     email: 'daniel@orderflow.be', 
     linkedin: 'https://www.linkedin.com/in/daniel-camacho-santacruz/',
-    initials: 'D',
+    photo: '/persons/Daniel.png',
     description: 'Leads the technical foundation, building reliable and scalable systems for delivery.'
   }
 ] as const;
@@ -163,7 +164,7 @@ export default function WhoWeArePage() {
             viewport={{ once: true }}
           >
             {team.map((member) => (
-              <motion.li 
+              <motion.div 
                 key={member.name} 
                 className="group relative"
                 variants={fadeInUp}
@@ -173,40 +174,46 @@ export default function WhoWeArePage() {
                   whileHover={{ y: -4, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="flex items-center gap-x-6">
-                    <div className="h-16 w-16 flex-none rounded-full bg-primary/10 flex items-center justify-center text-primary text-xl font-bold">
-                      {member.initials}
+                  <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+                    <div className="relative mx-auto h-28 w-28 flex-none overflow-hidden rounded-full ring-2 ring-primary/10 sm:mx-0 sm:h-32 sm:w-32">
+                      <Image
+                        src={member.photo}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                        sizes="128px"
+                      />
                     </div>
-                    <div>
+                    <div className="flex-1 text-center sm:text-left">
                       <h3 className="text-lg font-semibold leading-7 tracking-tight">{member.name}</h3>
                       <p className="text-sm font-semibold leading-6 text-primary">{member.role}</p>
+                      <p className="mt-4 text-base leading-7 text-[color:var(--color-muted-fg)]">
+                        {member.description}
+                      </p>
+                      <div className="mt-6 flex justify-center gap-4 sm:justify-start">
+                        <motion.a 
+                          href={`mailto:${member.email}`} 
+                          className="rounded-full bg-surface p-2 text-primary"
+                          whileHover={{ scale: 1.1, backgroundColor: 'var(--color-primary)', color: 'white' }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Mail className="h-5 w-5" />
+                        </motion.a>
+                        <motion.a 
+                          href={member.linkedin} 
+                          className="rounded-full bg-surface p-2 text-primary"
+                          whileHover={{ scale: 1.1, backgroundColor: 'var(--color-primary)', color: 'white' }}
+                          transition={{ duration: 0.2 }}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Linkedin className="h-5 w-5" />
+                        </motion.a>
+                      </div>
                     </div>
                   </div>
-                  <p className="mt-6 text-base leading-7 text-[color:var(--color-muted-fg)]">
-                    {member.description}
-                  </p>
-                  <div className="mt-8 flex gap-4">
-                    <motion.a 
-                      href={`mailto:${member.email}`} 
-                      className="rounded-full bg-surface p-2 text-primary"
-                      whileHover={{ scale: 1.1, backgroundColor: 'var(--color-primary)', color: 'white' }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Mail className="h-5 w-5" />
-                    </motion.a>
-                    <motion.a 
-                      href={member.linkedin} 
-                      className="rounded-full bg-surface p-2 text-primary"
-                      whileHover={{ scale: 1.1, backgroundColor: 'var(--color-primary)', color: 'white' }}
-                      transition={{ duration: 0.2 }}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Linkedin className="h-5 w-5" />
-                    </motion.a>
-                  </div>
                 </motion.div>
-              </motion.li>
+              </motion.div>
             ))}
           </motion.div>
         </div>

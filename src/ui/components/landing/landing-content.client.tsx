@@ -151,79 +151,6 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
         </motion.div>
       </section>
 
-      {/* Differentiators */}
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div 
-            className="mx-auto max-w-2xl text-center mb-16"
-            initial={fadeInUp.initial}
-            whileInView={fadeInUp.whileInView}
-            viewport={fadeInUp.viewport}
-            transition={fadeInUp.transition}
-          >
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{t('differentiators.label')}</p>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">{t('differentiators.title')}</h2>
-            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('differentiators.description')}</p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-3"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true }}
-          >
-            <motion.div 
-              className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8"
-              variants={fadeInUp}
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
-                <span className="text-2xl">🐛</span>
-              </div>
-              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.jira.tool')}</h3>
-              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.jira.challenge')}</p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
-                <CheckCircle2 className="h-4 w-4" />
-                <span className="text-sm">{t('differentiators.items.jira.edge')}</span>
-              </div>
-            </motion.div>
-            <motion.div 
-              className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8"
-              variants={fadeInUp}
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
-                <span className="text-2xl">📝</span>
-              </div>
-              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.notion.tool')}</h3>
-              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.notion.challenge')}</p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
-                <CheckCircle2 className="h-4 w-4" />
-                <span className="text-sm">{t('differentiators.items.notion.edge')}</span>
-              </div>
-            </motion.div>
-            <motion.div 
-              className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8"
-              variants={fadeInUp}
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.linear.tool')}</h3>
-              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.linear.challenge')}</p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
-                <CheckCircle2 className="h-4 w-4" />
-                <span className="text-sm">{t('differentiators.items.linear.edge')}</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Personas */}
       <section className="bg-surface py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
@@ -321,27 +248,102 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
       </section>
 
       {/* Promise */}
-      <section className="mx-auto max-w-4xl px-6 py-16 text-center md:py-20">
-        <motion.div 
-          initial={fadeInUp.initial}
-          whileInView={fadeInUp.whileInView}
-          viewport={fadeInUp.viewport}
-          transition={fadeInUp.transition}
-        >
-          <p className="text-sm font-semibold uppercase text-primary">{t('promise.label')}</p>
-          <h2 className="mt-4 text-3xl font-semibold">{t('promise.title')}</h2>
-          <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('promise.description')}</p>
-          <motion.a
-            href={scheduleMeetingUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-8 inline-flex rounded-full bg-primary px-8 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30"
-            whileHover={{ y: -2 }}
-            transition={{ duration: 0.2 }}
+      <section className="bg-surface py-16 text-center md:py-20">
+        <div className="mx-auto max-w-4xl px-6">
+          <motion.div 
+            initial={fadeInUp.initial}
+            whileInView={fadeInUp.whileInView}
+            viewport={fadeInUp.viewport}
+            transition={fadeInUp.transition}
           >
-            {t('cta.becomeEarlyAdopter')}
-          </motion.a>
-        </motion.div>
+            <p className="text-sm font-semibold uppercase text-primary">{t('promise.label')}</p>
+            <h2 className="mt-4 text-3xl font-semibold">{t('promise.title')}</h2>
+            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('promise.description')}</p>
+            <motion.a
+              href={scheduleMeetingUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex rounded-full bg-primary px-8 py-3 text-sm font-semibold text-[color:var(--color-primary-foreground)] shadow-lg shadow-primary/30"
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
+            >
+              {t('cta.becomeEarlyAdopter')}
+            </motion.a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Differentiators */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <motion.div 
+            className="mx-auto max-w-2xl text-center mb-16"
+            initial={fadeInUp.initial}
+            whileInView={fadeInUp.whileInView}
+            viewport={fadeInUp.viewport}
+            transition={fadeInUp.transition}
+          >
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{t('differentiators.label')}</p>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">{t('differentiators.title')}</h2>
+            <p className="mt-4 text-lg text-[color:var(--color-muted-fg)]">{t('differentiators.description')}</p>
+          </motion.div>
+          <motion.div 
+            className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-3"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: true }}
+          >
+            <motion.div 
+              className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8"
+              variants={fadeInUp}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
+                <span className="text-2xl">🐛</span>
+              </div>
+              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.jira.tool')}</h3>
+              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.jira.challenge')}</p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm">{t('differentiators.items.jira.edge')}</span>
+              </div>
+            </motion.div>
+            <motion.div 
+              className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8"
+              variants={fadeInUp}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
+                <span className="text-2xl">📝</span>
+              </div>
+              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.notion.tool')}</h3>
+              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.notion.challenge')}</p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm">{t('differentiators.items.notion.edge')}</span>
+              </div>
+            </motion.div>
+            <motion.div 
+              className="relative overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-background p-8"
+              variants={fadeInUp}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-6">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <h3 className="text-lg font-semibold leading-7 tracking-tight">{t('differentiators.items.linear.tool')}</h3>
+              <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted-fg)]">{t('differentiators.items.linear.challenge')}</p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm">{t('differentiators.items.linear.edge')}</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       {/* Stay connected */}

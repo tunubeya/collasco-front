@@ -533,6 +533,30 @@
             "desc": "Usar el tema oscuro en la aplicación"
           }
         },
+        "ticketPrefs": {
+          "title": "Notificaciones de tickets",
+          "subtitle": "Elige cómo quieres recibir notificaciones para tickets asignados y no asignados.",
+          "notifyAssigned": {
+            "label": "Notificaciones in-app de tickets asignados",
+            "description": "Recibe notificaciones dentro de la app para tickets que actualmente están asignados a ti."
+          },
+          "notifyUnassigned": {
+            "label": "Notificaciones in-app de tickets no asignados",
+            "description": "Recibe notificaciones dentro de la app para tickets sin responsable asignado."
+          },
+          "emailAssigned": {
+            "label": "Emails de tickets asignados",
+            "description": "Recibe correos por tickets que actualmente están asignados a ti."
+          },
+          "emailUnassigned": {
+            "label": "Emails de tickets no asignados",
+            "description": "Recibe correos por tickets sin responsable asignado."
+          },
+          "alerts": {
+            "success": "Preferencia actualizada.",
+            "error": "No pudimos actualizar la preferencia."
+          }
+        },
         "alerts": {
           "success": "Preferencias actualizadas.",
           "error": "No pudimos actualizar tus preferencias."

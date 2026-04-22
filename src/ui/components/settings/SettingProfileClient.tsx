@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Input } from "@/ui/components/form/input";
 import { actionButtonClass } from "@/ui/styles/action-button";
@@ -17,7 +17,10 @@ type Props = {
   defaultEmail: string;
 };
 
-export default function SettingsProfileClient({ defaultName, defaultEmail }: Props) {
+export default function SettingsProfileClient({
+  defaultName,
+  defaultEmail,
+}: Props) {
   const t = useTranslations("app.settings.profile");
   const [name, setName] = useState(defaultName);
   const [email, setEmail] = useState(defaultEmail);
@@ -39,10 +42,10 @@ export default function SettingsProfileClient({ defaultName, defaultEmail }: Pro
 
   useEffect(() => {
     if (profileState?.success) {
-      setName((prev) => prev.trim());
-      setEmail((prev) => prev.trim());
+      setName(profileState.user?.name?.trim() ?? name.trim());
+      setEmail(profileState.user?.email?.trim() ?? email.trim());
     }
-  }, [profileState?.success]);
+  }, [email, name, profileState?.success, profileState.user]);
 
   useEffect(() => {
     if (passwordState?.success) {
@@ -56,10 +59,14 @@ export default function SettingsProfileClient({ defaultName, defaultEmail }: Pro
     <div className="grid gap-8">
       {/* Bloque Perfil */}
       <form
-        action={(formData) => {
+        onSubmit={(event) => {
+          event.preventDefault();
+          const formData = new FormData();
           formData.set("name", name);
           formData.set("email", email);
-          return triggerProfile(formData);
+          startTransition(() => {
+            triggerProfile(formData);
+          });
         }}
         className="bg-surface border border-[color:var(--color-border)] rounded-2xl p-6"
       >

@@ -533,6 +533,30 @@
             "desc": "Utiliser le thème sombre dans l’application"
           }
         },
+        "ticketPrefs": {
+          "title": "Notifications de tickets",
+          "subtitle": "Choisissez comment recevoir les notifications pour les tickets assignés et non assignés.",
+          "notifyAssigned": {
+            "label": "Notifications in-app des tickets assignés",
+            "description": "Recevez des notifications dans l’application pour les tickets actuellement assignés à vous."
+          },
+          "notifyUnassigned": {
+            "label": "Notifications in-app des tickets non assignés",
+            "description": "Recevez des notifications dans l’application pour les tickets sans assignataire."
+          },
+          "emailAssigned": {
+            "label": "E-mails des tickets assignés",
+            "description": "Recevez des e-mails pour les tickets actuellement assignés à vous."
+          },
+          "emailUnassigned": {
+            "label": "E-mails des tickets non assignés",
+            "description": "Recevez des e-mails pour les tickets sans assignataire."
+          },
+          "alerts": {
+            "success": "Préférence mise à jour.",
+            "error": "Impossible de mettre à jour la préférence."
+          }
+        },
         "alerts": {
           "success": "Préférences mises à jour.",
           "error": "Impossible de mettre à jour vos préférences."

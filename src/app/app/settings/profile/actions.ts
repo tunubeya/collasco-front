@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import {
@@ -8,7 +7,7 @@ import {
   fetchUpdateCurrentUser,
 } from '@/lib/data';
 import { getSession } from '@/lib/session';
-import type { UpdateUserDto } from '@/lib/model-definitions/user';
+import type { UpdateUserDto, User } from '@/lib/model-definitions/user';
 import { RoutesEnum } from '@/lib/utils';
 import { handlePageError } from '@/lib/handle-page-error';
 
@@ -19,6 +18,7 @@ export type ProfileFormState = {
   };
   message?: string;
   success?: boolean;
+  user?: User;
 };
 
 export type PasswordFormState = {
@@ -40,7 +40,6 @@ export async function updateProfileAction(
 
   const rawName = (formData.get('name') ?? '').toString().trim();
   const rawEmail = (formData.get('email') ?? '').toString().trim();
-
   const fieldErrors: ProfileFormState['fieldErrors'] = {};
   if (!rawName) {
     fieldErrors.name = 'required';
@@ -66,7 +65,14 @@ export async function updateProfileAction(
   }
 
   try {
-    await fetchUpdateCurrentUser(session.token, dto);
+    const updatedUser = await fetchUpdateCurrentUser(session.token, dto);
+
+    return {
+      success: true,
+      message: 'profileUpdated',
+      fieldErrors: {},
+      user: updatedUser,
+    };
   } catch (error) {
     await handlePageError(error);
     if (error instanceof Response) {
@@ -84,15 +90,6 @@ export async function updateProfileAction(
       fieldErrors,
     };
   }
-
-  revalidatePath('/app/settings/profile');
-  revalidatePath('/app');
-
-  return {
-    success: true,
-    message: 'profileUpdated',
-    fieldErrors: {},
-  };
 }
 
 export async function updatePasswordAction(

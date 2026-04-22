@@ -4,8 +4,10 @@ import { handleUnauthorized } from "@/lib/server-auth-helpers";
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export type TicketNotificationPrefs = {
-  ticketReceiveNotifications: boolean;
-  ticketReceiveEmails: boolean;
+  notifyAssignedTickets?: boolean;
+  notifyUnassignedTickets?: boolean;
+  emailAssignedTickets?: boolean;
+  emailUnassignedTickets?: boolean;
 };
 
 export async function fetchTicketNotificationPrefs(

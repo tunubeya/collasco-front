@@ -8,6 +8,7 @@ import {
   fetchDeleteGithubToken,
   fetchUpdateCurrentUser,
 } from '@/lib/data';
+import { updateTicketNotificationPrefs } from '@/lib/api/ticket-notifications';
 import { getSession } from '@/lib/session';
 import { RoutesEnum } from '@/lib/utils';
 import { handlePageError } from '@/lib/handle-page-error';
@@ -24,6 +25,32 @@ export type GithubTokenFormState = {
   message?: 'validation' | 'saved' | 'error';
   success?: boolean;
 };
+
+export async function updateTicketPreferenceAction(
+  field:
+    | 'notifyAssignedTickets'
+    | 'notifyUnassignedTickets'
+    | 'emailAssignedTickets'
+    | 'emailUnassignedTickets',
+  value: boolean
+): Promise<{
+  success: boolean;
+  value: boolean;
+}> {
+  const session = await getSession();
+  if (!session?.token) redirect(RoutesEnum.LOGIN);
+
+  try {
+    await updateTicketNotificationPrefs(session.token, {
+      [field]: value,
+    });
+  } catch (error) {
+    await handlePageError(error);
+    return { success: false, value: !value };
+  }
+
+  return { success: true, value };
+}
 
 
 export async function updateGeneralPreferencesAction(

@@ -23,6 +23,10 @@ export default async function GeneralSettingsPage() {
   const initial = {
     apiTokenMasked: profile?.githubIdentity?.accessToken ?? t("api.placeholder"),
     hasGithubToken: Boolean(profile?.githubIdentity),
+    notifyAssignedTickets: profile?.notifyAssignedTickets ?? false,
+    notifyUnassignedTickets: profile?.notifyUnassignedTickets ?? false,
+    emailAssignedTickets: profile?.emailAssignedTickets ?? false,
+    emailUnassignedTickets: profile?.emailUnassignedTickets ?? false,
   };
 
   return (

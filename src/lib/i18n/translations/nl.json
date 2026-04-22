@@ -533,6 +533,30 @@
             "desc": "Gebruik het donkere thema in de applicatie"
           }
         },
+        "ticketPrefs": {
+          "title": "Ticketmeldingen",
+          "subtitle": "Kies hoe je meldingen wilt ontvangen voor toegewezen en niet-toegewezen tickets.",
+          "notifyAssigned": {
+            "label": "In-app meldingen voor toegewezen tickets",
+            "description": "Ontvang meldingen in de app voor tickets die momenteel aan jou zijn toegewezen."
+          },
+          "notifyUnassigned": {
+            "label": "In-app meldingen voor niet-toegewezen tickets",
+            "description": "Ontvang meldingen in de app voor tickets zonder toegewezen verantwoordelijke."
+          },
+          "emailAssigned": {
+            "label": "E-mails voor toegewezen tickets",
+            "description": "Ontvang e-mails voor tickets die momenteel aan jou zijn toegewezen."
+          },
+          "emailUnassigned": {
+            "label": "E-mails voor niet-toegewezen tickets",
+            "description": "Ontvang e-mails voor tickets zonder toegewezen verantwoordelijke."
+          },
+          "alerts": {
+            "success": "Voorkeur bijgewerkt.",
+            "error": "We konden de voorkeur niet bijwerken."
+          }
+        },
         "alerts": {
           "success": "Voorkeuren bijgewerkt.",
           "error": "Voorkeuren konden niet worden bijgewerkt."

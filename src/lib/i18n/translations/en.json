@@ -513,6 +513,30 @@
             "desc": "Use the dark theme in the application"
           }
         },
+        "ticketPrefs": {
+          "title": "Ticket notifications",
+          "subtitle": "Choose how you want to receive notifications for assigned and unassigned tickets.",
+          "notifyAssigned": {
+            "label": "In-app notifications for assigned tickets",
+            "description": "Receive in-app notifications for tickets currently assigned to you."
+          },
+          "notifyUnassigned": {
+            "label": "In-app notifications for unassigned tickets",
+            "description": "Receive in-app notifications for tickets without an assignee."
+          },
+          "emailAssigned": {
+            "label": "Email notifications for assigned tickets",
+            "description": "Receive emails for tickets currently assigned to you."
+          },
+          "emailUnassigned": {
+            "label": "Email notifications for unassigned tickets",
+            "description": "Receive emails for tickets without an assignee."
+          },
+          "alerts": {
+            "success": "Preference updated.",
+            "error": "We couldn't update the preference."
+          }
+        },
         "alerts": {
           "success": "Preferences updated.",
           "error": "We couldn't update your preferences."

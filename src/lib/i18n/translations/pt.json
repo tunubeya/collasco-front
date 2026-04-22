@@ -533,6 +533,30 @@
             "desc": "Usar o tema escuro no aplicativo"
           }
         },
+        "ticketPrefs": {
+          "title": "Notificações de tickets",
+          "subtitle": "Escolha como deseja receber notificações para tickets atribuídos e não atribuídos.",
+          "notifyAssigned": {
+            "label": "Notificações no app para tickets atribuídos",
+            "description": "Receba notificações no aplicativo para tickets atualmente atribuídos a você."
+          },
+          "notifyUnassigned": {
+            "label": "Notificações no app para tickets não atribuídos",
+            "description": "Receba notificações no aplicativo para tickets sem responsável atribuído."
+          },
+          "emailAssigned": {
+            "label": "E-mails para tickets atribuídos",
+            "description": "Receba e-mails para tickets atualmente atribuídos a você."
+          },
+          "emailUnassigned": {
+            "label": "E-mails para tickets não atribuídos",
+            "description": "Receba e-mails para tickets sem responsável atribuído."
+          },
+          "alerts": {
+            "success": "Preferência atualizada.",
+            "error": "Não foi possível atualizar a preferência."
+          }
+        },
         "alerts": {
           "success": "Preferências atualizadas.",
           "error": "Não foi possível atualizar suas preferências."

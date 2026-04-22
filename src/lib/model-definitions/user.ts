@@ -21,10 +21,18 @@ export type User = {
   preferences?: UserPreferences | null;
   ticketReceiveNotifications?: boolean | null;
   ticketReceiveEmails?: boolean | null;
+  notifyAssignedTickets?: boolean | null;
+  notifyUnassignedTickets?: boolean | null;
+  emailAssignedTickets?: boolean | null;
+  emailUnassignedTickets?: boolean | null;
 };
 
 export type UpdateUserDto = {
   name?: string;
   email?: string;
   preferences?: UserPreferences;
+  notifyAssignedTickets?: boolean;
+  notifyUnassignedTickets?: boolean;
+  emailAssignedTickets?: boolean;
+  emailUnassignedTickets?: boolean;
 };

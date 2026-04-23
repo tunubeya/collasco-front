@@ -1942,6 +1942,8 @@
         "tabs": {
           "mine": "Créés par moi",
           "assigned": "Assignés à moi",
+          "unassigned": "Non assignés",
+          "resolved": "Résolus",
           "all": "Tous",
           "external": "Externes"
         },

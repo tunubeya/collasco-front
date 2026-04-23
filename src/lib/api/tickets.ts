@@ -17,7 +17,7 @@ export type ListTicketsParams = {
   page?: number;
   limit?: number;
   status?: TicketStatus;
-  scope?: "mine" | "assigned" | "all" | "external";
+  scope?: "mine" | "assigned" | "unassigned" | "resolved" | "all" | "external";
   projectId?: string;
 };
 
@@ -49,6 +49,17 @@ export type UpdateTicketSectionRequest = {
 export type TicketOpenResponse = {
   sections: TicketSection[];
   lastMessageId: string | null;
+};
+
+export type TicketCountsResponse = {
+  counts: {
+    all: number;
+    mine: number;
+    assigned: number;
+    unassigned: number;
+    resolved: number;
+    external: number;
+  };
 };
 
 async function parseJson<T>(res: Response): Promise<T> {
@@ -110,6 +121,26 @@ export async function listTicketsAll(
     );
     if (!res.ok) throw res;
     return await parseJson<TicketListResponse>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function getTicketCounts(
+  token: string,
+  params?: Pick<ListTicketsParams, "projectId">
+): Promise<TicketCountsResponse> {
+  try {
+    const url = new URL(`${apiUrl}/tickets/counts`);
+    if (params?.projectId) url.searchParams.set("projectId", params.projectId);
+    const res = await fetchWithAuth(
+      url.toString(),
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<TicketCountsResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

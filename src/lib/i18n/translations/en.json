@@ -1925,6 +1925,8 @@
         "tabs": {
           "mine": "Created by me",
           "assigned": "Assigned to me",
+          "unassigned": "Unassigned",
+          "resolved": "Resolved",
           "all": "All",
           "external": "External"
         },

@@ -19,12 +19,21 @@ import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.clie
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { PublicTicketShareDialog } from "@/ui/components/tickets/public-ticket-share-dialog.client";
 
-type TicketsScope = "mine" | "assigned" | "all" | "external";
+type TicketsScope = "mine" | "assigned" | "unassigned" | "resolved" | "all" | "external";
 
 type Pagination = {
   total: number;
   page: number;
   limit: number;
+};
+
+type TicketCounts = {
+  all: number;
+  mine: number;
+  assigned: number;
+  unassigned: number;
+  resolved: number;
+  external: number;
 };
 
 type Props = {
@@ -33,6 +42,7 @@ type Props = {
   currentScope: TicketsScope;
   items: Ticket[];
   pagination: Pagination;
+  counts: TicketCounts;
   projectId?: string | null;
   projects: Project[];
   status: TicketStatus | null;
@@ -42,6 +52,8 @@ type Props = {
 const TAB_ICON = {
   mine: User,
   assigned: User,
+  unassigned: User,
+  resolved: Folder,
   all: Folder,
   external: Share2,
 } as const;
@@ -50,6 +62,7 @@ export default function TicketsTabs({
   currentScope,
   items,
   pagination,
+  counts,
   projectId,
   projects,
   status,
@@ -69,7 +82,7 @@ export default function TicketsTabs({
     Math.ceil(pagination.total / Math.max(1, pagination.limit))
   );
 
-  const tabs: TicketsScope[] = ["mine", "assigned", "all", "external"];
+  const tabs: TicketsScope[] = ["mine", "assigned", "unassigned", "resolved", "all", "external"];
   const projectOptions = useMemo(
     () => [
       { value: "", label: t("project.all") },
@@ -86,6 +99,9 @@ export default function TicketsTabs({
     sp.set("scope", next);
     sp.set("page", "1");
     sp.set("limit", String(pagination.limit));
+    if (next === "resolved") {
+      sp.delete("status");
+    }
     router.push(`${pathname}?${sp.toString()}`);
   };
 
@@ -105,6 +121,9 @@ export default function TicketsTabs({
     const sp = new URLSearchParams(params.toString());
     sp.set("page", "1");
     sp.set("limit", String(pagination.limit));
+    if (currentScope === "resolved" && nextStatus) {
+      sp.set("scope", "all");
+    }
     if (nextStatus) {
       sp.set("status", nextStatus);
     } else {
@@ -149,23 +168,14 @@ export default function TicketsTabs({
             {tabs.map((item) => {
               const Icon = TAB_ICON[item];
               const active = item === currentScope;
-              const tabItems = items.filter((t) => {
-                if (item === "mine") return currentUserId ? t.createdBy?.id === currentUserId : false;
-                if (item === "assigned") return currentUserId ? t.assignee?.id === currentUserId : false;
-                if (item === "external") return !t.createdBy;
-                return true;
-              });
-              const unreadCount = tabItems.reduce(
-                (sum, t) => sum + (t.unreadCount ?? 0),
-                0
-              );
+              const ticketCount = counts[item] ?? 0;
               return (
                 <button
                   key={item}
                   type="button"
                   onClick={() => setScope(item)}
                   className={cn(
-                    "relative inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
                     active
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border bg-muted text-muted-foreground hover:bg-background"
@@ -174,18 +184,16 @@ export default function TicketsTabs({
                 >
                   <Icon className="h-4 w-4" />
                   {t(`tabs.${item}`)}
-                  {unreadCount > 0 && (
-                    <span
-                      className={cn(
-                        "absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-bold",
-                        active
-                          ? "bg-primary-foreground text-primary"
-                          : "bg-destructive text-destructive-foreground"
-                      )}
-                    >
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  )}
+                  <span
+                    className={cn(
+                      "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
+                      active
+                        ? "bg-primary-foreground text-primary"
+                        : "bg-foreground/10 text-foreground"
+                    )}
+                  >
+                    {ticketCount > 99 ? "99+" : ticketCount}
+                  </span>
                 </button>
               );
             })}
@@ -201,7 +209,6 @@ export default function TicketsTabs({
                 <option value="">{t("filters.allStatuses")}</option>
                 <option value="OPEN">{t("statuses.OPEN")}</option>
                 <option value="PENDING">{t("statuses.PENDING")}</option>
-                <option value="RESOLVED">{t("statuses.RESOLVED")}</option>
               </select>
               <button
                 type="button"

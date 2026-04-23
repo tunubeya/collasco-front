@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { listProjectsMine } from "@/lib/api/projects";
 import {
+  getTicketCounts,
   listTicketsAll,
 } from "@/lib/api/tickets";
 import { RoutesEnum } from "@/lib/utils";
@@ -12,7 +13,7 @@ import { fetchGetUserProfile } from "@/lib/data";
 import TicketsTabs from "@/ui/components/tickets/tickets-tabs.client";
 
 type SearchParams = {
-  scope?: "mine" | "assigned" | "all" | "external";
+  scope?: "mine" | "assigned" | "unassigned" | "resolved" | "all" | "external";
   projectId?: string;
   status?: "OPEN" | "PENDING" | "RESOLVED";
   page?: string;
@@ -39,7 +40,11 @@ export default async function TicketsPage({ searchParams }: Props) {
 
   const scopeParam = (await searchParams)?.scope;
   const scope =
-    scopeParam === "assigned" || scopeParam === "all" || scopeParam === "external"
+    scopeParam === "assigned" ||
+    scopeParam === "unassigned" ||
+    scopeParam === "resolved" ||
+    scopeParam === "all" ||
+    scopeParam === "external"
       ? scopeParam
       : "mine";
   const projectId = (await searchParams)?.projectId ?? null;
@@ -72,7 +77,7 @@ export default async function TicketsPage({ searchParams }: Props) {
       page,
       limit,
       status,
-      scope: "all",
+      scope,
       projectId: projectId ?? undefined,
     });
   } catch (error) {
@@ -83,10 +88,40 @@ export default async function TicketsPage({ searchParams }: Props) {
     }
   }
 
+  let countsResult;
+  try {
+    countsResult = await getTicketCounts(token, {
+      projectId: projectId ?? undefined,
+    });
+  } catch (error) {
+    if (error instanceof Response && error.status === 404) {
+      countsResult = {
+        counts: {
+          all: 0,
+          mine: 0,
+          assigned: 0,
+          unassigned: 0,
+          resolved: 0,
+          external: 0,
+        },
+      };
+    } else {
+      await handlePageError(error);
+    }
+  }
+
   const items = ticketsResult?.items ?? [];
   const total = Math.max(0, Number(ticketsResult?.total) || items.length);
   const currentPage = Math.max(1, Number(ticketsResult?.page) || page);
   const currentLimit = Math.max(1, Number(ticketsResult?.limit) || limit);
+  const counts = countsResult?.counts ?? {
+    all: 0,
+    mine: 0,
+    assigned: 0,
+    unassigned: 0,
+    resolved: 0,
+    external: 0,
+  };
 
   return (
     <div className="space-y-6">
@@ -105,6 +140,7 @@ export default async function TicketsPage({ searchParams }: Props) {
           page: currentPage,
           limit: currentLimit,
         }}
+        counts={counts}
         projects={projects}
         projectId={projectId}
         status={status ?? null}

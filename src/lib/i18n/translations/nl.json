@@ -1942,6 +1942,8 @@
         "tabs": {
           "mine": "Door mij aangemaakt",
           "assigned": "Aan mij toegewezen",
+          "unassigned": "Niet toegewezen",
+          "resolved": "Opgelost",
           "all": "Alle",
           "external": "Extern"
         },

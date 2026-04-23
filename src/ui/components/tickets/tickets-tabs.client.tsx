@@ -66,7 +66,6 @@ export default function TicketsTabs({
   projectId,
   projects,
   status,
-  currentUserId,
   token,
 }: Props) {
   const t = useTranslations("app.tickets.list");

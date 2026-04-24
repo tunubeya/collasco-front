@@ -1659,6 +1659,7 @@
         },
         "summary": {
           "total": "{count} cases",
+          "failed": "{count} mislukt",
           "passed": "{count} geslaagd"
         },
         "delete": {

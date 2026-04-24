@@ -1659,6 +1659,7 @@
         },
         "summary": {
           "total": "{count} casos",
+          "failed": "{count} reprovados",
           "passed": "{count} aprovados"
         },
         "panel": {

@@ -1659,6 +1659,7 @@
         },
         "summary": {
           "total": "{count} cas",
+          "failed": "{count} échoués",
           "passed": "{count} réussis"
         },
         "panel": {

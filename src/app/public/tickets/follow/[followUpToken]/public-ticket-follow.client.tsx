@@ -14,7 +14,9 @@ import {
   FileVideo,
   FileAudio,
   File,
-  Pencil
+  Pencil,
+  Link2,
+  CheckCircle2
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -177,6 +179,13 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
 
   const showDescriptionRequired = isMissingDescription(descriptionSection?.content);
   const showDescriptionEditor = showDescriptionRequired || isEditingDescription;
+  const followUpUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    return new URL(
+      `/public/tickets/follow/${followUpToken}`,
+      window.location.origin
+    ).toString();
+  }, [followUpToken]);
 
   useEffect(() => {
     if (descriptionSection?.content && !isMissingDescription(descriptionSection.content)) {
@@ -377,6 +386,29 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     setTitleValue("");
   }, []);
 
+  const handleCopyFollowUpLink = useCallback(async () => {
+    if (!followUpUrl) return;
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(followUpUrl);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = followUpUrl;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      toast.success(t("create.copied"));
+    } catch (err) {
+      console.error("Failed to copy public follow up link", err);
+      toast.error(t("create.copyError"));
+    }
+  }, [followUpUrl, t]);
+
   return (
     <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-10">
       <header className="space-y-2">
@@ -395,6 +427,32 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
         </div>
       ) : (
         <div className="space-y-6">
+          {showDescriptionRequired ? (
+            <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-950 shadow-sm">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <CheckCircle2 className="h-4 w-4" aria-hidden />
+                    <span>{t("create.followUpTitle")}</span>
+                  </div>
+                  <p className="text-sm text-emerald-900/80">
+                    {t("create.followUpHint")}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-md border border-emerald-300 bg-white/70 px-3 py-2 text-xs font-medium hover:bg-white"
+                    onClick={() => void handleCopyFollowUpLink()}
+                  >
+                    <Link2 className="h-3.5 w-3.5" aria-hidden />
+                    {t("create.copy")}
+                  </button>
+                </div>
+              </div>
+            </section>
+          ) : null}
+
           <section className="rounded-2xl border bg-background p-6 shadow-sm">
             <div className="space-y-2">
               {editingTitle ? (

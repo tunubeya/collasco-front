@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Loader2, Link2, CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -25,15 +26,7 @@ export function PublicTicketCreateClient({ token }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [followUpToken, setFollowUpToken] = useState<string | null>(null);
-
-  const followUpUrl = useMemo(() => {
-    if (!followUpToken) return null;
-    return new URL(
-      `/public/tickets/follow/${followUpToken}`,
-      window.location.origin
-    ).toString();
-  }, [followUpToken]);
+  const router = useRouter();
 
   const loadLink = useCallback(async () => {
     setLoading(true);
@@ -68,7 +61,6 @@ export function PublicTicketCreateClient({ token }: Props) {
 
   const handleSubmit = useCallback(async () => {
     if (submitting) return;
-    if (followUpToken) return;
     if (!name.trim() || !email.trim()) {
       toast.error(t("create.missing"));
       return;
@@ -81,38 +73,15 @@ export function PublicTicketCreateClient({ token }: Props) {
         email: email.trim(),
         name: name.trim(),
       });
-      setFollowUpToken(result.followUpToken);
       toast.success(t("create.success"));
+      router.push(`/public/tickets/follow/${result.followUpToken}`);
     } catch (err) {
       console.error("Failed to create public ticket", err);
       toast.error(t("create.error"));
     } finally {
       setSubmitting(false);
     }
-  }, [email, followUpToken, name, submitting, t, token]);
-
-  const handleCopy = useCallback(async () => {
-    if (!followUpUrl) return;
-    try {
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(followUpUrl);
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = followUpUrl;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-      }
-      toast.success(t("create.copied"));
-    } catch (err) {
-      console.error("Failed to copy follow up link", err);
-      toast.error(t("create.copyError"));
-    }
-  }, [followUpUrl, t]);
+  }, [email, name, router, submitting, t, token]);
 
   return (
     <main className="mx-auto w-full max-w-3xl space-y-6 px-4 py-10">
@@ -140,78 +109,45 @@ export function PublicTicketCreateClient({ token }: Props) {
               </span>
             </div>
           ) : null}
+          <div className="grid gap-4">
+            <label className="space-y-2 text-sm">
+              <span className="font-medium">{t("create.fields.name")}</span>
+              <input
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder={t("create.placeholders.name")}
+                className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </label>
 
-          {followUpToken ? (
-            <div className="space-y-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4" aria-hidden />
-                <span className="font-medium">{t("create.followUpTitle")}</span>
-              </div>
-              <p className="text-emerald-900/80">{t("create.followUpHint")}</p>
-              {followUpUrl ? (
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 rounded-md border border-emerald-300 px-2 py-1 text-xs font-medium"
-                    onClick={() => void handleCopy()}
-                  >
-                    <Link2 className="h-3.5 w-3.5" aria-hidden />
-                    {t("create.copy")}
-                  </button>
-                  <a
-                    href={followUpUrl}
-                    className="text-xs font-medium text-emerald-900 underline"
-                  >
-                    {t("create.openFollowUp")}
-                  </a>
-                </div>
-              ) : null}
-            </div>
-          ) : null}
+            <label className="space-y-2 text-sm">
+              <span className="font-medium">{t("create.fields.email")}</span>
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder={t("create.placeholders.email")}
+                className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </label>
+          </div>
 
-          {!followUpToken ? (
-            <>
-              <div className="grid gap-4">
-                <label className="space-y-2 text-sm">
-                  <span className="font-medium">{t("create.fields.name")}</span>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    placeholder={t("create.placeholders.name")}
-                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </label>
-
-                <label className="space-y-2 text-sm">
-                  <span className="font-medium">{t("create.fields.email")}</span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder={t("create.placeholders.email")}
-                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </label>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className={cn(
-                    "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
-                    submitting
-                      ? "cursor-not-allowed opacity-70"
-                      : "hover:bg-muted"
-                  )}
-                  onClick={() => void handleSubmit()}
-                  disabled={submitting}
-                >
-                  {submitting ? t("create.creating") : t("create.submit")}
-                </button>
-              </div>
-            </>
-          ) : null}
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className={cn(
+                "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
+                submitting
+                  ? "cursor-not-allowed opacity-70"
+                  : "hover:bg-muted"
+              )}
+              onClick={() => void handleSubmit()}
+              disabled={submitting}
+            >
+              {submitting ? t("create.creating") : t("create.submit")}
+            </button>
+          </div>
         </section>
       )}
     </main>

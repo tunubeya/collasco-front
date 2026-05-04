@@ -36,6 +36,8 @@ export type Ticket = {
   updatedAt?: ISODateString;
   version?: number;
   unreadCount?: number;
+  publicReporterName?: string | null;
+  publicReporterEmail?: string | null;
 };
 
 export type TicketSection = {
@@ -71,6 +73,8 @@ export type TicketDetail = {
   lastMessageId?: string | null;
   receiveNotifications?: boolean | null;
   receiveEmails?: boolean | null;
+  publicReporterName?: string | null;
+  publicReporterEmail?: string | null;
 };
 
 export type TicketImage = {

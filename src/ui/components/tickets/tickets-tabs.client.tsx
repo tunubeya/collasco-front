@@ -68,6 +68,8 @@ export default function TicketsTabs({
   status,
   token,
 }: Props) {
+  console.log(items);
+  
   const t = useTranslations("app.tickets.list");
   const tShare = useTranslations("app.tickets.publicShare");
   const format = useFormatter();
@@ -248,7 +250,7 @@ export default function TicketsTabs({
               const assignee =
                 ticket.assignee?.name ?? t("meta.unassigned");
               const createdBy = isExternal
-                ? t("meta.externalUser")
+                ? (ticket.publicReporterName ?? t("meta.externalUser"))
                 : ticket.createdBy?.name ?? t("meta.unknown");
               const isUnread = (ticket.unreadCount ?? 0) > 0;
               return (
@@ -271,7 +273,7 @@ export default function TicketsTabs({
                         </Link>
                         {isExternal ? (
                           <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
-                            {t("meta.externalTag")}
+                            {ticket.publicReporterName ?? t("meta.externalTag")}
                           </span>
                         ) : null}
                         <span className="rounded-full border px-2 py-0.5 text-[10px] text-muted-foreground">

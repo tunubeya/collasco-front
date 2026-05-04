@@ -777,10 +777,10 @@ export function TicketDetailView({
       })
     : null;
 
-  const createdBy =
-    ticketState.createdBy?.name ??
-    ticketState.createdBy?.email ??
-    null;
+  const isExternal = !ticketState.createdBy;
+  const createdBy = isExternal
+    ? (ticketState.publicReporterName ?? ticketState.publicReporterEmail ?? null)
+    : (ticketState.createdBy?.name ?? ticketState.createdBy?.email ?? null);
   const liveBreadcrumbItems = useMemo(() => {
     const items = [...breadcrumbItems];
     if (items.length) {
@@ -804,6 +804,11 @@ export function TicketDetailView({
                 <span className="flex items-center gap-1">
                   <User className="h-4 w-4" />
                   {t("meta.createdBy", { name: createdBy })}
+                </span>
+              ) : null}
+              {isExternal ? (
+                <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                  {ticketState.publicReporterName ?? tList("meta.externalTag")}
                 </span>
               ) : null}
               <span className="flex items-center gap-1">

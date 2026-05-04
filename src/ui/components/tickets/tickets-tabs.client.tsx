@@ -258,7 +258,6 @@ export default function TicketsTabs({
                   key={ticket.id}
                   className={cn(
                     "px-4 py-4",
-                    isExternal && "bg-amber-50/60",
                     isUnread && "font-bold"
                   )}
                 >

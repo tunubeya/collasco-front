@@ -8,6 +8,7 @@ import { listProjectRoles, type ProjectRole } from "@/lib/api/project-roles";
 import { fetchGetUserProfile } from "@/lib/data";
 import { handlePageError } from "@/lib/handle-page-error";
 import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
+import type { ProjectMember } from "@/lib/model-definitions/project-member";
 import { RoutesEnum } from "@/lib/utils";
 import { getSession } from "@/lib/session";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
@@ -25,46 +26,38 @@ export default async function TicketDetailPage({ params }: Props) {
 
   const { ticketId } = await params;
   const t = await getTranslations("app.tickets.detail");
-
   let ticket = null;
+  let project = null;
+  let currentUserId: string | null = null;
+  let roles: ProjectRole[] = [];
+  let members: ProjectMember[] = [];
+
   try {
     ticket = await getTicket(session.token, ticketId);
-  } catch (error) {
-    if (error instanceof Response && error.status === 404) {
-      notFound();
-    }
-    await handlePageError(error);
-  }
-
-  if (!ticket) notFound();
-
-  let project = null;
-  try {
     project = await fetchProjectById(session.token, ticket.projectId);
-  } catch (error) {
-    await handlePageError(error);
-  }
-
-  if (!project) notFound();
-
-  let currentUserId: string | null = null;
-  try {
     const profile = await fetchGetUserProfile(session.token);
     currentUserId = profile.id;
-  } catch (error) {
-    await handlePageError(error);
-  }
-
-  let roles: ProjectRole[] = [];
-  let members = project.members ?? [];
-  try {
+    members = project.members ?? [];
     roles = await listProjectRoles(session.token, project.id);
     if (!members.length) {
       members = await listProjectMembers(session.token, project.id);
     }
   } catch (error) {
+    if (error instanceof Response && error.status === 404) {
+      notFound();
+    }
+    if (error instanceof Response && (error.status === 401 || error.status === 403)) {
+      return (
+        <div className="grid gap-6">
+          <Breadcrumb items={[{ label: t("breadcrumb.ticket") }]} className="mb-2" />
+          <UnauthorizedView />
+        </div>
+      );
+    }
     await handlePageError(error);
   }
+
+  if (!ticket || !project) notFound();
 
   const roleId = resolveMemberRoleId({
     project,

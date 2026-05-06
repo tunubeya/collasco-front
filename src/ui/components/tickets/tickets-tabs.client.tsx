@@ -47,6 +47,7 @@ type Props = {
   projects: Project[];
   status: TicketStatus | null;
   currentUserId?: string | null;
+  canCreateTicket?: boolean;
 };
 
 const TAB_ICON = {
@@ -67,9 +68,8 @@ export default function TicketsTabs({
   projects,
   status,
   token,
+  canCreateTicket = false,
 }: Props) {
-  console.log(items);
-  
   const t = useTranslations("app.tickets.list");
   const tShare = useTranslations("app.tickets.publicShare");
   const format = useFormatter();
@@ -162,9 +162,11 @@ export default function TicketsTabs({
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
-          <div>
-            <TicketsCreateButton token={token} projectId={projectId ?? null} />
-          </div>
+          {canCreateTicket ? (
+            <div>
+              <TicketsCreateButton token={token} projectId={projectId ?? null} />
+            </div>
+          ) : null}
           <div className="flex flex-wrap gap-2">
             {tabs.map((item) => {
               const Icon = TAB_ICON[item];

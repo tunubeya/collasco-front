@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import { listProjectsMine } from "@/lib/api/projects";
+import { listProjectRoles } from "@/lib/api/project-roles";
 import {
   getTicketCounts,
   listTicketsAll,
@@ -10,6 +11,11 @@ import { RoutesEnum } from "@/lib/utils";
 import { getSession } from "@/lib/session";
 import { handlePageError } from "@/lib/handle-page-error";
 import { fetchGetUserProfile } from "@/lib/data";
+import {
+  hasPermission,
+  resolveMemberRoleId,
+  resolveRolePermissions,
+} from "@/lib/permissions";
 import TicketsTabs from "@/ui/components/tickets/tickets-tabs.client";
 
 type SearchParams = {
@@ -122,6 +128,27 @@ export default async function TicketsPage({ searchParams }: Props) {
     resolved: 0,
     external: 0,
   };
+  let canCreateTicket = false;
+
+  if (projectId) {
+    const selectedProject = projects.find((project) => project.id === projectId);
+
+    if (selectedProject) {
+      try {
+        const roles = await listProjectRoles(token, projectId);
+        const roleId = resolveMemberRoleId({
+          project: selectedProject,
+          members: selectedProject.members,
+          currentUserId,
+          roles,
+        });
+        const permissionKeys = resolveRolePermissions(roles, roleId);
+        canCreateTicket = hasPermission(permissionKeys, "ticket.create");
+      } catch (error) {
+        await handlePageError(error);
+      }
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -145,6 +172,7 @@ export default async function TicketsPage({ searchParams }: Props) {
         projectId={projectId}
         status={status ?? null}
         currentUserId={currentUserId}
+        canCreateTicket={canCreateTicket}
       />
     </div>
   );

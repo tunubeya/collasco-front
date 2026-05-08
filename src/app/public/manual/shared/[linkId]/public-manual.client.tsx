@@ -415,6 +415,7 @@ export function PublicManualClient({
           onViewModeChange={setViewMode}
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
+          title={projectInfo?.name ?? tProjectTabs("manual")}
           imageLoader={async () => {
             if (imagesCacheRef.current) return imagesCacheRef.current;
             if (imagesPromiseRef.current) return imagesPromiseRef.current;

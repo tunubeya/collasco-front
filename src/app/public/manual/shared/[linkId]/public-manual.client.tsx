@@ -100,8 +100,8 @@ export function PublicManualClient({
   const [rootType, setRootType] = useState<"PROJECT" | "MODULE" | "FEATURE" | null>(null);
   const [rootId, setRootId] = useState<string | null>(null);
   const [hashTargetId, setHashTargetId] = useState<string | null>(null);
-  const imagesCacheRef = useRef<Record<string, string> | null>(null);
-  const imagesPromiseRef = useRef<Promise<Record<string, string>> | null>(null);
+  const imagesCacheRef = useRef<Record<string, string | { url: string; mimeType?: string | null }> | null>(null);
+  const imagesPromiseRef = useRef<Promise<Record<string, string | { url: string; mimeType?: string | null }>> | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -420,11 +420,12 @@ export function PublicManualClient({
             if (imagesPromiseRef.current) return imagesPromiseRef.current;
             const promise = fetchPublicManualImages(linkId)
               .then((payload) => {
-                const map: Record<string, string> = {};
+                const map: Record<string, string | { url: string; mimeType?: string | null }> = {};
                 payload.items.forEach((group) => {
                   group.images.forEach((image) => {
-                    map[image.name] = image.url;
-                    map[image.name.toLowerCase()] = image.url;
+                    const entry = { url: image.url, mimeType: image.mimeType };
+                    map[image.name] = entry;
+                    map[image.name.toLowerCase()] = entry;
                   });
                 });
                 imagesCacheRef.current = map;

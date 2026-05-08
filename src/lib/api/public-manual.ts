@@ -30,6 +30,7 @@ export type PublicManualImagesResponse = {
       id: string;
       name: string;
       url: string;
+      mimeType?: string | null;
       createdAt?: string;
       createdBy?: {
         id: string;

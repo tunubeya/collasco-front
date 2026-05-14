@@ -351,6 +351,10 @@ export function EntityDocumentationPanel({
         toast.success(t("attachments.messages.uploaded"));
         setImageNameByLabel((prev) => ({ ...prev, [labelId]: "" }));
         setImageFileByLabel((prev) => ({ ...prev, [labelId]: null }));
+        setShowAttachmentFormByLabel((prev) => ({
+          ...prev,
+          [labelId]: false,
+        }));
         setShowImages(true);
         await fetchImages(labelId);
       } catch (err) {

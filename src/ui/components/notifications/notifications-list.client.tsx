@@ -21,6 +21,7 @@ import type {
 } from "@/lib/model-definitions/notification";
 import { cn, generatePagination } from "@/lib/utils";
 import { resolveNotificationHref } from "@/ui/components/notifications/notification-utils";
+import { notifyUnreadNotificationsCountChanged } from "@/ui/components/notifications/use-unread-notifications-count";
 
 type Pagination = {
   total: number;
@@ -81,6 +82,7 @@ export default function NotificationsList({ token, items, pagination }: Props) {
               item.id === notification.id ? { ...item, isRead: true } : item
             )
           );
+          notifyUnreadNotificationsCountChanged();
         }
         if (navigate) {
           const href = resolveNotificationHref(notification);
@@ -105,6 +107,9 @@ export default function NotificationsList({ token, items, pagination }: Props) {
           prev.filter((item) => item.id !== notification.id)
         );
         setTotal((prev) => Math.max(0, prev - 1));
+        if (!notification.isRead) {
+          notifyUnreadNotificationsCountChanged();
+        }
       } catch {
         toast.error(t("errors.action"));
       } finally {
@@ -120,6 +125,7 @@ export default function NotificationsList({ token, items, pagination }: Props) {
     try {
       await markAllNotificationsRead(token);
       setList((prev) => prev.map((item) => ({ ...item, isRead: true })));
+      notifyUnreadNotificationsCountChanged(0);
     } catch {
       toast.error(t("errors.action"));
     } finally {
@@ -285,4 +291,3 @@ export default function NotificationsList({ token, items, pagination }: Props) {
     </div>
   );
 }
-

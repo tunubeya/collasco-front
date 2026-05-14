@@ -73,7 +73,7 @@ export default async function AppSidebar() {
         </div>
 
         {/* Nav */}
-        <AppSidebarClient items={items} />
+        <AppSidebarClient items={items} token={session?.token ?? null} />
 
         {/* Footer */}
         <AppSidebarClient
@@ -106,7 +106,7 @@ export default async function AppSidebar() {
               <NotificationsBell token={session?.token ?? null} />
             </div>
 
-            <AppSidebarClient items={items} />
+            <AppSidebarClient items={items} token={session?.token ?? null} />
             <div className="mt-3 space-y-3">
               <LangSelector allowInApp />
               <AppSidebarClient footerOnly />

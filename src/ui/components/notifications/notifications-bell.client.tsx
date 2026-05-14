@@ -8,7 +8,6 @@ import { toast } from "sonner";
 
 import {
   deleteNotification,
-  getUnreadNotificationsCount,
   listNotifications,
   markAllNotificationsRead,
   markNotificationRead,
@@ -24,6 +23,10 @@ import {
   PopoverTrigger,
 } from "@/ui/components/popover/popover";
 import { resolveNotificationHref } from "@/ui/components/notifications/notification-utils";
+import {
+  notifyUnreadNotificationsCountChanged,
+  useUnreadNotificationsCount,
+} from "@/ui/components/notifications/use-unread-notifications-count";
 
 type NotificationsBellProps = {
   token: string | null;
@@ -44,26 +47,13 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [isLoadingList, setIsLoadingList] = useState(false);
-  const [isLoadingCount, setIsLoadingCount] = useState(false);
   const [busyIds, setBusyIds] = useState<Record<string, boolean>>({});
   const [isBulkAction, setIsBulkAction] = useState(false);
+  const { unreadCount, setUnreadCount, isLoadingCount } =
+    useUnreadNotificationsCount(token, () => toast.error(t("errors.load")));
 
   const hasUnread = unreadCount > 0;
-
-  const refreshCount = useCallback(async () => {
-    if (!token) return;
-    setIsLoadingCount(true);
-    try {
-      const result = await getUnreadNotificationsCount(token);
-      setUnreadCount(result.count);
-    } catch {
-      toast.error(t("errors.load"));
-    } finally {
-      setIsLoadingCount(false);
-    }
-  }, [t, token]);
 
   const fetchList = useCallback(async () => {
     if (!token) return;
@@ -80,18 +70,6 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
       setIsLoadingList(false);
     }
   }, [t, token]);
-
-  useEffect(() => {
-    void refreshCount();
-  }, [refreshCount]);
-
-  useEffect(() => {
-    if (!token) return;
-    const interval = window.setInterval(() => {
-      void refreshCount();
-    }, 60000);
-    return () => window.clearInterval(interval);
-  }, [refreshCount, token]);
 
   useEffect(() => {
     if (open) {
@@ -121,7 +99,11 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
               item.id === id ? { ...item, isRead: true } : item
             )
           );
-          setUnreadCount((prev) => Math.max(0, prev - 1));
+          setUnreadCount((prev) => {
+            const next = Math.max(0, prev - 1);
+            notifyUnreadNotificationsCountChanged(next);
+            return next;
+          });
         }
         if (navigate) {
           const href = resolveNotificationHref(notification);
@@ -135,7 +117,7 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
         setBusyIds((prev) => ({ ...prev, [id]: false }));
       }
     },
-    [busyIds, router, t, token]
+    [busyIds, router, setUnreadCount, t, token]
   );
 
   const handleDelete = useCallback(
@@ -148,7 +130,11 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
         await deleteNotification(token, id);
         setItems((prev) => prev.filter((item) => item.id !== id));
         if (!notification.isRead) {
-          setUnreadCount((prev) => Math.max(0, prev - 1));
+          setUnreadCount((prev) => {
+            const next = Math.max(0, prev - 1);
+            notifyUnreadNotificationsCountChanged(next);
+            return next;
+          });
         }
       } catch {
         toast.error(t("errors.action"));
@@ -156,7 +142,7 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
         setBusyIds((prev) => ({ ...prev, [id]: false }));
       }
     },
-    [busyIds, t, token]
+    [busyIds, setUnreadCount, t, token]
   );
 
   const handleMarkAll = useCallback(async () => {
@@ -166,12 +152,13 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
       await markAllNotificationsRead(token);
       setItems((prev) => prev.map((item) => ({ ...item, isRead: true })));
       setUnreadCount(0);
+      notifyUnreadNotificationsCountChanged(0);
     } catch {
       toast.error(t("errors.action"));
     } finally {
       setIsBulkAction(false);
     }
-  }, [hasUnread, isBulkAction, t, token]);
+  }, [hasUnread, isBulkAction, setUnreadCount, t, token]);
 
   const badgeText = useMemo(() => {
     if (!hasUnread) return "";

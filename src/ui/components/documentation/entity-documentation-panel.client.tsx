@@ -685,7 +685,49 @@ export function EntityDocumentationPanel({
                         />
                       )}
                     </div>
+                    {entry.canEdit && entry.field?.isNotApplicable && (
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          type="button"
+                          className={actionButtonClass({ size: "xs" })}
+                          onClick={() => void handleMarkApplicable(entry.label.id)}
+                          disabled={isSaving}
+                        >
+                          {isSaving ? (
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                          ) : (
+                            t("actions.markApplicable")
+                          )}
+                        </button>
+                      </div>
+                    )}
 
+                    {entry.canEdit && !entry.field?.isNotApplicable && !isEditing && (
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          type="button"
+                          className={actionButtonClass({ size: "xs" })}
+                          onClick={() => handleEdit(entry)}
+                        >
+                          {t("actions.edit")}
+                        </button>
+                        <button
+                          type="button"
+                          className={actionButtonClass({
+                            variant: "neutral",
+                            size: "xs",
+                          })}
+                          onClick={() => void handleMarkNotApplicable(entry.label.id)}
+                          disabled={isSaving}
+                        >
+                          {isSaving ? (
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                          ) : (
+                            t("actions.markNotApplicable")
+                          )}
+                        </button>
+                      </div>
+                    )}
                     <div className="mt-4 space-y-2">
                       <p className="text-xs font-semibold text-muted-foreground">
                         {t("attachments.sectionTitle")}
@@ -894,51 +936,6 @@ export function EntityDocumentationPanel({
                             </div>
                           </div>
                         ) : null}
-                      </div>
-                    )}
-
-
-                    {entry.canEdit && entry.field?.isNotApplicable && (
-                      <div className="mt-3 flex gap-2">
-                        <button
-                          type="button"
-                          className={actionButtonClass({ size: "xs" })}
-                          onClick={() => void handleMarkApplicable(entry.label.id)}
-                          disabled={isSaving}
-                        >
-                          {isSaving ? (
-                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                          ) : (
-                            t("actions.markApplicable")
-                          )}
-                        </button>
-                      </div>
-                    )}
-
-                    {entry.canEdit && !entry.field?.isNotApplicable && !isEditing && (
-                      <div className="mt-3 flex gap-2">
-                        <button
-                          type="button"
-                          className={actionButtonClass({ size: "xs" })}
-                          onClick={() => handleEdit(entry)}
-                        >
-                          {t("actions.edit")}
-                        </button>
-                        <button
-                          type="button"
-                          className={actionButtonClass({
-                            variant: "neutral",
-                            size: "xs",
-                          })}
-                          onClick={() => void handleMarkNotApplicable(entry.label.id)}
-                          disabled={isSaving}
-                        >
-                          {isSaving ? (
-                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                          ) : (
-                            t("actions.markNotApplicable")
-                          )}
-                        </button>
                       </div>
                     )}
                   </>

@@ -59,11 +59,23 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
     if (!token) return;
     setIsLoadingList(true);
     try {
-      const result = await listNotifications(token, {
-        page: 1,
-        limit: PAGE_LIMIT,
-      });
-      setItems(result.items);
+      const unreadItems: Notification[] = [];
+      let page = 1;
+      let totalPages = 1;
+
+      while (unreadItems.length < PAGE_LIMIT && page <= totalPages) {
+        const result = await listNotifications(token, {
+          page,
+          limit: PAGE_LIMIT,
+        });
+        unreadItems.push(
+          ...result.items.filter((notification) => !notification.isRead)
+        );
+        totalPages = Math.max(1, result.totalPages);
+        page += 1;
+      }
+
+      setItems(unreadItems.slice(0, PAGE_LIMIT));
     } catch {
       toast.error(t("errors.load"));
     } finally {
@@ -94,11 +106,7 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
       try {
         if (!notification.isRead) {
           await markNotificationRead(token, id);
-          setItems((prev) =>
-            prev.map((item) =>
-              item.id === id ? { ...item, isRead: true } : item
-            )
-          );
+          setItems((prev) => prev.filter((item) => item.id !== id));
           setUnreadCount((prev) => {
             const next = Math.max(0, prev - 1);
             notifyUnreadNotificationsCountChanged(next);
@@ -147,10 +155,10 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
 
   const handleMarkAll = useCallback(async () => {
     if (!token || isBulkAction || !hasUnread) return;
-    setIsBulkAction(true);
+      setIsBulkAction(true);
     try {
       await markAllNotificationsRead(token);
-      setItems((prev) => prev.map((item) => ({ ...item, isRead: true })));
+      setItems([]);
       setUnreadCount(0);
       notifyUnreadNotificationsCountChanged(0);
     } catch {
@@ -219,12 +227,7 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
                   <li key={notification.id} className="px-3 py-3">
                     <div className="flex items-start gap-3">
                       <span
-                        className={cn(
-                          "mt-1 h-2.5 w-2.5 rounded-full border",
-                          notification.isRead
-                            ? "border-muted-foreground/40 bg-muted-foreground/20"
-                            : "border-primary-orange bg-primary-orange"
-                        )}
+                        className="mt-1 h-2.5 w-2.5 rounded-full border border-primary-orange bg-primary-orange"
                       />
                       <div className="flex-1 space-y-1">
                         <button
@@ -234,10 +237,7 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
                           }
                           disabled={isBusy}
                           className={cn(
-                            "text-left text-sm font-semibold text-foreground transition",
-                            notification.isRead
-                              ? "opacity-70"
-                              : "hover:text-primary-orange",
+                            "text-left text-sm font-semibold text-foreground transition hover:text-primary-orange",
                             !href && "cursor-default"
                           )}
                         >
@@ -251,20 +251,18 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-2">
-                        {!notification.isRead ? (
-                          <button
-                            type="button"
-                            onClick={() => handleMarkRead(notification, false)}
-                            disabled={isBusy}
-                            className={cn(
-                              "rounded-full border px-2 py-1 text-[10px] font-medium transition",
-                              typeStyles[notification.type]
-                            )}
-                            aria-label={t("markRead")}
-                          >
-                            <Check className="h-3 w-3" />
-                          </button>
-                        ) : null}
+                        <button
+                          type="button"
+                          onClick={() => handleMarkRead(notification, false)}
+                          disabled={isBusy}
+                          className={cn(
+                            "rounded-full border px-2 py-1 text-[10px] font-medium transition",
+                            typeStyles[notification.type]
+                          )}
+                          aria-label={t("markRead")}
+                        >
+                          <Check className="h-3 w-3" />
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleDelete(notification)}

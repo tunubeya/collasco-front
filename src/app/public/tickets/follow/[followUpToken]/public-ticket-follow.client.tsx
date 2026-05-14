@@ -35,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { Switch } from "@/ui/components/form/switch";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
+import { useLocaleQueryParam } from "@/ui/components/i18n/use-locale-query-param";
 
 type Props = {
   followUpToken: string;
@@ -77,6 +78,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const t = useTranslations("app.tickets.public");
   const tDetail = useTranslations("app.tickets.detail");
   const tRichText = useTranslations("app.projects.form.richText");
+  useLocaleQueryParam();
   const format = useFormatter();
   const [data, setData] = useState<PublicTicketFollowResponse | null>(null);
   const [loading, setLoading] = useState(true);

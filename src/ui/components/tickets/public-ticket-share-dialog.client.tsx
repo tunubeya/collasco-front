@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link2, RefreshCw, Trash2, Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 
@@ -36,6 +36,7 @@ export function PublicTicketShareDialog({
 }: Props) {
   const t = useTranslations("app.tickets.publicShare");
   const format = useFormatter();
+  const locale = useLocale();
   const [links, setLinks] = useState<TicketShareLink[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -129,13 +130,14 @@ export function PublicTicketShareDialog({
       const url = new URL(
         `/public/tickets/links/${shareToken}`,
         window.location.origin
-      ).toString();
+      );
+      url.searchParams.set("locale", locale);
       try {
         if (navigator?.clipboard?.writeText) {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(url.toString());
         } else {
           const textarea = document.createElement("textarea");
-          textarea.value = url;
+          textarea.value = url.toString();
           textarea.style.position = "fixed";
           textarea.style.opacity = "0";
           document.body.appendChild(textarea);
@@ -150,7 +152,7 @@ export function PublicTicketShareDialog({
         toast.error(t("copyError"));
       }
     },
-    [t]
+    [locale, t]
   );
 
   return (

@@ -19,7 +19,7 @@ import {
   findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
 import { cn } from "@/lib/utils";
-import { locales } from "@/lib/i18n/config";
+import { useLocaleQueryParam } from "@/ui/components/i18n/use-locale-query-param";
 
 type PublicManualClientProps = {
   linkId: string;
@@ -83,7 +83,7 @@ export function PublicManualClient({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const localeParam = searchParams?.get("locale");
+  useLocaleQueryParam();
   const [modules, setModules] = useState<StructureModuleNode[] | null>(null);
   const [projectInfo, setProjectInfo] = useState<PublicProjectInfo | null>(null);
   const [resolvedProjectId, setResolvedProjectId] = useState<string | null>(null);
@@ -118,18 +118,6 @@ export function PublicManualClient({
       window.removeEventListener("hashchange", syncHashTarget);
     };
   }, []);
-
-  useEffect(() => {
-    if (!localeParam) return;
-    if (!locales.includes(localeParam as (typeof locales)[number])) return;
-    const cookieMatch = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("NEXT_LOCALE="));
-    const currentLocale = cookieMatch?.split("=")[1];
-    if (currentLocale === localeParam) return;
-    document.cookie = `NEXT_LOCALE=${localeParam}; path=/; samesite=lax`;
-    router.refresh();
-  }, [localeParam, router]);
 
   const labelIdsFromUrl = useMemo(() => {
     const labels = searchParams?.get("labels");

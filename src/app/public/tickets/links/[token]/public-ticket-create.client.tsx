@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ import {
   type PublicTicketLinkInfo,
 } from "@/lib/api/public-tickets";
 import { cn } from "@/lib/utils";
+import { useLocaleQueryParam } from "@/ui/components/i18n/use-locale-query-param";
 
 type Props = {
   token: string;
@@ -20,6 +21,8 @@ type Props = {
 
 export function PublicTicketCreateClient({ token }: Props) {
   const t = useTranslations("app.tickets.public");
+  const locale = useLocale();
+  useLocaleQueryParam();
   const [linkInfo, setLinkInfo] = useState<PublicTicketLinkInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,14 +77,19 @@ export function PublicTicketCreateClient({ token }: Props) {
         name: name.trim(),
       });
       toast.success(t("create.success"));
-      router.push(`/public/tickets/follow/${result.followUpToken}`);
+      const followUrl = new URL(
+        `/public/tickets/follow/${result.followUpToken}`,
+        window.location.origin
+      );
+      followUrl.searchParams.set("locale", locale);
+      router.push(`${followUrl.pathname}${followUrl.search}`);
     } catch (err) {
       console.error("Failed to create public ticket", err);
       toast.error(t("create.error"));
     } finally {
       setSubmitting(false);
     }
-  }, [email, name, router, submitting, t, token]);
+  }, [email, locale, name, router, submitting, t, token]);
 
   return (
     <main className="mx-auto w-full max-w-3xl space-y-6 px-4 py-10">

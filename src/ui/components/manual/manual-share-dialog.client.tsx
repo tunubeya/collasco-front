@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Loader2, Link2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -56,6 +56,7 @@ export function ManualShareDialog({
   const tManual = useTranslations("app.projects.manual");
   const tShare = useTranslations("app.projects.manual.share");
   const formatter = useFormatter();
+  const locale = useLocale();
   const [labels, setLabels] = useState<ProjectDocumentationLabelOption[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [comment, setComment] = useState("");
@@ -237,6 +238,7 @@ export function ManualShareDialog({
         `/public/manual/shared/${linkId}`,
         window.location.origin,
       );
+      url.searchParams.set("locale", locale);
       if (anchorId) {
         url.hash = encodeURIComponent(anchorId);
       }
@@ -260,7 +262,7 @@ export function ManualShareDialog({
         toast.error(tShare("copyError"));
       }
     },
-    [tShare],
+    [locale, tShare],
   );
 
   const contextualProjectLinks = useMemo(

@@ -703,6 +703,7 @@
       },
       "manual": {
         "noDescription": "Geen beschrijving beschikbaar.",
+        "expandHint": "Klik om uit te klappen",
         "attachments": {
           "open": "Openen"
         },

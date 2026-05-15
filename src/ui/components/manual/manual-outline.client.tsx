@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronRight, Share2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Share2 } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type {
@@ -34,6 +34,7 @@ type ManualOutlineProps = {
   fallbackDescription: string;
   expandLabel: string;
   collapseLabel: string;
+  expandHint?: string;
   title?: string;
   className?: string;
   hideRootTitle?: boolean;
@@ -76,6 +77,7 @@ export function ManualOutline({
   fallbackDescription,
   expandLabel,
   collapseLabel,
+  expandHint = "Click to expand",
   title,
   className,
   hideRootTitle = false,
@@ -235,6 +237,7 @@ export function ManualOutline({
           setExpanded((prev) => ({ ...prev, [id]: !prev[id] }))
         }
         fallbackDescription={fallbackDescription}
+        expandHint={expandHint}
         focusId={focusId}
         rootId={root.id}
         onNavigateTo={handleNavigateTo}
@@ -254,6 +257,7 @@ type ManualNodeItemProps = {
   expandedMap: Record<string, boolean>;
   onToggle: (id: string) => void;
   fallbackDescription: string;
+  expandHint: string;
   focusId?: string;
   rootId: string;
   onNavigateTo?: (id: string) => void;
@@ -276,6 +280,7 @@ function ManualNodeItem({
   expandedMap,
   onToggle,
   fallbackDescription,
+  expandHint,
   focusId,
   rootId,
   onNavigateTo,
@@ -421,6 +426,7 @@ function ManualNodeItem({
                 expandedMap={expandedMap}
                 onToggle={onToggle}
                 fallbackDescription={fallbackDescription}
+                expandHint={expandHint}
                 focusId={focusId}
                 rootId={rootId}
                 onNavigateTo={onNavigateTo}
@@ -440,7 +446,7 @@ function ManualNodeItem({
       <button
         type="button"
         className={cn(
-          "flex w-full items-center justify-between rounded-md px-3 py-2 text-left transition-colors hover:bg-muted/50",
+          "flex w-full items-start rounded-md px-3 py-2 text-left transition-colors hover:bg-muted/50",
           isFocused && "bg-primary/10 text-primary",
           !hasChildren && "cursor-default hover:bg-transparent"
         )}
@@ -450,23 +456,34 @@ function ManualNodeItem({
           onToggle(node.id);
         }}
       >
-        <div className="flex flex-1 flex-col">
-          <span className={cn(titleClass, "leading-tight")}>
-            {currentNumbering ? (
-              <span className="mr-2 font-mono">{currentNumbering}</span>
+        <div className="flex min-w-0 flex-1 items-start gap-2">
+          {hasChildren ? (
+            isExpanded ? (
+              <ChevronDown
+                className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+                aria-hidden
+              />
+            ) : (
+              <ChevronRight
+                className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+                aria-hidden
+              />
+            )
+          ) : null}
+          <div className="min-w-0 flex flex-col gap-0.5">
+            <span className={cn(titleClass, "leading-tight")}>
+              {currentNumbering ? (
+                <span className="mr-2 font-mono">{currentNumbering}</span>
+              ) : null}
+              {node.name}
+            </span>
+            {hasChildren && !isExpanded ? (
+              <span className="text-xs font-normal text-muted-foreground">
+                {expandHint}
+              </span>
             ) : null}
-            {node.name}
-          </span>
+          </div>
         </div>
-        {hasChildren ? (
-          <ChevronRight
-            className={cn(
-              "ml-3 h-4 w-4 shrink-0 text-muted-foreground transition-transform",
-              isExpanded ? "rotate-90" : ""
-            )}
-            aria-hidden
-          />
-        ) : null}
       </button>
       {node.linkedFeatures?.length ? (
         <div className="px-3 text-xs text-muted-foreground">
@@ -554,6 +571,7 @@ function ManualNodeItem({
               expandedMap={expandedMap}
               onToggle={onToggle}
               fallbackDescription={fallbackDescription}
+              expandHint={expandHint}
               focusId={focusId}
               rootId={rootId}
               onNavigateTo={onNavigateTo}

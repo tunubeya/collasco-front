@@ -221,6 +221,7 @@ export function ManualTabContent({
           fallbackDescription={fallbackDescription}
           expandLabel={expandLabel}
           collapseLabel={collapseLabel}
+          expandHint={tManual("expandHint", { default: "Click to expand" })}
           title={title}
           filterOptions={filterOptions}
           viewMode={viewMode}

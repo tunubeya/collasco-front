@@ -398,6 +398,7 @@ export function PublicManualClient({
           collapseLabel={tProjectDetail("modules.collapseAll", {
             default: "Collapse all",
           })}
+          expandHint={tManual("expandHint", { default: "Click to expand" })}
           filterOptions={filterOptions}
           viewMode={viewMode}
           onViewModeChange={setViewMode}

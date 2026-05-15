@@ -691,6 +691,7 @@
       },
     "manual": {
         "noDescription": "No description available.",
+        "expandHint": "Click to expand",
         "attachments": {
           "open": "Open"
         },

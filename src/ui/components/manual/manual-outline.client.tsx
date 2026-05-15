@@ -314,6 +314,7 @@ function ManualNodeItem({
     node.numbering && node.numbering.trim().length > 0
       ? node.numbering
       : numbering;
+  const showDetails = isExpanded;
   const referencesLabel = linkedLabel?.references ?? "References";
   const referencedByLabel = linkedLabel?.referencedBy ?? "Referenced by";
 
@@ -332,15 +333,43 @@ function ManualNodeItem({
   if (hideRootTitle && level === 0) {
     return (
       <div className="space-y-2" id={getNodeDomId(node.id)}>
-        <div className="px-3">
-          <span className={cn(titleClass, "leading-tight")}>
-            {currentNumbering ? (
-              <span className="mr-2 font-mono">{currentNumbering}</span>
-            ) : null}
-            {node.name}
-          </span>
-        </div>
-        {node.linkedFeatures?.length ? (
+        <button
+          type="button"
+          className={cn(
+            "flex w-full items-start rounded-md px-3 py-2 text-left transition-colors hover:bg-muted/50",
+            isFocused && "bg-primary/10 text-primary",
+          )}
+          aria-expanded={isExpanded}
+          onClick={() => onToggle(node.id)}
+        >
+          <div className="flex min-w-0 flex-1 items-start gap-2">
+            {isExpanded ? (
+              <ChevronDown
+                className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+                aria-hidden
+              />
+            ) : (
+              <ChevronRight
+                className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+                aria-hidden
+              />
+            )}
+            <div className="min-w-0 flex flex-col gap-0.5">
+              <span className={cn(titleClass, "leading-tight")}>
+                {currentNumbering ? (
+                  <span className="mr-2 font-mono">{currentNumbering}</span>
+                ) : null}
+                {node.name}
+              </span>
+              {!isExpanded ? (
+                <span className="text-xs font-normal text-muted-foreground">
+                  {expandHint}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        </button>
+        {showDetails && node.linkedFeatures?.length ? (
           <div className="px-3 text-xs text-muted-foreground">
             {node.linkedFeatures.some((linked) => linked.direction !== "referenced_by") && (
               <>
@@ -402,15 +431,17 @@ function ManualNodeItem({
             )}
           </div>
         ) : null}
-        <div className="px-3">
-          <RichTextPreview
-            value={richTextValue}
-            emptyLabel={fallbackDescription}
-            className={cn(descriptionClass)}
-            imageMap={imageMap ?? undefined}
-            fileOpenLabel={fileOpenLabel}
-          />
-        </div>
+        {showDetails ? (
+          <div className="px-3">
+            <RichTextPreview
+              value={richTextValue}
+              emptyLabel={fallbackDescription}
+              className={cn(descriptionClass)}
+              imageMap={imageMap ?? undefined}
+              fileOpenLabel={fileOpenLabel}
+            />
+          </div>
+        ) : null}
         {hasChildren && isExpanded && (
           <div className="space-y-4">
             {node.children.map((child, index) => (
@@ -448,28 +479,22 @@ function ManualNodeItem({
         className={cn(
           "flex w-full items-start rounded-md px-3 py-2 text-left transition-colors hover:bg-muted/50",
           isFocused && "bg-primary/10 text-primary",
-          !hasChildren && "cursor-default hover:bg-transparent"
         )}
-        aria-expanded={hasChildren ? isExpanded : undefined}
-        onClick={() => {
-          if (!hasChildren) return;
-          onToggle(node.id);
-        }}
+        aria-expanded={isExpanded}
+        onClick={() => onToggle(node.id)}
       >
         <div className="flex min-w-0 flex-1 items-start gap-2">
-          {hasChildren ? (
-            isExpanded ? (
-              <ChevronDown
-                className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
-                aria-hidden
-              />
-            ) : (
-              <ChevronRight
-                className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
-                aria-hidden
-              />
-            )
-          ) : null}
+          {isExpanded ? (
+            <ChevronDown
+              className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+              aria-hidden
+            />
+          ) : (
+            <ChevronRight
+              className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+              aria-hidden
+            />
+          )}
           <div className="min-w-0 flex flex-col gap-0.5">
             <span className={cn(titleClass, "leading-tight")}>
               {currentNumbering ? (
@@ -477,7 +502,7 @@ function ManualNodeItem({
               ) : null}
               {node.name}
             </span>
-            {hasChildren && !isExpanded ? (
+            {!isExpanded ? (
               <span className="text-xs font-normal text-muted-foreground">
                 {expandHint}
               </span>
@@ -485,7 +510,7 @@ function ManualNodeItem({
           </div>
         </div>
       </button>
-      {node.linkedFeatures?.length ? (
+      {showDetails && node.linkedFeatures?.length ? (
         <div className="px-3 text-xs text-muted-foreground">
           {node.linkedFeatures.some((linked) => linked.direction !== "referenced_by") && (
             <>
@@ -547,15 +572,17 @@ function ManualNodeItem({
           )}
         </div>
       ) : null}
-      <div className="px-3">
-        <RichTextPreview
-          value={richTextValue}
-          emptyLabel={fallbackDescription}
-          className={cn(descriptionClass)}
-          imageMap={imageMap ?? undefined}
-          fileOpenLabel={fileOpenLabel}
-        />
-      </div>
+      {showDetails ? (
+        <div className="px-3">
+          <RichTextPreview
+            value={richTextValue}
+            emptyLabel={fallbackDescription}
+            className={cn(descriptionClass)}
+            imageMap={imageMap ?? undefined}
+            fileOpenLabel={fileOpenLabel}
+          />
+        </div>
+      ) : null}
       {hasChildren && isExpanded && (
         <div className="space-y-4">
           {node.children.map((child, index) => (

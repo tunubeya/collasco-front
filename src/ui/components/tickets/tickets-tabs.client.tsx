@@ -83,7 +83,8 @@ export default function TicketsTabs({
     Math.ceil(pagination.total / Math.max(1, pagination.limit))
   );
 
-  const tabs: TicketsScope[] = ["mine", "assigned", "unassigned", "resolved", "all", "external"];
+  const primaryTabs: TicketsScope[] = ["mine", "assigned", "unassigned"];
+  const secondaryTabs: TicketsScope[] = ["resolved", "all", "external"];
   const projectOptions = useMemo(
     () => [
       { value: "", label: t("project.all") },
@@ -144,11 +145,10 @@ export default function TicketsTabs({
   return (
     <section className="space-y-6">
       <div className="space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight">
-              {t("projectsTitle")}
-            </h1>
+            <h1 className="text-2xl font-bold">{t("title")}</h1>
+            <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
           </div>
           <div className="min-w-[240px]">
             <Dropdown
@@ -161,14 +161,51 @@ export default function TicketsTabs({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           {canCreateTicket ? (
             <div>
               <TicketsCreateButton token={token} projectId={projectId ?? null} />
             </div>
           ) : null}
           <div className="flex flex-wrap gap-2">
-            {tabs.map((item) => {
+            {primaryTabs.map((item) => {
+              const Icon = TAB_ICON[item];
+              const active = item === currentScope;
+              const ticketCount = counts[item] ?? 0;
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setScope(item)}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
+                    active
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-muted text-muted-foreground hover:bg-background"
+                  )}
+                  aria-current={active ? "page" : undefined}
+                >
+                  <Icon className="h-4 w-4" />
+                  {t(`tabs.${item}`)}
+                  <span
+                    className={cn(
+                      "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
+                      active
+                        ? "bg-primary-foreground text-primary"
+                        : "bg-foreground/10 text-foreground"
+                    )}
+                  >
+                    {ticketCount > 99 ? "99+" : ticketCount}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap gap-2">
+            {secondaryTabs.map((item) => {
               const Icon = TAB_ICON[item];
               const active = item === currentScope;
               const ticketCount = counts[item] ?? 0;
@@ -202,33 +239,31 @@ export default function TicketsTabs({
             })}
           </div>
 
-          <div className="ml-auto">
-            <div className="flex items-center gap-2">
-              <select
-                value={status ?? ""}
-                onChange={(event) => setStatus(event.target.value)}
-                className="rounded-md border px-3 py-1.5 text-sm"
-              >
-                <option value="">{t("filters.allStatuses")}</option>
-                <option value="OPEN">{t("statuses.OPEN")}</option>
-                <option value="PENDING">{t("statuses.PENDING")}</option>
-              </select>
-              <button
-                type="button"
-                className={actionButtonClass({ size: "sm", className: "text-sm px-2" })}
-                onClick={() => {
-                  if (!projectId) {
-                    toast.error(tShare("projectRequired"));
-                    return;
-                  }
-                  setShareOpen(true);
-                }}
-                aria-label={tShare("actionLabel")}
-                title={tShare("actionLabel")}
-              >
-                <Share2 className="h-4 w-4" aria-hidden />
-              </button>
-            </div>
+          <div className="ml-auto flex items-center gap-2">
+            <select
+              value={status ?? ""}
+              onChange={(event) => setStatus(event.target.value)}
+              className="rounded-md border px-3 py-1.5 text-sm"
+            >
+              <option value="">{t("filters.allStatuses")}</option>
+              <option value="OPEN">{t("statuses.OPEN")}</option>
+              <option value="PENDING">{t("statuses.PENDING")}</option>
+            </select>
+            <button
+              type="button"
+              className={actionButtonClass({ size: "sm", className: "text-sm px-2" })}
+              onClick={() => {
+                if (!projectId) {
+                  toast.error(tShare("projectRequired"));
+                  return;
+                }
+                setShareOpen(true);
+              }}
+              aria-label={tShare("actionLabel")}
+              title={tShare("actionLabel")}
+            >
+              <Share2 className="h-4 w-4" aria-hidden />
+            </button>
           </div>
         </div>
       </div>

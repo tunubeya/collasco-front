@@ -9,7 +9,6 @@ import {
 } from "next/navigation";
 import { Calendar, Folder, Share2, User } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { Ticket, TicketStatus } from "@/lib/model-definitions/ticket";
@@ -83,8 +82,7 @@ export default function TicketsTabs({
     Math.ceil(pagination.total / Math.max(1, pagination.limit))
   );
 
-  const primaryTabs: TicketsScope[] = ["mine", "assigned", "unassigned"];
-  const secondaryTabs: TicketsScope[] = ["resolved", "all", "external"];
+  const tabs: TicketsScope[] = ["mine", "assigned", "unassigned", "resolved", "all", "external"];
   const projectOptions = useMemo(
     () => [
       { value: "", label: t("project.all") },
@@ -150,62 +148,36 @@ export default function TicketsTabs({
             <h1 className="text-2xl font-bold">{t("title")}</h1>
             <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
           </div>
-          <div className="min-w-[240px]">
-            <Dropdown
-              value={projectId ?? ""}
-              onChange={(event) => setProject(event.target.value)}
-              options={projectOptions}
-              sizeElement="default"
-              fullWidth
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          {canCreateTicket ? (
-            <div>
-              <TicketsCreateButton token={token} projectId={projectId ?? null} />
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <div className="min-w-[240px]">
+              <Dropdown
+                value={projectId ?? ""}
+                onChange={(event) => setProject(event.target.value)}
+                options={projectOptions}
+                sizeElement="default"
+                fullWidth
+              />
             </div>
-          ) : null}
-          <div className="flex flex-wrap gap-2">
-            {primaryTabs.map((item) => {
-              const Icon = TAB_ICON[item];
-              const active = item === currentScope;
-              const ticketCount = counts[item] ?? 0;
-              return (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setScope(item)}
-                  className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-muted text-muted-foreground hover:bg-background"
-                  )}
-                  aria-current={active ? "page" : undefined}
-                >
-                  <Icon className="h-4 w-4" />
-                  {t(`tabs.${item}`)}
-                  <span
-                    className={cn(
-                      "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
-                      active
-                        ? "bg-primary-foreground text-primary"
-                        : "bg-foreground/10 text-foreground"
-                    )}
-                  >
-                    {ticketCount > 99 ? "99+" : ticketCount}
-                  </span>
-                </button>
-              );
-            })}
+            {projectId && canCreateTicket ? (
+              <TicketsCreateButton token={token} projectId={projectId} />
+            ) : null}
+            {projectId ? (
+              <button
+                type="button"
+                className={actionButtonClass({ size: "sm", className: "text-sm px-2" })}
+                onClick={() => setShareOpen(true)}
+                aria-label={tShare("actionLabel")}
+                title={tShare("actionLabel")}
+              >
+                <Share2 className="h-4 w-4" aria-hidden />
+              </button>
+            ) : null}
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex flex-wrap gap-2">
-            {secondaryTabs.map((item) => {
+          <div className="flex flex-nowrap gap-2 overflow-x-auto">
+            {tabs.map((item) => {
               const Icon = TAB_ICON[item];
               const active = item === currentScope;
               const ticketCount = counts[item] ?? 0;
@@ -215,7 +187,7 @@ export default function TicketsTabs({
                   type="button"
                   onClick={() => setScope(item)}
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
+                    "inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
                     active
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border bg-muted text-muted-foreground hover:bg-background"
@@ -249,21 +221,6 @@ export default function TicketsTabs({
               <option value="OPEN">{t("statuses.OPEN")}</option>
               <option value="PENDING">{t("statuses.PENDING")}</option>
             </select>
-            <button
-              type="button"
-              className={actionButtonClass({ size: "sm", className: "text-sm px-2" })}
-              onClick={() => {
-                if (!projectId) {
-                  toast.error(tShare("projectRequired"));
-                  return;
-                }
-                setShareOpen(true);
-              }}
-              aria-label={tShare("actionLabel")}
-              title={tShare("actionLabel")}
-            >
-              <Share2 className="h-4 w-4" aria-hidden />
-            </button>
           </div>
         </div>
       </div>

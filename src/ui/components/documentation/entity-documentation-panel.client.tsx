@@ -201,7 +201,7 @@ export function EntityDocumentationPanel({
       console.warn("Failed to load project images map", err);
       setProjectImagesMap({});
     }
-  }, [entityType, projectId, token]);
+  }, [projectId, token]);
 
   useEffect(() => {
     if (!showImages) return;
@@ -358,6 +358,7 @@ export function EntityDocumentationPanel({
         }));
         setShowImages(true);
         await fetchImages(labelId);
+        await fetchProjectImagesMap();
       } catch (err) {
         let description: string | undefined;
         let isDuplicate = false;
@@ -404,6 +405,7 @@ export function EntityDocumentationPanel({
       entityId,
       entityType,
       fetchImages,
+      fetchProjectImagesMap,
       imageFileByLabel,
       imageNameByLabel,
       t,
@@ -421,13 +423,16 @@ export function EntityDocumentationPanel({
         await deleteDocumentationImage(token, entityType, entityId, imageId);
         toast.success(t("images.messages.deleted"));
         await fetchImages(labelId);
+        if (showImages) {
+          await fetchProjectImagesMap();
+        }
       } catch (err) {
         toast.error(t("images.messages.deleteError"), {
           description: err instanceof Error ? err.message : undefined,
         });
       }
     },
-    [entityId, entityType, fetchImages, t, token],
+    [entityId, entityType, fetchImages, fetchProjectImagesMap, showImages, t, token],
   );
 
   const handleStartEditImage = useCallback((image: DocumentationImage) => {

@@ -4,7 +4,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import { Bold, Italic, List, ListOrdered, UnderlineIcon, X } from "lucide-react";
+import {
+  Bold,
+  Code,
+  Italic,
+  List,
+  ListOrdered,
+  UnderlineIcon,
+  X,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { normalizeRichTextInput } from "@/lib/rich-text";
@@ -13,6 +21,7 @@ type ToolbarLabels = {
   bold: string;
   italic: string;
   underline: string;
+  code: string;
   bulletList: string;
   orderedList: string;
   clear: string;
@@ -128,6 +137,12 @@ export function RichTextEditor({
       label: labels.underline,
     },
     {
+      icon: Code,
+      action: () => editor?.chain().focus().toggleCode().run(),
+      isActive: () => editor?.isActive("code"),
+      label: labels.code,
+    },
+    {
       icon: List,
       action: () => editor?.chain().focus().toggleBulletList().run(),
       isActive: () => editor?.isActive("bulletList"),
@@ -211,6 +226,14 @@ export function RichTextEditor({
         }
         .rich-text-content :global(li) {
           margin-bottom: 0.25rem;
+        }
+        .rich-text-content :global(code) {
+          border-radius: 0.25rem;
+          background: hsl(var(--muted));
+          padding: 0.1rem 0.3rem;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+            "Liberation Mono", "Courier New", monospace;
+          font-size: 0.85em;
         }
       `}</style>
     </div>

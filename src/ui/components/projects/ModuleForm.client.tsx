@@ -108,6 +108,7 @@ export function ModuleForm({
           bold: t("richText.bold"),
           italic: t("richText.italic"),
           underline: t("richText.underline"),
+          code: t("richText.code"),
           bulletList: t("richText.bulletList"),
           orderedList: t("richText.orderedList"),
           clear: t("richText.clear"),

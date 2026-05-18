@@ -243,6 +243,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
       bold: tRichText("bold"),
       italic: tRichText("italic"),
       underline: tRichText("underline"),
+      code: tRichText("code"),
       bulletList: tRichText("bulletList"),
       orderedList: tRichText("orderedList"),
       clear: tRichText("clear"),

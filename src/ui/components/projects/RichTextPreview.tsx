@@ -75,6 +75,15 @@ export function RichTextPreview({
         .rich-text-preview :global(li) {
           margin-bottom: 0.25rem;
         }
+        .rich-text-preview :global(code) {
+          border-radius: 0.25rem;
+          background: hsl(var(--muted));
+          padding: 0.1rem 0.3rem;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+            "Liberation Mono", "Courier New", monospace;
+          font-size: 0.85em;
+          color: hsl(var(--foreground));
+        }
         .rich-text-preview :global(img) {
           display: inline-block;
           max-width: 100%;

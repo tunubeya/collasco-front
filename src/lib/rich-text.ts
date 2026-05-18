@@ -52,6 +52,7 @@ export function sanitizeRichTextClient(value: string): string {
     "strong",
     "em",
     "u",
+    "code",
     "ul",
     "ol",
     "li",

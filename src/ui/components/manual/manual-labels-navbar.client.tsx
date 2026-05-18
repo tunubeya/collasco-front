@@ -52,7 +52,6 @@ export function ManualLabelsNavbar({
       setLabels(options ?? []);
       const selected = preferences?.selectedLabelIds ?? [];
       setSelectedIds(selected);
-      notifyManualRefresh(selected);
     } catch (error) {
       toast.error(t("messages.loadError"), {
         description: error instanceof Error ? error.message : undefined,

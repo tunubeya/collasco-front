@@ -102,6 +102,7 @@ export function PublicManualClient({
   const [hashTargetId, setHashTargetId] = useState<string | null>(null);
   const imagesCacheRef = useRef<Record<string, string | { url: string; mimeType?: string | null }> | null>(null);
   const imagesPromiseRef = useRef<Promise<Record<string, string | { url: string; mimeType?: string | null }>> | null>(null);
+  const allLabelsCacheRef = useRef<StructureModuleNode["documentationLabels"] | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -151,21 +152,29 @@ export function PublicManualClient({
         payload.documentationLabels && payload.documentationLabels.length > 0
           ? payload.documentationLabels
           : collectLabelsFromModules(payload.modules ?? []);
-      setAvailableLabels(fromPayload);
 
       if (labelIdsFromUrl.length > 0) {
-        try {
-          const allowed = await fetchPublicManual({ linkId });
-          const allowedLabels =
-            allowed.documentationLabels && allowed.documentationLabels.length > 0
-              ? allowed.documentationLabels
-              : collectLabelsFromModules(allowed.modules ?? []);
-          if (allowedLabels.length > 0) {
-            setAvailableLabels(allowedLabels);
+        if (allLabelsCacheRef.current && allLabelsCacheRef.current.length > 0) {
+          setAvailableLabels(allLabelsCacheRef.current);
+        } else {
+          setAvailableLabels(fromPayload);
+          try {
+            const allowed = await fetchPublicManual({ linkId });
+            const allowedLabels =
+              allowed.documentationLabels && allowed.documentationLabels.length > 0
+                ? allowed.documentationLabels
+                : collectLabelsFromModules(allowed.modules ?? []);
+            if (allowedLabels.length > 0) {
+              allLabelsCacheRef.current = allowedLabels;
+              setAvailableLabels(allowedLabels);
+            }
+          } catch {
+            // Ignore label refresh errors; main payload already loaded.
           }
-        } catch {
-          // Ignore label refresh errors; main payload already loaded.
         }
+      } else {
+        allLabelsCacheRef.current = fromPayload;
+        setAvailableLabels(fromPayload);
       }
     } catch (err) {
       console.error("Failed to load public manual", err);

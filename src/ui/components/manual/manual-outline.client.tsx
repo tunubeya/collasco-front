@@ -431,7 +431,7 @@ function ManualNodeItem({
             )}
           </div>
         ) : null}
-        {showDetails ? (
+        {showDetails && richTextValue ? (
           <div className="px-3">
             <RichTextPreview
               value={richTextValue}
@@ -572,7 +572,7 @@ function ManualNodeItem({
           )}
         </div>
       ) : null}
-      {showDetails ? (
+      {showDetails && richTextValue ? (
         <div className="px-3">
           <RichTextPreview
             value={richTextValue}

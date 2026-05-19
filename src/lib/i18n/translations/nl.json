@@ -326,7 +326,12 @@
     "description": "Stuur ons je opmerkingen, suggesties of problemen. Jouw mening is belangrijk voor ons.",
     "subjectPlaceholder": "Onderwerp",
     "descriptionPlaceholder": "Beschrijf je vraag...",
-    "sendButton": "Bericht verzenden"
+    "sendButton": "Bericht verzenden",
+    "ticketCta": {
+      "title": "Heb je een fout in het systeem gevonden?",
+      "description": "Maak een ticket aan zodat het Collasco-team dit kan bekijken.",
+      "action": "Ticket aanmaken"
+    }
   },
   "plans": {
     "metadata_title": "Plannen | Collasco",

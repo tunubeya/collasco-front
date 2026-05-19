@@ -316,7 +316,12 @@
     "description": "Send us your comments, suggestions, or problems. Your opinion is important to us.",
     "subjectPlaceholder": "Subject",
     "descriptionPlaceholder": "Describe your query...",
-    "sendButton": "Send Message"
+    "sendButton": "Send Message",
+    "ticketCta": {
+      "title": "Found an issue in the system?",
+      "description": "Create a ticket so the Collasco team can review it.",
+      "action": "Create ticket"
+    }
   },
   "plans": {
     "metadata_title": "Plans | Collasco",

@@ -326,7 +326,12 @@
     "description": "Envíanos tus comentarios, sugerencias o problemas. Tu opinión es importante para nosotros.",
     "subjectPlaceholder": "Asunto",
     "descriptionPlaceholder": "Describe tu consulta...",
-    "sendButton": "Enviar Mensaje"
+    "sendButton": "Enviar Mensaje",
+    "ticketCta": {
+      "title": "¿Encontraste un error en el sistema?",
+      "description": "Crea un ticket para que el equipo de Collasco pueda revisarlo.",
+      "action": "Crear ticket"
+    }
   },
   "plans": {
     "metadata_title": "Planes | Collasco",

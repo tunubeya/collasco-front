@@ -189,7 +189,7 @@ export default function TicketsTabs({
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex flex-nowrap gap-2 overflow-x-auto">
+          <div className="flex flex-wrap gap-2">
             {tabs.map((item) => {
               const Icon = TAB_ICON[item];
               const active = item === currentScope;

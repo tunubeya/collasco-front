@@ -61,6 +61,7 @@ import {
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { Breadcrumb } from "@/ui/components/navigation/Breadcrumb";
+import { notifyTicketCountsChanged } from "@/ui/components/tickets/ticket-count-events";
 
 type Props = {
   token: string;
@@ -519,6 +520,10 @@ export function TicketDetailView({
       payload.featureId = debouncedDetails.featureId ?? null;
     }
     if (Object.keys(payload).length === 0) return;
+    const assigneeChanged = Object.prototype.hasOwnProperty.call(
+      payload,
+      "assigneeId"
+    );
 
     const requestId = ++saveRequestRef.current;
     setSaving(true);
@@ -533,6 +538,9 @@ export function TicketDetailView({
           title: updated.title ?? debouncedDetails.title,
           status: updated.status ?? debouncedDetails.status,
         }));
+        if (assigneeChanged) {
+          notifyTicketCountsChanged();
+        }
       })
       .catch((error) => {
         if (requestId !== saveRequestRef.current) return;

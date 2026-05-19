@@ -1957,6 +1957,7 @@
           "CLOSED": "Closed"
         },
         "meta": {
+          "project": "Project: {name}",
           "createdBy": "Created by {name}",
           "assignedTo": "Assigned to {name}",
           "sections": "{count, plural, one {# section} other {# sections}}",

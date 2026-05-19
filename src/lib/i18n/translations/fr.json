@@ -1975,6 +1975,7 @@
           "CLOSED": "Fermé"
         },
         "meta": {
+          "project": "Projet : {name}",
           "createdBy": "Créé par {name}",
           "assignedTo": "Assigné à {name}",
           "sections": "{count, plural, one {# section} other {# sections}}",

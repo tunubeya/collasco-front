@@ -93,6 +93,10 @@ export default function TicketsTabs({
     ],
     [projects, t]
   );
+  const projectNameById = useMemo(
+    () => new Map(projects.map((project) => [project.id, project.name])),
+    [projects]
+  );
 
   const setScope = (next: TicketsScope) => {
     const sp = new URLSearchParams(params.toString());
@@ -158,6 +162,15 @@ export default function TicketsTabs({
                 fullWidth
               />
             </div>
+            <select
+              value={status ?? ""}
+              onChange={(event) => setStatus(event.target.value)}
+              className="min-w-[180px] rounded-md border px-3 py-1.5 text-sm"
+            >
+              <option value="">{t("filters.allStatuses")}</option>
+              <option value="OPEN">{t("statuses.OPEN")}</option>
+              <option value="PENDING">{t("statuses.PENDING")}</option>
+            </select>
             {projectId && canCreateTicket ? (
               <TicketsCreateButton token={token} projectId={projectId} />
             ) : null}
@@ -210,18 +223,6 @@ export default function TicketsTabs({
               );
             })}
           </div>
-
-          <div className="ml-auto flex items-center gap-2">
-            <select
-              value={status ?? ""}
-              onChange={(event) => setStatus(event.target.value)}
-              className="rounded-md border px-3 py-1.5 text-sm"
-            >
-              <option value="">{t("filters.allStatuses")}</option>
-              <option value="OPEN">{t("statuses.OPEN")}</option>
-              <option value="PENDING">{t("statuses.PENDING")}</option>
-            </select>
-          </div>
         </div>
       </div>
 
@@ -247,6 +248,9 @@ export default function TicketsTabs({
                 ? (ticket.publicReporterName ?? t("meta.externalUser"))
                 : ticket.createdBy?.name ?? t("meta.unknown");
               const isUnread = (ticket.unreadCount ?? 0) > 0;
+              const projectName =
+                ticket.project?.name ??
+                (ticket.projectId ? projectNameById.get(ticket.projectId) : null);
               return (
                 <li
                   key={ticket.id}
@@ -274,10 +278,10 @@ export default function TicketsTabs({
                         </span>
                       </div>
                       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                        {ticket.project?.name ? (
+                        {projectName ? (
                           <span className="flex items-center gap-1">
                             <Folder className="h-3 w-3" />
-                            {ticket.project.name}
+                            {t("meta.project", { name: projectName })}
                           </span>
                         ) : null}
                         {ticket.feature?.name ? (

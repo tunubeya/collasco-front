@@ -25,6 +25,7 @@ export type TicketFeature = {
 
 export type Ticket = {
   id: string;
+  projectId?: string;
   title: string;
   status: TicketStatus;
   project?: TicketProject | null;

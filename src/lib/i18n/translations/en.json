@@ -1206,6 +1206,56 @@
         },
         "validation": {
           "content": "Enter some content or mark it as not applicable."
+        },
+        "versions": {
+          "title": "Versions",
+          "empty": "No versions are available yet.",
+          "current": "Current",
+          "noChangelog": "No changelog",
+          "versionLabel": "v{version}",
+          "currentVersion": "You are in v{version}",
+          "basedOn": "Draft based on v{version}",
+          "confirmRevert": "This will replace the current draft documentation with the content from v{version}. It will not be published until you click Publish.",
+          "status": {
+            "draft": "Draft",
+            "published": "Published"
+          },
+          "fields": {
+            "changelog": "Publication changelog"
+          },
+          "placeholders": {
+            "changelog": "Describe what changed in this version"
+          },
+          "actions": {
+            "publish": "Publish",
+            "view": "View",
+            "backToDraft": "Back to draft",
+            "revert": "Revert",
+            "compare": "Compare"
+          },
+          "messages": {
+            "loadError": "We could not load the versions.",
+            "published": "Documentation published. A new editable draft was created.",
+            "publishError": "We could not publish the documentation.",
+            "noChanges": "There are no new changes to publish.",
+            "reverted": "Draft replaced with content from v{version}.",
+            "revertError": "We could not revert to this version.",
+            "compareError": "We could not compare the versions."
+          }
+        },
+        "compare": {
+          "title": "Comparison v{from} → {to}",
+          "draft": "current draft",
+          "types": {
+            "modified": "Modified",
+            "added": "Added",
+            "removed": "Removed",
+            "unchanged": "Unchanged",
+            "all": "All"
+          },
+          "empty": "No changes for this filter.",
+          "before": "Before",
+          "after": "After"
         }
       },
       "detailErrors": {

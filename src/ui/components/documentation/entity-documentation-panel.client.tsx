@@ -5,7 +5,10 @@ import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   type QaDocumentationEntry,
+  type QaDocumentationVersionContent,
+  type QaDocumentationVersionSummary,
   type DocumentationImage,
+  getDocumentationVersion,
   listDocumentationImages,
   listProjectDocumentationImagesAll,
   uploadDocumentationImage,
@@ -15,13 +18,26 @@ import {
   listFeatureDocumentation,
   listModuleDocumentation,
   listProjectDocumentation,
+  listDocumentationVersions,
   listProjectDocumentationLabels,
+  publishDocumentation,
+  revertDocumentationVersion,
   updateFeatureDocumentationEntry,
   updateModuleDocumentationEntry,
   updateProjectDocumentationEntry,
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Check, Info, Loader2, Pencil, Trash2, X } from "lucide-react";
+import {
+  Check,
+  Eye,
+  History,
+  Info,
+  Loader2,
+  Pencil,
+  RotateCcw,
+  Trash2,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
@@ -51,7 +67,14 @@ export function EntityDocumentationPanel({
   const t = useTranslations("app.projects.documentation");
   const tRichText = useTranslations("app.projects.form.richText");
   const formatter = useFormatter();
+  const [version, setVersion] = useState<QaDocumentationVersionContent | null>(null);
   const [entries, setEntries] = useState<QaDocumentationEntry[]>([]);
+  const [versions, setVersions] = useState<QaDocumentationVersionSummary[]>([]);
+  const [viewingVersionNumber, setViewingVersionNumber] = useState<number | null>(null);
+  const [changelog, setChangelog] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [isLoadingVersions, setIsLoadingVersions] = useState(false);
+  const [revertingVersionNumber, setRevertingVersionNumber] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [labelOptions, setLabelOptions] = useState<
     Awaited<ReturnType<typeof listProjectDocumentationLabels>>
@@ -129,7 +152,9 @@ export function EntityDocumentationPanel({
     setIsLoading(true);
     try {
       const data = await fetcher(token, entityId);
-      setEntries(data);
+      setVersion(data);
+      setEntries(data.fields);
+      setViewingVersionNumber(null);
     } catch (err) {
       toast.error(t("messages.loadError"), {
         description: err instanceof Error ? err.message : undefined,
@@ -142,6 +167,40 @@ export function EntityDocumentationPanel({
   useEffect(() => {
     void fetchEntries();
   }, [fetchEntries]);
+
+  const fetchVersions = useCallback(async () => {
+    setIsLoadingVersions(true);
+    try {
+      const data = await listDocumentationVersions(token, entityType, entityId);
+      setVersions(data);
+    } catch (err) {
+      toast.error(t("versions.messages.loadError"), {
+        description: err instanceof Error ? err.message : undefined,
+      });
+    } finally {
+      setIsLoadingVersions(false);
+    }
+  }, [entityId, entityType, t, token]);
+
+  useEffect(() => {
+    void fetchVersions();
+  }, [fetchVersions]);
+
+  useEffect(() => {
+    if (viewingVersionNumber !== null || !version) return;
+    const draftVersion = versions.find((item) => item.status === "DRAFT");
+    if (!draftVersion) return;
+    if (version.id === draftVersion.id && version.versionNumber === draftVersion.versionNumber) {
+      return;
+    }
+    setVersion((current) => {
+      if (!current) return current;
+      return {
+        ...draftVersion,
+        fields: current.fields,
+      };
+    });
+  }, [version, versions, viewingVersionNumber]);
 
   const fetchLabelOptions = useCallback(async () => {
     try {
@@ -229,12 +288,15 @@ export function EntityDocumentationPanel({
         label: {
           id: option.id,
           name: option.name,
+          instructions: null,
           isMandatory: option.isMandatory,
+          defaultNotApplicable: false,
           visibleRoleIds: [],
           readOnlyRoleIds: [],
+          displayOrder: option.displayOrder,
         },
         field: null,
-        canEdit: true,
+        canEdit: version?.status !== "PUBLISHED",
       } satisfies QaDocumentationEntry;
     });
     const applicable: QaDocumentationEntry[] = [];
@@ -247,7 +309,7 @@ export function EntityDocumentationPanel({
       }
     });
     return [...applicable, ...notApplicable];
-  }, [entries, labelOptions]);
+  }, [entries, labelOptions, version?.status]);
 
   const handleEdit = useCallback((entry: QaDocumentationEntry) => {
     setEditingLabelId(entry.label.id);
@@ -275,7 +337,9 @@ export function EntityDocumentationPanel({
           content: draftContent,
         };
         const updated = await updater(token, entityId, labelId, payload);
-        setEntries(updated);
+        setVersion(updated);
+        setEntries(updated.fields);
+        setViewingVersionNumber(null);
         toast.success(t("messages.saved"));
         handleCancel();
       } catch (err) {
@@ -296,7 +360,9 @@ export function EntityDocumentationPanel({
         const updated = await updater(token, entityId, labelId, {
           isNotApplicable: true,
         });
-        setEntries(updated);
+        setVersion(updated);
+        setEntries(updated.fields);
+        setViewingVersionNumber(null);
         setEditingLabelId(null);
         toast.success(t("messages.saved"));
       } catch (err) {
@@ -317,7 +383,9 @@ export function EntityDocumentationPanel({
         const updated = await updater(token, entityId, labelId, {
           isNotApplicable: false,
         });
-        setEntries(updated);
+        setVersion(updated);
+        setEntries(updated.fields);
+        setViewingVersionNumber(null);
         toast.success(t("messages.saved"));
       } catch (err) {
         toast.error(t("messages.saveError"), {
@@ -328,6 +396,89 @@ export function EntityDocumentationPanel({
       }
     },
     [entityId, t, token, updater],
+  );
+
+  const handleViewDraft = useCallback(async () => {
+    await fetchEntries();
+  }, [fetchEntries]);
+
+  const handleViewVersion = useCallback(
+    async (versionNumber: number) => {
+      setIsLoading(true);
+      try {
+        const data = await getDocumentationVersion(
+          token,
+          entityType,
+          entityId,
+          versionNumber,
+        );
+        setVersion(data);
+        setEntries(data.fields);
+        setViewingVersionNumber(versionNumber);
+        setEditingLabelId(null);
+      } catch (err) {
+        toast.error(t("versions.messages.loadError"), {
+          description: err instanceof Error ? err.message : undefined,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [entityId, entityType, t, token],
+  );
+
+  const handlePublish = useCallback(async () => {
+    setIsPublishing(true);
+    try {
+      await publishDocumentation(token, entityType, entityId, {
+        changelog: changelog.trim() || undefined,
+      });
+      setViewingVersionNumber(null);
+      setChangelog("");
+      toast.success(t("versions.messages.published"));
+      await fetchVersions();
+      await fetchEntries();
+    } catch (err) {
+      if (err instanceof Response && err.status === 409) {
+        toast.error(t("versions.messages.noChanges"));
+        return;
+      }
+      toast.error(t("versions.messages.publishError"), {
+        description: err instanceof Error ? err.message : undefined,
+      });
+    } finally {
+      setIsPublishing(false);
+    }
+  }, [changelog, entityId, entityType, fetchEntries, fetchVersions, t, token]);
+
+  const handleRevert = useCallback(
+    async (versionNumber: number) => {
+      const confirmed = window.confirm(
+        t("versions.confirmRevert", { version: versionNumber }),
+      );
+      if (!confirmed) return;
+      setRevertingVersionNumber(versionNumber);
+      try {
+        await revertDocumentationVersion(
+          token,
+          entityType,
+          entityId,
+          versionNumber,
+        );
+        setViewingVersionNumber(null);
+        setEditingLabelId(null);
+        toast.success(t("versions.messages.reverted", { version: versionNumber }));
+        await fetchVersions();
+        await fetchEntries();
+      } catch (err) {
+        toast.error(t("versions.messages.revertError"), {
+          description: err instanceof Error ? err.message : undefined,
+        });
+      } finally {
+        setRevertingVersionNumber(null);
+      }
+    },
+    [entityId, entityType, fetchEntries, fetchVersions, t, token],
   );
 
   const handleUploadImage = useCallback(
@@ -517,18 +668,155 @@ export function EntityDocumentationPanel({
     ],
   );
 
+  const historyVersions = useMemo(
+    () => versions.filter((item) => item.status === "PUBLISHED"),
+    [versions],
+  );
+
   return (
     <section className="space-y-4 rounded-xl border bg-background p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="text-lg font-semibold">{t("title")}</h3>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-lg font-semibold">{t("title")}</h3>
+            {version && (
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                {t("versions.currentVersion", {
+                  version: version.versionNumber,
+                })}
+              </span>
+            )}
+          </div>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Switch
-          checked={showImages}
-          onChange={(event) => setShowImages(event.target.checked)}
-          label={t("images.toggle")}
-        />
+        <div className="flex flex-wrap items-center justify-end gap-3">
+          {viewingVersionNumber !== null && (
+            <button
+              type="button"
+              className={actionButtonClass({ variant: "neutral", size: "xs" })}
+              onClick={() => void handleViewDraft()}
+            >
+            {t("versions.actions.backToDraft")}
+            </button>
+          )}
+          <Switch
+            checked={showImages}
+            onChange={(event) => setShowImages(event.target.checked)}
+            label={t("images.toggle")}
+          />
+          {version?.status === "DRAFT" && viewingVersionNumber === null && (
+            <Popover placement="bottom-end">
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={actionButtonClass({ variant: "primary", size: "xs" })}
+                >
+                  {t("versions.actions.publish")}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="z-50 w-80 rounded-lg border bg-background p-3 shadow-lg">
+                <div className="space-y-3">
+                  <label className="space-y-1 text-xs font-medium text-muted-foreground">
+                    <span>{t("versions.fields.changelog")}</span>
+                    <textarea
+                      value={changelog}
+                      onChange={(event) => setChangelog(event.target.value)}
+                      className="min-h-24 w-full resize-y rounded-md border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder={t("versions.placeholders.changelog")}
+                    />
+                  </label>
+                  <div className="flex justify-end gap-2">
+                    <PopoverClose className={actionButtonClass({ variant: "neutral", size: "xs" })}>
+                      {t("actions.cancel")}
+                    </PopoverClose>
+                    <button
+                      type="button"
+                      className={actionButtonClass({ variant: "primary", size: "xs" })}
+                      onClick={() => void handlePublish()}
+                      disabled={isPublishing}
+                    >
+                      {isPublishing ? (
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                      ) : (
+                        t("versions.actions.publish")
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
+          <Popover placement="bottom-end">
+            <PopoverTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                aria-label={t("versions.title")}
+              >
+                {isLoadingVersions ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                ) : (
+                  <History className="h-4 w-4" aria-hidden />
+                )}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="z-50 w-80 rounded-lg border bg-background p-3 shadow-lg">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm font-semibold">{t("versions.title")}</p>
+                {isLoadingVersions && (
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" aria-hidden />
+                )}
+              </div>
+              {historyVersions.length === 0 ? (
+                <p className="mt-3 text-xs text-muted-foreground">{t("versions.empty")}</p>
+              ) : (
+                <div className="mt-3 max-h-80 space-y-2 overflow-y-auto">
+                  {historyVersions.map((item) => {
+                    const publishedAt = item.publishedAt
+                      ? formatter.dateTime(new Date(item.publishedAt), { dateStyle: "medium" })
+                      : null;
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between gap-2 rounded-md border bg-background px-3 py-2 text-xs"
+                      >
+                        <div className="min-w-0">
+                          <p className="font-semibold">
+                            {t("versions.versionLabel", { version: item.versionNumber })}
+                          </p>
+                          <p className="mt-0.5 truncate text-muted-foreground">
+                            {item.changelog || publishedAt || t("versions.noChangelog")}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <PopoverClose
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+                            onClick={() => void handleViewVersion(item.versionNumber)}
+                            aria-label={t("versions.actions.view")}
+                          >
+                            <Eye className="h-4 w-4" aria-hidden />
+                          </PopoverClose>
+                          <PopoverClose
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
+                            onClick={() => void handleRevert(item.versionNumber)}
+                            disabled={revertingVersionNumber === item.versionNumber}
+                            aria-label={t("versions.actions.revert")}
+                          >
+                            {revertingVersionNumber === item.versionNumber ? (
+                              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                            ) : (
+                              <RotateCcw className="h-4 w-4" aria-hidden />
+                            )}
+                          </PopoverClose>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
       {isLoading ? (

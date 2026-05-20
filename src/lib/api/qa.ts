@@ -346,6 +346,54 @@ export type QaDocumentationEntry = {
   canEdit: boolean;
 };
 
+export type QaDocumentationVersionStatus = "DRAFT" | "PUBLISHED";
+
+export type QaDocumentationVersionUser = {
+  id: string;
+  email: string;
+  name: string | null;
+};
+
+export type QaDocumentationVersionSummary = {
+  id: string;
+  versionNumber: number;
+  status: QaDocumentationVersionStatus;
+  changelog: string | null;
+  createdAt: string;
+  publishedAt: string | null;
+  sourceVersionId: string | null;
+  createdBy: QaDocumentationVersionUser | null;
+};
+
+export type QaDocumentationVersionContent = QaDocumentationVersionSummary & {
+  fields: QaDocumentationEntry[];
+};
+
+export type QaDocumentationChangeType =
+  | "added"
+  | "removed"
+  | "modified"
+  | "unchanged";
+
+export type QaDocumentationCompareChange = {
+  label: QaProjectLabel;
+  changeType: QaDocumentationChangeType;
+  before: {
+    content: string | null;
+    isNotApplicable: boolean;
+  } | null;
+  after: {
+    content: string | null;
+    isNotApplicable: boolean;
+  } | null;
+};
+
+export type QaDocumentationCompareResponse = {
+  fromVersion: QaDocumentationVersionSummary;
+  toVersion: QaDocumentationVersionSummary;
+  changes: QaDocumentationCompareChange[];
+};
+
 export type UpdateQaDocumentationEntryDto = {
   content?: string | null;
   isNotApplicable?: boolean;
@@ -393,6 +441,50 @@ function documentationEntityPath(entityType: "project" | "module" | "feature") {
   if (entityType === "project") return "projects";
   if (entityType === "module") return "modules";
   return "features";
+}
+
+function normalizeDocumentationVersionContent(
+  payload:
+    | QaDocumentationVersionContent
+    | QaDocumentationEntry[]
+    | { items?: QaDocumentationEntry[] }
+): QaDocumentationVersionContent {
+  if (Array.isArray(payload)) {
+    return {
+      id: "",
+      versionNumber: 1,
+      status: "DRAFT",
+      changelog: null,
+      createdAt: "",
+      publishedAt: null,
+      sourceVersionId: null,
+      createdBy: null,
+      fields: payload,
+    };
+  }
+  if ("fields" in payload && Array.isArray(payload.fields)) {
+    return payload;
+  }
+  return {
+    id: "",
+    versionNumber: 1,
+    status: "DRAFT",
+    changelog: null,
+    createdAt: "",
+    publishedAt: null,
+    sourceVersionId: null,
+    createdBy: null,
+    fields: "items" in payload ? payload.items ?? [] : [],
+  };
+}
+
+async function parseDocumentationVersionContent(
+  res: Response
+): Promise<QaDocumentationVersionContent> {
+  const payload = await parseJsonResponse<
+    QaDocumentationVersionContent | QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+  >(res);
+  return normalizeDocumentationVersionContent(payload);
 }
 
 export async function listDocumentationImages(
@@ -1310,7 +1402,7 @@ export async function deleteProjectLabel(
 export async function listFeatureDocumentation(
   token: string,
   featureId: string
-): Promise<QaDocumentationEntry[]> {
+): Promise<QaDocumentationVersionContent> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/features/${featureId}/documentation`,
@@ -1318,14 +1410,7 @@ export async function listFeatureDocumentation(
       token
     );
     if (!res.ok) throw res;
-    const payload = await parseJsonResponse<
-      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
-    >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return await parseDocumentationVersionContent(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -1335,7 +1420,7 @@ export async function listFeatureDocumentation(
 export async function listModuleDocumentation(
   token: string,
   moduleId: string
-): Promise<QaDocumentationEntry[]> {
+): Promise<QaDocumentationVersionContent> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/modules/${moduleId}/documentation`,
@@ -1343,14 +1428,7 @@ export async function listModuleDocumentation(
       token
     );
     if (!res.ok) throw res;
-    const payload = await parseJsonResponse<
-      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
-    >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return await parseDocumentationVersionContent(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -1360,7 +1438,7 @@ export async function listModuleDocumentation(
 export async function listProjectDocumentation(
   token: string,
   projectId: string
-): Promise<QaDocumentationEntry[]> {
+): Promise<QaDocumentationVersionContent> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/projects/${projectId}/documentation`,
@@ -1368,14 +1446,7 @@ export async function listProjectDocumentation(
       token
     );
     if (!res.ok) throw res;
-    const payload = await parseJsonResponse<
-      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
-    >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return await parseDocumentationVersionContent(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -1387,7 +1458,7 @@ export async function updateFeatureDocumentationEntry(
   featureId: string,
   labelId: string,
   dto: UpdateQaDocumentationEntryDto
-): Promise<QaDocumentationEntry[]> {
+): Promise<QaDocumentationVersionContent> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/features/${featureId}/documentation/${labelId}`,
@@ -1399,14 +1470,7 @@ export async function updateFeatureDocumentationEntry(
       token
     );
     if (!res.ok) throw res;
-    const payload = await parseJsonResponse<
-      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
-    >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return await parseDocumentationVersionContent(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -1418,7 +1482,7 @@ export async function updateModuleDocumentationEntry(
   moduleId: string,
   labelId: string,
   dto: UpdateQaDocumentationEntryDto
-): Promise<QaDocumentationEntry[]> {
+): Promise<QaDocumentationVersionContent> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/modules/${moduleId}/documentation/${labelId}`,
@@ -1430,14 +1494,7 @@ export async function updateModuleDocumentationEntry(
       token
     );
     if (!res.ok) throw res;
-    const payload = await parseJsonResponse<
-      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
-    >(res);
-    if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return await parseDocumentationVersionContent(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;
@@ -1449,7 +1506,7 @@ export async function updateProjectDocumentationEntry(
   projectId: string,
   labelId: string,
   dto: UpdateQaDocumentationEntryDto
-): Promise<QaDocumentationEntry[]> {
+): Promise<QaDocumentationVersionContent> {
   try {
     const res = await fetchWithAuth(
       `${apiUrl}/qa/projects/${projectId}/documentation/${labelId}`,
@@ -1461,14 +1518,116 @@ export async function updateProjectDocumentationEntry(
       token
     );
     if (!res.ok) throw res;
+    return await parseDocumentationVersionContent(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function listDocumentationVersions(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string
+): Promise<QaDocumentationVersionSummary[]> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/versions`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
     const payload = await parseJsonResponse<
-      QaDocumentationEntry[] | { items?: QaDocumentationEntry[] }
+      QaDocumentationVersionSummary[] | { items?: QaDocumentationVersionSummary[] }
     >(res);
     if (Array.isArray(payload)) return payload;
-    if (payload?.items && Array.isArray(payload.items)) {
-      return payload.items;
-    }
-    return [];
+    return payload.items ?? [];
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function getDocumentationVersion(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  versionNumber: number
+): Promise<QaDocumentationVersionContent> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/versions/${versionNumber}`,
+      { method: "GET" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseDocumentationVersionContent(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function publishDocumentation(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  dto: { changelog?: string | null } = {}
+): Promise<QaDocumentationVersionContent> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/publish`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto),
+      },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseDocumentationVersionContent(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function revertDocumentationVersion(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  versionNumber: number
+): Promise<QaDocumentationVersionContent> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/versions/${versionNumber}/revert`,
+      { method: "POST" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseDocumentationVersionContent(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function compareDocumentationVersions(
+  token: string,
+  entityType: "project" | "module" | "feature",
+  entityId: string,
+  from: number,
+  to?: number
+): Promise<QaDocumentationCompareResponse> {
+  try {
+    const url = new URL(
+      `${apiUrl}/qa/${documentationEntityPath(entityType)}/${entityId}/documentation/compare`
+    );
+    url.searchParams.set("from", String(from));
+    if (to) url.searchParams.set("to", String(to));
+    const res = await fetchWithAuth(url.toString(), { method: "GET" }, token);
+    if (!res.ok) throw res;
+    return await parseJsonResponse<QaDocumentationCompareResponse>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

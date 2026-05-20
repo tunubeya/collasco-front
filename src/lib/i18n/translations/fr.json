@@ -1218,6 +1218,56 @@
         },
         "validation": {
           "content": "Saisissez du contenu ou marquez l’étiquette comme non applicable."
+        },
+        "versions": {
+          "title": "Versions",
+          "empty": "Aucune version disponible pour le moment.",
+          "current": "Actuelle",
+          "noChangelog": "Aucune note de changement",
+          "versionLabel": "v{version}",
+          "currentVersion": "Vous êtes dans v{version}",
+          "basedOn": "Brouillon basé sur v{version}",
+          "confirmRevert": "Cela remplacera la documentation du brouillon actuel par le contenu de v{version}. Elle ne sera pas publiée avant de cliquer sur Publier.",
+          "status": {
+            "draft": "Brouillon",
+            "published": "Publiée"
+          },
+          "fields": {
+            "changelog": "Note de changement à la publication"
+          },
+          "placeholders": {
+            "changelog": "Décrivez ce qui a changé dans cette version"
+          },
+          "actions": {
+            "publish": "Publier",
+            "view": "Voir",
+            "backToDraft": "Retour au brouillon",
+            "revert": "Rétablir",
+            "compare": "Comparer"
+          },
+          "messages": {
+            "loadError": "Impossible de charger les versions.",
+            "published": "Documentation publiée. Un nouveau brouillon modifiable a été créé.",
+            "publishError": "Impossible de publier la documentation.",
+            "noChanges": "Aucun nouveau changement à publier.",
+            "reverted": "Brouillon remplacé par le contenu de v{version}.",
+            "revertError": "Impossible de rétablir cette version.",
+            "compareError": "Impossible de comparer les versions."
+          }
+        },
+        "compare": {
+          "title": "Comparaison v{from} → {to}",
+          "draft": "brouillon actuel",
+          "types": {
+            "modified": "Modifiées",
+            "added": "Ajoutées",
+            "removed": "Supprimées",
+            "unchanged": "Inchangées",
+            "all": "Toutes"
+          },
+          "empty": "Aucun changement pour ce filtre.",
+          "before": "Avant",
+          "after": "Après"
         }
       },
       "detailErrors": {

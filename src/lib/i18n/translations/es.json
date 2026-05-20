@@ -1218,6 +1218,56 @@
         },
         "validation": {
           "content": "Ingresa contenido o marca la etiqueta como no aplicable."
+        },
+        "versions": {
+          "title": "Versiones",
+          "empty": "Aún no hay versiones disponibles.",
+          "current": "Actual",
+          "noChangelog": "Sin nota de cambios",
+          "versionLabel": "v{version}",
+          "currentVersion": "Estás en v{version}",
+          "basedOn": "Draft basado en v{version}",
+          "confirmRevert": "Esto reemplazará la documentación actual en borrador con el contenido de v{version}. No se publicará hasta que hagas click en Publicar.",
+          "status": {
+            "draft": "Draft",
+            "published": "Published"
+          },
+          "fields": {
+            "changelog": "Nota de cambios al publicar"
+          },
+          "placeholders": {
+            "changelog": "Describe qué cambió en esta versión"
+          },
+          "actions": {
+            "publish": "Publicar",
+            "view": "Ver",
+            "backToDraft": "Volver al draft",
+            "revert": "Revertir",
+            "compare": "Comparar"
+          },
+          "messages": {
+            "loadError": "No pudimos cargar las versiones.",
+            "published": "Documentación publicada. Se creó un nuevo draft editable.",
+            "publishError": "No pudimos publicar la documentación.",
+            "noChanges": "No hay cambios nuevos para publicar.",
+            "reverted": "Draft reemplazado con el contenido de v{version}.",
+            "revertError": "No pudimos revertir a esta versión.",
+            "compareError": "No pudimos comparar las versiones."
+          }
+        },
+        "compare": {
+          "title": "Comparación v{from} → {to}",
+          "draft": "draft actual",
+          "types": {
+            "modified": "Modificadas",
+            "added": "Agregadas",
+            "removed": "Eliminadas",
+            "unchanged": "Sin cambios",
+            "all": "Todas"
+          },
+          "empty": "No hay cambios en este filtro.",
+          "before": "Antes",
+          "after": "Después"
         }
       },
       "detailErrors": {

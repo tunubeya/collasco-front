@@ -2,6 +2,8 @@
 
 Este proyecto es el frontend de Collasco/QMS. Es una app Next.js con App Router, TypeScript, Tailwind y `next-intl`.
 
+Siempre trata de actualizar las instrucciones para que se entiendan mejor si se puede
+
 ## Comandos utiles
 
 - Verificar tipos: `npx tsc --noEmit`

@@ -1218,6 +1218,56 @@
         },
         "validation": {
           "content": "Vul inhoud in of markeer het label als niet van toepassing."
+        },
+        "versions": {
+          "title": "Versies",
+          "empty": "Er zijn nog geen versies beschikbaar.",
+          "current": "Huidig",
+          "noChangelog": "Geen changelog",
+          "versionLabel": "v{version}",
+          "currentVersion": "Je bent in v{version}",
+          "basedOn": "Draft gebaseerd op v{version}",
+          "confirmRevert": "Dit vervangt de huidige conceptdocumentatie door de inhoud van v{version}. Dit wordt pas gepubliceerd wanneer je op Publiceren klikt.",
+          "status": {
+            "draft": "Draft",
+            "published": "Gepubliceerd"
+          },
+          "fields": {
+            "changelog": "Changelog bij publicatie"
+          },
+          "placeholders": {
+            "changelog": "Beschrijf wat er in deze versie is gewijzigd"
+          },
+          "actions": {
+            "publish": "Publiceren",
+            "view": "Bekijken",
+            "backToDraft": "Terug naar draft",
+            "revert": "Terugzetten",
+            "compare": "Vergelijken"
+          },
+          "messages": {
+            "loadError": "We konden de versies niet laden.",
+            "published": "Documentatie gepubliceerd. Er is een nieuwe bewerkbare draft gemaakt.",
+            "publishError": "We konden de documentatie niet publiceren.",
+            "noChanges": "Er zijn geen nieuwe wijzigingen om te publiceren.",
+            "reverted": "Draft vervangen door inhoud van v{version}.",
+            "revertError": "We konden deze versie niet terugzetten.",
+            "compareError": "We konden de versies niet vergelijken."
+          }
+        },
+        "compare": {
+          "title": "Vergelijking v{from} → {to}",
+          "draft": "huidige draft",
+          "types": {
+            "modified": "Gewijzigd",
+            "added": "Toegevoegd",
+            "removed": "Verwijderd",
+            "unchanged": "Ongewijzigd",
+            "all": "Alle"
+          },
+          "empty": "Geen wijzigingen voor dit filter.",
+          "before": "Voor",
+          "after": "Na"
         }
       },
       "detailErrors": {

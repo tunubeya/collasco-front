@@ -156,6 +156,12 @@ export function EntityDocumentationPanel({
       setEntries(data.fields);
       setViewingVersionNumber(null);
     } catch (err) {
+      if (err instanceof Response && (err.status === 404 || err.status === 409)) {
+        console.warn("Documentation draft is not available yet", err);
+        setEntries([]);
+        setViewingVersionNumber(null);
+        return;
+      }
       toast.error(t("messages.loadError"), {
         description: err instanceof Error ? err.message : undefined,
       });
@@ -183,8 +189,9 @@ export function EntityDocumentationPanel({
   }, [entityId, entityType, t, token]);
 
   useEffect(() => {
+    if (!version) return;
     void fetchVersions();
-  }, [fetchVersions]);
+  }, [fetchVersions, version?.id, version?.versionNumber]);
 
   useEffect(() => {
     if (viewingVersionNumber !== null || !version) return;

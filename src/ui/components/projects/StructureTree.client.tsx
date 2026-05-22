@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
+  CircleAlert,
   FileText,
   Folder,
   FolderOpen,
@@ -85,6 +86,8 @@ export function StructureTree({
   const [pendingKey, setPendingKey] = useState<string | null>(null);
   const [isTransitionPending, startTransition] = useTransition();
   const tReorder = useTranslations("app.projects.module.reorder");
+  const tDocumentation = useTranslations("app.projects.detail.structure.documentation");
+  const documentationChangesLabel = tDocumentation("unpublishedChanges");
   const moveUpLabel = tReorder("moveUp");
   const moveDownLabel = tReorder("moveDown");
   const moduleMovedLabel = tReorder("moduleMoved");
@@ -216,6 +219,7 @@ export function StructureTree({
                   disableMoves={disableMoves}
                   moveUpLabel={moveUpLabel}
                   moveDownLabel={moveDownLabel}
+                  documentationChangesLabel={documentationChangesLabel}
                   onMoveModule={handleModuleMove}
                   onMoveFeature={handleFeatureMove}
                 />
@@ -230,6 +234,7 @@ export function StructureTree({
                   disableMoves={disableMoves}
                   moveUpLabel={moveUpLabel}
                   moveDownLabel={moveDownLabel}
+                  documentationChangesLabel={documentationChangesLabel}
                   onMoveFeature={handleFeatureMove}
                 />
               )}
@@ -253,6 +258,7 @@ function ModuleNode({
   disableMoves,
   moveUpLabel,
   moveDownLabel,
+  documentationChangesLabel,
   onMoveModule,
   onMoveFeature,
 }: {
@@ -267,6 +273,7 @@ function ModuleNode({
   disableMoves: boolean;
   moveUpLabel: string;
   moveDownLabel: string;
+  documentationChangesLabel: string;
   onMoveModule: (moduleId: string, parentModuleId: string | null, direction: MoveDirection) => void;
   onMoveFeature: (featureId: string, moduleId: string, direction: MoveDirection) => void;
 }) {
@@ -307,35 +314,46 @@ function ModuleNode({
 
         <Link
           href={`/app/projects/${projectId}/modules/${node.id}`}
-          className="flex-1 text-sm font-medium hover:underline"
+          className="min-w-0 flex-1 truncate text-sm font-medium hover:underline"
         >
           {node.name}
         </Link>
 
-        {showReorderButtons && (
-          <div className="ml-auto flex items-center gap-1 text-muted-foreground">
-            {canMoveUp && (
-              <MoveActionButton
-                direction={MoveDirection.UP}
-                label={moveUpLabel}
-                disabled={disableMoves}
-                onActivate={() =>
-                  onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.UP)
-                }
-              />
-            )}
-            {canMoveDown && (
-              <MoveActionButton
-                direction={MoveDirection.DOWN}
-                label={moveDownLabel}
-                disabled={disableMoves}
-                onActivate={() =>
-                  onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.DOWN)
-                }
-              />
-            )}
-          </div>
-        )}
+        <div className="ml-auto grid w-[15.5rem] shrink-0 grid-cols-[4.75rem_7rem_3rem] items-center gap-1.5">
+          <DocumentationVersionIndicator
+          item={node}
+          changesLabel={documentationChangesLabel}
+          />
+
+          <span aria-hidden />
+
+          {showReorderButtons ? (
+            <div className="flex items-center justify-end gap-1 text-muted-foreground">
+              {canMoveUp && (
+                <MoveActionButton
+                  direction={MoveDirection.UP}
+                  label={moveUpLabel}
+                  disabled={disableMoves}
+                  onActivate={() =>
+                    onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.UP)
+                  }
+                />
+              )}
+              {canMoveDown && (
+                <MoveActionButton
+                  direction={MoveDirection.DOWN}
+                  label={moveDownLabel}
+                  disabled={disableMoves}
+                  onActivate={() =>
+                    onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.DOWN)
+                  }
+                />
+              )}
+            </div>
+          ) : (
+            <span aria-hidden />
+          )}
+        </div>
       </summary>
 
       {node.items.length > 0 && (
@@ -355,6 +373,7 @@ function ModuleNode({
                   disableMoves={disableMoves}
                   moveUpLabel={moveUpLabel}
                   moveDownLabel={moveDownLabel}
+                  documentationChangesLabel={documentationChangesLabel}
                   onMoveModule={onMoveModule}
                   onMoveFeature={onMoveFeature}
                 />
@@ -371,6 +390,7 @@ function ModuleNode({
                   disableMoves={disableMoves}
                   moveUpLabel={moveUpLabel}
                   moveDownLabel={moveDownLabel}
+                  documentationChangesLabel={documentationChangesLabel}
                   onMoveFeature={onMoveFeature}
                 />
               </li>
@@ -392,6 +412,7 @@ function FeatureRow({
   disableMoves,
   moveUpLabel,
   moveDownLabel,
+  documentationChangesLabel,
   onMoveFeature,
 }: {
   feature: StructureFeatureItem;
@@ -403,6 +424,7 @@ function FeatureRow({
   disableMoves: boolean;
   moveUpLabel: string;
   moveDownLabel: string;
+  documentationChangesLabel: string;
   onMoveFeature: (featureId: string, moduleId: string, direction: MoveDirection) => void;
 }) {
   const paddingLeft = Math.min(level, 6) * 16 + 24;
@@ -418,20 +440,24 @@ function FeatureRow({
     >
       <Link
         href={`/app/projects/${projectId}/features/${feature.id}`}
-        className="flex flex-1 items-center gap-2"
+        className="flex min-w-0 flex-1 items-center gap-2"
       >
         <FileText className="h-4 w-4 text-slate-700" aria-hidden />
-        <span>{feature.name}</span>
+        <span className="truncate">{feature.name}</span>
       </Link>
-      <div className="ml-2 flex items-center gap-2">
-        <div className="flex items-center gap-2">
+      <div className="ml-auto grid w-[15.5rem] shrink-0 grid-cols-[4.75rem_7rem_3rem] items-center gap-1.5">
+        <DocumentationVersionIndicator
+          item={feature}
+          changesLabel={documentationChangesLabel}
+        />
+        <div className="flex min-w-0 items-center justify-end gap-2">
           <StatusBadge status={feature.status as Feature["status"]} />
           {feature.priority && (
             <PriorityBadge priority={feature.priority as Feature["priority"]} />
           )}
         </div>
-        {showReorderButtons && (
-          <div className="flex items-center gap-1 text-muted-foreground">
+        {showReorderButtons ? (
+          <div className="flex items-center justify-end gap-1 text-muted-foreground">
             {canMoveUp && (
               <MoveActionButton
                 direction={MoveDirection.UP}
@@ -453,6 +479,8 @@ function FeatureRow({
               />
             )}
           </div>
+        ) : (
+          <span aria-hidden />
         )}
       </div>
     </div>
@@ -471,6 +499,50 @@ function StatusBadge({ status }: { status: Feature["status"] }) {
     <span className={`rounded-full border px-2 py-0.5 text-2xs ${tone}`}>
       {status.toLowerCase()}
     </span>
+  );
+}
+
+function DocumentationVersionIndicator({
+  item,
+  changesLabel,
+}: {
+  item: TreeItem;
+  changesLabel: string;
+}) {
+  const versionNumber = getDocumentationVersionNumber(item);
+  const hasChanges = hasUnpublishedDocumentationChanges(item);
+  if (!versionNumber && !hasChanges) return null;
+
+  return (
+    <span className="inline-flex w-[4.75rem] shrink-0 items-center justify-end gap-1">
+      {versionNumber ? (
+        <span className="rounded-full border bg-muted/40 px-2 py-0.5 text-2xs font-medium text-muted-foreground">
+          v{versionNumber}
+        </span>
+      ) : null}
+      {hasChanges ? (
+        <CircleAlert
+          className="h-4 w-4 text-amber-600"
+          aria-hidden
+        />
+      ) : (
+        <span className="h-4 w-4" aria-hidden />
+      )}
+      {hasChanges ? <span className="sr-only">{changesLabel}</span> : null}
+    </span>
+  );
+}
+
+function getDocumentationVersionNumber(item: TreeItem) {
+  return item.documentationVersion?.versionNumber ?? item.documentationVersionNumber ?? null;
+}
+
+function hasUnpublishedDocumentationChanges(item: TreeItem) {
+  return Boolean(
+    item.hasDocumentationChanges ??
+      item.documentationHasChanges ??
+      item.documentationVersion?.hasChanges ??
+      item.documentationLabels?.some((label) => label.hasChanges),
   );
 }
 

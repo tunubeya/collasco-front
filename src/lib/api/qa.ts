@@ -344,6 +344,7 @@ export type QaDocumentationEntry = {
   label: QaProjectLabel;
   field: QaDocumentationField | null;
   canEdit: boolean;
+  hasChanges: boolean;
 };
 
 export type QaDocumentationVersionStatus = "DRAFT" | "PUBLISHED";

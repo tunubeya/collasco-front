@@ -614,6 +614,12 @@
       },
       "detail": {
         "updated": "Dernière mise à jour : {date}",
+        "structure": {
+          "documentation": {
+            "version": "Documentation v{version}",
+            "unpublishedChanges": "Modifications de documentation non publiées"
+          }
+        },
         "tabs": {
           "structure": "Structure",
           "documentation": "Documentation",
@@ -1226,6 +1232,7 @@
           "noChangelog": "Aucune note de changement",
           "versionLabel": "v{version}",
           "currentVersion": "Vous êtes dans v{version}",
+          "unpublishedChanges": "Modifications non publiées",
           "basedOn": "Brouillon basé sur v{version}",
           "confirmRevert": "Cela remplacera la documentation du brouillon actuel par le contenu de v{version}. Elle ne sera pas publiée avant de cliquer sur Publier.",
           "status": {

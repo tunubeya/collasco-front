@@ -614,6 +614,12 @@
       },
       "detail": {
         "updated": "Última atualização: {date}",
+        "structure": {
+          "documentation": {
+            "version": "Documentação v{version}",
+            "unpublishedChanges": "Alterações de documentação não publicadas"
+          }
+        },
         "tabs": {
           "structure": "Estrutura",
           "documentation": "Documentação",
@@ -1226,6 +1232,7 @@
           "noChangelog": "Sem nota de alterações",
           "versionLabel": "v{version}",
           "currentVersion": "Você está na v{version}",
+          "unpublishedChanges": "Alterações não publicadas",
           "basedOn": "Draft baseado na v{version}",
           "confirmRevert": "Isso substituirá a documentação atual em rascunho pelo conteúdo da v{version}. Ela não será publicada até você clicar em Publicar.",
           "status": {

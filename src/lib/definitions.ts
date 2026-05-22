@@ -143,6 +143,14 @@ export type StructureDocumentationLabel = {
   content: string | null;
   isNotApplicable: boolean;
   updatedAt: string | null;
+  hasChanges?: boolean;
+};
+
+export type StructureDocumentationVersion = {
+  id?: string;
+  versionNumber: number;
+  status: "DRAFT" | "PUBLISHED";
+  hasChanges?: boolean;
 };
 
 export type StructureFeatureItem = {
@@ -157,6 +165,10 @@ export type StructureFeatureItem = {
   createdAt: string;
   publishedVersionId: string | null;
   documentationLabels: StructureDocumentationLabel[];
+  documentationVersion?: StructureDocumentationVersion | null;
+  documentationVersionNumber?: number | null;
+  hasDocumentationChanges?: boolean;
+  documentationHasChanges?: boolean;
   linkedFeatures?: Array<{
     id: string;
     name: string;
@@ -177,6 +189,10 @@ export type StructureModuleNode = {
   createdAt: string;
   publishedVersionId: string | null;
   documentationLabels: StructureDocumentationLabel[];
+  documentationVersion?: StructureDocumentationVersion | null;
+  documentationVersionNumber?: number | null;
+  hasDocumentationChanges?: boolean;
+  documentationHasChanges?: boolean;
   items: Array<StructureModuleNode | StructureFeatureItem>;
 };
 
@@ -184,5 +200,9 @@ export type ProjectStructureResponse = {
   projectId: string;
   description?: string | null;
   documentationLabels?: StructureDocumentationLabel[];
+  documentationVersion?: StructureDocumentationVersion | null;
+  documentationVersionNumber?: number | null;
+  hasDocumentationChanges?: boolean;
+  documentationHasChanges?: boolean;
   modules: StructureModuleNode[];
 };

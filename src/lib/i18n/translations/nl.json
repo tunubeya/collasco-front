@@ -614,6 +614,12 @@
       },
       "detail": {
         "updated": "Laatste update: {date}",
+        "structure": {
+          "documentation": {
+            "version": "Documentatie v{version}",
+            "unpublishedChanges": "Niet-gepubliceerde documentatiewijzigingen"
+          }
+        },
         "tabs": {
           "structure": "Structuur",
           "documentation": "Documentatie",
@@ -1226,6 +1232,7 @@
           "noChangelog": "Geen changelog",
           "versionLabel": "v{version}",
           "currentVersion": "Je bent in v{version}",
+          "unpublishedChanges": "Niet-gepubliceerde wijzigingen",
           "basedOn": "Draft gebaseerd op v{version}",
           "confirmRevert": "Dit vervangt de huidige conceptdocumentatie door de inhoud van v{version}. Dit wordt pas gepubliceerd wanneer je op Publiceren klikt.",
           "status": {

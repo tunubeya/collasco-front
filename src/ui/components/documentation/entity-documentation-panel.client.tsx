@@ -304,6 +304,7 @@ export function EntityDocumentationPanel({
         },
         field: null,
         canEdit: version?.status !== "PUBLISHED",
+        hasChanges: false,
       } satisfies QaDocumentationEntry;
     });
     const applicable: QaDocumentationEntry[] = [];
@@ -680,6 +681,11 @@ export function EntityDocumentationPanel({
     [versions],
   );
 
+  const hasUnpublishedChanges = useMemo(
+    () => entries.some((entry) => entry.hasChanges),
+    [entries],
+  );
+
   return (
     <section className="space-y-4 rounded-xl border bg-background p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -691,6 +697,11 @@ export function EntityDocumentationPanel({
                 {t("versions.currentVersion", {
                   version: version.versionNumber,
                 })}
+              </span>
+            )}
+            {hasUnpublishedChanges && version?.status === "DRAFT" && (
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-900">
+                {t("versions.unpublishedChanges")}
               </span>
             )}
           </div>
@@ -717,6 +728,7 @@ export function EntityDocumentationPanel({
                 <button
                   type="button"
                   className={actionButtonClass({ variant: "primary", size: "xs" })}
+                  disabled={!hasUnpublishedChanges}
                 >
                   {t("versions.actions.publish")}
                 </button>
@@ -740,7 +752,7 @@ export function EntityDocumentationPanel({
                       type="button"
                       className={actionButtonClass({ variant: "primary", size: "xs" })}
                       onClick={() => void handlePublish()}
-                      disabled={isPublishing}
+                      disabled={isPublishing || !hasUnpublishedChanges}
                     >
                       {isPublishing ? (
                         <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -869,6 +881,11 @@ export function EntityDocumentationPanel({
                           </span>
                         </span>
                       )}
+                      {entry.hasChanges && (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-900">
+                          {t("versions.unpublishedChanges")}
+                        </span>
+                      )}
                     </div>
                     {entry.canEdit && (
                       <button
@@ -902,6 +919,11 @@ export function EntityDocumentationPanel({
                           {entry.label.isMandatory && (
                             <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                               {t("badges.mandatory")}
+                            </span>
+                          )}
+                          {entry.hasChanges && (
+                            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-900">
+                              {t("versions.unpublishedChanges")}
                             </span>
                           )}
                         </div>

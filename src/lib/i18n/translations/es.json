@@ -2307,6 +2307,8 @@
           "missing": "Ingresa un mensaje.",
           "sectionAdded": "Mensaje enviado.",
           "sectionError": "No pudimos enviar el mensaje.",
+          "lockedMutation": "No se puede modificar la sección o la descripción porque otro usuario ya la vio.",
+          "lockedMissingDescription": "La descripción ya no se puede completar porque otro usuario ya vio el ticket.",
           "addImage": "Agregar imagen",
           "selectImage": "Elegir imagen",
           "noImage": "Ninguna imagen seleccionada.",

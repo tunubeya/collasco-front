@@ -2307,6 +2307,8 @@
           "missing": "Vul een bericht in.",
           "sectionAdded": "Bericht verzonden.",
           "sectionError": "We konden het bericht niet verzenden.",
+          "lockedMutation": "De sectie of beschrijving kan niet worden gewijzigd omdat een andere gebruiker deze al heeft gezien.",
+          "lockedMissingDescription": "De beschrijving kan niet meer worden ingevuld omdat een andere gebruiker het ticket al heeft gezien.",
           "addImage": "Afbeelding toevoegen",
           "selectImage": "Afbeelding kiezen",
           "noImage": "Geen afbeelding geselecteerd.",

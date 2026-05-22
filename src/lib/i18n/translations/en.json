@@ -2289,6 +2289,8 @@
           "missing": "Please provide a message.",
           "sectionAdded": "Message sent.",
           "sectionError": "We couldn't send the message.",
+          "lockedMutation": "The section or description can't be changed because another user has already seen it.",
+          "lockedMissingDescription": "The description can't be completed anymore because another user has already seen the ticket.",
           "addImage": "Add an image",
           "selectImage": "Choose image",
           "noImage": "No image selected.",

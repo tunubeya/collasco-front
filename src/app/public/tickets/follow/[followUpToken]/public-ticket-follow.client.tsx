@@ -47,6 +47,13 @@ const isMissingDescription = (value?: string | null) => {
   const trimmed = value?.trim() ?? "";
   return !trimmed || trimmed === MISSING_TICKET_DESCRIPTION;
 };
+const isLockedSection = (section?: { lockedAt?: string | null; lockedById?: string | null }) =>
+  Boolean(section?.lockedAt || section?.lockedById);
+const isPublicTicketLockedError = (error: unknown) =>
+  error instanceof PublicTicketError &&
+  (error.status === 409 ||
+    error.status === 423 ||
+    /\block(ed)?\b|bloquead/i.test(error.message));
 
 function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
@@ -179,8 +186,25 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     [sections]
   );
 
-  const showDescriptionRequired = isMissingDescription(descriptionSection?.content);
-  const showDescriptionEditor = showDescriptionRequired || isEditingDescription;
+  const descriptionLocked = isLockedSection(descriptionSection);
+  const showLockedMissingDescription =
+    descriptionLocked && isMissingDescription(descriptionSection?.content);
+  const showDescriptionRequired =
+    !descriptionLocked && isMissingDescription(descriptionSection?.content);
+  const showDescriptionEditor =
+    !descriptionLocked && (showDescriptionRequired || isEditingDescription);
+  const visibleSections = useMemo(
+    () =>
+      sections.filter(
+        (section) =>
+          !(
+            section.type === "DESCRIPTION" &&
+            isMissingDescription(section.content) &&
+            isLockedSection(section)
+          )
+      ),
+    [sections]
+  );
   const followUpUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
     return new URL(
@@ -227,11 +251,23 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
       await loadTicket();
     } catch (err) {
       console.error("Failed to save public description", err);
-      toast.error(tDetail("messages.sectionUpdateError"));
+      toast.error(
+        isPublicTicketLockedError(err)
+          ? t("follow.lockedMutation")
+          : tDetail("messages.sectionUpdateError")
+      );
     } finally {
       setDescriptionSaving(false);
     }
-  }, [descriptionDraft, descriptionSaving, descriptionSection?.id, followUpToken, loadTicket, tDetail]);
+  }, [
+    descriptionDraft,
+    descriptionSaving,
+    descriptionSection?.id,
+    followUpToken,
+    loadTicket,
+    t,
+    tDetail,
+  ]);
 
   const handleCancelDescriptionEdit = useCallback(() => {
     setDescriptionDraft(descriptionSeed);
@@ -285,7 +321,11 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
       await loadTicket();
     } catch (err) {
       console.error("Failed to add public section", err);
-      toast.error(t("follow.sectionError"));
+      toast.error(
+        isPublicTicketLockedError(err)
+          ? t("follow.lockedMutation")
+          : t("follow.sectionError")
+      );
     } finally {
       setSectionSaving(false);
     }
@@ -347,7 +387,11 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
       await loadTicket();
     } catch (err) {
       console.error("Failed to update public section", err);
-      toast.error(tDetail("messages.sectionUpdateError"));
+      toast.error(
+        isPublicTicketLockedError(err)
+          ? t("follow.lockedMutation")
+          : tDetail("messages.sectionUpdateError")
+      );
     } finally {
       setEditingSaving(false);
     }
@@ -357,6 +401,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     editingSectionId,
     followUpToken,
     loadTicket,
+    t,
     tDetail,
   ]);
 
@@ -597,12 +642,18 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                 </div>
               ) : null}
 
+              {showLockedMissingDescription ? (
+                <div className="rounded-lg border bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+                  {t("follow.lockedMissingDescription")}
+                </div>
+              ) : null}
+
               {!showDescriptionRequired ? (
-                sections.length === 0 ? (
+                visibleSections.length === 0 ? (
                   <p className="text-sm text-muted-foreground">{t("follow.empty")}</p>
                 ) : (
                   <div className="space-y-3">
-                    {sections.map((section) => (
+                    {visibleSections.map((section) => (
                       <div
                         key={section.id}
                         className="rounded-lg border px-3 py-2"
@@ -625,8 +676,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                               {section.author?.name || t("follow.externalAuthor")}
                             </span>
                           </div>
-                          {!section.lockedAt &&
-                          !section.lockedById &&
+                          {!isLockedSection(section) &&
                           editingSectionId !== section.id ? (
                             <button
                               type="button"

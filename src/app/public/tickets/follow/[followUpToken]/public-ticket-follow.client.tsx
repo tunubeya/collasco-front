@@ -25,6 +25,7 @@ import {
   addPublicTicketSection,
   fetchPublicTicketFollow,
   PublicTicketError,
+  reopenPublicTicket,
   updatePublicTicket,
   updatePublicTicketSection,
   uploadPublicTicketImage,
@@ -113,6 +114,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const [descriptionEditorKey, setDescriptionEditorKey] = useState(0);
   const [descriptionSaving, setDescriptionSaving] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [reopening, setReopening] = useState(false);
 
   const loadTicket = useCallback(async () => {
     setLoading(true);
@@ -142,6 +144,9 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   }, [loadTicket]);
 
   const ticket = data?.ticket;
+  const isReadOnly = Boolean(
+    data?.readOnly ?? (ticket as { readOnly?: boolean } | undefined)?.readOnly
+  );
   const sections = useMemo(() => {
     const list = data?.sections ?? ticket?.sections ?? [];
     return [...list].sort((a, b) => {
@@ -190,9 +195,9 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const showLockedMissingDescription =
     descriptionLocked && isMissingDescription(descriptionSection?.content);
   const showDescriptionRequired =
-    !descriptionLocked && isMissingDescription(descriptionSection?.content);
+    !isReadOnly && !descriptionLocked && isMissingDescription(descriptionSection?.content);
   const showDescriptionEditor =
-    !descriptionLocked && (showDescriptionRequired || isEditingDescription);
+    !isReadOnly && !descriptionLocked && (showDescriptionRequired || isEditingDescription);
   const visibleSections = useMemo(
     () =>
       sections.filter(
@@ -228,7 +233,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   }, [descriptionSection]);
 
   const handleSaveDescription = useCallback(async () => {
-    if (!descriptionDraft.trim() || descriptionSaving) return;
+    if (isReadOnly || !descriptionDraft.trim() || descriptionSaving) return;
     setDescriptionSaving(true);
     try {
       const content = descriptionDraft.trim();
@@ -264,6 +269,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     descriptionSaving,
     descriptionSection?.id,
     followUpToken,
+    isReadOnly,
     loadTicket,
     t,
     tDetail,
@@ -305,7 +311,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   }, [buildDefaultAttachmentName, imageName, showImageForm]);
 
   const handleAddSection = useCallback(async () => {
-    if (sectionSaving) return;
+    if (isReadOnly || sectionSaving) return;
     if (!sectionContent.trim()) {
       toast.error(t("follow.missing"));
       return;
@@ -329,10 +335,10 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     } finally {
       setSectionSaving(false);
     }
-  }, [followUpToken, loadTicket, sectionContent, sectionSaving, sectionType, t]);
+  }, [followUpToken, isReadOnly, loadTicket, sectionContent, sectionSaving, sectionType, t]);
 
   const handleUpload = useCallback(async () => {
-    if (uploadingAttachment || !imageFile || !imageName.trim()) return;
+    if (isReadOnly || uploadingAttachment || !imageFile || !imageName.trim()) return;
     if (imageFile.size > MAX_ATTACHMENT_BYTES) {
       toast.error(t("follow.imageTooLarge"));
       return;
@@ -354,14 +360,15 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     } finally {
       setUploadingAttachment(false);
     }
-  }, [followUpToken, imageFile, imageName, loadTicket, t, uploadingAttachment]);
+  }, [followUpToken, imageFile, imageName, isReadOnly, loadTicket, t, uploadingAttachment]);
 
   const handleEditSection = useCallback((section: { id: string; content: string }) => {
+    if (isReadOnly) return;
     setEditingSectionId(section.id);
     setEditingSeed(section.content ?? "");
     setEditingContent(section.content ?? "");
     setEditingEditorKey((prev) => prev + 1);
-  }, []);
+  }, [isReadOnly]);
 
   const handleCancelEdit = useCallback(() => {
     setEditingSectionId(null);
@@ -370,7 +377,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   }, []);
 
   const handleSaveSection = useCallback(async () => {
-    if (!editingSectionId || editingSaving) return;
+    if (isReadOnly || !editingSectionId || editingSaving) return;
     if (!editingContent.trim()) {
       toast.error(tDetail("messages.descriptionRequired"));
       return;
@@ -400,17 +407,20 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     editingSaving,
     editingSectionId,
     followUpToken,
+    isReadOnly,
     loadTicket,
     t,
     tDetail,
   ]);
 
   const handleStartEditTitle = useCallback(() => {
+    if (isReadOnly) return;
     setTitleValue(ticket?.title ?? "");
     setEditingTitle(true);
-  }, [ticket?.title]);
+  }, [isReadOnly, ticket?.title]);
 
   const handleSaveTitle = useCallback(async () => {
+    if (isReadOnly) return;
     if (!titleValue.trim()) {
       toast.error(tDetail("messages.titleRequired"));
       return;
@@ -427,7 +437,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     } finally {
       setTitleSaving(false);
     }
-  }, [followUpToken, loadTicket, tDetail, titleValue]);
+  }, [followUpToken, isReadOnly, loadTicket, tDetail, titleValue]);
 
   const handleCancelTitle = useCallback(() => {
     setEditingTitle(false);
@@ -457,6 +467,21 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     }
   }, [followUpUrl, t]);
 
+  const handleReopenTicket = useCallback(async () => {
+    if (reopening) return;
+    setReopening(true);
+    try {
+      await reopenPublicTicket(followUpToken);
+      toast.success(t("follow.reopenSuccess"));
+      await loadTicket();
+    } catch (err) {
+      console.error("Failed to reopen public ticket", err);
+      toast.error(t("follow.reopenError"));
+    } finally {
+      setReopening(false);
+    }
+  }, [followUpToken, loadTicket, reopening, t]);
+
   return (
     <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-10">
       <header className="space-y-2">
@@ -475,6 +500,27 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
         </div>
       ) : (
         <div className="space-y-6">
+          {isReadOnly ? (
+            <section className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold">{t("follow.readOnlyTitle")}</p>
+                  <p className="text-sm text-amber-900/80">
+                    {t("follow.readOnlyHint")}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center rounded-md border border-amber-300 bg-white px-3 py-2 text-sm font-medium hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-70"
+                  onClick={() => void handleReopenTicket()}
+                  disabled={reopening}
+                >
+                  {reopening ? t("follow.reopening") : t("follow.reopen")}
+                </button>
+              </div>
+            </section>
+          ) : null}
+
           {showDescriptionRequired ? (
             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-950 shadow-sm">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -533,12 +579,15 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                   <h2 className="text-lg font-semibold flex-1">
                     {ticket?.title ?? t("follow.ticketFallback")}
                   </h2>
-                  <button
-                    type="button"
-                    onClick={() => handleStartEditTitle()}
-                    className="rounded-md bg-primary p-1.5 text-primary-foreground hover:bg-primary/90">
+                  {!isReadOnly ? (
+                    <button
+                      type="button"
+                      onClick={() => handleStartEditTitle()}
+                      className="rounded-md bg-primary p-1.5 text-primary-foreground hover:bg-primary/90"
+                    >
                       <Pencil className="h-4 w-4" />
                     </button>
+                  ) : null}
                 </div>
               )}
               <p className="text-xs text-muted-foreground">
@@ -558,56 +607,58 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               ) : null}
             </div>
 
-            <div className="mt-4 rounded-lg border bg-muted/10 p-4 space-y-4">
-              <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
+            {!isReadOnly ? (
+              <div className="mt-4 rounded-lg border bg-muted/10 p-4 space-y-4">
+                <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
 
-              <div className="grid gap-4">
-                <label className="space-y-2 text-sm">
-                  <span className="font-medium">{t("follow.fields.type")}</span>
-                  <select
-                    value={sectionType}
-                    onChange={(event) => setSectionType(event.target.value as TicketSectionType)}
-                    className="w-full rounded-md border px-3 py-2 text-sm"
+                <div className="grid gap-4">
+                  <label className="space-y-2 text-sm">
+                    <span className="font-medium">{t("follow.fields.type")}</span>
+                    <select
+                      value={sectionType}
+                      onChange={(event) => setSectionType(event.target.value as TicketSectionType)}
+                      className="w-full rounded-md border px-3 py-2 text-sm"
+                    >
+                      {SECTION_TYPES.map((type) => (
+                        <option key={type} value={type}>
+                          {tDetail(`sectionTypes.${type}`, { default: type })}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="space-y-2 text-sm">
+                    <span className="font-medium">{t("follow.fields.content")}</span>
+                    <textarea
+                      value={sectionContent}
+                      onChange={(event) => setSectionContent(event.target.value)}
+                      rows={4}
+                      placeholder={t("follow.placeholders.content")}
+                      className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </label>
+                  <p className="text-[10px] text-muted-foreground">
+                    {tDetail("images.hint")}
+                  </p>
+                </div>
+
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className={cn(
+                      "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
+                      sectionSaving
+                        ? "cursor-not-allowed opacity-70"
+                        : "hover:bg-muted"
+                    )}
+                    onClick={() => void handleAddSection()}
+                    disabled={sectionSaving}
                   >
-                    {SECTION_TYPES.map((type) => (
-                      <option key={type} value={type}>
-                        {tDetail(`sectionTypes.${type}`, { default: type })}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="space-y-2 text-sm">
-                  <span className="font-medium">{t("follow.fields.content")}</span>
-                  <textarea
-                    value={sectionContent}
-                    onChange={(event) => setSectionContent(event.target.value)}
-                    rows={4}
-                    placeholder={t("follow.placeholders.content")}
-                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </label>
-                <p className="text-[10px] text-muted-foreground">
-                  {tDetail("images.hint")}
-                </p>
+                    {sectionSaving ? t("follow.saving") : t("follow.submit")}
+                  </button>
+                </div>
               </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className={cn(
-                    "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
-                    sectionSaving
-                      ? "cursor-not-allowed opacity-70"
-                      : "hover:bg-muted"
-                  )}
-                  onClick={() => void handleAddSection()}
-                  disabled={sectionSaving}
-                >
-                  {sectionSaving ? t("follow.saving") : t("follow.submit")}
-                </button>
-              </div>
-            </div>
+            ) : null}
 
             <div className="mt-4 space-y-3">
               <div className="flex items-center justify-between gap-3">
@@ -728,6 +779,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                             </span>
                           </div>
                           {!isLockedSection(section) &&
+                          !isReadOnly &&
                           editingSectionId !== section.id ? (
                             <button
                               type="button"
@@ -876,21 +928,23 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                         </li>
                       );
                     })}
-                    <li>
-                      <button
-                        type="button"
-                        className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
-                        onClick={() => setShowImageForm(true)}
-                        disabled={uploadingAttachment}
-                      >
-                        <span className="text-lg">+</span>
-                        {tDetail("attachments.actions.add")}
-                      </button>
-                    </li>
+                    {!isReadOnly ? (
+                      <li>
+                        <button
+                          type="button"
+                          className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
+                          onClick={() => setShowImageForm(true)}
+                          disabled={uploadingAttachment}
+                        >
+                          <span className="text-lg">+</span>
+                          {tDetail("attachments.actions.add")}
+                        </button>
+                      </li>
+                    ) : null}
                   </ul>
                 </div>
 
-                {showImageForm ? (
+                {showImageForm && !isReadOnly ? (
                   <div className="rounded-lg border bg-muted/10 p-4 space-y-3">
                     <div className="grid gap-3 md:grid-cols-[1fr_auto]">
                       <div className="space-y-2">

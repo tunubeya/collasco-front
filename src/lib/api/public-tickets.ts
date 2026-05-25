@@ -18,6 +18,11 @@ export type PublicTicketFollowResponse = {
   sections?: TicketSection[];
   images?: TicketImage[];
   projectName?: string;
+  readOnly?: boolean;
+};
+
+export type PublicTicketReopenResponse = Pick<TicketDetail, "id" | "title" | "status"> & {
+  readOnly: boolean;
 };
 
 export class PublicTicketError extends Error {
@@ -88,14 +93,27 @@ export async function fetchPublicTicketFollow(
   }
   const payload = await res.json();
   if (payload && typeof payload === "object" && "id" in payload && "title" in payload) {
-    const ticket = payload as TicketDetail;
+    const ticket = payload as TicketDetail & { readOnly?: boolean };
     return {
       ticket,
       sections: ticket.sections ?? [],
       images: (payload as { images?: TicketImage[] }).images ?? [],
+      readOnly: ticket.readOnly ?? false,
     };
   }
   return payload as PublicTicketFollowResponse;
+}
+
+export async function reopenPublicTicket(
+  followUpToken: string
+): Promise<PublicTicketReopenResponse> {
+  const res = await fetch(`${apiUrl}/public/tickets/follow/${followUpToken}/reopen`, {
+    method: "POST",
+  });
+  if (!res.ok) {
+    await parsePublicError(res, "Failed to reopen public ticket");
+  }
+  return (await res.json()) as PublicTicketReopenResponse;
 }
 
 export async function addPublicTicketSection(

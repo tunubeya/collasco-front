@@ -1316,6 +1316,64 @@ export function TicketDetailView({
           </div>
         ) : null}
 
+        {canRespondTicket && !showDescriptionRequired ? (
+          <form
+            className="space-y-3 rounded-lg border bg-muted/10 p-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void handleAddSection();
+            }}
+          >
+            <h3 className="text-sm font-semibold">{t("sections.add")}</h3>
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="space-y-2">
+                <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {t("fields.type")}
+                </label>
+                <select
+                  value={sectionType}
+                  onChange={(event) =>
+                    setSectionType(event.target.value as TicketSectionType)
+                  }
+                  className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  {SECTION_TYPES.map((item) => (
+                    <option key={item} value={item}>
+                      {t(`sectionTypes.${item}`, { default: item })}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("fields.content")}
+              </label>
+              <RichTextEditor
+                key={`ticket-response-${sectionEditorKey}`}
+                name="ticket-response"
+                label={t("fields.content")}
+                placeholder={t("placeholders.content")}
+                defaultValue=""
+                labels={richTextLabels}
+                onValueChange={setSectionContent}
+                hideLabel
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className={actionButtonClass({ size: "xs" })}
+                disabled={sectionSaving || !sectionContent.trim()}
+              >
+                {sectionSaving
+                  ? t("actions.saving")
+                  : t("actions.addSection")}
+              </button>
+            </div>
+          </form>
+        ) : null}
+
         {!showDescriptionRequired ? (
           visibleSections.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t("empty")}</p>
@@ -1427,64 +1485,6 @@ export function TicketDetailView({
               })}
             </ul>
           )
-        ) : null}
-
-        {canRespondTicket && !showDescriptionRequired ? (
-          <form
-            className="mt-4 space-y-3 rounded-lg border bg-muted/10 p-4"
-            onSubmit={(event) => {
-              event.preventDefault();
-              void handleAddSection();
-            }}
-          >
-            <h3 className="text-sm font-semibold">{t("sections.add")}</h3>
-            <div className="grid gap-3 md:grid-cols-2">
-              <div className="space-y-2">
-                <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  {t("fields.type")}
-                </label>
-                <select
-                  value={sectionType}
-                  onChange={(event) =>
-                    setSectionType(event.target.value as TicketSectionType)
-                  }
-                  className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  {SECTION_TYPES.map((item) => (
-                    <option key={item} value={item}>
-                      {t(`sectionTypes.${item}`, { default: item })}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {t("fields.content")}
-              </label>
-              <RichTextEditor
-                key={`ticket-response-${sectionEditorKey}`}
-                name="ticket-response"
-                label={t("fields.content")}
-                placeholder={t("placeholders.content")}
-                defaultValue=""
-                labels={richTextLabels}
-                onValueChange={setSectionContent}
-                hideLabel
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className={actionButtonClass({ size: "xs" })}
-                disabled={sectionSaving || !sectionContent.trim()}
-              >
-                {sectionSaving
-                  ? t("actions.saving")
-                  : t("actions.addSection")}
-              </button>
-            </div>
-          </form>
         ) : null}
       </section>
     </div>

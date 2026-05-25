@@ -558,6 +558,57 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               ) : null}
             </div>
 
+            <div className="mt-4 rounded-lg border bg-muted/10 p-4 space-y-4">
+              <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
+
+              <div className="grid gap-4">
+                <label className="space-y-2 text-sm">
+                  <span className="font-medium">{t("follow.fields.type")}</span>
+                  <select
+                    value={sectionType}
+                    onChange={(event) => setSectionType(event.target.value as TicketSectionType)}
+                    className="w-full rounded-md border px-3 py-2 text-sm"
+                  >
+                    {SECTION_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {tDetail(`sectionTypes.${type}`, { default: type })}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="space-y-2 text-sm">
+                  <span className="font-medium">{t("follow.fields.content")}</span>
+                  <textarea
+                    value={sectionContent}
+                    onChange={(event) => setSectionContent(event.target.value)}
+                    rows={4}
+                    placeholder={t("follow.placeholders.content")}
+                    className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </label>
+                <p className="text-[10px] text-muted-foreground">
+                  {tDetail("images.hint")}
+                </p>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className={cn(
+                    "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
+                    sectionSaving
+                      ? "cursor-not-allowed opacity-70"
+                      : "hover:bg-muted"
+                  )}
+                  onClick={() => void handleAddSection()}
+                  disabled={sectionSaving}
+                >
+                  {sectionSaving ? t("follow.saving") : t("follow.submit")}
+                </button>
+              </div>
+            </div>
+
             <div className="mt-4 space-y-3">
               <div className="flex items-center justify-between gap-3">
                 <h3 className="text-sm font-semibold">{t("follow.activity")}</h3>
@@ -736,58 +787,6 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               ) : null}
             </div>
 
-          </section>
-
-          <section className="rounded-2xl border bg-background p-6 shadow-sm space-y-4">
-            <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
-
-            <div className="grid gap-4">
-              <label className="space-y-2 text-sm">
-                <span className="font-medium">{t("follow.fields.type")}</span>
-                <select
-                  value={sectionType}
-                  onChange={(event) => setSectionType(event.target.value as TicketSectionType)}
-                  className="w-full rounded-md border px-3 py-2 text-sm"
-                >
-                  {SECTION_TYPES.map((type) => (
-                    <option key={type} value={type}>
-                      {tDetail(`sectionTypes.${type}`, { default: type })}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="space-y-2 text-sm">
-                <span className="font-medium">{t("follow.fields.content")}</span>
-                <textarea
-                  value={sectionContent}
-                  onChange={(event) => setSectionContent(event.target.value)}
-                  rows={4}
-                  placeholder={t("follow.placeholders.content")}
-                  className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </label>
-              <p className="text-[10px] text-muted-foreground">
-                {tDetail("images.hint")}
-              </p>
-
-            </div>
-
-            <div className="flex justify-end">
-              <button
-                type="button"
-                className={cn(
-                  "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
-                  sectionSaving
-                    ? "cursor-not-allowed opacity-70"
-                    : "hover:bg-muted"
-                )}
-                onClick={() => void handleAddSection()}
-                disabled={sectionSaving}
-              >
-                {sectionSaving ? t("follow.saving") : t("follow.submit")}
-              </button>
-            </div>
           </section>
 
           <section className="rounded-xl border bg-background p-4 space-y-4">

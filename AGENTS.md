@@ -30,6 +30,13 @@ Antes de cerrar cambios de codigo, correr al menos `npx tsc --noEmit`.
 - Evitar textos hardcodeados en componentes de UI cuando ya existe `next-intl`.
 - Preferir patrones ya existentes antes de crear abstracciones nuevas.
 
+## Idioma y locale
+
+- Locales soportados: `en`, `es`, `pt`, `nl`, `fr`. Si llega una variante como `es-BO` o `pt-BR`, usar el idioma base.
+- El idioma de usuarios internos se guarda en `user.locale`. `GET /users/me/profile` lo devuelve y `PATCH /users/me` acepta `{ locale }`, solo o junto con `name` / `email`.
+- Cuando el usuario logueado cambia el idioma desde la app, guardar la cookie local y sincronizar `locale` con `PATCH /users/me`.
+- Para tickets externos, seguir enviando el locale actual de la UI en `POST /public/tickets/links/:token`; el backend lo guarda como idioma del reporter externo.
+
 ## Tickets
 
 - Listado principal: `src/ui/components/tickets/tickets-tabs.client.tsx`

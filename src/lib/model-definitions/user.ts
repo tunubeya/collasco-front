@@ -11,6 +11,7 @@ export type User = {
   id: string;
   email: string;
   name: string | null;
+  locale?: string | null;
   role: UserRole;
   isActive: boolean;
   lastLoginAt: ISODateString | null;
@@ -30,6 +31,7 @@ export type User = {
 export type UpdateUserDto = {
   name?: string;
   email?: string;
+  locale?: string;
   preferences?: UserPreferences;
   notifyAssignedTickets?: boolean;
   notifyUnassignedTickets?: boolean;

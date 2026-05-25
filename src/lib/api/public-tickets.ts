@@ -58,7 +58,13 @@ export async function validatePublicTicketLink(
 
 export async function createPublicTicket(
   token: string,
-  payload: { title: string; content: string; email: string; name?: string }
+  payload: {
+    title: string;
+    content: string;
+    email: string;
+    name?: string;
+    locale?: string;
+  }
 ): Promise<PublicCreateTicketResponse> {
   const res = await fetch(`${apiUrl}/public/tickets/links/${token}`, {
     method: "POST",

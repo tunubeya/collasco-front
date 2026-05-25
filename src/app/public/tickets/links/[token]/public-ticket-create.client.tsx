@@ -75,6 +75,7 @@ export function PublicTicketCreateClient({ token }: Props) {
         content: "",
         email: email.trim(),
         name: name.trim(),
+        locale,
       });
       toast.success(t("create.success"));
       const followUrl = new URL(

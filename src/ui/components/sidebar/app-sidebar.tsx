@@ -8,10 +8,12 @@ import type { User } from '@/lib/model-definitions/user';
 import LangSelector from '@/ui/components/i18n/lang-selector';
 import NotificationsBell from '@/ui/components/notifications/notifications-bell.client';
 import { UserRole } from '@/lib/definitions';
+import { hasUserLocaleCookie } from '@/lib/i18n/locale.service';
 
 export default async function AppSidebar() {
   const t = await getTranslations('app.sidebar');
   const session = await getSession();
+  const hasLocaleCookie = await hasUserLocaleCookie();
   let profile: User | null = null;
 
   if (session?.token) {
@@ -78,7 +80,13 @@ export default async function AppSidebar() {
         {/* Footer */}
         <AppSidebarClient
           footerOnly
-          footerExtra={<LangSelector allowInApp />}
+          footerExtra={
+            <LangSelector
+              allowInApp
+              initialLocale={profile?.locale}
+              hasLocaleCookie={hasLocaleCookie}
+            />
+          }
         />
       </aside>
 
@@ -108,7 +116,11 @@ export default async function AppSidebar() {
 
             <AppSidebarClient items={items} token={session?.token ?? null} />
             <div className="mt-3 space-y-3">
-              <LangSelector allowInApp />
+              <LangSelector
+                allowInApp
+                initialLocale={profile?.locale}
+                hasLocaleCookie={hasLocaleCookie}
+              />
               <AppSidebarClient footerOnly />
             </div>
           </div>

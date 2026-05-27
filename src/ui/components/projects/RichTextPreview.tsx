@@ -62,6 +62,11 @@ export function RichTextPreview({
         .rich-text-preview :global(p:empty) {
           min-height: 1em;
         }
+        .rich-text-preview :global(hr) {
+          margin: 1.5rem 0;
+          border: 0;
+          border-top: 2px solid hsl(var(--muted-foreground) / 0.35);
+        }
         .rich-text-preview :global(ul) {
           list-style: disc;
           margin: 0 0 0.5rem;

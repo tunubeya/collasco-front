@@ -27,6 +27,8 @@ import {
 } from "@/app/app/projects/[projectId]/structure/actions";
 
 type TreeItem = StructureModuleNode | StructureFeatureItem;
+const metadataGridClass =
+  "ml-auto grid w-[22rem] shrink-0 grid-cols-[6.5rem_5.75rem_4.25rem_3.5rem] items-center gap-1";
 
 type StructureTreeProps = {
   projectId: string;
@@ -319,37 +321,29 @@ function ModuleNode({
           {node.name}
         </Link>
 
-        <div className="ml-auto grid w-[15.5rem] shrink-0 grid-cols-[4.75rem_7rem_3rem] items-center gap-1.5">
-          <DocumentationVersionIndicator
-          item={node}
-          changesLabel={documentationChangesLabel}
-          />
-
+        <div className={metadataGridClass}>
+          <span aria-hidden />
           <span aria-hidden />
 
+          <DocumentationVersionIndicator
+            item={node}
+            changesLabel={documentationChangesLabel}
+          />
+
           {showReorderButtons ? (
-            <div className="flex items-center justify-end gap-1 text-muted-foreground">
-              {canMoveUp && (
-                <MoveActionButton
-                  direction={MoveDirection.UP}
-                  label={moveUpLabel}
-                  disabled={disableMoves}
-                  onActivate={() =>
-                    onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.UP)
-                  }
-                />
-              )}
-              {canMoveDown && (
-                <MoveActionButton
-                  direction={MoveDirection.DOWN}
-                  label={moveDownLabel}
-                  disabled={disableMoves}
-                  onActivate={() =>
-                    onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.DOWN)
-                  }
-                />
-              )}
-            </div>
+            <ReorderControls
+              canMoveUp={canMoveUp}
+              canMoveDown={canMoveDown}
+              moveUpLabel={moveUpLabel}
+              moveDownLabel={moveDownLabel}
+              disabled={disableMoves}
+              onMoveUp={() =>
+                onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.UP)
+              }
+              onMoveDown={() =>
+                onMoveModule(node.id, node.parentModuleId ?? null, MoveDirection.DOWN)
+              }
+            />
           ) : (
             <span aria-hidden />
           )}
@@ -445,40 +439,35 @@ function FeatureRow({
         <FileText className="h-4 w-4 text-slate-700" aria-hidden />
         <span className="truncate">{feature.name}</span>
       </Link>
-      <div className="ml-auto grid w-[15.5rem] shrink-0 grid-cols-[4.75rem_7rem_3rem] items-center gap-1.5">
+      <div className={metadataGridClass}>
+        <div className="flex min-w-0 items-center justify-start">
+          <StatusBadge status={feature.status as Feature["status"]} />
+        </div>
+        <div className="flex min-w-0 items-center justify-start">
+          {feature.priority ? (
+            <PriorityBadge priority={feature.priority as Feature["priority"]} />
+          ) : (
+            <span aria-hidden />
+          )}
+        </div>
         <DocumentationVersionIndicator
           item={feature}
           changesLabel={documentationChangesLabel}
         />
-        <div className="flex min-w-0 items-center justify-end gap-2">
-          <StatusBadge status={feature.status as Feature["status"]} />
-          {feature.priority && (
-            <PriorityBadge priority={feature.priority as Feature["priority"]} />
-          )}
-        </div>
         {showReorderButtons ? (
-          <div className="flex items-center justify-end gap-1 text-muted-foreground">
-            {canMoveUp && (
-              <MoveActionButton
-                direction={MoveDirection.UP}
-                label={moveUpLabel}
-                disabled={disableMoves}
-                onActivate={() =>
-                  onMoveFeature(feature.id, feature.moduleId, MoveDirection.UP)
-                }
-              />
-            )}
-            {canMoveDown && (
-              <MoveActionButton
-                direction={MoveDirection.DOWN}
-                label={moveDownLabel}
-                disabled={disableMoves}
-                onActivate={() =>
-                  onMoveFeature(feature.id, feature.moduleId, MoveDirection.DOWN)
-                }
-              />
-            )}
-          </div>
+          <ReorderControls
+            canMoveUp={canMoveUp}
+            canMoveDown={canMoveDown}
+            moveUpLabel={moveUpLabel}
+            moveDownLabel={moveDownLabel}
+            disabled={disableMoves}
+            onMoveUp={() =>
+              onMoveFeature(feature.id, feature.moduleId, MoveDirection.UP)
+            }
+            onMoveDown={() =>
+              onMoveFeature(feature.id, feature.moduleId, MoveDirection.DOWN)
+            }
+          />
         ) : (
           <span aria-hidden />
         )}
@@ -511,10 +500,9 @@ function DocumentationVersionIndicator({
 }) {
   const versionNumber = getDocumentationVersionNumber(item);
   const hasChanges = hasUnpublishedDocumentationChanges(item);
-  if (!versionNumber && !hasChanges) return null;
 
   return (
-    <span className="inline-flex w-[4.75rem] shrink-0 items-center justify-end gap-1">
+    <span className="inline-flex shrink-0 items-center justify-center gap-1">
       {versionNumber ? (
         <span className="rounded-full border bg-muted/40 px-2 py-0.5 text-2xs font-medium text-muted-foreground">
           v{versionNumber}
@@ -543,6 +531,49 @@ function hasUnpublishedDocumentationChanges(item: TreeItem) {
       item.documentationHasChanges ??
       item.documentationVersion?.hasChanges ??
       item.documentationLabels?.some((label) => label.hasChanges),
+  );
+}
+
+function ReorderControls({
+  canMoveUp,
+  canMoveDown,
+  moveUpLabel,
+  moveDownLabel,
+  disabled,
+  onMoveUp,
+  onMoveDown,
+}: {
+  canMoveUp: boolean;
+  canMoveDown: boolean;
+  moveUpLabel: string;
+  moveDownLabel: string;
+  disabled: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 items-center justify-items-center text-muted-foreground">
+      {canMoveUp ? (
+        <MoveActionButton
+          direction={MoveDirection.UP}
+          label={moveUpLabel}
+          disabled={disabled}
+          onActivate={onMoveUp}
+        />
+      ) : (
+        <span className="h-6 w-6" aria-hidden />
+      )}
+      {canMoveDown ? (
+        <MoveActionButton
+          direction={MoveDirection.DOWN}
+          label={moveDownLabel}
+          disabled={disabled}
+          onActivate={onMoveDown}
+        />
+      ) : (
+        <span className="h-6 w-6" aria-hidden />
+      )}
+    </div>
   );
 }
 

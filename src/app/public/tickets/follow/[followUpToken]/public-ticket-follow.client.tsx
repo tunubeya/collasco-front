@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import type { TicketImage, TicketSectionType } from "@/lib/model-definitions/ticket";
+import type { TicketImage } from "@/lib/model-definitions/ticket";
 import {
   addPublicTicketSection,
   fetchPublicTicketFollow,
@@ -42,7 +42,6 @@ type Props = {
   followUpToken: string;
 };
 
-const SECTION_TYPES: TicketSectionType[] = ["RESPONSE", "COMMENT"];
 const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
 const isMissingDescription = (value?: string | null) => {
   const trimmed = value?.trim() ?? "";
@@ -91,7 +90,6 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const [data, setData] = useState<PublicTicketFollowResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sectionType, setSectionType] = useState<TicketSectionType>("RESPONSE");
   const [sectionContent, setSectionContent] = useState("");
   const [sectionSaving, setSectionSaving] = useState(false);
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
@@ -210,6 +208,10 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
       ),
     [sections]
   );
+  const getPublicSectionLabelType = useCallback(
+    (type: string) => (type === "COMMENT" ? "RESPONSE" : type),
+    []
+  );
   const followUpUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
     return new URL(
@@ -319,7 +321,6 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     setSectionSaving(true);
     try {
       await addPublicTicketSection(followUpToken, {
-        type: sectionType,
         content: sectionContent.trim(),
       });
       setSectionContent("");
@@ -335,7 +336,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     } finally {
       setSectionSaving(false);
     }
-  }, [followUpToken, isReadOnly, loadTicket, sectionContent, sectionSaving, sectionType, t]);
+  }, [followUpToken, isReadOnly, loadTicket, sectionContent, sectionSaving, t]);
 
   const handleUpload = useCallback(async () => {
     if (isReadOnly || uploadingAttachment || !imageFile || !imageName.trim()) return;
@@ -613,21 +614,6 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
 
                 <div className="grid gap-4">
                   <label className="space-y-2 text-sm">
-                    <span className="font-medium">{t("follow.fields.type")}</span>
-                    <select
-                      value={sectionType}
-                      onChange={(event) => setSectionType(event.target.value as TicketSectionType)}
-                      className="w-full rounded-md border px-3 py-2 text-sm"
-                    >
-                      {SECTION_TYPES.map((type) => (
-                        <option key={type} value={type}>
-                          {tDetail(`sectionTypes.${type}`, { default: type })}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="space-y-2 text-sm">
                     <span className="font-medium">{t("follow.fields.content")}</span>
                     <textarea
                       value={sectionContent}
@@ -763,8 +749,8 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                             <span className="font-semibold">
-                              {tDetail(`sectionTypes.${section.type}`, {
-                                default: section.type,
+                              {tDetail(`sectionTypes.${getPublicSectionLabelType(section.type)}`, {
+                                default: getPublicSectionLabelType(section.type),
                               })}
                             </span>
                             <span>

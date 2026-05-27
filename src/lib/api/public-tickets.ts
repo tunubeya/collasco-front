@@ -118,7 +118,7 @@ export async function reopenPublicTicket(
 
 export async function addPublicTicketSection(
   followUpToken: string,
-  payload: { type: TicketSectionType; content: string }
+  payload: { content: string; type?: Extract<TicketSectionType, "DESCRIPTION"> }
 ): Promise<TicketSection> {
   const res = await fetch(
     `${apiUrl}/public/tickets/follow/${followUpToken}/sections`,

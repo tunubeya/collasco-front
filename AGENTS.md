@@ -20,6 +20,7 @@ Antes de cerrar cambios de codigo, correr al menos `npx tsc --noEmit`.
 - Tipos/modelos: `src/lib/model-definitions`
 - Traducciones: `src/lib/i18n/translations/{es,en,fr,pt,nl}.json`
 - Utilidades: `src/lib/utils.ts`
+- Backend vecino: `../ums-api` cuando el bug dependa del contrato o persistencia de API.
 
 ## Convenciones
 
@@ -51,6 +52,7 @@ Notas:
 - El contador del sidebar en el item "Tickets" muestra los tickets asignados al usuario actual usando `getTicketCounts().counts.assigned`.
 - Si cambia el responsable de un ticket, disparar `notifyTicketCountsChanged()` para que el sidebar actualice el contador.
 - El helper de eventos para conteos esta en `src/ui/components/tickets/ticket-count-events.ts`.
+- En follow-up publico, los clientes externos no ven ni crean secciones `COMMENT`; al agregar respuestas publicas enviar solo `{ content }` y dejar que el backend las guarde como `RESPONSE`.
 
 ## Sidebar, notificaciones y soporte
 

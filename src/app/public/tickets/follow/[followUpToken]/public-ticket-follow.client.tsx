@@ -766,7 +766,9 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                             </span>
                             <span>·</span>
                             <span className="truncate">
-                              {section.author?.name || t("follow.externalAuthor")}
+                              {section.author?.name ||
+                                ticket?.publicReporterName ||
+                                t("follow.externalAuthor")}
                             </span>
                           </div>
                           {!isLockedSection(section) &&

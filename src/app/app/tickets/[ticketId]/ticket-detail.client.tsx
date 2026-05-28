@@ -1389,6 +1389,7 @@ export function TicketDetailView({
                 );
                 const author =
                   section.author?.name ??
+                  ticketState.publicReporterName ??
                   t("externalUser");
                 const canEditSection =
                   !section.lockedAt &&

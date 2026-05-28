@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { memo, useMemo } from "react";
 
 import {
   normalizeRichTextInput,
@@ -15,14 +15,13 @@ type RichTextPreviewProps = {
   fileOpenLabel?: string;
 };
 
-export function RichTextPreview({
+export const RichTextPreview = memo(function RichTextPreview({
   value,
   emptyLabel,
   className,
   imageMap,
   fileOpenLabel,
 }: RichTextPreviewProps) {
-  const [sanitized, setSanitized] = useState<string | null>(null);
   const hasContent = Boolean(value && value.trim().length);
   const normalized = useMemo(() => {
     if (!hasContent) return null;
@@ -30,14 +29,12 @@ export function RichTextPreview({
     const withLinks = autolinkUrls(base);
     return imageMap ? injectImages(withLinks, imageMap, fileOpenLabel) : withLinks;
   }, [fileOpenLabel, hasContent, imageMap, value]);
-
-  useEffect(() => {
+  const sanitized = useMemo(() => {
     if (!normalized) {
-      setSanitized(null);
-      return;
+      return null;
     }
     const clean = sanitizeRichTextClient(normalized);
-    setSanitized(clean.trim().length ? clean : null);
+    return clean.trim().length ? clean : null;
   }, [normalized]);
 
   const htmlToRender = sanitized ?? normalized;
@@ -133,7 +130,7 @@ export function RichTextPreview({
       `}</style>
     </div>
   );
-}
+});
 
 function stripTags(value: string): string {
   return value.replace(/<[^>]*>/g, "");

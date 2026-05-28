@@ -1378,7 +1378,7 @@ export function TicketDetailView({
           visibleSections.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t("empty")}</p>
           ) : (
-            <ul className="space-y-3">
+            <div className="space-y-3">
               {visibleSections.map((section) => {
                 const created = format.dateTime(
                   new Date(section.createdAt),
@@ -1399,7 +1399,7 @@ export function TicketDetailView({
                       section.authorId === currentUserId
                   );
                 return (
-                  <li key={section.id} className="rounded-lg border p-3">
+                  <div key={section.id} className="rounded-lg border p-3">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         <span className="font-semibold">
@@ -1475,15 +1475,15 @@ export function TicketDetailView({
                       <RichTextPreview
                         value={section.content}
                         emptyLabel=""
-                        className="mt-2 text-sm"
+                        className="mt-2"
                         imageMap={showImages ? imageMap : null}
                         fileOpenLabel={fileOpenLabel}
                       />
                     )}
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </div>
           )
         ) : null}
       </section>

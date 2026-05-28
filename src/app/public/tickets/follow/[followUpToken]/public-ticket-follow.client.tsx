@@ -91,6 +91,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sectionContent, setSectionContent] = useState("");
+  const [sectionEditorKey, setSectionEditorKey] = useState(0);
   const [sectionSaving, setSectionSaving] = useState(false);
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState("");
@@ -324,6 +325,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
         content: sectionContent.trim(),
       });
       setSectionContent("");
+      setSectionEditorKey((prev) => prev + 1);
       toast.success(t("follow.sectionAdded"));
       await loadTicket();
     } catch (err) {
@@ -613,16 +615,19 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                 <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
 
                 <div className="grid gap-4">
-                  <label className="space-y-2 text-sm">
+                  <div className="space-y-2 text-sm">
                     <span className="font-medium">{t("follow.fields.content")}</span>
-                    <textarea
-                      value={sectionContent}
-                      onChange={(event) => setSectionContent(event.target.value)}
-                      rows={4}
+                    <RichTextEditor
+                      key={`public-response-${sectionEditorKey}`}
+                      name="public-response"
+                      label={t("follow.fields.content")}
                       placeholder={t("follow.placeholders.content")}
-                      className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      defaultValue=""
+                      labels={richTextLabels}
+                      onValueChange={setSectionContent}
+                      hideLabel
                     />
-                  </label>
+                  </div>
                   <p className="text-[10px] text-muted-foreground">
                     {tDetail("images.hint")}
                   </p>

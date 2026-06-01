@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { Loader2, Link2, Trash2 } from "lucide-react";
+import { Loader2, Link2, Pencil, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import type { ProjectDocumentationLabelOption } from "@/lib/api/qa";
@@ -12,6 +12,7 @@ import {
   createManualShareLink,
   listManualShareLinks,
   revokeManualShareLink,
+  updateManualShareLink,
   type ManualShareLink,
   type ManualShareScope,
 } from "@/lib/api/manual-share";
@@ -63,7 +64,9 @@ export function ManualShareDialog({
   const [links, setLinks] = useState<ManualShareLink[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [revokingId, setRevokingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [commentError, setCommentError] = useState<string | null>(null);
   const [rootType, setRootType] = useState<RootType>(initialRootType);
   const [rootId, setRootId] = useState("");
@@ -85,6 +88,7 @@ export function ManualShareDialog({
     () => new Map(featureOptions.map((option) => [option.id, option.path])),
     [featureOptions],
   );
+  const isEditing = Boolean(editingId);
 
   const buildModuleOptions = useCallback((nodes: StructureModuleNode[]) => {
     const options: RootOption[] = [];
@@ -119,15 +123,15 @@ export function ManualShareDialog({
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const scope: ManualShareScope = rootType;
-      const canLoadLinks = scope === "PROJECT" || Boolean(rootId);
+      const scope: ManualShareScope = initialRootType;
+      const canLoadLinks = scope === "PROJECT" || Boolean(initialRootId);
       const shouldLoadProjectLinks = scope !== "PROJECT" && Boolean(hashTargetId);
       const [labelOptions, linkResponse, projectLinkResponse, structureRes] = await Promise.all([
         listProjectDocumentationLabels(token, projectId),
         canLoadLinks
           ? listManualShareLinks(token, projectId, {
               scope,
-              rootId: scope === "PROJECT" ? undefined : rootId || undefined,
+              rootId: scope === "PROJECT" ? undefined : initialRootId || undefined,
             })
           : Promise.resolve({ items: [] }),
         shouldLoadProjectLinks
@@ -155,18 +159,24 @@ export function ManualShareDialog({
     } finally {
       setIsLoading(false);
     }
-  }, [hashTargetId, projectId, rootId, rootType, tShare, token]);
+  }, [hashTargetId, initialRootId, initialRootType, projectId, tShare, token]);
+
+  const resetForm = useCallback(() => {
+    setSelectedIds([]);
+    setComment("");
+    setCommentError(null);
+    setRootType(initialRootType);
+    setRootId(initialRootType === "PROJECT" ? "" : initialRootId ?? "");
+    setRootError(null);
+    setEditingId(null);
+  }, [initialRootId, initialRootType]);
 
   useEffect(() => {
     if (open) {
+      resetForm();
       void loadData();
-      setRootType(initialRootType);
-      setRootId(initialRootType === "PROJECT" ? "" : initialRootId ?? "");
-      setRootError(null);
-      setComment("");
-      setCommentError(null);
     }
-  }, [initialRootId, initialRootType, loadData, open]);
+  }, [loadData, open, resetForm]);
 
   const toggleLabel = useCallback((labelId: string) => {
     setSelectedIds((prev) =>
@@ -197,12 +207,7 @@ export function ManualShareDialog({
         rootType === "PROJECT" ? undefined : rootId,
       );
       toast.success(tShare("created"));
-      setSelectedIds([]);
-      setComment("");
-      setCommentError(null);
-      setRootType(initialRootType);
-      setRootId(initialRootType === "PROJECT" ? "" : initialRootId ?? "");
-      setRootError(null);
+      resetForm();
       await loadData();
     } catch (error) {
       toast.error(tShare("createError"), {
@@ -211,7 +216,71 @@ export function ManualShareDialog({
     } finally {
       setIsCreating(false);
     }
-  }, [comment, isCreating, loadData, projectId, selectedIds, tShare, token]);
+  }, [comment, isCreating, loadData, projectId, resetForm, rootId, rootType, selectedIds, tShare, token]);
+
+  const startEditing = useCallback((link: ManualShareLink) => {
+    setEditingId(link.id);
+    setSelectedIds(link.labelIds);
+    setComment(link.comment ?? "");
+    setCommentError(null);
+    setRootType(link.rootType ?? "PROJECT");
+    setRootId(link.rootType && link.rootType !== "PROJECT" ? link.rootId ?? "" : "");
+    setRootError(null);
+  }, []);
+
+  const updateLink = useCallback(async () => {
+    if (!editingId || isUpdating) return;
+    if (comment.length > 500) {
+      setCommentError(tShare("commentError"));
+      return;
+    }
+    if (rootType !== "PROJECT" && !rootId) {
+      setRootError(tShare("rootError"));
+      return;
+    }
+    setIsUpdating(true);
+    try {
+      const updated = await updateManualShareLink(token, projectId, editingId, {
+        labelIds: selectedIds,
+        comment,
+        rootType,
+        rootId: rootType === "PROJECT" ? undefined : rootId,
+      });
+      const selectedLabelMap = new Map(labels.map((label) => [label.id, label]));
+      const updatedWithLabels: ManualShareLink = {
+        ...updated,
+        labels: updated.labelIds
+          .map((labelId) => selectedLabelMap.get(labelId))
+          .filter((label): label is ProjectDocumentationLabelOption => Boolean(label)),
+      };
+      setLinks((prev) =>
+        prev.map((link) => (link.id === editingId ? updatedWithLabels : link)),
+      );
+      setProjectLinks((prev) =>
+        prev.map((link) => (link.id === editingId ? updatedWithLabels : link)),
+      );
+      toast.success(tShare("updated"));
+      resetForm();
+    } catch (error) {
+      toast.error(tShare("updateError"), {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [
+    comment,
+    editingId,
+    isUpdating,
+    labels,
+    projectId,
+    resetForm,
+    rootId,
+    rootType,
+    selectedIds,
+    tShare,
+    token,
+  ]);
 
   const revokeLink = useCallback(
     async (linkId: string) => {
@@ -299,7 +368,7 @@ export function ManualShareDialog({
             <div className="space-y-3">
               <div>
                 <p className="text-sm font-semibold">
-                  {tShare("labelsTitle")}
+                  {isEditing ? tShare("editTitle") : tShare("labelsTitle")}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {tShare("labelsHint")}
@@ -329,6 +398,61 @@ export function ManualShareDialog({
                           tShare("rootUnknown"),
                       })}
                 </div>
+                {isEditing || !lockRoot ? (
+                  <div className="mt-3 grid gap-2">
+                    <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      {tShare("rootTypeLabel")}
+                    </label>
+                    <select
+                      value={rootType}
+                      onChange={(event) => {
+                        const nextRootType = event.target.value as RootType;
+                        setRootType(nextRootType);
+                        setRootId("");
+                        setRootError(null);
+                      }}
+                      className="w-full rounded-md border bg-background px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                      <option value="PROJECT">{tShare("rootTypeProject")}</option>
+                      <option value="MODULE">{tShare("rootTypeModule")}</option>
+                      <option value="FEATURE">{tShare("rootTypeFeature")}</option>
+                    </select>
+                    {rootType === "MODULE" ? (
+                      <select
+                        value={rootId}
+                        onChange={(event) => {
+                          setRootId(event.target.value);
+                          setRootError(null);
+                        }}
+                        className="w-full rounded-md border bg-background px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="">{tShare("rootSelectModule")}</option>
+                        {moduleOptions.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.path}
+                          </option>
+                        ))}
+                      </select>
+                    ) : null}
+                    {rootType === "FEATURE" ? (
+                      <select
+                        value={rootId}
+                        onChange={(event) => {
+                          setRootId(event.target.value);
+                          setRootError(null);
+                        }}
+                        className="w-full rounded-md border bg-background px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="">{tShare("rootSelectFeature")}</option>
+                        {featureOptions.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.path}
+                          </option>
+                        ))}
+                      </select>
+                    ) : null}
+                  </div>
+                ) : null}
                 {!lockRoot && rootType === "MODULE" && moduleOptions.length === 0 ? (
                   <p className="text-xs text-muted-foreground">
                     {tShare("rootEmptyModules")}
@@ -401,13 +525,40 @@ export function ManualShareDialog({
                 {commentError && <p className="text-xs text-red-600">{commentError}</p>}
               </div>
               <div className="flex justify-end gap-2">
+                {isEditing ? (
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={resetForm}
+                    disabled={isUpdating}
+                  >
+                    <X className="h-4 w-4" aria-hidden />
+                    {tShare("cancelEdit")}
+                  </button>
+                ) : null}
                 <button
                   type="button"
                   className="rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
-                  onClick={() => createLink()}
-                  disabled={selectedIds.length === 0 || isCreating}
+                  onClick={() => {
+                    if (isEditing) {
+                      void updateLink();
+                    } else {
+                      void createLink();
+                    }
+                  }}
+                  disabled={
+                    (!isEditing && selectedIds.length === 0) ||
+                    isCreating ||
+                    isUpdating
+                  }
                 >
-                  {isCreating ? tShare("creating") : tShare("create")}
+                  {isEditing
+                    ? isUpdating
+                      ? tShare("updating")
+                      : tShare("saveEdit")
+                    : isCreating
+                    ? tShare("creating")
+                    : tShare("create")}
                 </button>
               </div>
             </div>
@@ -476,6 +627,15 @@ export function ManualShareDialog({
                             ) : null}
                           </div>
                           <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              className="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+                              onClick={() => startEditing(link)}
+                              disabled={isRevoked || isUpdating}
+                            >
+                              <Pencil className="h-3.5 w-3.5" aria-hidden />
+                              {tShare("edit")}
+                            </button>
                             <button
                               type="button"
                               className="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs font-medium hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"

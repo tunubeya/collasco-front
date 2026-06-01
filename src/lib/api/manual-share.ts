@@ -23,12 +23,20 @@ export type ManualShareLink = {
 };
 
 export type CreateManualShareLinkResponse = ManualShareLink;
+export type UpdateManualShareLinkResponse = ManualShareLink;
 
 export type ListManualShareLinksResponse = {
   items: ManualShareLink[];
 };
 
 export type ManualShareScope = "PROJECT" | "MODULE" | "FEATURE";
+
+export type UpdateManualShareLinkInput = {
+  labelIds?: string[];
+  comment?: string;
+  rootType?: ManualShareScope;
+  rootId?: string | null;
+};
 
 export async function createManualShareLink(
   token: string,
@@ -84,6 +92,36 @@ export async function listManualShareLinks(
     throw new Error(message || "Failed to load share links");
   }
   return (await res.json()) as ListManualShareLinksResponse;
+}
+
+export async function updateManualShareLink(
+  token: string,
+  projectId: string,
+  linkId: string,
+  input: UpdateManualShareLinkInput,
+): Promise<UpdateManualShareLinkResponse> {
+  const res = await fetchWithAuth(
+    `${apiUrl}/projects/${projectId}/manual/share-links/${linkId}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        labelIds: input.labelIds,
+        comment: input.comment,
+        rootType: input.rootType,
+        rootId:
+          input.rootType && input.rootType !== "PROJECT"
+            ? input.rootId ?? undefined
+            : undefined,
+      }),
+    },
+    token,
+  );
+  if (!res.ok) {
+    const message = await res.text().catch(() => null);
+    throw new Error(message || "Failed to update share link");
+  }
+  return (await res.json()) as UpdateManualShareLinkResponse;
 }
 
 export async function revokeManualShareLink(

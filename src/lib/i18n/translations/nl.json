@@ -626,6 +626,7 @@
           "team": "Team",
           "activity": "Activiteit",
           "settings": "Instellingen",
+          "support": "Support",
           "features": "Functionaliteiten",
           "structure": "Structuur",
           "documentation": "Documentatie",
@@ -685,9 +686,13 @@
           "prepare": "Voorbereiden",
           "release": "Publiceren",
           "preview": "Preview",
-          "notes": "Notities",
+          "notes": "Releasechangelog",
           "saveNotes": "Notities opslaan",
-          "generateNotes": "Notities genereren"
+          "generateNotes": "Changelog genereren",
+          "editChangelog": "Bewerken",
+          "cancel": "Annuleren",
+          "collapse": "Inklappen",
+          "expand": "Uitklappen"
         },
         "create": {
           "nameLabel": "Releasenaam",
@@ -698,7 +703,8 @@
           "subtitle": "Documentatiesnapshots voor dit project.",
           "empty": "Nog geen releases.",
           "itemCount": "{count} documenten",
-          "updated": "Bijgewerkt {date}"
+          "updated": "Bijgewerkt {date}",
+          "collapsedLabel": "Releases {count} · v{version}"
         },
         "detail": {
           "empty": "Selecteer of maak een release.",
@@ -710,7 +716,7 @@
           "tabs": {
             "items": "Snapshot",
             "preview": "Preview",
-            "notes": "Notities"
+            "notes": "Releasechangelog"
           }
         },
         "readiness": {
@@ -731,7 +737,12 @@
           "type": "Type",
           "version": "Versie",
           "publishedAt": "Gepubliceerd",
-          "changelog": "Changelog"
+          "changelog": "Changelog",
+          "changedGroup": "Met wijzigingen ({count})",
+          "unchangedGroup": "Zonder wijzigingen ({count})",
+          "noChanged": "Geen documentatie gewijzigd in deze release.",
+          "noUnchanged": "Alle opgenomen documentatie is gewijzigd.",
+          "snapshotVersion": "Snapshot v{version}"
         },
         "preview": {
           "notLoaded": "Laad de preview om wijzigingen te bekijken.",
@@ -748,8 +759,10 @@
           "notLoaded": "Laad notities om ze te bewerken.",
           "updated": "Bijgewerkt {date}",
           "generated": "Gegenereerd {date}",
-          "placeholder": "Schrijf release notes in Markdown.",
-          "generateConfirm": "Dit vervangt de huidige release notes. Wil je doorgaan?"
+          "editorLabel": "Releasechangelog",
+          "previewLabel": "Preview",
+          "placeholder": "Schrijf de releasechangelog.",
+          "generateConfirm": "Dit vervangt de huidige releasechangelog. Wil je doorgaan?"
         },
         "messages": {
           "loading": "Laden...",

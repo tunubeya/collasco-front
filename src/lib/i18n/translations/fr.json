@@ -626,6 +626,7 @@
           "team": "Équipe",
           "activity": "Activité",
           "settings": "Paramètres",
+          "support": "Support",
           "features": "Fonctionnalités",
           "structure": "Structure",
           "documentation": "Documentation",
@@ -685,9 +686,13 @@
           "prepare": "Préparer",
           "release": "Publier",
           "preview": "Aperçu",
-          "notes": "Notes",
+          "notes": "Changelog de la release",
           "saveNotes": "Enregistrer les notes",
-          "generateNotes": "Générer les notes"
+          "generateNotes": "Générer le changelog",
+          "editChangelog": "Modifier",
+          "cancel": "Annuler",
+          "collapse": "Réduire",
+          "expand": "Développer"
         },
         "create": {
           "nameLabel": "Nom de la release",
@@ -698,7 +703,8 @@
           "subtitle": "Snapshots documentaires de ce projet.",
           "empty": "Aucune release pour le moment.",
           "itemCount": "{count} documents",
-          "updated": "Mis à jour {date}"
+          "updated": "Mis à jour {date}",
+          "collapsedLabel": "Releases {count} · v{version}"
         },
         "detail": {
           "empty": "Sélectionnez ou créez une release.",
@@ -710,7 +716,7 @@
           "tabs": {
             "items": "Snapshot",
             "preview": "Aperçu",
-            "notes": "Notes"
+            "notes": "Changelog de la release"
           }
         },
         "readiness": {
@@ -731,7 +737,12 @@
           "type": "Type",
           "version": "Version",
           "publishedAt": "Publié",
-          "changelog": "Changelog"
+          "changelog": "Changelog",
+          "changedGroup": "Avec changements ({count})",
+          "unchangedGroup": "Sans changement ({count})",
+          "noChanged": "Aucune documentation n'a changé dans cette release.",
+          "noUnchanged": "Toute la documentation incluse a changé.",
+          "snapshotVersion": "Snapshot v{version}"
         },
         "preview": {
           "notLoaded": "Chargez l'aperçu pour voir les changements.",
@@ -748,8 +759,10 @@
           "notLoaded": "Chargez les notes pour les modifier.",
           "updated": "Mis à jour {date}",
           "generated": "Généré {date}",
-          "placeholder": "Rédigez les release notes en Markdown.",
-          "generateConfirm": "Cela remplacera les release notes actuelles. Voulez-vous continuer ?"
+          "editorLabel": "Changelog de la release",
+          "previewLabel": "Aperçu",
+          "placeholder": "Rédigez le changelog de la release.",
+          "generateConfirm": "Cela remplacera le changelog actuel de la release. Voulez-vous continuer ?"
         },
         "messages": {
           "loading": "Chargement...",

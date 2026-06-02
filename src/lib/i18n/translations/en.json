@@ -614,6 +614,7 @@
           "team": "Team",
           "activity": "Activity",
           "settings": "Settings",
+          "support": "Support",
           "features": "Features",
           "structure": "Structure",
           "documentation": "Documentation",
@@ -673,9 +674,13 @@
           "prepare": "Prepare",
           "release": "Release",
           "preview": "Preview",
-          "notes": "Notes",
+          "notes": "Release changelog",
           "saveNotes": "Save notes",
-          "generateNotes": "Generate notes"
+          "generateNotes": "Generate changelog",
+          "editChangelog": "Edit",
+          "cancel": "Cancel",
+          "collapse": "Collapse",
+          "expand": "Expand"
         },
         "create": {
           "nameLabel": "Release name",
@@ -686,7 +691,8 @@
           "subtitle": "Documentary snapshots for this project.",
           "empty": "No releases yet.",
           "itemCount": "{count} documents",
-          "updated": "Updated {date}"
+          "updated": "Updated {date}",
+          "collapsedLabel": "Releases {count} · v{version}"
         },
         "detail": {
           "empty": "Select or create a release.",
@@ -698,7 +704,7 @@
           "tabs": {
             "items": "Snapshot",
             "preview": "Preview",
-            "notes": "Notes"
+            "notes": "Release changelog"
           }
         },
         "readiness": {
@@ -719,7 +725,12 @@
           "type": "Type",
           "version": "Version",
           "publishedAt": "Published",
-          "changelog": "Changelog"
+          "changelog": "Changelog",
+          "changedGroup": "With changes ({count})",
+          "unchangedGroup": "Without changes ({count})",
+          "noChanged": "No documentation changed in this release.",
+          "noUnchanged": "All included documentation changed.",
+          "snapshotVersion": "Snapshot v{version}"
         },
         "preview": {
           "notLoaded": "Load the preview to see changes.",
@@ -736,8 +747,10 @@
           "notLoaded": "Load notes to edit them.",
           "updated": "Updated {date}",
           "generated": "Generated {date}",
-          "placeholder": "Write release notes in Markdown.",
-          "generateConfirm": "This will replace the current release notes. Do you want to continue?"
+          "editorLabel": "Release changelog",
+          "previewLabel": "Preview",
+          "placeholder": "Write the release changelog.",
+          "generateConfirm": "This will replace the current release changelog. Do you want to continue?"
         },
         "messages": {
           "loading": "Loading...",

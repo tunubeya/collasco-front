@@ -626,6 +626,7 @@
           "team": "Equipe",
           "activity": "Atividade",
           "settings": "Configurações",
+          "support": "Suporte",
           "features": "Funcionalidades",
           "structure": "Estrutura",
           "documentation": "Documentação",
@@ -685,9 +686,13 @@
           "prepare": "Preparar",
           "release": "Publicar",
           "preview": "Prévia",
-          "notes": "Notas",
+          "notes": "Changelog do release",
           "saveNotes": "Salvar notas",
-          "generateNotes": "Gerar notas"
+          "generateNotes": "Gerar changelog",
+          "editChangelog": "Editar",
+          "cancel": "Cancelar",
+          "collapse": "Colapsar",
+          "expand": "Expandir"
         },
         "create": {
           "nameLabel": "Nome do release",
@@ -698,7 +703,8 @@
           "subtitle": "Snapshots documentais deste projeto.",
           "empty": "Ainda não há releases.",
           "itemCount": "{count} documentos",
-          "updated": "Atualizado {date}"
+          "updated": "Atualizado {date}",
+          "collapsedLabel": "Releases {count} · v{version}"
         },
         "detail": {
           "empty": "Selecione ou crie um release.",
@@ -710,7 +716,7 @@
           "tabs": {
             "items": "Snapshot",
             "preview": "Prévia",
-            "notes": "Notas"
+            "notes": "Changelog do release"
           }
         },
         "readiness": {
@@ -731,7 +737,12 @@
           "type": "Tipo",
           "version": "Versão",
           "publishedAt": "Publicado",
-          "changelog": "Changelog"
+          "changelog": "Changelog",
+          "changedGroup": "Com alterações ({count})",
+          "unchangedGroup": "Sem alterações ({count})",
+          "noChanged": "Nenhuma documentação mudou neste release.",
+          "noUnchanged": "Toda a documentação incluída teve alterações.",
+          "snapshotVersion": "Snapshot v{version}"
         },
         "preview": {
           "notLoaded": "Carregue a prévia para ver as alterações.",
@@ -748,8 +759,10 @@
           "notLoaded": "Carregue as notas para editá-las.",
           "updated": "Atualizado {date}",
           "generated": "Gerado {date}",
-          "placeholder": "Escreva release notes em Markdown.",
-          "generateConfirm": "Isso substituirá as release notes atuais. Deseja continuar?"
+          "editorLabel": "Changelog do release",
+          "previewLabel": "Prévia",
+          "placeholder": "Escreva o changelog do release.",
+          "generateConfirm": "Isso substituirá o changelog atual do release. Deseja continuar?"
         },
         "messages": {
           "loading": "Carregando...",

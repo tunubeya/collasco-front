@@ -10,6 +10,66 @@ export function normalizeRichTextInput(value?: string | null): string {
   return wrapPlainText(trimmed);
 }
 
+export function markdownishToRichTextHtml(value?: string | null): string {
+  if (!value) return "";
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (looksLikeHtml(trimmed)) return trimmed;
+
+  const lines = trimmed.split(/\r?\n/);
+  const blocks: string[] = [];
+  let listType: "ul" | "ol" | null = null;
+  let listItems: string[] = [];
+
+  const flushList = () => {
+    if (!listType || listItems.length === 0) return;
+    blocks.push(`<${listType}>${listItems.join("")}</${listType}>`);
+    listType = null;
+    listItems = [];
+  };
+
+  for (const line of lines) {
+    const raw = line.trim();
+    if (!raw) {
+      flushList();
+      continue;
+    }
+
+    const unordered = raw.match(/^[-*]\s+(.+)$/);
+    if (unordered) {
+      if (listType !== "ul") {
+        flushList();
+        listType = "ul";
+      }
+      listItems.push(`<li>${formatMarkdownishInline(unordered[1])}</li>`);
+      continue;
+    }
+
+    const ordered = raw.match(/^\d+[.)]\s+(.+)$/);
+    if (ordered) {
+      if (listType !== "ol") {
+        flushList();
+        listType = "ol";
+      }
+      listItems.push(`<li>${formatMarkdownishInline(ordered[1])}</li>`);
+      continue;
+    }
+
+    flushList();
+
+    const heading = raw.match(/^#{1,6}\s+(.+)$/);
+    if (heading) {
+      blocks.push(`<p><strong>${formatMarkdownishInline(heading[1])}</strong></p>`);
+      continue;
+    }
+
+    blocks.push(`<p>${formatMarkdownishInline(raw)}</p>`);
+  }
+
+  flushList();
+  return blocks.join("");
+}
+
 export function looksLikeHtml(value: string): boolean {
   return /<[^>]+>/.test(value);
 }
@@ -36,6 +96,16 @@ export function escapeHtml(value: string): string {
         return char;
     }
   });
+}
+
+function formatMarkdownishInline(value: string): string {
+  const escaped = escapeHtml(value);
+  return escaped
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/__([^_]+)__/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/_([^_]+)_/g, "<em>$1</em>");
 }
 
 export function sanitizeRichTextClient(value: string): string {

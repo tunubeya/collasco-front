@@ -93,5 +93,8 @@ Notas:
 - Antes de permitir publicar un release, consultar o refrescar `GET /projects/:projectId/releases/documentation-status`.
 - Si `release` devuelve `409 Conflict`, mostrar el `documentationStatus` del error para explicar documentación pendiente o versiones publicadas faltantes.
 - `prepare` puede existir con warnings; `release` bloquea si hay documentación sin versión publicada o drafts con cambios pendientes.
-- Un release `RELEASED` no debe permitir editar nombre/status/snapshot, pero sí editar o regenerar release notes.
-- Generar release notes sobrescribe el contenido actual; pedir confirmación si ya hay contenido.
+- En UI llamar a las release notes "changelog del release".
+- El changelog del release solo se edita o regenera en releases `DRAFT`; en `PREPARED` y `RELEASED` se muestra solo como lectura.
+- Generar el changelog del release sobrescribe el contenido actual; pedir confirmación si ya hay contenido.
+- El changelog del release y cualquier contenido largo editable deben usar `RichTextEditor` y visualizarse con `RichTextPreview`; no usar Markdown ni `textarea` salvo que la solicitud lo pida explícitamente.
+- El endpoint `POST /projects/:projectId/releases/:releaseId/notes/generate` devuelve HTML rich text y solo aplica a releases `DRAFT`; el front debe mostrarlo con `RichTextPreview`/`RichTextEditor`.

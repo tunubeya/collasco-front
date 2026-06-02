@@ -2,6 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import {
+  Activity,
+  BookOpen,
+  FileText,
+  GitBranch,
+  History,
+  MessageSquare,
+  Rocket,
+  type LucideIcon,
+} from "lucide-react";
 
 import type { Feature } from "@/lib/model-definitions/feature";
 import type { Project } from "@/lib/model-definitions/project";
@@ -51,6 +61,24 @@ type FeatureTab =
   | "linked"
   | "manual";
 
+type FeaturePrimaryTab =
+  | "build"
+  | "documentation";
+
+type FeatureNavigationItem = {
+  key: FeatureTab;
+  label: string;
+  icon: LucideIcon;
+  badge?: number;
+};
+
+type FeatureNavigationGroup = {
+  key: FeaturePrimaryTab;
+  label: string;
+  icon: LucideIcon;
+  items: FeatureNavigationItem[];
+};
+
 export function FeatureTabs({
   feature,
   project,
@@ -72,10 +100,13 @@ export function FeatureTabs({
   canCreateTicket = false,
 }: FeatureTabsProps) {
   const tTabs = useTranslations("app.projects.feature.tabs");
+  const tProjectTabs = useTranslations("app.projects.detail.tabs");
   const t = useTranslations("app.projects.feature");
   const tProjectDetail = useTranslations("app.projects.detail");
   const tManual = useTranslations("app.projects.manual");
   const formatter = useFormatter();
+  const [activePrimaryTab, setActivePrimaryTab] =
+    useState<FeaturePrimaryTab>("documentation");
   const [activeTab, setActiveTab] = useState<FeatureTab>("documentation");
   const [linkedFeatures, setLinkedFeatures] =
     useState<QaLinkedFeature[]>(initialLinkedFeatures);
@@ -89,19 +120,13 @@ export function FeatureTabs({
   const availableTabs = useMemo<FeatureTab[]>(() => {
     const tabs: FeatureTab[] = [];
     if (canViewDocumentation) tabs.push("documentation");
-    tabs.push("issues", "versions");
     if (canReadTickets) tabs.push("tickets");
+    if (canViewQa) tabs.push("manual");
+    tabs.push("versions");
     if (canViewQa) tabs.push("qa");
     tabs.push("linked");
-    if (canViewQa) tabs.push("manual");
     return tabs;
   }, [canReadTickets, canViewDocumentation, canViewQa]);
-
-  useEffect(() => {
-    if (!availableTabs.includes(activeTab)) {
-      setActiveTab(availableTabs[0] ?? "issues");
-    }
-  }, [activeTab, availableTabs]);
 
   const linkedBadgeCount =
     linkedFeatures.length ??
@@ -109,54 +134,128 @@ export function FeatureTabs({
     feature.linkedFeaturesCount ??
     0;
   const qaBadgeCount = testCasesCount ?? feature.testCasesCount ?? 0;
+
+  const navigationGroups = useMemo<FeatureNavigationGroup[]>(() => {
+    const groups: FeatureNavigationGroup[] = [
+      {
+        key: "documentation",
+        label: tProjectTabs("documentation"),
+        icon: BookOpen,
+        items: [
+          ...(canViewDocumentation
+            ? [{ key: "documentation" as const, label: tTabs("info"), icon: FileText }]
+            : []),
+          ...(canViewQa
+            ? [{ key: "manual" as const, label: tTabs("manual"), icon: BookOpen }]
+            : []),
+          ...(canReadTickets
+            ? [{ key: "tickets" as const, label: tTabs("tickets"), icon: MessageSquare }]
+            : []),
+        ],
+      },
+      {
+        key: "build",
+        label: tProjectTabs("build"),
+        icon: Rocket,
+        items: [
+          { key: "versions", label: tTabs("versions"), icon: History },
+          ...(canViewQa
+            ? [
+                {
+                  key: "qa" as const,
+                  label: tTabs("qa"),
+                  icon: Activity,
+                  badge: qaBadgeCount,
+                },
+              ]
+            : []),
+          {
+            key: "linked",
+            label: tTabs("linked"),
+            icon: GitBranch,
+            badge: linkedBadgeCount,
+          },
+        ],
+      },
+    ];
+
+    return groups.filter((group) => group.items.length > 0);
+  }, [
+    canReadTickets,
+    canViewDocumentation,
+    canViewQa,
+    linkedBadgeCount,
+    qaBadgeCount,
+    tProjectTabs,
+    tTabs,
+  ]);
+
+  useEffect(() => {
+    if (!availableTabs.includes(activeTab)) {
+      const fallbackTab = availableTabs[0] ?? "issues";
+      setActiveTab(fallbackTab);
+      const fallbackGroup = navigationGroups.find((group) =>
+        group.items.some((item) => item.key === fallbackTab),
+      );
+      if (fallbackGroup) {
+        setActivePrimaryTab(fallbackGroup.key);
+      }
+    }
+  }, [activeTab, availableTabs, navigationGroups]);
+
+  useEffect(() => {
+    const activeGroup = navigationGroups.find(
+      (group) => group.key === activePrimaryTab,
+    );
+    if (activeGroup) return;
+    const fallbackGroup = navigationGroups[0];
+    setActivePrimaryTab(fallbackGroup?.key ?? "build");
+    if (fallbackGroup?.items[0]) {
+      setActiveTab(fallbackGroup.items[0].key);
+    }
+  }, [activePrimaryTab, navigationGroups]);
+
+  const activeGroup = useMemo(
+    () =>
+      navigationGroups.find((group) => group.key === activePrimaryTab) ??
+      navigationGroups[0],
+    [activePrimaryTab, navigationGroups],
+  );
+
+  function handlePrimaryTabChange(group: FeatureNavigationGroup) {
+    setActivePrimaryTab(group.key);
+    setActiveTab(group.items[0]?.key ?? "issues");
+  }
+
   return (
-    <section className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {canViewDocumentation && (
-          <TabButton
-            label={tTabs("info")}
-            isActive={activeTab === "documentation"}
-            onClick={() => setActiveTab("documentation")}
-          />
-        )}
-        <TabButton
-          label={tTabs("issues")}
-          isActive={activeTab === "issues"}
-          onClick={() => setActiveTab("issues")}
-        />
-        <TabButton
-          label={tTabs("versions")}
-          isActive={activeTab === "versions"}
-          onClick={() => setActiveTab("versions")}
-        />
-        {canReadTickets && (
-          <TabButton
-            label={tTabs("tickets")}
-            isActive={activeTab === "tickets"}
-            onClick={() => setActiveTab("tickets")}
-          />
-        )}
-        {canViewQa && (
-          <TabButton
-            label={tTabs("qa")}
-            isActive={activeTab === "qa"}
-            onClick={() => setActiveTab("qa")}
-            badge={qaBadgeCount}
-          />
-        )}
-        <TabButton
-          label={tTabs("linked")}
-          isActive={activeTab === "linked"}
-          onClick={() => setActiveTab("linked")}
-          badge={linkedBadgeCount}
-        />
-        {canViewQa && (
-          <TabButton
-            label={tTabs("manual")}
-            isActive={activeTab === "manual"}
-            onClick={() => setActiveTab("manual")}
-          />
-        )}
+    <section className="space-y-6">
+      <div className="rounded-xl border border-blue-100 bg-white shadow-sm">
+        <div className="flex flex-wrap gap-1 border-b border-slate-200 px-3 pt-3">
+          {navigationGroups.map((group) => (
+            <PrimaryTabButton
+              key={group.key}
+              label={group.label}
+              icon={group.icon}
+              isActive={activePrimaryTab === group.key}
+              onClick={() => handlePrimaryTabChange(group)}
+            />
+          ))}
+        </div>
+
+        {activeGroup ? (
+          <div className="flex flex-wrap gap-2 px-3 py-3">
+            {activeGroup.items.map((item) => (
+              <SecondaryTabButton
+                key={item.key}
+                label={item.label}
+                icon={item.icon}
+                isActive={activeTab === item.key}
+                onClick={() => setActiveTab(item.key)}
+                badge={item.badge}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
 
       {activeTab === "documentation" && canViewDocumentation && (
@@ -305,13 +404,43 @@ export function FeatureTabs({
   );
 }
 
-function TabButton({
+function PrimaryTabButton({
   label,
+  icon: Icon,
+  isActive,
+  onClick,
+}: {
+  label: string;
+  icon: LucideIcon;
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={cn(
+        "relative -mb-px inline-flex items-center gap-2 rounded-t-lg border border-transparent px-4 py-3 text-sm font-medium transition",
+        isActive
+          ? "border-blue-100 bg-blue-50 text-blue-700 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-600"
+          : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
+      )}
+      onClick={onClick}
+    >
+      <Icon className="h-4 w-4" aria-hidden />
+      {label}
+    </button>
+  );
+}
+
+function SecondaryTabButton({
+  label,
+  icon: Icon,
   isActive,
   onClick,
   badge,
 }: {
   label: string;
+  icon: LucideIcon;
   isActive: boolean;
   onClick: () => void;
   badge?: number;
@@ -320,28 +449,27 @@ function TabButton({
     <button
       type="button"
       className={cn(
-        "rounded-full border px-3 py-1 text-sm transition",
+        "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition",
         isActive
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-muted text-muted-foreground hover:bg-background",
+          ? "bg-blue-100 text-blue-700 shadow-sm"
+          : "text-slate-500 hover:bg-slate-100 hover:text-slate-800",
       )}
       onClick={onClick}
     >
-      <span className="flex items-center gap-1">
-        {label}
-        {badge && badge > 0 ? (
-          <span
-            className={cn(
-              "inline-flex min-w-[1.5rem] items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-semibold",
-              isActive
-                ? "bg-primary/80 text-primary-foreground"
-                : "bg-background/80 text-primary",
-            )}
-          >
-            {badge}
-          </span>
-        ) : null}
-      </span>
+      <Icon className="h-4 w-4" aria-hidden />
+      {label}
+      {badge && badge > 0 ? (
+        <span
+          className={cn(
+            "inline-flex min-w-[1.5rem] items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-semibold",
+            isActive
+              ? "bg-blue-200 text-blue-800"
+              : "bg-slate-100 text-slate-600",
+          )}
+        >
+          {badge}
+        </span>
+      ) : null}
     </button>
   );
 }

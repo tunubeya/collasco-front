@@ -3,7 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Plus } from "lucide-react";
+import {
+  BookOpen,
+  FileText,
+  FolderTree,
+  Home,
+  Plus,
+  type LucideIcon,
+} from "lucide-react";
 
 import type { Module } from "@/lib/model-definitions/module";
 import type { Project } from "@/lib/model-definitions/project";
@@ -14,6 +21,7 @@ import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 import { hasPermission } from "@/lib/permissions";
+import { cn } from "@/lib/utils";
 
 type ModuleTabsProps = {
   project: Project;
@@ -24,6 +32,20 @@ type ModuleTabsProps = {
 };
 
 type ModuleTab = "structure" | "documentation" | "manual";
+type ModulePrimaryTab = "overview" | "documentation";
+
+type ModuleNavigationItem = {
+  key: ModuleTab;
+  label: string;
+  icon: LucideIcon;
+};
+
+type ModuleNavigationGroup = {
+  key: ModulePrimaryTab;
+  label: string;
+  icon: LucideIcon;
+  items: ModuleNavigationItem[];
+};
 
 export function ModuleTabs({
   project,
@@ -32,6 +54,8 @@ export function ModuleTabs({
   permissions,
   token,
 }: ModuleTabsProps) {
+  const [activePrimaryTab, setActivePrimaryTab] =
+    useState<ModulePrimaryTab>("overview");
   const [activeTab, setActiveTab] = useState<ModuleTab>("structure");
   const tModule = useTranslations("app.projects.module");
   const tProjectDetail = useTranslations("app.projects.detail");
@@ -65,31 +89,96 @@ export function ModuleTabs({
   const structureLabel = tProjectTabs("structure");
   const documentationLabel = tFeatureTabs("info");
   const manualLabel = tProjectTabs("manual");
+  const navigationGroups = useMemo<ModuleNavigationGroup[]>(() => {
+    const groups: ModuleNavigationGroup[] = [
+      {
+        key: "overview",
+        label: tProjectTabs("overview"),
+        icon: Home,
+        items: canViewStructure
+          ? [{ key: "structure", label: structureLabel, icon: FolderTree }]
+          : [],
+      },
+      {
+        key: "documentation",
+        label: tProjectTabs("documentation"),
+        icon: BookOpen,
+        items: [
+          ...(canViewDocumentation
+            ? [{ key: "documentation" as const, label: documentationLabel, icon: FileText }]
+            : []),
+          ...(canViewManual
+            ? [{ key: "manual" as const, label: manualLabel, icon: BookOpen }]
+            : []),
+        ],
+      },
+    ];
+
+    return groups.filter((group) => group.items.length > 0);
+  }, [
+    canViewDocumentation,
+    canViewManual,
+    canViewStructure,
+    documentationLabel,
+    manualLabel,
+    structureLabel,
+    tProjectTabs,
+  ]);
+
+  useEffect(() => {
+    const activeGroup = navigationGroups.find(
+      (group) => group.key === activePrimaryTab,
+    );
+    if (activeGroup) return;
+    const fallbackGroup = navigationGroups[0];
+    setActivePrimaryTab(fallbackGroup?.key ?? "overview");
+    if (fallbackGroup?.items[0]) {
+      setActiveTab(fallbackGroup.items[0].key);
+    }
+  }, [activePrimaryTab, navigationGroups]);
+
+  const activeGroup = useMemo(
+    () =>
+      navigationGroups.find((group) => group.key === activePrimaryTab) ??
+      navigationGroups[0],
+    [activePrimaryTab, navigationGroups],
+  );
+
+  function handlePrimaryTabChange(group: ModuleNavigationGroup) {
+    setActivePrimaryTab(group.key);
+    setActiveTab(group.items[0]?.key ?? "structure");
+  }
+
+  const showSecondaryNavigation = activeGroup?.key !== "overview";
 
   return (
-    <section className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {canViewStructure && (
-          <TabButton
-            label={structureLabel}
-            isActive={activeTab === "structure"}
-            onClick={() => setActiveTab("structure")}
-          />
-        )}
-        {canViewDocumentation && (
-          <TabButton
-            label={documentationLabel}
-            isActive={activeTab === "documentation"}
-            onClick={() => setActiveTab("documentation")}
-          />
-        )}
-        {canViewManual && (
-          <TabButton
-            label={manualLabel}
-            isActive={activeTab === "manual"}
-            onClick={() => setActiveTab("manual")}
-          />
-        )}
+    <section className="space-y-6">
+      <div className="rounded-xl border border-blue-100 bg-white shadow-sm">
+        <div className="flex flex-wrap gap-1 border-b border-slate-200 px-3 pt-3">
+          {navigationGroups.map((group) => (
+            <PrimaryTabButton
+              key={group.key}
+              label={group.label}
+              icon={group.icon}
+              isActive={activePrimaryTab === group.key}
+              onClick={() => handlePrimaryTabChange(group)}
+            />
+          ))}
+        </div>
+
+        {activeGroup && showSecondaryNavigation ? (
+          <div className="flex flex-wrap gap-2 px-3 py-3">
+            {activeGroup.items.map((item) => (
+              <SecondaryTabButton
+                key={item.key}
+                label={item.label}
+                icon={item.icon}
+                isActive={activeTab === item.key}
+                onClick={() => setActiveTab(item.key)}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
 
       {activeTab === "structure" && canViewStructure && (
@@ -172,25 +261,57 @@ export function ModuleTabs({
   );
 }
 
-function TabButton({
+function PrimaryTabButton({
   label,
+  icon: Icon,
   isActive,
   onClick,
 }: {
   label: string;
+  icon: LucideIcon;
   isActive: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
-      className={`rounded-full border px-3 py-1 text-sm transition ${
+      className={cn(
+        "relative -mb-px inline-flex items-center gap-2 rounded-t-lg border border-transparent px-4 py-3 text-sm font-medium transition",
         isActive
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-muted text-muted-foreground hover:bg-background"
-      }`}
+          ? "border-blue-100 bg-blue-50 text-blue-700 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-600"
+          : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
+      )}
       onClick={onClick}
     >
+      <Icon className="h-4 w-4" aria-hidden />
+      {label}
+    </button>
+  );
+}
+
+function SecondaryTabButton({
+  label,
+  icon: Icon,
+  isActive,
+  onClick,
+}: {
+  label: string;
+  icon: LucideIcon;
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition",
+        isActive
+          ? "bg-blue-100 text-blue-700 shadow-sm"
+          : "text-slate-500 hover:bg-slate-100 hover:text-slate-800",
+      )}
+      onClick={onClick}
+    >
+      <Icon className="h-4 w-4" aria-hidden />
       {label}
     </button>
   );

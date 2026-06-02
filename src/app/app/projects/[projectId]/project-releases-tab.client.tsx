@@ -1,16 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useFormatter, useTranslations } from "next-intl";
 import {
   AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle2,
-  FileText,
-  ListChecks,
   RefreshCw,
   Rocket,
   Save,
+  Pencil,
+  X,
   Wand2,
 } from "lucide-react";
 
@@ -38,6 +40,8 @@ import {
 } from "@/lib/api/releases";
 import { cn } from "@/lib/utils";
 import { actionButtonClass } from "@/ui/styles/action-button";
+import { markdownishToRichTextHtml } from "@/lib/rich-text";
+import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
 type ProjectReleasesTabProps = {
@@ -46,7 +50,7 @@ type ProjectReleasesTabProps = {
   canManageQa: boolean;
 };
 
-type ViewMode = "items" | "preview" | "notes";
+type ViewMode = "items" | "notes";
 
 export function ProjectReleasesTab({
   token,
@@ -67,6 +71,8 @@ export function ProjectReleasesTab({
   const [notesDraft, setNotesDraft] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isBusy, setIsBusy] = useState(false);
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  const [isReleasePanelOpen, setIsReleasePanelOpen] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const formatDate = useCallback(
@@ -132,17 +138,36 @@ export function ProjectReleasesTab({
     setViewMode("items");
   }, [selectedRelease?.id]);
 
+  useEffect(() => {
+    if (!selectedRelease) return;
+    let cancelled = false;
+    setIsPreviewLoading(true);
+    getProjectReleasePreview(token, projectId, selectedRelease.id)
+      .then((nextPreview) => {
+        if (!cancelled) setPreview(nextPreview);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(resolveErrorMessage(err, t("messages.previewError")));
+      })
+      .finally(() => {
+        if (!cancelled) setIsPreviewLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId, selectedRelease, t, token]);
+
   const selectedListItem = useMemo(
     () => releases.find((release) => release.id === selectedRelease?.id) ?? null,
     [releases, selectedRelease?.id],
   );
 
   const canEditRelease = canManageQa && selectedRelease?.status !== "RELEASED";
-  const canAttemptRelease =
-    canManageQa && selectedRelease?.status === "PREPARED";
   const hasBlockingWarnings =
     documentationStatus?.hasMissingPublishedVersions ||
     documentationStatus?.hasPendingChanges;
+  const shouldShowDocumentationStatus =
+    selectedRelease?.status !== "RELEASED" && Boolean(hasBlockingWarnings);
 
   async function runAction(action: () => Promise<void>, fallbackMessage: string) {
     setError(null);
@@ -201,24 +226,13 @@ export function ProjectReleasesTab({
       await loadList();
     }, t("messages.releaseError"));
 
-  const handleLoadPreview = () =>
-    selectedRelease &&
-    runAction(async () => {
-      const nextPreview = await getProjectReleasePreview(
-        token,
-        projectId,
-        selectedRelease.id,
-      );
-      setPreview(nextPreview);
-      setViewMode("preview");
-    }, t("messages.previewError"));
-
   const handleLoadNotes = () =>
     selectedRelease &&
     runAction(async () => {
       const nextNotes = await getProjectReleaseNotes(token, projectId, selectedRelease.id);
-      setNotes(nextNotes);
-      setNotesDraft(nextNotes.content ?? "");
+      const content = markdownishToRichTextHtml(nextNotes.content);
+      setNotes({ ...nextNotes, content });
+      setNotesDraft(content);
       setViewMode("notes");
     }, t("messages.notesError"));
 
@@ -231,9 +245,9 @@ export function ProjectReleasesTab({
         selectedRelease.id,
         { content: notesDraft },
       );
-      setNotes(nextNotes);
+      setNotes({ ...nextNotes, content: notesDraft });
       setSelectedRelease((current) =>
-        current ? { ...current, notesContent: nextNotes.content } : current,
+        current ? { ...current, notesContent: notesDraft } : current,
       );
       await loadList();
     }, t("messages.notesSaveError"));
@@ -244,19 +258,20 @@ export function ProjectReleasesTab({
       if (notesDraft.trim() && !window.confirm(t("notes.generateConfirm"))) {
         return;
       }
-      const nextNotes = await generateProjectReleaseNotes(
+      const generatedNotes = await generateProjectReleaseNotes(
         token,
         projectId,
         selectedRelease.id,
       );
-      setNotes(nextNotes);
-      setNotesDraft(nextNotes.content ?? "");
+      const content = markdownishToRichTextHtml(generatedNotes.content);
+      setNotes({ ...generatedNotes, content });
+      setNotesDraft(content);
       setSelectedRelease((current) =>
         current
           ? {
               ...current,
-              notesContent: nextNotes.content,
-              notesGeneratedAt: nextNotes.generatedAt,
+              notesContent: content,
+              notesGeneratedAt: generatedNotes.generatedAt,
             }
           : current,
       );
@@ -264,104 +279,144 @@ export function ProjectReleasesTab({
     }, t("messages.notesGenerateError"));
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[minmax(260px,340px)_1fr]">
-      <section className="space-y-4 rounded-lg border border-border bg-background p-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h2 className="text-lg font-semibold">{t("list.title")}</h2>
-            <p className="text-sm text-muted-foreground">{t("list.subtitle")}</p>
-          </div>
-          <button
-            type="button"
-            className={actionButtonClass({ variant: "neutral", size: "xs" })}
-            onClick={() => void refreshAll(selectedRelease?.id)}
-            disabled={isBusy || isLoading}
-          >
-            <RefreshCw className="mr-2 h-3.5 w-3.5" aria-hidden />
-            {t("actions.refresh")}
-          </button>
-        </div>
+    <div
+      className={cn(
+        "grid gap-4 transition-[grid-template-columns] duration-200",
+        isReleasePanelOpen
+          ? "xl:grid-cols-[minmax(260px,340px)_1fr]"
+          : "xl:grid-cols-[64px_1fr]",
+      )}
+    >
+      <section
+        className={cn(
+          "rounded-lg border border-border bg-background",
+          isReleasePanelOpen ? "space-y-4 p-4" : "p-2",
+        )}
+      >
+        {isReleasePanelOpen ? (
+          <>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold">{t("list.title")}</h2>
+                <p className="text-sm text-muted-foreground">{t("list.subtitle")}</p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  type="button"
+                  className={actionButtonClass({ variant: "neutral", size: "xs" })}
+                  onClick={() => void refreshAll(selectedRelease?.id)}
+                  disabled={isBusy || isLoading}
+                >
+                  <RefreshCw className="mr-2 h-3.5 w-3.5" aria-hidden />
+                  {t("actions.refresh")}
+                </button>
+                <button
+                  type="button"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                  onClick={() => setIsReleasePanelOpen(false)}
+                  aria-label={t("actions.collapse")}
+                  title={t("actions.collapse")}
+                  aria-expanded
+                >
+                  <ChevronLeft className="h-4 w-4" aria-hidden />
+                </button>
+              </div>
+            </div>
 
-        {canManageQa && (
-          <div className="grid gap-2 rounded-md border border-border bg-muted/30 p-3">
-            <label className="text-xs font-medium text-muted-foreground" htmlFor="release-name">
-              {t("create.nameLabel")}
-            </label>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <input
-                id="release-name"
-                value={newReleaseName}
-                onChange={(event) => setNewReleaseName(event.target.value)}
-                placeholder={t("create.namePlaceholder")}
-                className="min-h-9 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
-                disabled={isBusy}
-              />
-              <button
-                type="button"
-                className={actionButtonClass({ size: "sm" })}
-                onClick={handleCreate}
-                disabled={isBusy}
-              >
-                <Rocket className="mr-2 h-4 w-4" aria-hidden />
-                {t("actions.create")}
-              </button>
+            {canManageQa && (
+              <div className="grid gap-2 rounded-md border border-border bg-muted/30 p-3">
+                <label className="text-xs font-medium text-muted-foreground" htmlFor="release-name">
+                  {t("create.nameLabel")}
+                </label>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <input
+                    id="release-name"
+                    value={newReleaseName}
+                    onChange={(event) => setNewReleaseName(event.target.value)}
+                    placeholder={t("create.namePlaceholder")}
+                    className="min-h-9 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+                    disabled={isBusy}
+                  />
+                  <button
+                    type="button"
+                    className={actionButtonClass({ size: "sm" })}
+                    onClick={handleCreate}
+                    disabled={isBusy}
+                  >
+                    <Rocket className="mr-2 h-4 w-4" aria-hidden />
+                    {t("actions.create")}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+                {error}
+              </div>
+            )}
+
+            <div className="space-y-2">
+              {isLoading ? (
+                <p className="text-sm text-muted-foreground">{t("messages.loading")}</p>
+              ) : releases.length === 0 ? (
+                <p className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
+                  {t("list.empty")}
+                </p>
+              ) : (
+                releases.map((release) => (
+                  <button
+                    key={release.id}
+                    type="button"
+                    onClick={() => handleSelectRelease(release.id)}
+                    className={cn(
+                      "w-full rounded-md border p-3 text-left transition hover:border-primary/60 hover:bg-muted/30",
+                      selectedRelease?.id === release.id
+                        ? "border-primary bg-primary/5"
+                        : "border-border bg-background",
+                    )}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-medium">
+                          {t("common.version", { version: release.versionNumber })}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {release.name || t("common.unnamed")}
+                        </p>
+                      </div>
+                      <StatusBadge status={release.status} />
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                      <span>{t("list.itemCount", { count: release.documentationItemCount })}</span>
+                      <span>{t("list.updated", { date: formatDate(release.updatedAt) })}</span>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="flex min-h-[220px] flex-col items-center gap-3">
+            <button
+              type="button"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              onClick={() => setIsReleasePanelOpen(true)}
+              aria-label={t("actions.expand")}
+              title={t("actions.expand")}
+            >
+              <ChevronRight className="h-4 w-4" aria-hidden />
+            </button>
+            <div className="flex flex-1 items-center justify-center">
+              <div className="-rotate-90 whitespace-nowrap text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("list.collapsedLabel", {
+                  count: releases.length,
+                  version: selectedRelease?.versionNumber ?? "-",
+                })}
+              </div>
             </div>
           </div>
         )}
-
-        {error && (
-          <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-            {error}
-          </div>
-        )}
-
-        {documentationStatus && (
-          <DocumentationStatusPanel
-            status={documentationStatus}
-            projectId={projectId}
-            compact
-          />
-        )}
-
-        <div className="space-y-2">
-          {isLoading ? (
-            <p className="text-sm text-muted-foreground">{t("messages.loading")}</p>
-          ) : releases.length === 0 ? (
-            <p className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
-              {t("list.empty")}
-            </p>
-          ) : (
-            releases.map((release) => (
-              <button
-                key={release.id}
-                type="button"
-                onClick={() => handleSelectRelease(release.id)}
-                className={cn(
-                  "w-full rounded-md border p-3 text-left transition hover:border-primary/60 hover:bg-muted/30",
-                  selectedRelease?.id === release.id
-                    ? "border-primary bg-primary/5"
-                    : "border-border bg-background",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-medium">
-                      {t("common.version", { version: release.versionNumber })}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {release.name || t("common.unnamed")}
-                    </p>
-                  </div>
-                  <StatusBadge status={release.status} />
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                  <span>{t("list.itemCount", { count: release.documentationItemCount })}</span>
-                  <span>{t("list.updated", { date: formatDate(release.updatedAt) })}</span>
-                </div>
-              </button>
-            ))
-          )}
-        </div>
       </section>
 
       <section className="min-w-0 space-y-4 rounded-lg border border-border bg-background p-4">
@@ -395,28 +450,10 @@ export function ProjectReleasesTab({
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className={actionButtonClass({ variant: "neutral", size: "sm" })}
-                  onClick={handleLoadPreview}
-                  disabled={isBusy}
-                >
-                  <ListChecks className="mr-2 h-4 w-4" aria-hidden />
-                  {t("actions.preview")}
-                </button>
-                <button
-                  type="button"
-                  className={actionButtonClass({ variant: "neutral", size: "sm" })}
-                  onClick={handleLoadNotes}
-                  disabled={isBusy}
-                >
-                  <FileText className="mr-2 h-4 w-4" aria-hidden />
-                  {t("actions.notes")}
-                </button>
-                {canManageQa && selectedRelease.status !== "RELEASED" && (
+                {canManageQa && selectedRelease.status === "DRAFT" && (
                   <button
                     type="button"
-                    className={actionButtonClass({ variant: "neutral", size: "sm" })}
+                    className={actionButtonClass({ size: "sm" })}
                     onClick={handlePrepare}
                     disabled={isBusy}
                   >
@@ -424,16 +461,13 @@ export function ProjectReleasesTab({
                     {t("actions.prepare")}
                   </button>
                 )}
-                {canAttemptRelease && (
-                  <button
-                    type="button"
-                    className={actionButtonClass({
-                      variant: hasBlockingWarnings ? "neutral" : "primary",
-                      size: "sm",
-                    })}
-                    onClick={handleRelease}
-                    disabled={isBusy}
-                  >
+                {canManageQa && selectedRelease.status === "PREPARED" && (
+                    <button
+                      type="button"
+                      className={actionButtonClass({ size: "sm" })}
+                      onClick={handleRelease}
+                      disabled={isBusy}
+                    >
                     <Rocket className="mr-2 h-4 w-4" aria-hidden />
                     {t("actions.release")}
                   </button>
@@ -467,7 +501,7 @@ export function ProjectReleasesTab({
               </div>
             )}
 
-            {documentationStatus && (
+            {documentationStatus && shouldShowDocumentationStatus && (
               <DocumentationStatusPanel status={documentationStatus} projectId={projectId} />
             )}
 
@@ -478,11 +512,6 @@ export function ProjectReleasesTab({
                 onClick={() => setViewMode("items")}
               />
               <ModeButton
-                label={t("detail.tabs.preview")}
-                isActive={viewMode === "preview"}
-                onClick={handleLoadPreview}
-              />
-              <ModeButton
                 label={t("detail.tabs.notes")}
                 isActive={viewMode === "notes"}
                 onClick={handleLoadNotes}
@@ -490,17 +519,11 @@ export function ProjectReleasesTab({
             </div>
 
             {viewMode === "items" && (
-              <DocumentationItems
+              <SnapshotItems
                 items={selectedRelease.documentationItems}
-                projectId={projectId}
-              />
-            )}
-
-            {viewMode === "preview" && (
-              <ReleasePreviewPanel
                 preview={preview}
                 projectId={projectId}
-                isLoading={isBusy && !preview}
+                isLoading={isPreviewLoading}
               />
             )}
 
@@ -509,7 +532,7 @@ export function ProjectReleasesTab({
                 notes={notes}
                 notesDraft={notesDraft}
                 setNotesDraft={setNotesDraft}
-                canManageQa={canManageQa}
+                canEditNotes={canManageQa && selectedRelease.status === "DRAFT"}
                 isBusy={isBusy}
                 onSave={handleSaveNotes}
                 onGenerate={handleGenerateNotes}
@@ -647,12 +670,16 @@ function ReadinessList({
   );
 }
 
-function DocumentationItems({
+function SnapshotItems({
   items,
+  preview,
   projectId,
+  isLoading,
 }: {
   items: ReleaseDetail["documentationItems"];
+  preview: ReleasePreview | null;
   projectId: string;
+  isLoading: boolean;
 }) {
   const t = useTranslations("app.projects.releases");
 
@@ -664,133 +691,213 @@ function DocumentationItems({
     );
   }
 
-  return (
-    <div className="overflow-x-auto rounded-md border border-border">
-      <table className="min-w-full divide-y divide-border text-sm">
-        <thead className="bg-muted/40 text-left text-xs uppercase text-muted-foreground">
-          <tr>
-            <th className="px-3 py-2">{t("items.entity")}</th>
-            <th className="px-3 py-2">{t("items.type")}</th>
-            <th className="px-3 py-2">{t("items.version")}</th>
-            <th className="px-3 py-2">{t("items.publishedAt")}</th>
-            <th className="px-3 py-2">{t("items.changelog")}</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border">
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td className="px-3 py-2">
-                <Link
-                  className="font-medium text-primary underline-offset-2 hover:underline"
-                  href={entityHref(projectId, item.entityType, item.entityId)}
-                >
-                  {item.entityName || item.entityId}
-                </Link>
-              </td>
-              <td className="px-3 py-2">{t(`entityType.${item.entityType}`)}</td>
-              <td className="px-3 py-2">
-                {t("common.version", {
-                  version: item.documentationVersion.versionNumber,
-                })}
-              </td>
-              <td className="px-3 py-2 text-muted-foreground">
-                {item.documentationVersion.publishedAt
-                  ? new Date(item.documentationVersion.publishedAt).toLocaleDateString()
-                  : t("common.notAvailable")}
-              </td>
-              <td className="min-w-[220px] px-3 py-2 text-muted-foreground">
-                {item.documentationVersion.changelog || t("common.notAvailable")}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+  const changesByEntity = new Map(
+    (preview?.changes ?? []).map((change) => [
+      entityKey(change.entityType, change.entityId),
+      change,
+    ]),
   );
-}
-
-function ReleasePreviewPanel({
-  preview,
-  projectId,
-  isLoading,
-}: {
-  preview: ReleasePreview | null;
-  projectId: string;
-  isLoading: boolean;
-}) {
-  const t = useTranslations("app.projects.releases");
-
-  if (isLoading) {
-    return <p className="text-sm text-muted-foreground">{t("messages.loading")}</p>;
-  }
-
-  if (!preview) {
-    return (
-      <p className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
-        {t("preview.notLoaded")}
-      </p>
-    );
-  }
+  const changedItems = items.filter((item) =>
+    changesByEntity.has(entityKey(item.entityType, item.entityId)),
+  );
+  const unchangedItems = items.filter(
+    (item) => !changesByEntity.has(entityKey(item.entityType, item.entityId)),
+  );
+  const removedChanges = (preview?.changes ?? []).filter(
+    (change) =>
+      !items.some(
+        (item) =>
+          item.entityType === change.entityType && item.entityId === change.entityId,
+      ),
+  );
 
   return (
     <div className="space-y-4">
       <div className="rounded-md border border-border bg-muted/30 p-3 text-sm">
         <p className="font-medium">
-          {preview.previousRelease
-            ? t("preview.comparing", {
-                previous: preview.previousRelease.versionNumber,
-                current: preview.release.versionNumber,
-              })
-            : t("preview.firstRelease")}
+          {isLoading
+            ? t("messages.loading")
+            : preview?.previousRelease
+              ? t("preview.comparing", {
+                  previous: preview.previousRelease.versionNumber,
+                  current: preview.release.versionNumber,
+                })
+              : t("preview.firstRelease")}
         </p>
       </div>
 
-      {preview.changes.length === 0 ? (
-        <p className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
-          {t("preview.empty")}
-        </p>
-      ) : (
-        preview.changes.map((change) => (
-          <article key={`${change.entityType}-${change.entityId}`} className="rounded-md border border-border">
-            <header className="flex flex-col gap-2 border-b border-border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <Link
-                  href={entityHref(projectId, change.entityType, change.entityId)}
-                  className="font-semibold text-primary underline-offset-2 hover:underline"
-                >
-                  {change.entityName || change.entityId}
-                </Link>
-                <p className="text-xs text-muted-foreground">
-                  {t(`entityType.${change.entityType}`)}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs">
-                <ChangeBadge changeType={change.changeType} />
-                <span className="rounded-full border border-border px-2 py-1 text-muted-foreground">
-                  {t("preview.versionChange", {
-                    before: change.previousVersionNumber ?? t("common.notAvailable"),
-                    after: change.currentVersionNumber ?? t("common.notAvailable"),
-                  })}
-                </span>
-              </div>
-            </header>
-            <div className="divide-y divide-border">
-              {change.changedLabels.map((label) => (
-                <div key={label.labelId} className="grid gap-3 p-3 lg:grid-cols-[180px_1fr_1fr]">
-                  <div>
-                    <p className="font-medium">{label.labelName}</p>
-                    <ChangeBadge changeType={label.changeType} />
-                  </div>
-                  <DiffContent title={t("preview.before")} value={label.before} />
-                  <DiffContent title={t("preview.after")} value={label.after} />
-                </div>
-              ))}
-            </div>
-          </article>
-        ))
-      )}
+      <SnapshotGroup
+        title={t("items.changedGroup", {
+          count: changedItems.length + removedChanges.length,
+        })}
+        empty={isLoading ? t("messages.loading") : t("items.noChanged")}
+      >
+        {changedItems.map((item) => {
+          const change = changesByEntity.get(entityKey(item.entityType, item.entityId));
+          if (!change) return null;
+          return (
+            <ChangedSnapshotItem
+              key={item.id}
+              item={item}
+              change={change}
+              projectId={projectId}
+            />
+          );
+        })}
+        {removedChanges.map((change) => (
+          <ChangedSnapshotItem
+            key={entityKey(change.entityType, change.entityId)}
+            change={change}
+            projectId={projectId}
+          />
+        ))}
+      </SnapshotGroup>
+
+      <SnapshotGroup
+        title={t("items.unchangedGroup", { count: unchangedItems.length })}
+        empty={t("items.noUnchanged")}
+      >
+        {unchangedItems.map((item) => (
+          <UnchangedSnapshotItem
+            key={item.id}
+            item={item}
+            projectId={projectId}
+          />
+        ))}
+      </SnapshotGroup>
     </div>
   );
+}
+
+function SnapshotGroup({
+  title,
+  empty,
+  children,
+}: {
+  title: string;
+  empty: string;
+  children: ReactNode;
+}) {
+  const hasChildren = Array.isArray(children)
+    ? children.some(Boolean)
+    : Boolean(children);
+
+  return (
+    <section className="space-y-2">
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      {hasChildren ? (
+        <div className="space-y-2">{children}</div>
+      ) : (
+        <p className="rounded-md border border-dashed border-border p-4 text-sm text-muted-foreground">
+          {empty}
+        </p>
+      )}
+    </section>
+  );
+}
+
+function ChangedSnapshotItem({
+  item,
+  change,
+  projectId,
+}: {
+  item?: ReleaseDetail["documentationItems"][number];
+  change: ReleasePreview["changes"][number];
+  projectId: string;
+}) {
+  const t = useTranslations("app.projects.releases");
+  const entityType = item?.entityType ?? change.entityType;
+  const entityId = item?.entityId ?? change.entityId;
+  const entityName = item?.entityName ?? change.entityName ?? entityId;
+
+  return (
+    <details className="group rounded-md border border-border bg-background">
+      <summary className="flex cursor-pointer list-none flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <Link
+            className="font-semibold text-primary underline-offset-2 hover:underline"
+            href={entityHref(projectId, entityType, entityId)}
+            onClick={(event) => event.stopPropagation()}
+          >
+            {entityName}
+          </Link>
+          <p className="text-xs text-muted-foreground">
+            {t(`entityType.${entityType}`)}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <ChangeBadge changeType={change.changeType} />
+          <span className="rounded-full border border-border px-2 py-1 text-muted-foreground">
+            {t("preview.versionChange", {
+              before: change.previousVersionNumber ?? t("common.notAvailable"),
+              after: change.currentVersionNumber ?? t("common.notAvailable"),
+            })}
+          </span>
+          {item && (
+            <span className="rounded-full border border-border px-2 py-1 text-muted-foreground">
+              {t("items.snapshotVersion", {
+                version: item.documentationVersion.versionNumber,
+              })}
+            </span>
+          )}
+        </div>
+      </summary>
+      <div className="divide-y divide-border border-t border-border">
+        {change.changedLabels.map((label) => (
+          <div key={label.labelId} className="grid gap-3 p-3 lg:grid-cols-[180px_1fr_1fr]">
+            <div>
+              <p className="font-medium">{label.labelName}</p>
+              <ChangeBadge changeType={label.changeType} />
+            </div>
+            <DiffContent title={t("preview.before")} value={label.before} />
+            <DiffContent title={t("preview.after")} value={label.after} />
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+function UnchangedSnapshotItem({
+  item,
+  projectId,
+}: {
+  item: ReleaseDetail["documentationItems"][number];
+  projectId: string;
+}) {
+  const t = useTranslations("app.projects.releases");
+
+  return (
+    <div className="rounded-md border border-border bg-background p-3">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <Link
+            className="font-medium text-primary underline-offset-2 hover:underline"
+            href={entityHref(projectId, item.entityType, item.entityId)}
+          >
+            {item.entityName || item.entityId}
+          </Link>
+          <p className="text-xs text-muted-foreground">
+            {t(`entityType.${item.entityType}`)}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          <span className="rounded-full border border-border px-2 py-1">
+            {t("items.snapshotVersion", {
+              version: item.documentationVersion.versionNumber,
+            })}
+          </span>
+          <span className="rounded-full border border-border px-2 py-1">
+            {item.documentationVersion.changelog || t("common.notAvailable")}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function entityKey(entityType: ReleaseEntityType, entityId: string) {
+  return `${entityType}:${entityId}`;
 }
 
 function DiffContent({
@@ -823,7 +930,7 @@ function ReleaseNotesPanel({
   notes,
   notesDraft,
   setNotesDraft,
-  canManageQa,
+  canEditNotes,
   isBusy,
   onSave,
   onGenerate,
@@ -832,13 +939,24 @@ function ReleaseNotesPanel({
   notes: ReleaseNotes | null;
   notesDraft: string;
   setNotesDraft: (value: string) => void;
-  canManageQa: boolean;
+  canEditNotes: boolean;
   isBusy: boolean;
   onSave: () => void;
   onGenerate: () => void;
   formatDate: (value: string | null | undefined) => string;
 }) {
   const t = useTranslations("app.projects.releases");
+  const tRichText = useTranslations("app.projects.form.richText");
+  const [isEditing, setIsEditing] = useState(false);
+  const toolbarLabels = {
+    bold: tRichText("bold"),
+    italic: tRichText("italic"),
+    underline: tRichText("underline"),
+    code: tRichText("code"),
+    bulletList: tRichText("bulletList"),
+    orderedList: tRichText("orderedList"),
+    clear: tRichText("clear"),
+  };
 
   if (!notes) {
     return (
@@ -853,39 +971,79 @@ function ReleaseNotesPanel({
       <div className="flex flex-col gap-2 rounded-md border border-border bg-muted/30 p-3 text-sm sm:flex-row sm:items-center sm:justify-between">
         <div className="text-muted-foreground">
           <p>{t("notes.updated", { date: formatDate(notes.updatedAt) })}</p>
-          <p>{t("notes.generated", { date: formatDate(notes.generatedAt) })}</p>
         </div>
-        {canManageQa && (
+        {canEditNotes && (
           <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={actionButtonClass({ variant: "neutral", size: "sm" })}
-              onClick={onGenerate}
-              disabled={isBusy}
-            >
-              <Wand2 className="mr-2 h-4 w-4" aria-hidden />
-              {t("actions.generateNotes")}
-            </button>
-            <button
-              type="button"
-              className={actionButtonClass({ size: "sm" })}
-              onClick={onSave}
-              disabled={isBusy}
-            >
-              <Save className="mr-2 h-4 w-4" aria-hidden />
-              {t("actions.saveNotes")}
-            </button>
+            {!isEditing && (
+              <button
+                type="button"
+                className={actionButtonClass({ variant: "neutral", size: "sm" })}
+                onClick={() => setIsEditing(true)}
+                disabled={isBusy}
+              >
+                <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                {t("actions.editChangelog")}
+              </button>
+            )}
+            {isEditing && (
+              <>
+                <button
+                  type="button"
+                  className={actionButtonClass({ variant: "neutral", size: "sm" })}
+                  onClick={onGenerate}
+                  disabled={isBusy}
+                >
+                  <Wand2 className="mr-2 h-4 w-4" aria-hidden />
+                  {t("actions.generateNotes")}
+                </button>
+                <button
+                  type="button"
+                  className={actionButtonClass({ variant: "neutral", size: "sm" })}
+                  onClick={() => {
+                    setNotesDraft(notes.content ?? "");
+                    setIsEditing(false);
+                  }}
+                  disabled={isBusy}
+                >
+                  <X className="mr-2 h-4 w-4" aria-hidden />
+                  {t("actions.cancel")}
+                </button>
+                <button
+                  type="button"
+                  className={actionButtonClass({ size: "sm" })}
+                  onClick={() => {
+                    onSave();
+                    setIsEditing(false);
+                  }}
+                  disabled={isBusy}
+                >
+                  <Save className="mr-2 h-4 w-4" aria-hidden />
+                  {t("actions.saveNotes")}
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
-      <textarea
-        value={notesDraft}
-        onChange={(event) => setNotesDraft(event.target.value)}
-        readOnly={!canManageQa}
-        rows={12}
-        className="w-full resize-y rounded-md border border-border bg-background px-3 py-2 font-mono text-sm outline-none focus:border-primary"
-        placeholder={t("notes.placeholder")}
-      />
+      {canEditNotes && isEditing ? (
+        <RichTextEditor
+          key={notes.releaseId}
+          name="release-notes"
+          label={t("notes.editorLabel")}
+          placeholder={t("notes.placeholder")}
+          defaultValue={notesDraft}
+          labels={toolbarLabels}
+          onValueChange={setNotesDraft}
+          helperText={tRichText("helper")}
+        />
+      ) : (
+        <div className="rounded-md border border-border bg-background p-3">
+          <RichTextPreview
+            value={notesDraft}
+            emptyLabel={t("preview.noContent")}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -936,10 +1094,10 @@ function ModeButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3 py-1 text-sm transition",
+        "inline-flex items-center rounded-full px-3 py-2 text-sm font-medium transition",
         isActive
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-muted text-muted-foreground hover:bg-background",
+          ? "bg-blue-100 text-blue-700 shadow-sm"
+          : "text-slate-500 hover:bg-slate-100 hover:text-slate-800",
       )}
     >
       {label}

@@ -621,6 +621,12 @@
           }
         },
         "tabs": {
+          "overview": "Vue d'ensemble",
+          "build": "Construction",
+          "team": "Équipe",
+          "activity": "Activité",
+          "settings": "Paramètres",
+          "features": "Fonctionnalités",
           "structure": "Structure",
           "documentation": "Documentation",
           "attachments": "Pièces jointes",
@@ -2451,6 +2457,8 @@
       "settingSection": "Paramètres",
       "support": "Aide et support",
       "logout": "Se déconnecter",
+      "collapse": "Réduire le menu latéral",
+      "expand": "Développer le menu latéral",
       "lightMode": "Mode clair",
       "darkMode": "Mode sombre"
     },

@@ -609,6 +609,12 @@
           }
         },
         "tabs": {
+          "overview": "Overview",
+          "build": "Build",
+          "team": "Team",
+          "activity": "Activity",
+          "settings": "Settings",
+          "features": "Features",
           "structure": "Structure",
           "documentation": "Documentation",
           "attachments": "Attachments",
@@ -2433,6 +2439,8 @@
       "settingSection": "Settings",
       "support": "Help & Support",
       "logout": "Logout",
+      "collapse": "Collapse sidebar",
+      "expand": "Expand sidebar",
       "lightMode": "Light Mode",
       "darkMode": "Dark Mode"
     },

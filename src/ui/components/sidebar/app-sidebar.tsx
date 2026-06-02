@@ -9,6 +9,7 @@ import LangSelector from '@/ui/components/i18n/lang-selector';
 import NotificationsBell from '@/ui/components/notifications/notifications-bell.client';
 import { UserRole } from '@/lib/definitions';
 import { hasUserLocaleCookie } from '@/lib/i18n/locale.service';
+import AppSidebarDesktopClient from './app-sidebar-desktop.client';
 
 export default async function AppSidebar() {
   const t = await getTranslations('app.sidebar');
@@ -48,47 +49,22 @@ export default async function AppSidebar() {
   return (
     <>
       {/* Desktop */}
-      <aside className="
-        hidden md:flex fixed top-0 left-0 bottom-0 w-64
-        flex-col justify-between
-        bg-white border-r border-[color:#AEC8FF]
-        px-4 py-10
-      ">
-        {/* Header */}
-        <div className="flex items-center justify-between gap-3 px-2 pb-4">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-primary/15
-                            flex items-center justify-center
-                            text-[color:var(--color-foreground)] font-semibold">
-              {displayInitial}
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-semibold truncate">{displayName}</p>
-              {displayEmail ? (
-                <p className="text-xs text-[color:var(--color-muted-fg)] truncate">
-                  {displayEmail}
-                </p>
-              ) : null}
-            </div>
-          </div>
-          <NotificationsBell token={session?.token ?? null} />
-        </div>
-
-        {/* Nav */}
-        <AppSidebarClient items={items} token={session?.token ?? null} />
-
-        {/* Footer */}
-        <AppSidebarClient
-          footerOnly
-          footerExtra={
-            <LangSelector
-              allowInApp
-              initialLocale={profile?.locale}
-              hasLocaleCookie={hasLocaleCookie}
-            />
-          }
-        />
-      </aside>
+      <AppSidebarDesktopClient
+        items={items}
+        token={session?.token ?? null}
+        displayInitial={displayInitial}
+        displayName={displayName}
+        displayEmail={displayEmail}
+        collapseLabel={t('collapse')}
+        expandLabel={t('expand')}
+        footerExtra={
+          <LangSelector
+            allowInApp
+            initialLocale={profile?.locale}
+            hasLocaleCookie={hasLocaleCookie}
+          />
+        }
+      />
 
       {/* Mobile Drawer trigger (usa tu ResponsiveMenu) */}
       <div className="md:hidden fixed top-3 left-3 z-50">

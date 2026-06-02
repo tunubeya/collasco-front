@@ -621,6 +621,12 @@
           }
         },
         "tabs": {
+          "overview": "Resumen",
+          "build": "Construcción",
+          "team": "Equipo",
+          "activity": "Actividad",
+          "settings": "Ajustes",
+          "features": "Funcionalidades",
           "structure": "Estructura",
           "documentation": "Documentación",
           "attachments": "Adjuntos",
@@ -2451,6 +2457,8 @@
       "settingSection": "Ajustes",
       "support": "Ayuda y soporte",
       "logout": "Cerrar sesión",
+      "collapse": "Contraer menú lateral",
+      "expand": "Expandir menú lateral",
       "lightMode": "Modo claro",
       "darkMode": "Modo oscuro"
     },

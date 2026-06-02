@@ -621,6 +621,12 @@
           }
         },
         "tabs": {
+          "overview": "Visão geral",
+          "build": "Construção",
+          "team": "Equipe",
+          "activity": "Atividade",
+          "settings": "Configurações",
+          "features": "Funcionalidades",
           "structure": "Estrutura",
           "documentation": "Documentação",
           "attachments": "Anexos",
@@ -2451,6 +2457,8 @@
       "settingSection": "Configurações",
       "support": "Ajuda e suporte",
       "logout": "Sair",
+      "collapse": "Recolher menu lateral",
+      "expand": "Expandir menu lateral",
       "lightMode": "Modo claro",
       "darkMode": "Modo escuro"
     },

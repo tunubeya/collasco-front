@@ -22,11 +22,13 @@ export default function AppSidebarClient({
   footerOnly = false,
   footerExtra,
   token = null,
+  collapsed = false,
 }: {
   items?: AppSidebarItem[];
   footerOnly?: boolean;
   footerExtra?: ReactNode;
   token?: string | null;
+  collapsed?: boolean;
 }) {
   const pathname = usePathname();
   const [assignedTicketsCount, setAssignedTicketsCount] = useState(0);
@@ -101,21 +103,26 @@ export default function AppSidebarClient({
           <Link
             key={item.key}
             href={item.href}
+            title={collapsed ? item.label : undefined}
             className={cn(
-              'flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors',
+              'relative flex items-center rounded-md text-sm transition-colors',
+              collapsed ? 'h-10 justify-center px-0' : 'gap-3 px-2 py-2',
               active
                 ? 'bg-primary/15 text-[color:var(--color-foreground)] border-r-2 border-primary'
                 : 'text-[color:var(--color-muted-fg)] hover:bg-[color:var(--color-cream-100)]',
             )}
           >
-            <Icon size={18} className={active ? '' : 'opacity-80'} />
-            <span className={cn('min-w-0 flex-1 truncate', active && 'font-medium')}>
-              {item.label}
-            </span>
+            <Icon size={18} className={cn('shrink-0', active ? '' : 'opacity-80')} />
+            {!collapsed ? (
+              <span className={cn('min-w-0 flex-1 truncate', active && 'font-medium')}>
+                {item.label}
+              </span>
+            ) : null}
             {showTicketsBadge ? (
               <span
                 className={cn(
                   'ml-auto inline-flex min-w-5 shrink-0 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none',
+                  collapsed && 'absolute right-1 top-1 ml-0 min-w-4 px-1',
                   active
                     ? 'bg-primary text-white'
                     : 'bg-red-500 text-white'

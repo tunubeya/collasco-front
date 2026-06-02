@@ -621,6 +621,12 @@
           }
         },
         "tabs": {
+          "overview": "Overzicht",
+          "build": "Opbouw",
+          "team": "Team",
+          "activity": "Activiteit",
+          "settings": "Instellingen",
+          "features": "Functionaliteiten",
           "structure": "Structuur",
           "documentation": "Documentatie",
           "attachments": "Bijlagen",
@@ -2451,6 +2457,8 @@
       "settingSection": "Instellingen",
       "support": "Hulp en support",
       "logout": "Uitloggen",
+      "collapse": "Zijmenu inklappen",
+      "expand": "Zijmenu uitklappen",
       "lightMode": "Lichte modus",
       "darkMode": "Donkere modus"
     },

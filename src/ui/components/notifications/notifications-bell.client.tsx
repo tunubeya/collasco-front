@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import type { Placement } from "@floating-ui/react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Bell, Check, Trash2 } from "lucide-react";
@@ -30,6 +31,8 @@ import {
 
 type NotificationsBellProps = {
   token: string | null;
+  placement?: Placement;
+  contentClassName?: string;
 };
 
 const PAGE_LIMIT = 10;
@@ -41,7 +44,11 @@ const typeStyles: Record<NotificationType, string> = {
   ERROR: "border-red-200 bg-red-50 text-red-700",
 };
 
-export default function NotificationsBell({ token }: NotificationsBellProps) {
+export default function NotificationsBell({
+  token,
+  placement = "bottom-end",
+  contentClassName,
+}: NotificationsBellProps) {
   const t = useTranslations("ui.notifications");
   const formatter = useFormatter();
   const router = useRouter();
@@ -176,7 +183,7 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
   if (!token) return null;
 
   return (
-    <Popover placement="bottom-end" open={open} onOpenChange={setOpen}>
+    <Popover placement={placement} open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
           type="button"
@@ -191,7 +198,12 @@ export default function NotificationsBell({ token }: NotificationsBellProps) {
           ) : null}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 overflow-hidden rounded-xl border bg-background p-0 shadow-lg">
+      <PopoverContent
+        className={cn(
+          "z-50 w-80 overflow-hidden rounded-xl border bg-background p-0 shadow-lg",
+          contentClassName,
+        )}
+      >
         <div className="flex items-center justify-between border-b border-border px-3 py-2">
           <p className="text-sm font-semibold">{t("title")}</p>
           <button

@@ -80,3 +80,18 @@ Notas:
 - En pantallas pequenas, evitar scroll horizontal innecesario si el contenido puede partirse en varias filas.
 - En el listado de tickets, las pestanas deben usar wrapping y no scroll horizontal.
 - El filtro de estado de tickets debe estar junto al selector de proyecto.
+
+## Releases documentales
+
+- Pestaña de releases del proyecto: `src/app/app/projects/[projectId]/project-releases-tab.client.tsx`
+- API frontend: `src/lib/api/releases.ts`
+- Integración de pestañas del proyecto: `src/app/app/projects/[projectId]/project-tabs.client.tsx`
+
+Notas:
+
+- Los releases usan endpoints `/projects/:projectId/releases` pero dependen de permisos QA: `qa.read` para lectura y `qa.write` para crear/preparar/publicar/editar.
+- Antes de permitir publicar un release, consultar o refrescar `GET /projects/:projectId/releases/documentation-status`.
+- Si `release` devuelve `409 Conflict`, mostrar el `documentationStatus` del error para explicar documentación pendiente o versiones publicadas faltantes.
+- `prepare` puede existir con warnings; `release` bloquea si hay documentación sin versión publicada o drafts con cambios pendientes.
+- Un release `RELEASED` no debe permitir editar nombre/status/snapshot, pero sí editar o regenerar release notes.
+- Generar release notes sobrescribe el contenido actual; pedir confirmación si ya hay contenido.

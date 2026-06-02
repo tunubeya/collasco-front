@@ -626,6 +626,7 @@
           "attachments": "Adjuntos",
           "dashboard": "Dashboard",
           "qa": "Ejecuciones QA",
+          "releases": "Releases",
           "members": "Miembros",
           "labels": "Etiquetas",
           "manual": "Manual",
@@ -648,6 +649,113 @@
         },
         "description": {
           "empty": "Sin descripción disponible."
+        }
+      },
+      "releases": {
+        "common": {
+          "version": "v{version}",
+          "unnamed": "Release sin nombre",
+          "notAvailable": "N/D"
+        },
+        "status": {
+          "DRAFT": "Borrador",
+          "PREPARED": "Preparado",
+          "RELEASED": "Publicado"
+        },
+        "entityType": {
+          "PROJECT": "Proyecto",
+          "MODULE": "Módulo",
+          "FEATURE": "Feature"
+        },
+        "changeType": {
+          "added": "Agregado",
+          "removed": "Eliminado",
+          "modified": "Modificado"
+        },
+        "actions": {
+          "refresh": "Actualizar",
+          "create": "Crear",
+          "save": "Guardar",
+          "prepare": "Preparar",
+          "release": "Publicar",
+          "preview": "Preview",
+          "notes": "Notas",
+          "saveNotes": "Guardar notas",
+          "generateNotes": "Generar notas"
+        },
+        "create": {
+          "nameLabel": "Nombre del release",
+          "namePlaceholder": "Nombre opcional"
+        },
+        "list": {
+          "title": "Releases",
+          "subtitle": "Snapshots documentales de este proyecto.",
+          "empty": "Aún no hay releases.",
+          "itemCount": "{count} documentos",
+          "updated": "Actualizado {date}"
+        },
+        "detail": {
+          "empty": "Selecciona o crea un release.",
+          "created": "Creado {date}",
+          "updated": "Actualizado {date}",
+          "prepared": "Preparado {date}",
+          "released": "Publicado {date}",
+          "nameLabel": "Nombre",
+          "tabs": {
+            "items": "Snapshot",
+            "preview": "Preview",
+            "notes": "Notas"
+          }
+        },
+        "readiness": {
+          "readyTitle": "Documentación lista",
+          "readyDescription": "{count} entidades tienen documentación publicada.",
+          "warningTitle": "La documentación no está lista",
+          "warningDescription": "Publica la documentación pendiente y las versiones faltantes antes del release.",
+          "missingTitle": "Versiones publicadas faltantes",
+          "pendingTitle": "Cambios draft pendientes",
+          "noMissing": "No faltan versiones publicadas.",
+          "noPending": "No hay cambios draft pendientes.",
+          "pendingMeta": "Draft v{draft}, base v{base}",
+          "labelChange": "{label}: {change}"
+        },
+        "items": {
+          "empty": "Este snapshot no tiene documentación incluida.",
+          "entity": "Entidad",
+          "type": "Tipo",
+          "version": "Versión",
+          "publishedAt": "Publicado",
+          "changelog": "Changelog"
+        },
+        "preview": {
+          "notLoaded": "Carga el preview para ver cambios.",
+          "firstRelease": "Primer release. Toda la documentación incluida aparece como agregada.",
+          "comparing": "Comparando v{previous} contra v{current}.",
+          "empty": "No hay cambios documentales en este release.",
+          "versionChange": "v{before} -> v{after}",
+          "before": "Antes",
+          "after": "Después",
+          "noContent": "Sin contenido",
+          "notApplicable": "No aplica"
+        },
+        "notes": {
+          "notLoaded": "Carga las notas para editarlas.",
+          "updated": "Actualizado {date}",
+          "generated": "Generado {date}",
+          "placeholder": "Escribe release notes en Markdown.",
+          "generateConfirm": "Esto reemplazará las release notes actuales. ¿Quieres continuar?"
+        },
+        "messages": {
+          "loading": "Cargando...",
+          "loadError": "No pudimos cargar los releases.",
+          "createError": "No pudimos crear el release.",
+          "saveError": "No pudimos guardar el release.",
+          "prepareError": "No pudimos preparar el release.",
+          "releaseError": "No pudimos publicarlo.",
+          "previewError": "No pudimos cargar el preview.",
+          "notesError": "No pudimos cargar las notas.",
+          "notesSaveError": "No pudimos guardar las notas.",
+          "notesGenerateError": "No pudimos generar las notas."
         }
       },
       "trash": {

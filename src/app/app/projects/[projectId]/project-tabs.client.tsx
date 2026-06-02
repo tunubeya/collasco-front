@@ -21,6 +21,7 @@ import { ProjectTrashTab } from "./project-trash-tab.client";
 import { ProjectImagesTab } from "./project-images-tab.client";
 import type { ProjectPermission, ProjectRole } from "@/lib/api/project-roles";
 import { hasPermission } from "@/lib/permissions";
+import { ProjectReleasesTab } from "./project-releases-tab.client";
 
 type ProjectTabsProps = {
   project: Project;
@@ -40,6 +41,7 @@ type ProjectTab =
   | "documentation"
   | "attachments"
   | "qa"
+  | "releases"
   | "members"
   | "labels"
   | "manual"
@@ -94,6 +96,7 @@ export function ProjectTabs({
     if (canViewProjectDocumentation) tabs.push("documentation");
     if (canViewAttachments) tabs.push("attachments");
     if (canViewQa) tabs.push("qa");
+    if (canViewQa) tabs.push("releases");
     if (canViewMembers) tabs.push("members");
     if (canViewLabels) tabs.push("labels");
     if (canViewManual) tabs.push("manual");
@@ -145,6 +148,13 @@ export function ProjectTabs({
             label={tTabs("qa")}
             isActive={activeTab === "qa"}
             onClick={() => setActiveTab("qa")}
+          />
+        )}
+        {canViewQa && (
+          <TabButton
+            label={tTabs("releases")}
+            isActive={activeTab === "releases"}
+            onClick={() => setActiveTab("releases")}
           />
         )}
         {canViewMembers && (
@@ -210,6 +220,14 @@ export function ProjectTabs({
           projectId={projectId}
           featureOptions={featureOptions}
           currentUserId={currentUserId}
+          canManageQa={canManageQa}
+        />
+      )}
+
+      {activeTab === "releases" && canViewQa && (
+        <ProjectReleasesTab
+          token={token}
+          projectId={projectId}
           canManageQa={canManageQa}
         />
       )}

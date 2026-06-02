@@ -626,6 +626,7 @@
           "attachments": "Bijlagen",
           "dashboard": "Dashboard",
           "qa": "QA-runs",
+          "releases": "Releases",
           "members": "Leden",
           "labels": "Labels",
           "manual": "Handleiding",
@@ -648,6 +649,113 @@
         },
         "description": {
           "empty": "Geen beschrijving beschikbaar."
+        }
+      },
+      "releases": {
+        "common": {
+          "version": "v{version}",
+          "unnamed": "Naamloze release",
+          "notAvailable": "N.v.t."
+        },
+        "status": {
+          "DRAFT": "Concept",
+          "PREPARED": "Voorbereid",
+          "RELEASED": "Gepubliceerd"
+        },
+        "entityType": {
+          "PROJECT": "Project",
+          "MODULE": "Module",
+          "FEATURE": "Feature"
+        },
+        "changeType": {
+          "added": "Toegevoegd",
+          "removed": "Verwijderd",
+          "modified": "Gewijzigd"
+        },
+        "actions": {
+          "refresh": "Vernieuwen",
+          "create": "Aanmaken",
+          "save": "Opslaan",
+          "prepare": "Voorbereiden",
+          "release": "Publiceren",
+          "preview": "Preview",
+          "notes": "Notities",
+          "saveNotes": "Notities opslaan",
+          "generateNotes": "Notities genereren"
+        },
+        "create": {
+          "nameLabel": "Releasenaam",
+          "namePlaceholder": "Optionele naam"
+        },
+        "list": {
+          "title": "Releases",
+          "subtitle": "Documentatiesnapshots voor dit project.",
+          "empty": "Nog geen releases.",
+          "itemCount": "{count} documenten",
+          "updated": "Bijgewerkt {date}"
+        },
+        "detail": {
+          "empty": "Selecteer of maak een release.",
+          "created": "Aangemaakt {date}",
+          "updated": "Bijgewerkt {date}",
+          "prepared": "Voorbereid {date}",
+          "released": "Gepubliceerd {date}",
+          "nameLabel": "Naam",
+          "tabs": {
+            "items": "Snapshot",
+            "preview": "Preview",
+            "notes": "Notities"
+          }
+        },
+        "readiness": {
+          "readyTitle": "Documentatie gereed",
+          "readyDescription": "{count} entiteiten hebben gepubliceerde documentatie.",
+          "warningTitle": "Documentatie is niet gereed",
+          "warningDescription": "Publiceer openstaande documentatie en ontbrekende versies vóór de release.",
+          "missingTitle": "Ontbrekende gepubliceerde versies",
+          "pendingTitle": "Openstaande conceptwijzigingen",
+          "noMissing": "Geen ontbrekende gepubliceerde versies.",
+          "noPending": "Geen openstaande conceptwijzigingen.",
+          "pendingMeta": "Concept v{draft}, basis v{base}",
+          "labelChange": "{label}: {change}"
+        },
+        "items": {
+          "empty": "Deze snapshot bevat geen documentatie-items.",
+          "entity": "Entiteit",
+          "type": "Type",
+          "version": "Versie",
+          "publishedAt": "Gepubliceerd",
+          "changelog": "Changelog"
+        },
+        "preview": {
+          "notLoaded": "Laad de preview om wijzigingen te bekijken.",
+          "firstRelease": "Eerste release. Alle opgenomen documentatie verschijnt als toegevoegd.",
+          "comparing": "Vergelijkt v{previous} met v{current}.",
+          "empty": "Geen documentatiewijzigingen in deze release.",
+          "versionChange": "v{before} -> v{after}",
+          "before": "Voor",
+          "after": "Na",
+          "noContent": "Geen inhoud",
+          "notApplicable": "Niet van toepassing"
+        },
+        "notes": {
+          "notLoaded": "Laad notities om ze te bewerken.",
+          "updated": "Bijgewerkt {date}",
+          "generated": "Gegenereerd {date}",
+          "placeholder": "Schrijf release notes in Markdown.",
+          "generateConfirm": "Dit vervangt de huidige release notes. Wil je doorgaan?"
+        },
+        "messages": {
+          "loading": "Laden...",
+          "loadError": "Releases konden niet worden geladen.",
+          "createError": "Release kon niet worden aangemaakt.",
+          "saveError": "Release kon niet worden opgeslagen.",
+          "prepareError": "Release kon niet worden voorbereid.",
+          "releaseError": "Publiceren is mislukt.",
+          "previewError": "Preview kon niet worden geladen.",
+          "notesError": "Notities konden niet worden geladen.",
+          "notesSaveError": "Notities konden niet worden opgeslagen.",
+          "notesGenerateError": "Notities konden niet worden gegenereerd."
         }
       },
       "trash": {

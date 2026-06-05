@@ -752,6 +752,33 @@
           "placeholder": "Write the release changelog.",
           "generateConfirm": "This will replace the current release changelog. Do you want to continue?"
         },
+        "share": {
+          "title": "Public release notes",
+          "description": "Share all released changelogs for this project with clients.",
+          "create": "Create link",
+          "empty": "No public release notes links yet.",
+          "created": "Created {date}",
+          "copy": "Copy",
+          "revoke": "Revoke",
+          "copyFallback": "Copy this public release notes URL"
+        },
+        "public": {
+          "eyebrow": "Release notes",
+          "subtitle": "Published product changes, grouped by release so clients can quickly review what changed.",
+          "latestBadge": "Latest",
+          "stats": {
+            "releases": "Published",
+            "latest": "Latest"
+          },
+          "loading": "Loading release notes...",
+          "empty": "There are no published release notes yet.",
+          "expired": "This release notes link has expired.",
+          "notFound": "This release notes link was not found.",
+          "error": "We couldn't load these release notes.",
+          "version": "v{version}",
+          "notAvailable": "N/A",
+          "noChangelog": "No changelog was published for this release."
+        },
         "messages": {
           "loading": "Loading...",
           "loadError": "We couldn't load releases.",
@@ -762,7 +789,8 @@
           "previewError": "We couldn't load the preview.",
           "notesError": "We couldn't load notes.",
           "notesSaveError": "We couldn't save notes.",
-          "notesGenerateError": "We couldn't generate notes."
+          "notesGenerateError": "We couldn't generate notes.",
+          "shareLinkError": "We couldn't update public release notes links."
         }
       },
       "trash": {

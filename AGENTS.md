@@ -86,6 +86,7 @@ Notas:
 - Pestaña de releases del proyecto: `src/app/app/projects/[projectId]/project-releases-tab.client.tsx`
 - API frontend: `src/lib/api/releases.ts`
 - Integración de pestañas del proyecto: `src/app/app/projects/[projectId]/project-tabs.client.tsx`
+- Vista pública de release notes: `src/app/public/releases/links/[token]/public-release-notes.client.tsx`
 
 Notas:
 
@@ -98,3 +99,5 @@ Notas:
 - Generar el changelog del release sobrescribe el contenido actual; pedir confirmación si ya hay contenido.
 - El changelog del release y cualquier contenido largo editable deben usar `RichTextEditor` y visualizarse con `RichTextPreview`; no usar Markdown ni `textarea` salvo que la solicitud lo pida explícitamente.
 - El endpoint `POST /projects/:projectId/releases/:releaseId/notes/generate` devuelve HTML rich text y solo aplica a releases `DRAFT`; el front debe mostrarlo con `RichTextPreview`/`RichTextEditor`.
+- Los links públicos de release notes son por proyecto y muestran todos los releases `RELEASED`: administrar con `/projects/:projectId/releases/share-links` y renderizar `/public/releases/links/:token` sin auth.
+- Toda ruta pública nueva debe agregarse a `publicRoutePrefixes` en `src/middleware.ts` para evitar redirección a login.

@@ -764,6 +764,33 @@
           "placeholder": "Escribe el changelog del release.",
           "generateConfirm": "Esto reemplazará el changelog actual del release. ¿Quieres continuar?"
         },
+        "share": {
+          "title": "Release notes públicas",
+          "description": "Comparte con clientes todos los changelogs publicados del proyecto.",
+          "create": "Crear link",
+          "empty": "Aún no hay links públicos de release notes.",
+          "created": "Creado {date}",
+          "copy": "Copiar",
+          "revoke": "Revocar",
+          "copyFallback": "Copia esta URL pública de release notes"
+        },
+        "public": {
+          "eyebrow": "Release notes",
+          "subtitle": "Cambios publicados del producto, agrupados por release para que los clientes revisen rápidamente qué cambió.",
+          "latestBadge": "Último",
+          "stats": {
+            "releases": "Publicados",
+            "latest": "Último"
+          },
+          "loading": "Cargando release notes...",
+          "empty": "Aún no hay release notes publicadas.",
+          "expired": "Este link de release notes expiró.",
+          "notFound": "No se encontró este link de release notes.",
+          "error": "No pudimos cargar estas release notes.",
+          "version": "v{version}",
+          "notAvailable": "N/D",
+          "noChangelog": "No se publicó changelog para este release."
+        },
         "messages": {
           "loading": "Cargando...",
           "loadError": "No pudimos cargar los releases.",
@@ -774,7 +801,8 @@
           "previewError": "No pudimos cargar el preview.",
           "notesError": "No pudimos cargar las notas.",
           "notesSaveError": "No pudimos guardar las notas.",
-          "notesGenerateError": "No pudimos generar las notas."
+          "notesGenerateError": "No pudimos generar las notas.",
+          "shareLinkError": "No pudimos actualizar los links públicos de release notes."
         }
       },
       "trash": {

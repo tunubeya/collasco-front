@@ -8,21 +8,28 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
+  Copy,
+  Plus,
   RefreshCw,
   Rocket,
   Save,
   Pencil,
+  Share2,
+  Trash2,
   X,
   Wand2,
 } from "lucide-react";
 
 import {
   createProjectRelease,
+  createReleaseShareLink,
+  deleteReleaseShareLink,
   generateProjectReleaseNotes,
   getProjectRelease,
   getProjectReleaseDocumentationStatus,
   getProjectReleaseNotes,
   getProjectReleasePreview,
+  listReleaseShareLinks,
   listProjectReleases,
   prepareProjectRelease,
   releaseProjectRelease,
@@ -36,6 +43,7 @@ import {
   type ReleaseListItem,
   type ReleaseNotes,
   type ReleasePreview,
+  type ReleaseShareLink,
   type ReleaseStatus,
 } from "@/lib/api/releases";
 import { cn } from "@/lib/utils";
@@ -66,13 +74,15 @@ export function ProjectReleasesTab({
   const [preview, setPreview] = useState<ReleasePreview | null>(null);
   const [notes, setNotes] = useState<ReleaseNotes | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("items");
-  const [newReleaseName, setNewReleaseName] = useState("");
   const [editingName, setEditingName] = useState("");
   const [notesDraft, setNotesDraft] = useState("");
+  const [shareLinks, setShareLinks] = useState<ReleaseShareLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isBusy, setIsBusy] = useState(false);
+  const [isShareBusy, setIsShareBusy] = useState(false);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const [isReleasePanelOpen, setIsReleasePanelOpen] = useState(true);
+  const [isSharePanelOpen, setIsSharePanelOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const formatDate = useCallback(
@@ -87,12 +97,14 @@ export function ProjectReleasesTab({
   );
 
   const loadList = useCallback(async () => {
-    const [releaseList, status] = await Promise.all([
+    const [releaseList, status, links] = await Promise.all([
       listProjectReleases(token, projectId),
       getProjectReleaseDocumentationStatus(token, projectId),
+      listReleaseShareLinks(token, projectId).catch(() => []),
     ]);
     setReleases(releaseList);
     setDocumentationStatus(status);
+    setShareLinks(links);
     return releaseList;
   }, [projectId, token]);
 
@@ -183,10 +195,7 @@ export function ProjectReleasesTab({
 
   const handleCreate = () =>
     runAction(async () => {
-      const release = await createProjectRelease(token, projectId, {
-        name: newReleaseName.trim() || undefined,
-      });
-      setNewReleaseName("");
+      const release = await createProjectRelease(token, projectId);
       await refreshAll(release.id);
     }, t("messages.createError"));
 
@@ -278,6 +287,39 @@ export function ProjectReleasesTab({
       await loadList();
     }, t("messages.notesGenerateError"));
 
+  const handleCreateShareLink = () =>
+    runShareAction(async () => {
+      const link = await createReleaseShareLink(token, projectId);
+      setShareLinks((current) => [link, ...current]);
+    });
+
+  const handleDeleteShareLink = (linkId: string) =>
+    runShareAction(async () => {
+      await deleteReleaseShareLink(token, projectId, linkId);
+      setShareLinks((current) => current.filter((link) => link.id !== linkId));
+    });
+
+  async function runShareAction(action: () => Promise<void>) {
+    setError(null);
+    setIsShareBusy(true);
+    try {
+      await action();
+    } catch (err) {
+      setError(resolveErrorMessage(err, t("messages.shareLinkError")));
+    } finally {
+      setIsShareBusy(false);
+    }
+  }
+
+  const copyShareUrl = async (link: ReleaseShareLink) => {
+    const url = resolvePublicReleaseUrl(link);
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      window.prompt(t("share.copyFallback"), url);
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -298,18 +340,51 @@ export function ProjectReleasesTab({
             <div className="flex items-center justify-between gap-3">
               <div>
                 <h2 className="text-lg font-semibold">{t("list.title")}</h2>
-                <p className="text-sm text-muted-foreground">{t("list.subtitle")}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <button
                   type="button"
-                  className={actionButtonClass({ variant: "neutral", size: "xs" })}
+                  className={actionButtonClass({
+                    size: "xs",
+                    className: "h-8 w-8 justify-center px-0",
+                  })}
                   onClick={() => void refreshAll(selectedRelease?.id)}
                   disabled={isBusy || isLoading}
+                  aria-label={t("actions.refresh")}
+                  title={t("actions.refresh")}
                 >
-                  <RefreshCw className="mr-2 h-3.5 w-3.5" aria-hidden />
-                  {t("actions.refresh")}
+                  <RefreshCw className="h-3.5 w-3.5" aria-hidden />
                 </button>
+                {canManageQa && (
+                  <>
+                    <button
+                      type="button"
+                      className={actionButtonClass({
+                        size: "xs",
+                        className: "h-8 w-8 justify-center px-0",
+                      })}
+                      onClick={() => setIsSharePanelOpen((current) => !current)}
+                      aria-label={t("share.title")}
+                      title={t("share.title")}
+                      aria-expanded={isSharePanelOpen}
+                    >
+                      <Share2 className="h-3.5 w-3.5" aria-hidden />
+                    </button>
+                    <button
+                      type="button"
+                      className={actionButtonClass({
+                        size: "xs",
+                        className: "h-8 w-8 justify-center px-0",
+                      })}
+                      onClick={handleCreate}
+                      disabled={isBusy}
+                      aria-label={t("actions.create")}
+                      title={t("actions.create")}
+                    >
+                      <Plus className="h-3.5 w-3.5" aria-hidden />
+                    </button>
+                  </>
+                )}
                 <button
                   type="button"
                   className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
@@ -324,30 +399,18 @@ export function ProjectReleasesTab({
             </div>
 
             {canManageQa && (
-              <div className="grid gap-2 rounded-md border border-border bg-muted/30 p-3">
-                <label className="text-xs font-medium text-muted-foreground" htmlFor="release-name">
-                  {t("create.nameLabel")}
-                </label>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <input
-                    id="release-name"
-                    value={newReleaseName}
-                    onChange={(event) => setNewReleaseName(event.target.value)}
-                    placeholder={t("create.namePlaceholder")}
-                    className="min-h-9 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
-                    disabled={isBusy}
+              <>
+                {isSharePanelOpen && (
+                  <ReleaseShareLinksPanel
+                    links={shareLinks}
+                    isBusy={isShareBusy}
+                    onCreate={handleCreateShareLink}
+                    onCopy={copyShareUrl}
+                    onDelete={handleDeleteShareLink}
+                    onClose={() => setIsSharePanelOpen(false)}
                   />
-                  <button
-                    type="button"
-                    className={actionButtonClass({ size: "sm" })}
-                    onClick={handleCreate}
-                    disabled={isBusy}
-                  >
-                    <Rocket className="mr-2 h-4 w-4" aria-hidden />
-                    {t("actions.create")}
-                  </button>
-                </div>
-              </div>
+                )}
+              </>
             )}
 
             {error && (
@@ -767,6 +830,108 @@ function SnapshotItems({
       </SnapshotGroup>
     </div>
   );
+}
+
+function ReleaseShareLinksPanel({
+  links,
+  isBusy,
+  onCreate,
+  onCopy,
+  onDelete,
+  onClose,
+}: {
+  links: ReleaseShareLink[];
+  isBusy: boolean;
+  onCreate: () => void;
+  onCopy: (link: ReleaseShareLink) => void;
+  onDelete: (linkId: string) => void;
+  onClose: () => void;
+}) {
+  const t = useTranslations("app.projects.releases");
+
+  return (
+    <div className="grid w-full max-w-full gap-3 overflow-hidden rounded-md border border-border bg-muted/20 p-3">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-sm font-semibold">{t("share.title")}</p>
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            className={actionButtonClass({
+              size: "xs",
+              className: "h-8 w-8 shrink-0 justify-center px-0",
+            })}
+            onClick={onCreate}
+            disabled={isBusy}
+            aria-label={t("share.create")}
+            title={t("share.create")}
+          >
+            <Plus className="h-3.5 w-3.5" aria-hidden />
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            onClick={onClose}
+            aria-label={t("actions.collapse")}
+            title={t("actions.collapse")}
+          >
+            <X className="h-3.5 w-3.5" aria-hidden />
+          </button>
+        </div>
+      </div>
+
+      {links.length === 0 ? (
+        <p className="rounded-md border border-dashed border-border p-3 text-xs text-muted-foreground">
+          {t("share.empty")}
+        </p>
+      ) : (
+        <div className="space-y-2">
+          {links.map((link) => (
+            <div key={link.id} className="w-full max-w-full overflow-hidden rounded-md border border-border bg-background p-2">
+              <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2">
+                <p className="min-w-0 truncate text-xs text-muted-foreground">
+                  {resolvePublicReleaseUrl(link)}
+                </p>
+                <button
+                  type="button"
+                  className={actionButtonClass({
+                    variant: "neutral",
+                    size: "xs",
+                    className: "h-8 w-8 shrink-0 justify-center px-0",
+                  })}
+                  onClick={() => onCopy(link)}
+                  disabled={isBusy}
+                  aria-label={t("share.copy")}
+                  title={t("share.copy")}
+                >
+                  <Copy className="h-3.5 w-3.5" aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  className={actionButtonClass({
+                    variant: "destructive",
+                    size: "xs",
+                    className: "h-8 w-8 shrink-0 justify-center px-0",
+                  })}
+                  onClick={() => onDelete(link.id)}
+                  disabled={isBusy}
+                  aria-label={t("share.revoke")}
+                  title={t("share.revoke")}
+                >
+                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function resolvePublicReleaseUrl(link: ReleaseShareLink) {
+  const token = link.token || link.url.split("/").filter(Boolean).at(-1) || "";
+  if (typeof window === "undefined") return `/public/releases/links/${token}`;
+  return new URL(`/public/releases/links/${token}`, window.location.origin).toString();
 }
 
 function SnapshotGroup({

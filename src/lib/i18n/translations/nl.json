@@ -764,6 +764,33 @@
           "placeholder": "Schrijf de releasechangelog.",
           "generateConfirm": "Dit vervangt de huidige releasechangelog. Wil je doorgaan?"
         },
+        "share": {
+          "title": "Openbare release notes",
+          "description": "Deel alle gepubliceerde changelogs van dit project met klanten.",
+          "create": "Link maken",
+          "empty": "Nog geen openbare release notes-links.",
+          "created": "Aangemaakt {date}",
+          "copy": "Kopiëren",
+          "revoke": "Intrekken",
+          "copyFallback": "Kopieer deze openbare release notes-URL"
+        },
+        "public": {
+          "eyebrow": "Release notes",
+          "subtitle": "Gepubliceerde productwijzigingen, gegroepeerd per release zodat klanten snel kunnen zien wat er is veranderd.",
+          "latestBadge": "Nieuwste",
+          "stats": {
+            "releases": "Gepubliceerd",
+            "latest": "Nieuwste"
+          },
+          "loading": "Release notes laden...",
+          "empty": "Er zijn nog geen gepubliceerde release notes.",
+          "expired": "Deze release notes-link is verlopen.",
+          "notFound": "Deze release notes-link is niet gevonden.",
+          "error": "Deze release notes konden niet worden geladen.",
+          "version": "v{version}",
+          "notAvailable": "N.v.t.",
+          "noChangelog": "Er is geen changelog gepubliceerd voor deze release."
+        },
         "messages": {
           "loading": "Laden...",
           "loadError": "Releases konden niet worden geladen.",
@@ -774,7 +801,8 @@
           "previewError": "Preview kon niet worden geladen.",
           "notesError": "Notities konden niet worden geladen.",
           "notesSaveError": "Notities konden niet worden opgeslagen.",
-          "notesGenerateError": "Notities konden niet worden gegenereerd."
+          "notesGenerateError": "Notities konden niet worden gegenereerd.",
+          "shareLinkError": "Openbare release notes-links konden niet worden bijgewerkt."
         }
       },
       "trash": {

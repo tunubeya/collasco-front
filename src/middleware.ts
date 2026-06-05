@@ -32,6 +32,7 @@ const publicRoutes = [
 
 const publicRoutePrefixes = [
   "/public/manual/shared",
+  "/public/releases/links",
   "/public/tickets/links",
   "/public/tickets/follow",
 ];

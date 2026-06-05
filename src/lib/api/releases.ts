@@ -124,6 +124,36 @@ export type ReleaseNotes = {
   notesUpdatedById: string | null;
 };
 
+export type ReleaseShareLink = {
+  id: string;
+  projectId: string;
+  token: string;
+  url: string;
+  expiresAt: string | null;
+  createdAt: string;
+};
+
+export type ListReleaseShareLinksResponse =
+  | ReleaseShareLink[]
+  | { items?: ReleaseShareLink[] };
+
+export type PublicReleaseNotesResponse = {
+  project: {
+    id: string;
+    name: string;
+  };
+  releases: Array<{
+    id: string;
+    versionNumber: number;
+    name: string | null;
+    releasedAt: string | null;
+    changelog: {
+      content: string | null;
+      updatedAt: string;
+    };
+  }>;
+};
+
 export type PrepareReleaseResponse = {
   release: ReleaseDetail;
   documentationStatus: DocumentationStatus;
@@ -293,4 +323,51 @@ export function generateProjectReleaseNotes(
     `/projects/${projectId}/releases/${releaseId}/notes/generate`,
     { method: "POST" },
   );
+}
+
+export function createReleaseShareLink(
+  token: string,
+  projectId: string,
+  dto: { expiresAt?: string | null } = {},
+): Promise<ReleaseShareLink> {
+  return requestRelease(token, `/projects/${projectId}/releases/share-links`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dto),
+  });
+}
+
+export async function listReleaseShareLinks(
+  token: string,
+  projectId: string,
+): Promise<ReleaseShareLink[]> {
+  const payload = await requestRelease<ListReleaseShareLinksResponse>(
+    token,
+    `/projects/${projectId}/releases/share-links`,
+    { method: "GET" },
+  );
+  return Array.isArray(payload) ? payload : payload.items ?? [];
+}
+
+export function deleteReleaseShareLink(
+  token: string,
+  projectId: string,
+  linkId: string,
+): Promise<{ ok: boolean }> {
+  return requestRelease(
+    token,
+    `/projects/${projectId}/releases/share-links/${linkId}`,
+    { method: "DELETE" },
+  );
+}
+
+export async function getPublicReleaseNotes(
+  shareToken: string,
+): Promise<PublicReleaseNotesResponse> {
+  const res = await fetch(`${apiUrl}/public/releases/links/${shareToken}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+  if (!res.ok) throw res;
+  return await parseJsonResponse<PublicReleaseNotesResponse>(res);
 }

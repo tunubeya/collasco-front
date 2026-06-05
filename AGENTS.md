@@ -81,6 +81,21 @@ Notas:
 - En el listado de tickets, las pestanas deben usar wrapping y no scroll horizontal.
 - El filtro de estado de tickets debe estar junto al selector de proyecto.
 
+### Patrón de vistas públicas tipo changelog/release notes
+
+Usar como referencia la UI de `src/app/public/releases/links/[token]/public-release-notes.client.tsx` cuando se pidan vistas públicas bonitas, compartibles o de lectura para clientes.
+
+Elementos del patrón:
+
+- Fondo general neutro `bg-slate-50` y contenido centrado con `max-w-5xl`.
+- Header destacado con tarjeta blanca y franja superior `bg-linear-to-r from-slate-900 to-slate-700`.
+- Título principal del objeto/proyecto, subtítulo corto y métricas compactas en cards translúcidas.
+- Contenido ordenado como timeline en desktop, con línea vertical e icono circular por item.
+- Cada item en card blanca con borde `border-slate-200`, `rounded-xl`, `shadow-sm`.
+- Header interno de cada item con versión, nombre opcional, fecha con icono y badge para el item más reciente.
+- Cuerpo de contenido en bloque `bg-slate-50` y renderizado con `RichTextPreview`.
+- Mantener la página enfocada en lectura, sin landing hero marketing ni decoración innecesaria.
+
 ## Releases documentales
 
 - Pestaña de releases del proyecto: `src/app/app/projects/[projectId]/project-releases-tab.client.tsx`

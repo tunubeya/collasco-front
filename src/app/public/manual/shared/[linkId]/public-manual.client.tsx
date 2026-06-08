@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle, Loader2 } from "lucide-react";
+import { AlertTriangle, BookOpen, Layers3, Loader2, Tags, type LucideIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -71,6 +71,25 @@ function collectLabelsFromModules(
 
   modules.forEach(walk);
   return Array.from(map.values());
+}
+
+function countManualNodes(nodes: StructureModuleNode[] | null) {
+  let modules = 0;
+  let features = 0;
+
+  const walk = (node: StructureModuleNode) => {
+    modules += 1;
+    node.items.forEach((item) => {
+      if (item.type === "feature") {
+        features += 1;
+      } else {
+        walk(item);
+      }
+    });
+  };
+
+  nodes?.forEach(walk);
+  return { modules, features };
 }
 
 export function PublicManualClient({
@@ -296,6 +315,8 @@ export function PublicManualClient({
     [tManual],
   );
 
+  const manualStats = useMemo(() => countManualNodes(modules), [modules]);
+
   const manualTree = useMemo(() => {
     if (!modules) return null;
     return buildProjectManualTree(
@@ -324,16 +345,17 @@ export function PublicManualClient({
   }, [manualTree, rootId, rootType]);
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10">
+    <main className="min-h-screen bg-slate-50 px-4 py-8 text-slate-950">
+      <div className="mx-auto w-full max-w-5xl space-y-6">
       {isLoading && (
-        <div className="flex items-center gap-2 rounded-lg border border-dashed border-muted-foreground/30 bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 shadow-sm">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           <span>{tManual("loading")}</span>
         </div>
       )}
 
       {error && (
-        <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-50 p-6 text-slate-800 shadow-sm sm:p-8">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-800 shadow-sm sm:p-8">
           <div className="flex items-start gap-4">
             <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm">
               <AlertTriangle className="h-6 w-6" aria-hidden />
@@ -353,8 +375,45 @@ export function PublicManualClient({
         </div>
       )}
 
+      {!isLoading && !error && projectInfo && (
+        <header className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="border-b border-slate-100 bg-linear-to-r from-slate-900 to-slate-700 px-6 py-7 text-white">
+            <p className="text-sm font-medium text-slate-200">
+              {tProjectTabs("manual")}
+            </p>
+            <div className="mt-2 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <h1 className="text-3xl font-semibold tracking-tight">
+                  {projectInfo.name}
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm text-slate-200">
+                  {projectInfo.description || tManual("noDescription")}
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-sm">
+                <PublicManualStat
+                  icon={Layers3}
+                  label={tProjectDetail("modules.title")}
+                  value={manualStats.modules}
+                />
+                <PublicManualStat
+                  icon={BookOpen}
+                  label={tProjectTabs("documentation")}
+                  value={manualStats.features}
+                />
+                <PublicManualStat
+                  icon={Tags}
+                  label={tManual("labelsNavbar.title")}
+                  value={orderedLabels.length}
+                />
+              </div>
+            </div>
+          </div>
+        </header>
+      )}
+
       {!isLoading && !error && orderedLabels.length > 0 && (
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center gap-3">
             <div className="space-y-1">
               <p className="text-sm font-semibold text-slate-900">
@@ -413,7 +472,8 @@ export function PublicManualClient({
           onViewModeChange={setViewMode}
           filterLabel={filterLabel}
           linkedLabel={linkedLabels}
-          title={projectInfo?.name ?? tProjectTabs("manual")}
+          title={tProjectTabs("manual")}
+          className="border-slate-200 bg-white shadow-sm"
           imageLoader={async () => {
             if (imagesCacheRef.current) return imagesCacheRef.current;
             if (imagesPromiseRef.current) return imagesPromiseRef.current;
@@ -443,6 +503,27 @@ export function PublicManualClient({
           }}
         />
       )}
+      </div>
     </main>
+  );
+}
+
+function PublicManualStat({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: number;
+}) {
+  return (
+    <div className="rounded-lg border border-white/15 bg-white/10 px-3 py-2">
+      <div className="flex items-center gap-1.5 text-xs text-slate-200">
+        <Icon className="h-3.5 w-3.5" aria-hidden />
+        <span className="truncate">{label}</span>
+      </div>
+      <p className="mt-1 text-xl font-semibold">{value}</p>
+    </div>
   );
 }

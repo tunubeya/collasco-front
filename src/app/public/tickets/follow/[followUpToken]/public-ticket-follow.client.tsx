@@ -16,7 +16,10 @@ import {
   File,
   Pencil,
   Link2,
-  CheckCircle2
+  CheckCircle2,
+  MessageSquare,
+  Paperclip,
+  type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -64,6 +67,26 @@ function formatBytes(bytes: number): string {
   );
   const value = bytes / Math.pow(1024, idx);
   return `${value.toFixed(value >= 10 || idx === 0 ? 0 : 1)} ${units[idx]}`;
+}
+
+function PublicTicketStat({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: number | string;
+}) {
+  return (
+    <div className="rounded-lg border border-white/15 bg-white/10 px-3 py-2">
+      <div className="flex items-center gap-1.5 text-xs text-slate-200">
+        <Icon className="h-3.5 w-3.5" aria-hidden />
+        <span className="truncate">{label}</span>
+      </div>
+      <p className="mt-1 truncate text-xl font-semibold">{value}</p>
+    </div>
+  );
 }
 
 function resolveFileIcon(mimeType?: string) {
@@ -485,20 +508,58 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     }
   }, [followUpToken, loadTicket, reopening, t]);
 
+  const projectName =
+    data?.projectName ?? ticket?.project?.name ?? t("follow.projectFallback");
+  const createdAtLabel = ticket?.createdAt
+    ? format.dateTime(new Date(ticket.createdAt), {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : null;
+
   return (
-    <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-10">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold">{t("follow.title")}</h1>
-        <p className="text-sm text-muted-foreground">{t("follow.subtitle")}</p>
-      </header>
+    <main className="min-h-screen bg-slate-50 px-4 py-8 text-slate-950">
+      <div className="mx-auto w-full max-w-5xl space-y-6">
+        <header className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="border-b border-slate-100 bg-linear-to-r from-slate-900 to-slate-700 px-6 py-7 text-white">
+            <p className="text-sm font-medium text-slate-200">{t("follow.title")}</p>
+            <div className="mt-2 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <h1 className="text-3xl font-semibold tracking-tight">
+                  {ticket?.title ?? t("follow.ticketFallback")}
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm text-slate-200">
+                  {t("follow.subtitle")}
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-sm">
+                <PublicTicketStat
+                  icon={MessageSquare}
+                  label={t("follow.activity")}
+                  value={visibleSections.length}
+                />
+                <PublicTicketStat
+                  icon={Paperclip}
+                  label={tDetail("attachments.title")}
+                  value={images.length}
+                />
+                <PublicTicketStat
+                  icon={CheckCircle2}
+                  label={t("follow.projectLabel", { name: "" }).trim() || "Project"}
+                  value={projectName}
+                />
+              </div>
+            </div>
+          </div>
+        </header>
 
       {loading ? (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           <span>{t("follow.loading")}</span>
         </div>
       ) : error ? (
-        <div className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 shadow-sm">
           {error}
         </div>
       ) : (
@@ -550,7 +611,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
             </section>
           ) : null}
 
-          <section className="rounded-2xl border bg-background p-6 shadow-sm">
+          <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="space-y-2">
               {editingTitle ? (
                 <div className="flex items-center gap-2">
@@ -595,27 +656,24 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               )}
               <p className="text-xs text-muted-foreground">
                 {t("follow.projectLabel", {
-                  name: data?.projectName ?? ticket?.project?.name ?? t("follow.projectFallback"),
+                  name: projectName,
                 })}
               </p>
-              {ticket?.createdAt ? (
+              {createdAtLabel ? (
                 <p className="text-xs text-muted-foreground">
                   {t("follow.createdAt", {
-                    date: format.dateTime(new Date(ticket.createdAt), {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    }),
+                    date: createdAtLabel,
                   })}
                 </p>
               ) : null}
             </div>
 
             {!isReadOnly ? (
-              <div className="mt-4 rounded-lg border bg-muted/10 p-4 space-y-4">
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-4">
                 <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
 
                 <div className="grid gap-4">
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-3 text-sm">
                     <span className="font-medium">{t("follow.fields.content")}</span>
                     <RichTextEditor
                       key={`public-response-${sectionEditorKey}`}
@@ -637,10 +695,10 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                   <button
                     type="button"
                     className={cn(
-                      "inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium",
+                      "inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium",
                       sectionSaving
                         ? "cursor-not-allowed opacity-70"
-                        : "hover:bg-muted"
+                        : "hover:bg-slate-50"
                     )}
                     onClick={() => void handleAddSection()}
                     disabled={sectionSaving}
@@ -676,7 +734,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               </div>
 
               {showDescriptionEditor ? (
-                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                  <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       {showDescriptionRequired ? (
@@ -697,7 +755,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                     {!showDescriptionRequired ? (
                       <button
                         type="button"
-                        className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                        className="rounded border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
                         onClick={handleCancelDescriptionEdit}
                         disabled={descriptionSaving}
                       >
@@ -721,10 +779,10 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                     <button
                       type="button"
                       className={cn(
-                        "inline-flex items-center rounded-md border px-3 py-1.5 text-xs font-medium",
+                        "inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium",
                         !descriptionDraft.trim() || descriptionSaving
                           ? "cursor-not-allowed opacity-70"
-                          : "hover:bg-muted"
+                          : "hover:bg-slate-50"
                       )}
                       onClick={() => void handleSaveDescription()}
                       disabled={!descriptionDraft.trim() || descriptionSaving}
@@ -736,7 +794,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               ) : null}
 
               {showLockedMissingDescription ? (
-                <div className="rounded-lg border bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
                   {t("follow.lockedMissingDescription")}
                 </div>
               ) : null}
@@ -749,7 +807,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                     {visibleSections.map((section) => (
                       <div
                         key={section.id}
-                        className="rounded-lg border px-3 py-2"
+                        className="rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
@@ -776,7 +834,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                           editingSectionId !== section.id ? (
                             <button
                               type="button"
-                              className="rounded border px-2 py-1 text-[10px] hover:bg-muted"
+                              className="rounded border border-slate-200 px-2 py-1 text-[10px] hover:bg-slate-50"
                               onClick={() => handleEditSection(section)}
                             >
                               {tDetail("actions.edit")}
@@ -798,7 +856,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 type="button"
-                                className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                                className="rounded border border-slate-200 px-2 py-1 text-xs hover:bg-slate-50"
                                 onClick={handleCancelEdit}
                                 disabled={editingSaving}
                               >
@@ -806,7 +864,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                               </button>
                               <button
                                 type="button"
-                                className="rounded border px-2 py-1 text-xs hover:bg-muted disabled:opacity-70"
+                                className="rounded border border-slate-200 px-2 py-1 text-xs hover:bg-slate-50 disabled:opacity-70"
                                 onClick={() => void handleSaveSection()}
                                 disabled={editingSaving || !editingContent.trim()}
                               >
@@ -834,7 +892,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
 
           </section>
 
-          <section className="rounded-xl border bg-background p-4 space-y-4">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-4 shadow-sm">
             <div className="flex items-center justify-between gap-2">
               <div>
                 <h2 className="text-lg font-semibold">{tDetail("attachments.title")}</h2>
@@ -871,7 +929,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                       if (kind === "image") {
                         return (
                           <li key={item.id} className="group rounded-lg border p-2">
-                            <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/20">
+                              <div className="aspect-square w-full overflow-hidden rounded-md border border-slate-200 bg-slate-50">
                               <img
                                 src={item.url}
                                 alt={item.name}
@@ -887,7 +945,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                                   href={item.url}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                                  className="rounded border border-slate-200 px-2 py-0.5 text-[10px] hover:bg-slate-50"
                                 >
                                   {tDetail("files.actions.open")}
                                 </a>
@@ -900,7 +958,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                       const Icon = resolveFileIcon(item.mimeType);
                       return (
                         <li key={item.id} className="group rounded-lg border p-2">
-                          <div className="aspect-square w-full overflow-hidden rounded-md border bg-muted/10 grid place-items-center">
+                          <div className="aspect-square w-full overflow-hidden rounded-md border border-slate-200 bg-slate-50 grid place-items-center">
                             <Icon className="h-8 w-8 text-muted-foreground" />
                           </div>
                           <div className="mt-2 space-y-1">
@@ -912,7 +970,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                                 href={item.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="rounded border px-2 py-0.5 text-[10px] hover:bg-muted"
+                                className="rounded border border-slate-200 px-2 py-0.5 text-[10px] hover:bg-slate-50"
                               >
                                 {tDetail("files.actions.open")}
                               </a>
@@ -925,7 +983,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                       <li>
                         <button
                           type="button"
-                          className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-3 text-xs text-muted-foreground hover:bg-muted/30"
+                          className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-slate-300 p-3 text-xs text-slate-500 hover:bg-slate-50"
                           onClick={() => setShowImageForm(true)}
                           disabled={uploadingAttachment}
                         >
@@ -938,7 +996,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                 </div>
 
                 {showImageForm && !isReadOnly ? (
-                  <div className="rounded-lg border bg-muted/10 p-4 space-y-3">
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3">
                     <div className="grid gap-3 md:grid-cols-[1fr_auto]">
                       <div className="space-y-2">
                         <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -975,7 +1033,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         type="button"
-                        className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                        className="rounded border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
                         onClick={() => {
                           setShowImageForm(false);
                           setImageName("");
@@ -988,10 +1046,10 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                       <button
                         type="button"
                         className={cn(
-                          "rounded border px-2 py-1 text-xs",
+                          "rounded border border-slate-200 bg-white px-2 py-1 text-xs",
                           uploadingAttachment
                             ? "cursor-not-allowed opacity-70"
-                            : "hover:bg-muted"
+                            : "hover:bg-slate-50"
                         )}
                         onClick={() => void handleUpload()}
                         disabled={!imageFile || !imageName.trim() || uploadingAttachment}
@@ -1008,6 +1066,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
           </section>
         </div>
       )}
+      </div>
     </main>
   );
 }

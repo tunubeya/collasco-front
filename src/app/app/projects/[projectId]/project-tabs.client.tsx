@@ -25,11 +25,11 @@ import { ProjectReleasesTab } from "./project-releases-tab.client";
 import { ProjectQaDashboard } from "./project-qa-dashboard.client";
 import {
   Activity,
+  Archive,
   BookOpen,
   FileText,
   FolderTree,
   Home,
-  Layers,
   Paperclip,
   Rocket,
   Settings,
@@ -53,7 +53,7 @@ type ProjectTabsProps = {
 };
 
 type ProjectTab =
-  | "overview"
+  | "qaOverview"
   | "structure"
   | "documentation"
   | "attachments"
@@ -66,9 +66,10 @@ type ProjectTab =
 
 type ProjectPrimaryTab =
   | "overview"
-  | "build"
   | "documentation"
-  | "team"
+  | "planning"
+  | "quality"
+  | "delivery"
   | "settings";
 
 type ProjectNavigationItem = {
@@ -103,7 +104,7 @@ export function ProjectTabs({
   const tManual = useTranslations("app.projects.manual");
   const [activePrimaryTab, setActivePrimaryTab] =
     useState<ProjectPrimaryTab>("overview");
-  const [activeTab, setActiveTab] = useState<ProjectTab>("overview");
+  const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
   const permissionSet = useMemo(() => new Set(permissions), [permissions]);
   const canViewProject = hasPermission(permissionSet, "project.read");
   const canViewStructure = canViewProject || hasPermission(permissionSet, "module.read");
@@ -131,11 +132,12 @@ export function ProjectTabs({
   }, [roles]);
 
   const availableTabs = useMemo<ProjectTab[]>(() => {
-    const tabs: ProjectTab[] = ["overview"];
+    const tabs: ProjectTab[] = [];
     if (canViewStructure) tabs.push("structure");
     if (canViewProjectDocumentation) tabs.push("documentation");
     if (canViewAttachments) tabs.push("attachments");
     if (canViewQa) tabs.push("qa");
+    if (canViewQa) tabs.push("qaOverview");
     if (canViewQa) tabs.push("releases");
     if (canViewMembers) tabs.push("members");
     if (canViewLabels) tabs.push("labels");
@@ -159,26 +161,9 @@ export function ProjectTabs({
         key: "overview",
         label: tTabs("overview"),
         icon: Home,
-        items: [
-          {
-            key: "overview",
-            label: tTabs("overview"),
-            icon: Home,
-          },
-        ],
-      },
-      {
-        key: "build",
-        label: tTabs("build"),
-        icon: Layers,
-        items: [
-          ...(canViewStructure
-            ? [{ key: "structure" as const, label: tTabs("structure"), icon: FolderTree }]
-            : []),
-          ...(canViewQa
-            ? [{ key: "qa" as const, label: tTabs("qa"), icon: Activity }]
-            : []),
-        ],
+        items: canViewStructure
+          ? [{ key: "structure", label: tTabs("structure"), icon: FolderTree }]
+          : [],
       },
       {
         key: "documentation",
@@ -186,7 +171,7 @@ export function ProjectTabs({
         icon: BookOpen,
         items: [
           ...(canViewProjectDocumentation
-            ? [{ key: "documentation" as const, label: tTabs("documentation"), icon: FileText }]
+            ? [{ key: "documentation" as const, label: tTabs("sections"), icon: FileText }]
             : []),
           ...(canViewManual
             ? [{ key: "manual" as const, label: tTabs("manual"), icon: BookOpen }]
@@ -194,18 +179,28 @@ export function ProjectTabs({
           ...(canViewAttachments
             ? [{ key: "attachments" as const, label: tTabs("attachments"), icon: Paperclip }]
             : []),
+        ],
+      },
+      {
+        key: "quality",
+        label: tTabs("quality"),
+        icon: Activity,
+        items: [
           ...(canViewQa
-            ? [{ key: "releases" as const, label: tTabs("releases"), icon: Rocket }]
+            ? [{ key: "qa" as const, label: tTabs("qa"), icon: Activity }]
+            : []),
+          ...(canViewQa
+            ? [{ key: "qaOverview" as const, label: tTabs("overview"), icon: Home }]
             : []),
         ],
       },
       {
-        key: "team",
-        label: tTabs("team"),
-        icon: Users,
+        key: "delivery",
+        label: tTabs("delivery"),
+        icon: Rocket,
         items: [
-          ...(canViewMembers
-            ? [{ key: "members" as const, label: tTabs("members"), icon: Users }]
+          ...(canViewQa
+            ? [{ key: "releases" as const, label: tTabs("releases"), icon: Archive }]
             : []),
         ],
       },
@@ -216,6 +211,9 @@ export function ProjectTabs({
         items: [
           ...(canViewLabels
             ? [{ key: "labels" as const, label: tTabs("labels"), icon: Tags }]
+            : []),
+          ...(canViewMembers
+            ? [{ key: "members" as const, label: tTabs("members"), icon: Users }]
             : []),
           ...(canManageTrash
             ? [{ key: "trash" as const, label: tTabs("trash", { default: "Trash" }), icon: Trash2 }]
@@ -239,7 +237,7 @@ export function ProjectTabs({
 
   useEffect(() => {
     if (!availableTabs.includes(activeTab)) {
-      setActiveTab(availableTabs[0] ?? "overview");
+      setActiveTab(availableTabs[0] ?? "structure");
     }
   }, [activeTab, availableTabs]);
 
@@ -248,7 +246,11 @@ export function ProjectTabs({
       (group) => group.key === activePrimaryTab,
     );
     if (activeGroup) return;
-    setActivePrimaryTab(navigationGroups[0]?.key ?? "overview");
+    const fallbackGroup = navigationGroups[0];
+    setActivePrimaryTab(fallbackGroup?.key ?? "overview");
+    if (fallbackGroup?.items[0]) {
+      setActiveTab(fallbackGroup.items[0].key);
+    }
   }, [activePrimaryTab, navigationGroups]);
 
   const activeGroup = useMemo(
@@ -260,10 +262,8 @@ export function ProjectTabs({
 
   function handlePrimaryTabChange(group: ProjectNavigationGroup) {
     setActivePrimaryTab(group.key);
-    const firstLocalItem = group.items.find((item) => !item.href);
-    if (firstLocalItem) {
-      setActiveTab(firstLocalItem.key);
-    }
+    const activeItem = group.items.find((item) => item.key === activeTab);
+    setActiveTab(activeItem?.key ?? group.items[0]?.key ?? "structure");
   }
 
   const showSecondaryNavigation = activeGroup?.key !== "overview";
@@ -302,27 +302,12 @@ export function ProjectTabs({
         ) : null}
       </div>
 
-      {activeTab === "overview" && (
-        hasQaRead ? (
-          <ProjectQaDashboard
-            token={token}
-            projectId={projectId}
-            showHeader={false}
-          />
-        ) : (
-          <ProjectOverviewFallback
-            project={project}
-            structureModules={structureModules}
-            membersCount={project.members?.length ?? 0}
-            labels={{
-              structure: tTabs("structure"),
-              features: tTabs("features"),
-              members: tTabs("members"),
-              documentation: tTabs("documentation"),
-              fallbackDescription: tProjectDetail("modules.noDescription"),
-            }}
-          />
-        )
+      {activeTab === "qaOverview" && hasQaRead && (
+        <ProjectQaDashboard
+          token={token}
+          projectId={projectId}
+          showHeader={false}
+        />
       )}
 
       {activeTab === "structure" && canViewStructure && (
@@ -498,109 +483,4 @@ function SecondaryTabButton({
       {label}
     </button>
   );
-}
-
-function ProjectOverviewFallback({
-  project,
-  structureModules,
-  membersCount,
-  labels,
-}: {
-  project: Project;
-  structureModules: StructureModuleNode[];
-  membersCount: number;
-  labels: {
-    structure: string;
-    features: string;
-    members: string;
-    documentation: string;
-    fallbackDescription: string;
-  };
-}) {
-  const featureCount = countFeatures(structureModules);
-  const documentationLabelsCount = countDocumentationLabels(structureModules);
-
-  return (
-    <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="max-w-3xl">
-        <h2 className="text-lg font-semibold text-slate-950">{project.name}</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          {project.description?.trim() || labels.fallbackDescription}
-        </p>
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <OverviewMetricCard
-          label={labels.structure}
-          value={structureModules.length}
-          icon={FolderTree}
-        />
-        <OverviewMetricCard
-          label={labels.features}
-          value={featureCount}
-          icon={Layers}
-        />
-        <OverviewMetricCard
-          label={labels.members}
-          value={membersCount}
-          icon={Users}
-        />
-        <OverviewMetricCard
-          label={labels.documentation}
-          value={documentationLabelsCount}
-          icon={BookOpen}
-        />
-      </div>
-    </div>
-  );
-}
-
-function countDocumentationLabels(nodes: StructureModuleNode[]): number {
-  const labelIds = new Set<string>();
-
-  function visitModule(node: StructureModuleNode) {
-    node.documentationLabels.forEach((label) => labelIds.add(label.labelId));
-    node.items.forEach((item) => {
-      item.documentationLabels.forEach((label) => labelIds.add(label.labelId));
-      if (item.type === "module") {
-        visitModule(item);
-      }
-    });
-  }
-
-  nodes.forEach(visitModule);
-  return labelIds.size;
-}
-
-function OverviewMetricCard({
-  label,
-  value,
-  icon: Icon,
-}: {
-  label: string;
-  value: number;
-  icon: LucideIcon;
-}) {
-  return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-medium text-slate-500">{label}</p>
-        <Icon className="h-4 w-4 text-blue-500" aria-hidden />
-      </div>
-      <p className="mt-3 text-2xl font-semibold text-slate-950">{value}</p>
-    </div>
-  );
-}
-
-function countFeatures(nodes: StructureModuleNode[]): number {
-  return nodes.reduce((total, node) => {
-    const childFeatureCount = node.items.filter(
-      (item) => item.type === "feature",
-    ).length;
-    const childModuleCount = countFeatures(
-      node.items.filter(
-        (item): item is StructureModuleNode => item.type === "module",
-      ),
-    );
-    return total + childFeatureCount + childModuleCount;
-  }, 0);
 }

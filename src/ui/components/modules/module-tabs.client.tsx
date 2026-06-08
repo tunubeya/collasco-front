@@ -60,7 +60,6 @@ export function ModuleTabs({
   const tModule = useTranslations("app.projects.module");
   const tProjectDetail = useTranslations("app.projects.detail");
   const tProjectTabs = useTranslations("app.projects.detail.tabs");
-  const tFeatureTabs = useTranslations("app.projects.feature.tabs");
   const tManual = useTranslations("app.projects.manual");
 
   const permissionSet = useMemo(() => new Set(permissions), [permissions]);
@@ -87,7 +86,7 @@ export function ModuleTabs({
   }, [activeTab, availableTabs]);
 
   const structureLabel = tProjectTabs("structure");
-  const documentationLabel = tFeatureTabs("info");
+  const documentationLabel = tProjectTabs("sections");
   const manualLabel = tProjectTabs("manual");
   const navigationGroups = useMemo<ModuleNavigationGroup[]>(() => {
     const groups: ModuleNavigationGroup[] = [
@@ -146,7 +145,8 @@ export function ModuleTabs({
 
   function handlePrimaryTabChange(group: ModuleNavigationGroup) {
     setActivePrimaryTab(group.key);
-    setActiveTab(group.items[0]?.key ?? "structure");
+    const activeItem = group.items.find((item) => item.key === activeTab);
+    setActiveTab(activeItem?.key ?? group.items[0]?.key ?? "structure");
   }
 
   const showSecondaryNavigation = activeGroup?.key !== "overview";

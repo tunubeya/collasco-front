@@ -80,7 +80,7 @@ export default async function ProjectDashboardDetailPage({
     { label: project.name, href: `/app/projects/${project.id}` },
     {
       label: tBreadcrumbs("dashboard"),
-      href: `/app/projects/${project.id}/dashboard`,
+      href: `/app/projects/${project.id}`,
     },
     { label: title },
   ];
@@ -95,7 +95,7 @@ export default async function ProjectDashboardDetailPage({
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
         <Link
-          href={`/app/projects/${project.id}/dashboard`}
+          href={`/app/projects/${project.id}`}
           className={actionButtonClass({ variant: "neutral" })}
         >
           <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />

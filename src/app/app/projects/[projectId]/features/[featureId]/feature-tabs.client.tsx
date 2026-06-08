@@ -63,7 +63,10 @@ type FeatureTab =
 
 type FeaturePrimaryTab =
   | "build"
-  | "documentation";
+  | "documentation"
+  | "planning"
+  | "quality"
+  | "delivery";
 
 type FeatureNavigationItem = {
   key: FeatureTab;
@@ -120,11 +123,12 @@ export function FeatureTabs({
   const availableTabs = useMemo<FeatureTab[]>(() => {
     const tabs: FeatureTab[] = [];
     if (canViewDocumentation) tabs.push("documentation");
-    if (canReadTickets) tabs.push("tickets");
     if (canViewQa) tabs.push("manual");
-    tabs.push("versions");
-    if (canViewQa) tabs.push("qa");
+    if (canReadTickets) tabs.push("tickets");
+    tabs.push("issues");
     tabs.push("linked");
+    if (canViewQa) tabs.push("qa");
+    tabs.push("versions");
     return tabs;
   }, [canReadTickets, canViewDocumentation, canViewQa]);
 
@@ -143,7 +147,7 @@ export function FeatureTabs({
         icon: BookOpen,
         items: [
           ...(canViewDocumentation
-            ? [{ key: "documentation" as const, label: tTabs("info"), icon: FileText }]
+            ? [{ key: "documentation" as const, label: tProjectTabs("sections"), icon: FileText }]
             : []),
           ...(canViewQa
             ? [{ key: "manual" as const, label: tTabs("manual"), icon: BookOpen }]
@@ -156,9 +160,29 @@ export function FeatureTabs({
       {
         key: "build",
         label: tProjectTabs("build"),
-        icon: Rocket,
+        icon: GitBranch,
         items: [
-          { key: "versions", label: tTabs("versions"), icon: History },
+          {
+            key: "linked",
+            label: tTabs("linked"),
+            icon: GitBranch,
+            badge: linkedBadgeCount,
+          },
+        ],
+      },
+      {
+        key: "planning",
+        label: tProjectTabs("planning"),
+        icon: MessageSquare,
+        items: [
+          { key: "issues", label: tTabs("issues"), icon: MessageSquare },
+        ],
+      },
+      {
+        key: "quality",
+        label: tProjectTabs("quality"),
+        icon: Activity,
+        items: [
           ...(canViewQa
             ? [
                 {
@@ -169,12 +193,14 @@ export function FeatureTabs({
                 },
               ]
             : []),
-          {
-            key: "linked",
-            label: tTabs("linked"),
-            icon: GitBranch,
-            badge: linkedBadgeCount,
-          },
+        ],
+      },
+      {
+        key: "delivery",
+        label: tProjectTabs("delivery"),
+        icon: Rocket,
+        items: [
+          { key: "versions", label: tTabs("versions"), icon: History },
         ],
       },
     ];
@@ -224,7 +250,8 @@ export function FeatureTabs({
 
   function handlePrimaryTabChange(group: FeatureNavigationGroup) {
     setActivePrimaryTab(group.key);
-    setActiveTab(group.items[0]?.key ?? "issues");
+    const activeItem = group.items.find((item) => item.key === activeTab);
+    setActiveTab(activeItem?.key ?? group.items[0]?.key ?? "versions");
   }
 
   return (

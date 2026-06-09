@@ -9,7 +9,7 @@
   --color-blue-600:  #6D94C5;   /* azul marca (primary) */
 
   /* —— TOKENS SEMÁNTICOS —— */
-  --color-background: #F7F9FC;
+  --color-background: #ffffff;
   --color-foreground: #0d141c;
 
   --color-surface:    var(--color-cream-50);
@@ -49,7 +49,7 @@
   *, ::after, ::before, ::backdrop, ::file-selector-button { border-color: var(--color-border); }
 }:root {
   /* Base desde tu paleta */
-  --background: var(--color-background);            /* cream-50 */
+  --background: var(--color-background);            /* app background */
   --foreground: var(--color-foreground);            /* #0d141c */
 
   --muted: var(--color-muted);                      /* cream-100 */

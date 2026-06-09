@@ -87,7 +87,7 @@ Usar como referencia la UI de `src/app/public/releases/links/[token]/public-rele
 
 Elementos del patrón:
 
-- Fondo general neutro `bg-slate-50` y contenido centrado con `max-w-5xl`.
+- Fondo general blanco `bg-white` y contenido centrado con `max-w-5xl`.
 - Header destacado con tarjeta blanca y franja superior `bg-linear-to-r from-slate-900 to-slate-700`.
 - Título principal del objeto/proyecto, subtítulo corto y métricas compactas en cards translúcidas.
 - Contenido ordenado como timeline en desktop, con línea vertical e icono circular por item.
@@ -109,6 +109,7 @@ Notas:
 - Antes de permitir publicar un release, consultar o refrescar `GET /projects/:projectId/releases/documentation-status`.
 - Si `release` devuelve `409 Conflict`, mostrar el `documentationStatus` del error para explicar documentación pendiente o versiones publicadas faltantes.
 - `prepare` puede existir con warnings; `release` bloquea si hay documentación sin versión publicada o drafts con cambios pendientes.
+- Un release `PREPARED` puede volver a `DRAFT` con `PATCH /projects/:projectId/releases/:releaseId` enviando `{ "status": "DRAFT" }`; esto solo desbloquea edición. El snapshot documental se refresca al ejecutar `POST /projects/:projectId/releases/:releaseId/prepare` nuevamente.
 - En UI llamar a las release notes "changelog del release".
 - El changelog del release solo se edita o regenera en releases `DRAFT`; en `PREPARED` y `RELEASED` se muestra solo como lectura.
 - Generar el changelog del release sobrescribe el contenido actual; pedir confirmación si ya hay contenido.

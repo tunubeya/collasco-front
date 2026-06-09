@@ -518,7 +518,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     : null;
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8 text-slate-950">
+    <main className="min-h-screen bg-white px-4 py-8 text-slate-950">
       <div className="mx-auto w-full max-w-5xl space-y-6">
         <header className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-100 bg-linear-to-r from-slate-900 to-slate-700 px-6 py-7 text-white">

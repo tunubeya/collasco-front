@@ -345,7 +345,7 @@ export function PublicManualClient({
   }, [manualTree, rootId, rootType]);
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8 text-slate-950">
+    <main className="min-h-screen bg-white px-4 py-8 text-slate-950">
       <div className="mx-auto w-full max-w-5xl space-y-6">
       {isLoading && (
         <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 shadow-sm">

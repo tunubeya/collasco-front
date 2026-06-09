@@ -224,6 +224,19 @@ export function ProjectReleasesTab({
       await loadList();
     }, t("messages.prepareError"));
 
+  const handleMoveToDraft = () =>
+    selectedRelease &&
+    runAction(async () => {
+      const release = await updateProjectRelease(token, projectId, selectedRelease.id, {
+        status: "DRAFT",
+      });
+      const freshStatus = await getProjectReleaseDocumentationStatus(token, projectId);
+      setSelectedRelease(release);
+      setDocumentationStatus(freshStatus);
+      setEditingName(release.name ?? "");
+      await loadList();
+    }, t("messages.moveToDraftError"));
+
   const handleRelease = () =>
     selectedRelease &&
     runAction(async () => {
@@ -342,19 +355,6 @@ export function ProjectReleasesTab({
                 <h2 className="text-lg font-semibold">{t("list.title")}</h2>
               </div>
               <div className="flex shrink-0 items-center gap-2">
-                <button
-                  type="button"
-                  className={actionButtonClass({
-                    size: "xs",
-                    className: "h-8 w-8 justify-center px-0",
-                  })}
-                  onClick={() => void refreshAll(selectedRelease?.id)}
-                  disabled={isBusy || isLoading}
-                  aria-label={t("actions.refresh")}
-                  title={t("actions.refresh")}
-                >
-                  <RefreshCw className="h-3.5 w-3.5" aria-hidden />
-                </button>
                 {canManageQa && (
                   <>
                     <button
@@ -385,6 +385,20 @@ export function ProjectReleasesTab({
                     </button>
                   </>
                 )}
+                <button
+                  type="button"
+                  className={actionButtonClass({
+                    variant: "neutral",
+                    size: "xs",
+                    className: "h-8 w-8 justify-center px-0",
+                  })}
+                  onClick={() => void refreshAll(selectedRelease?.id)}
+                  disabled={isBusy || isLoading}
+                  aria-label={t("actions.refresh")}
+                  title={t("actions.refresh")}
+                >
+                  <RefreshCw className="h-3.5 w-3.5" aria-hidden />
+                </button>
                 <button
                   type="button"
                   className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
@@ -525,15 +539,26 @@ export function ProjectReleasesTab({
                   </button>
                 )}
                 {canManageQa && selectedRelease.status === "PREPARED" && (
+                  <>
+                    <button
+                      type="button"
+                      className={actionButtonClass({ variant: "neutral", size: "sm" })}
+                      onClick={handleMoveToDraft}
+                      disabled={isBusy}
+                    >
+                      <Pencil className="mr-2 h-4 w-4" aria-hidden />
+                      {t("actions.moveToDraft")}
+                    </button>
                     <button
                       type="button"
                       className={actionButtonClass({ size: "sm" })}
                       onClick={handleRelease}
                       disabled={isBusy}
                     >
-                    <Rocket className="mr-2 h-4 w-4" aria-hidden />
-                    {t("actions.release")}
-                  </button>
+                      <Rocket className="mr-2 h-4 w-4" aria-hidden />
+                      {t("actions.release")}
+                    </button>
+                  </>
                 )}
               </div>
             </div>

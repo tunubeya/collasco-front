@@ -779,7 +779,7 @@ export function EntityDocumentationPanel({
                 )}
               </button>
             </PopoverTrigger>
-            <PopoverContent className="z-50 w-80 rounded-lg border bg-background p-3 shadow-lg">
+            <PopoverContent className="z-50 w-[min(32rem,calc(100vw-2rem))] rounded-lg border bg-background p-3 shadow-lg">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-semibold">{t("versions.title")}</p>
                 {isLoadingVersions && (
@@ -797,17 +797,17 @@ export function EntityDocumentationPanel({
                     return (
                       <div
                         key={item.id}
-                        className="flex items-center justify-between gap-2 rounded-md border bg-background px-3 py-2 text-xs"
+                        className="flex items-start justify-between gap-3 rounded-md border bg-background px-3 py-2 text-xs"
                       >
                         <div className="min-w-0">
                           <p className="font-semibold">
                             {t("versions.versionLabel", { version: item.versionNumber })}
                           </p>
-                          <p className="mt-0.5 truncate text-muted-foreground">
+                          <p className="mt-0.5 whitespace-pre-wrap break-words text-muted-foreground">
                             {item.changelog || publishedAt || t("versions.noChangelog")}
                           </p>
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex shrink-0 items-center gap-1">
                           <PopoverClose
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                             onClick={() => void handleViewVersion(item.versionNumber)}

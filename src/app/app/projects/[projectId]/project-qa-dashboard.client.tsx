@@ -557,15 +557,15 @@ export function ProjectQaDashboard({
       />
     );
   } else {
-    const metricCards: Array<{
+    type MetricCard = {
       key: keyof QaDashboardMetrics;
       label: string;
       format?: (value: number | null | undefined) => string;
       detailType?: DashboardDetailType;
       slug?: string;
       badges?: ReactNode;
-    }> = [
-      { key: "totalFeatures", label: t("metrics.totalFeatures") },
+    };
+    const documentationMetricCards: MetricCard[] = [
       {
         key: "featuresMissingDescription",
         label: t("metrics.featuresMissingDescription"),
@@ -578,6 +578,9 @@ export function ProjectQaDashboard({
         detailType: "mandatoryDocumentationMissing",
         slug: "mandatory-missing",
       },
+    ];
+    const testMetricCards: MetricCard[] = [
+      { key: "totalFeatures", label: t("metrics.totalFeatures") },
       {
         key: "featuresWithoutTestCases",
         label: t("metrics.featuresWithoutTestCases"),
@@ -621,6 +624,7 @@ export function ProjectQaDashboard({
         slug: "fullpass",
       },
     ];
+    const metricCardGroups = [documentationMetricCards, testMetricCards];
 
     const activeDetail = detailState.type;
 
@@ -794,35 +798,42 @@ export function ProjectQaDashboard({
     const detailBaseHref = `/app/projects/${projectId}/dashboard`;
     const summarySection = showSummary ? (
       <>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {metricCards.map((metric) => {
-            const rawValue = metrics[metric.key] ?? 0;
-            const value =
-              metric.format !== undefined
-                ? metric.format(rawValue)
-                : formatter.number(rawValue);
-            const isCoverageButton = metric.key === "totalFeatures";
-            const detailHref = isCoverageButton
-              ? `${detailBaseHref}/coverage`
-              : metric.slug !== undefined
-              ? `${detailBaseHref}/${metric.slug}`
-              : undefined;
-            const ctaLabel = isCoverageButton
-              ? t("featureCoverage.cta")
-              : metric.detailType
-              ? detailCta
-              : undefined;
-            return (
-              <DashboardMetricCard
-                key={metric.key}
-                label={metric.label}
-                value={value}
-                href={detailHref}
-                ctaLabel={ctaLabel}
-                badges={metric.badges}
-              />
-            );
-          })}
+        <div className="space-y-4">
+          {metricCardGroups.map((metricCards, groupIndex) => (
+            <div
+              key={groupIndex}
+              className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+            >
+              {metricCards.map((metric) => {
+                const rawValue = metrics[metric.key] ?? 0;
+                const value =
+                  metric.format !== undefined
+                    ? metric.format(rawValue)
+                    : formatter.number(rawValue);
+                const isCoverageButton = metric.key === "totalFeatures";
+                const detailHref = isCoverageButton
+                  ? `${detailBaseHref}/coverage`
+                  : metric.slug !== undefined
+                  ? `${detailBaseHref}/${metric.slug}`
+                  : undefined;
+                const ctaLabel = isCoverageButton
+                  ? t("featureCoverage.cta")
+                  : metric.detailType
+                  ? detailCta
+                  : undefined;
+                return (
+                  <DashboardMetricCard
+                    key={metric.key}
+                    label={metric.label}
+                    value={value}
+                    href={detailHref}
+                    ctaLabel={ctaLabel}
+                    badges={metric.badges}
+                  />
+                );
+              })}
+            </div>
+          ))}
         </div>
 
         <CoverageOverview

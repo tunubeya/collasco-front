@@ -121,3 +121,4 @@ Notas:
 - El endpoint `POST /projects/:projectId/releases/:releaseId/notes/generate` devuelve HTML rich text y solo aplica a releases `DRAFT`; el front debe mostrarlo con `RichTextPreview`/`RichTextEditor`.
 - Los links públicos de release notes son por proyecto y muestran todos los releases `RELEASED`: administrar con `/projects/:projectId/releases/share-links` y renderizar `/public/releases/links/:token` sin auth.
 - Toda ruta pública nueva debe agregarse a `publicRoutePrefixes` en `src/middleware.ts` para evitar redirección a login.
+- Las rutas públicas deben salir temprano del middleware antes de refrescar sesión o llamar al backend; el middleware no debe bloquear páginas públicas con trabajo de autenticación.

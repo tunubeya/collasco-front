@@ -39,6 +39,7 @@ const publicRoutePrefixes = [
 const refreshInFlightByToken = new Map<string, Promise<SessionResult>>();
 const REFRESH_LOCK_COOKIE = "refresh-lock";
 const REFRESH_LOCK_TTL_SECONDS = 5;
+const REFRESH_REQUEST_TIMEOUT_MS = 4_000;
 
 type RefreshError = Error & { code?: string; status?: number };
 
@@ -68,14 +69,19 @@ async function runRefreshSingleFlight<T>(
 }
 
 async function fetchRefreshTokenWithRetry(refreshToken: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REFRESH_REQUEST_TIMEOUT_MS);
+
   try {
-    return await fetchRefreshToken(refreshToken);
+    return await fetchRefreshToken(refreshToken, controller.signal);
   } catch (error) {
     if (isRetryableRefreshError(error)) {
       console.log("⚠ Refresh retryable error, reintentando una vez...");
-      return await fetchRefreshToken(refreshToken);
+      return await fetchRefreshToken(refreshToken, controller.signal);
     }
     throw error;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -293,6 +299,11 @@ export default auth(async (req) => {
     if (isUnauthorizedRoute) {
       return NextResponse.next();
     }
+
+    if (isPublicRoute) {
+      return NextResponse.next();
+    }
+
     let response = NextResponse.next();
 
     const hasRefreshLock = req.cookies.get(REFRESH_LOCK_COOKIE)?.value === "1";
@@ -323,7 +334,7 @@ export default auth(async (req) => {
       }
     }
     // Handle initial public/login checks and redirects
-    if (!isLoggedIn && !isPublicRoute) {
+    if (!isLoggedIn) {
       const newUrl = new URL(RoutesEnum.LOGIN, req.nextUrl.origin);
       return Response.redirect(newUrl);
     }

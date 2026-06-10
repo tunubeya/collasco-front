@@ -210,7 +210,8 @@ export async function fetchSignup(
   }
 }
 export async function fetchRefreshToken(
-  refreshToken: string
+  refreshToken: string,
+  signal?: AbortSignal
 ): Promise<ResponseRefresh> {
   try {
     const headers = new Headers();
@@ -218,6 +219,7 @@ export async function fetchRefreshToken(
     const requestOptions = {
       method: "POST",
       headers,
+      signal,
     };
     const rawResponse = await fetch(`${apiUrl}/auth/refresh`, requestOptions).then((res) => {
       if (!res.ok) {

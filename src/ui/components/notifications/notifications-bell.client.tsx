@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Placement } from "@floating-ui/react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { Bell, Check, Trash2 } from "lucide-react";
+import { Bell, Check, Mail, MoreHorizontal, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -12,6 +12,7 @@ import {
   listNotifications,
   markAllNotificationsRead,
   markNotificationRead,
+  markNotificationUnread,
 } from "@/lib/api/notifications";
 import type {
   Notification,
@@ -66,23 +67,11 @@ export default function NotificationsBell({
     if (!token) return;
     setIsLoadingList(true);
     try {
-      const unreadItems: Notification[] = [];
-      let page = 1;
-      let totalPages = 1;
-
-      while (unreadItems.length < PAGE_LIMIT && page <= totalPages) {
-        const result = await listNotifications(token, {
-          page,
-          limit: PAGE_LIMIT,
-        });
-        unreadItems.push(
-          ...result.items.filter((notification) => !notification.isRead)
-        );
-        totalPages = Math.max(1, result.totalPages);
-        page += 1;
-      }
-
-      setItems(unreadItems.slice(0, PAGE_LIMIT));
+      const result = await listNotifications(token, {
+        page: 1,
+        limit: PAGE_LIMIT,
+      });
+      setItems(result.items);
     } catch {
       toast.error(t("errors.load"));
     } finally {
@@ -113,7 +102,11 @@ export default function NotificationsBell({
       try {
         if (!notification.isRead) {
           await markNotificationRead(token, id);
-          setItems((prev) => prev.filter((item) => item.id !== id));
+          setItems((prev) =>
+            prev.map((item) =>
+              item.id === id ? { ...item, isRead: true } : item
+            )
+          );
           setUnreadCount((prev) => {
             const next = Math.max(0, prev - 1);
             notifyUnreadNotificationsCountChanged(next);
@@ -160,12 +153,39 @@ export default function NotificationsBell({
     [busyIds, setUnreadCount, t, token]
   );
 
+  const handleMarkUnread = useCallback(
+    async (notification: Notification) => {
+      if (!token || !notification.isRead) return;
+      const { id } = notification;
+      if (busyIds[id]) return;
+      setBusyIds((prev) => ({ ...prev, [id]: true }));
+      try {
+        await markNotificationUnread(token, id);
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, isRead: false } : item
+          )
+        );
+        setUnreadCount((prev) => {
+          const next = prev + 1;
+          notifyUnreadNotificationsCountChanged(next);
+          return next;
+        });
+      } catch {
+        toast.error(t("errors.action"));
+      } finally {
+        setBusyIds((prev) => ({ ...prev, [id]: false }));
+      }
+    },
+    [busyIds, setUnreadCount, t, token]
+  );
+
   const handleMarkAll = useCallback(async () => {
     if (!token || isBulkAction || !hasUnread) return;
-      setIsBulkAction(true);
+    setIsBulkAction(true);
     try {
       await markAllNotificationsRead(token);
-      setItems([]);
+      setItems((prev) => prev.map((item) => ({ ...item, isRead: true })));
       setUnreadCount(0);
       notifyUnreadNotificationsCountChanged(0);
     } catch {
@@ -236,10 +256,21 @@ export default function NotificationsBell({
                   { dateStyle: "medium", timeStyle: "short" }
                 );
                 return (
-                  <li key={notification.id} className="px-3 py-3">
+                  <li
+                    key={notification.id}
+                    className={cn(
+                      "px-3 py-3",
+                      notification.isRead ? "bg-background" : "bg-orange-50/60"
+                    )}
+                  >
                     <div className="flex items-start gap-3">
                       <span
-                        className="mt-1 h-2.5 w-2.5 rounded-full border border-primary-orange bg-primary-orange"
+                        className={cn(
+                          "mt-1 h-2.5 w-2.5 rounded-full border",
+                          notification.isRead
+                            ? "border-muted-foreground/40 bg-muted-foreground/20"
+                            : "border-primary-orange bg-primary-orange"
+                        )}
                       />
                       <div className="flex-1 space-y-1">
                         <button
@@ -250,6 +281,7 @@ export default function NotificationsBell({
                           disabled={isBusy}
                           className={cn(
                             "text-left text-sm font-semibold text-foreground transition hover:text-primary-orange",
+                            notification.isRead && "opacity-70",
                             !href && "cursor-default"
                           )}
                         >
@@ -263,27 +295,52 @@ export default function NotificationsBell({
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleMarkRead(notification, false)}
-                          disabled={isBusy}
-                          className={cn(
-                            "rounded-full border px-2 py-1 text-[10px] font-medium transition",
-                            typeStyles[notification.type]
-                          )}
-                          aria-label={t("markRead")}
-                        >
-                          <Check className="h-3 w-3" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(notification)}
-                          disabled={isBusy}
-                          className="rounded-full border border-border px-2 py-1 text-[10px] text-muted-foreground transition hover:text-red-600"
-                          aria-label={t("delete")}
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </button>
+                        <Popover placement="bottom-end">
+                          <PopoverTrigger asChild>
+                            <button
+                              type="button"
+                              disabled={isBusy}
+                              className={cn(
+                                "rounded-full border px-2 py-1 text-[10px] font-medium transition",
+                                typeStyles[notification.type]
+                              )}
+                              aria-label={t("actions")}
+                            >
+                              <MoreHorizontal className="h-3 w-3" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="z-50 flex w-44 flex-col gap-1 rounded-lg border bg-background p-2 text-xs shadow-lg">
+                            {notification.isRead ? (
+                              <button
+                                type="button"
+                                onClick={() => handleMarkUnread(notification)}
+                                className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-left transition hover:bg-muted"
+                              >
+                                <Mail className="h-3.5 w-3.5" />
+                                {t("markUnread")}
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleMarkRead(notification, false)
+                                }
+                                className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-left transition hover:bg-muted"
+                              >
+                                <Check className="h-3.5 w-3.5" />
+                                {t("markRead")}
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(notification)}
+                              className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-red-600 transition hover:bg-red-50"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              {t("delete")}
+                            </button>
+                          </PopoverContent>
+                        </Popover>
                       </div>
                     </div>
                   </li>

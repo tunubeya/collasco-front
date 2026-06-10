@@ -2150,6 +2150,8 @@
         "summary": "Non lues : {count}",
         "markAll": "Tout marquer comme lu",
         "markRead": "Marquer comme lue",
+        "markUnread": "Marquer comme non lue",
+        "actions": "Actions de notification",
         "delete": "Supprimer",
         "empty": {
           "title": "Aucune notification pour le moment."
@@ -2615,6 +2617,8 @@
       "empty": "Aucune notification",
       "markAll": "Tout marquer comme lu",
       "markRead": "Marquer comme lue",
+      "markUnread": "Marquer comme non lue",
+      "actions": "Actions de notification",
       "delete": "Supprimer",
       "errors": {
         "load": "Impossible de charger les notifications.",

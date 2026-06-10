@@ -17,6 +17,7 @@ import { Dropdown } from "@/ui/components/form/dropdown";
 import { TicketsCreateButton } from "@/ui/components/tickets/tickets-create.client";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { PublicTicketShareDialog } from "@/ui/components/tickets/public-ticket-share-dialog.client";
+import { AppSecondaryTabButton } from "@/ui/components/tabs/app-tabs";
 
 type TicketsScope = "mine" | "assigned" | "unassigned" | "resolved" | "all" | "external";
 
@@ -195,31 +196,15 @@ export default function TicketsTabs({
               const active = item === currentScope;
               const ticketCount = counts[item] ?? 0;
               return (
-                <button
+                <AppSecondaryTabButton
                   key={item}
-                  type="button"
+                  label={t(`tabs.${item}`)}
+                  icon={Icon}
+                  isActive={active}
                   onClick={() => setScope(item)}
-                  className={cn(
-                    "inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-sm transition",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-muted text-muted-foreground hover:bg-background"
-                  )}
-                  aria-current={active ? "page" : undefined}
-                >
-                  <Icon className="h-4 w-4" />
-                  {t(`tabs.${item}`)}
-                  <span
-                    className={cn(
-                      "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
-                      active
-                        ? "bg-primary-foreground text-primary"
-                        : "bg-foreground/10 text-foreground"
-                    )}
-                  >
-                    {ticketCount > 99 ? "99+" : ticketCount}
-                  </span>
-                </button>
+                  badge={ticketCount > 99 ? "99+" : ticketCount}
+                  ariaCurrent={active ? "page" : undefined}
+                />
               );
             })}
           </div>

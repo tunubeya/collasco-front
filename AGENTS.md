@@ -65,6 +65,9 @@ Notas:
 Notas:
 
 - El contador de notificaciones no leidas solo debe mostrarse en la campana superior, no en el item "Notificaciones" del sidebar.
+- Las notificaciones deben ser clickeables cuando tengan destino (`ticketId`, `projectId`, `moduleId`, etc.) y navegar al ticket o entidad relacionada.
+- La accion "Marcar como no leida" debe mostrarse de forma contextual dentro del menu de acciones de cada notificacion, tanto en la pagina como en la campana.
+- La distincion visual entre notificaciones leidas y no leidas debe ser clara en la pagina y en la campana.
 - El item "Tickets" del sidebar puede mostrar badge de tickets asignados.
 - La pagina `/app/support` muestra primero un CTA para crear tickets publicos si el usuario encuentra un error y luego el manual de Collasco.
 - En soporte, los textos del CTA viven en `support.ticketCta.*`.
@@ -80,6 +83,7 @@ Notas:
 - En pantallas pequenas, evitar scroll horizontal innecesario si el contenido puede partirse en varias filas.
 - En el listado de tickets, las pestanas deben usar wrapping y no scroll horizontal.
 - El filtro de estado de tickets debe estar junto al selector de proyecto.
+- Para pestanas de navegación, usar los botones compartidos `AppPrimaryTabButton` y `AppSecondaryTabButton` de `src/ui/components/tabs/app-tabs.tsx` en vez de recrear estilos locales.
 
 ### Patrón de vistas públicas tipo changelog/release notes
 

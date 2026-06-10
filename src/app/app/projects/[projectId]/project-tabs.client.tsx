@@ -6,12 +6,15 @@ import { useTranslations } from "next-intl";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type { StructureModuleNode } from "@/lib/definitions";
-import { cn } from "@/lib/utils";
 import ProjectDetailClient from "@/ui/components/projects/project-detail.client";
 import { ProjectQA } from "./project-qa.client";
 import { ProjectMembersTab } from "./project-members-tab.client";
 import type { FeatureOption } from "./project-qa.types";
 import { actionButtonClass } from "@/ui/styles/action-button";
+import {
+  AppPrimaryTabButton as PrimaryTabButton,
+  AppSecondaryTabButton as SecondaryTabButton,
+} from "@/ui/components/tabs/app-tabs";
 import { Plus } from "lucide-react";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
@@ -411,76 +414,5 @@ export function ProjectTabs({
         <ProjectTrashTab token={token} projectId={projectId} />
       )}
     </section>
-  );
-}
-
-function PrimaryTabButton({
-  label,
-  icon: Icon,
-  isActive = false,
-  onClick,
-}: {
-  label: string;
-  icon: LucideIcon;
-  isActive?: boolean;
-  onClick?: () => void;
-}) {
-  const className = cn(
-    "relative -mb-px inline-flex items-center gap-2 rounded-t-lg border border-transparent px-4 py-3 text-sm font-medium transition",
-    isActive
-      ? "border-blue-100 bg-blue-50 text-blue-700 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-600"
-      : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
-  );
-
-  return (
-    <button
-      type="button"
-      className={className}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-    </button>
-  );
-}
-
-function SecondaryTabButton({
-  label,
-  icon: Icon,
-  isActive = false,
-  onClick,
-  href,
-}: {
-  label: string;
-  icon: LucideIcon;
-  isActive?: boolean;
-  onClick?: () => void;
-  href?: string;
-}) {
-  const className = cn(
-    "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition",
-    isActive
-      ? "bg-blue-100 text-blue-700 shadow-sm"
-      : "text-slate-500 hover:bg-slate-100 hover:text-slate-800",
-  );
-
-  if (href) {
-    return (
-      <Link href={href} className={className}>
-        <Icon className="h-4 w-4" aria-hidden />
-        {label}
-      </Link>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      className={className}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-    </button>
   );
 }

@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
+import { BellRing } from "lucide-react";
 
 import { listNotifications } from "@/lib/api/notifications";
 import { RoutesEnum } from "@/lib/utils";
@@ -41,10 +42,17 @@ export default async function NotificationsPage({ searchParams }: Props) {
   const currentLimit = Math.max(1, Number(result?.limit) || limit);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">{t("title")}</h1>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600">
+            <BellRing className="h-5 w-5" />
+          </span>
+          <div className="min-w-0">
+            <h1 className="text-xl font-semibold text-slate-950">{t("title")}</h1>
+            <p className="text-sm text-slate-500">{t("subtitle")}</p>
+          </div>
+        </div>
       </div>
 
       <NotificationsList

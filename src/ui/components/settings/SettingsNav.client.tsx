@@ -1,12 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Settings, User } from "lucide-react";
+
+import { AppSecondaryTabButton } from "@/ui/components/tabs/app-tabs";
 
 type NavItem = {
   href: string;
   label: string;
 };
+
+const NAV_ICON_BY_PATH = {
+  "/app/settings/profile": User,
+  "/app/settings/general": Settings,
+} as const;
 
 export default function SettingsNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
@@ -20,18 +27,14 @@ export default function SettingsNav({ items }: { items: NavItem[] }) {
             : pathname?.startsWith(item.href);
 
         return (
-          <Link
+          <AppSecondaryTabButton
             key={item.href}
             href={item.href}
-            className={[
-              "rounded-md px-3 py-2 transition-colors",
-              isActive
-                ? "bg-primary/10 text-foreground font-medium"
-                : "text-muted-foreground hover:bg-muted",
-            ].join(" ")}
-          >
-            {item.label}
-          </Link>
+            label={item.label}
+            icon={NAV_ICON_BY_PATH[item.href as keyof typeof NAV_ICON_BY_PATH]}
+            isActive={isActive}
+            ariaCurrent={isActive ? "page" : undefined}
+          />
         );
       })}
     </nav>

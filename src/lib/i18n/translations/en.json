@@ -2132,6 +2132,8 @@
         "summary": "Unread: {count}",
         "markAll": "Mark all as read",
         "markRead": "Mark as read",
+        "markUnread": "Mark as unread",
+        "actions": "Notification actions",
         "delete": "Delete",
         "empty": {
           "title": "No notifications yet."
@@ -2615,6 +2617,8 @@
       "empty": "No notifications",
       "markAll": "Mark all as read",
       "markRead": "Mark as read",
+      "markUnread": "Mark as unread",
+      "actions": "Notification actions",
       "delete": "Delete",
       "errors": {
         "load": "Failed to load notifications.",

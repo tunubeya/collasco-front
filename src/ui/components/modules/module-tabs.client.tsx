@@ -21,7 +21,10 @@ import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
 import { hasPermission } from "@/lib/permissions";
-import { cn } from "@/lib/utils";
+import {
+  AppPrimaryTabButton as PrimaryTabButton,
+  AppSecondaryTabButton as SecondaryTabButton,
+} from "@/ui/components/tabs/app-tabs";
 
 type ModuleTabsProps = {
   project: Project;
@@ -258,61 +261,5 @@ export function ModuleTabs({
         </div>
       )}
     </section>
-  );
-}
-
-function PrimaryTabButton({
-  label,
-  icon: Icon,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  icon: LucideIcon;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      className={cn(
-        "relative -mb-px inline-flex items-center gap-2 rounded-t-lg border border-transparent px-4 py-3 text-sm font-medium transition",
-        isActive
-          ? "border-blue-100 bg-blue-50 text-blue-700 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-600"
-          : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
-      )}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-    </button>
-  );
-}
-
-function SecondaryTabButton({
-  label,
-  icon: Icon,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  icon: LucideIcon;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      className={cn(
-        "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition",
-        isActive
-          ? "bg-blue-100 text-blue-700 shadow-sm"
-          : "text-slate-500 hover:bg-slate-100 hover:text-slate-800",
-      )}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-    </button>
   );
 }

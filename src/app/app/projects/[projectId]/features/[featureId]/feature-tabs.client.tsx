@@ -15,7 +15,6 @@ import {
 
 import type { Feature } from "@/lib/model-definitions/feature";
 import type { Project } from "@/lib/model-definitions/project";
-import { cn } from "@/lib/utils";
 import { FeatureQA } from "./feature-qa.client";
 import { ManualLabelsNavbar } from "@/ui/components/manual/manual-labels-navbar.client";
 import { ManualTabContent } from "@/ui/components/manual/manual-tab-content.client";
@@ -23,6 +22,10 @@ import type { QaLinkedFeature } from "@/lib/api/qa";
 import { LinkedFeaturesPanel } from "./feature-linked-features.client";
 import { EntityDocumentationPanel } from "@/ui/components/documentation/entity-documentation-panel.client";
 import { FeatureTicketsTab } from "./feature-tickets-tab.client";
+import {
+  AppPrimaryTabButton as PrimaryTabButton,
+  AppSecondaryTabButton as SecondaryTabButton,
+} from "@/ui/components/tabs/app-tabs";
 
 type LinkedOption = {
   id: string;
@@ -428,75 +431,5 @@ export function FeatureTabs({
         </div>
       )}
     </section>
-  );
-}
-
-function PrimaryTabButton({
-  label,
-  icon: Icon,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  icon: LucideIcon;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      className={cn(
-        "relative -mb-px inline-flex items-center gap-2 rounded-t-lg border border-transparent px-4 py-3 text-sm font-medium transition",
-        isActive
-          ? "border-blue-100 bg-blue-50 text-blue-700 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-600"
-          : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
-      )}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-    </button>
-  );
-}
-
-function SecondaryTabButton({
-  label,
-  icon: Icon,
-  isActive,
-  onClick,
-  badge,
-}: {
-  label: string;
-  icon: LucideIcon;
-  isActive: boolean;
-  onClick: () => void;
-  badge?: number;
-}) {
-  return (
-    <button
-      type="button"
-      className={cn(
-        "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition",
-        isActive
-          ? "bg-blue-100 text-blue-700 shadow-sm"
-          : "text-slate-500 hover:bg-slate-100 hover:text-slate-800",
-      )}
-      onClick={onClick}
-    >
-      <Icon className="h-4 w-4" aria-hidden />
-      {label}
-      {badge && badge > 0 ? (
-        <span
-          className={cn(
-            "inline-flex min-w-[1.5rem] items-center justify-center rounded-full px-2 py-0.5 text-[11px] font-semibold",
-            isActive
-              ? "bg-blue-200 text-blue-800"
-              : "bg-slate-100 text-slate-600",
-          )}
-        >
-          {badge}
-        </span>
-      ) : null}
-    </button>
   );
 }

@@ -50,7 +50,8 @@ import {
   DialogTrigger,
 } from "@/ui/components/dialog/dialog";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Loader2, Lock, Plus, Trash2 } from "lucide-react";
+import { Activity, ClipboardList, Loader2, Lock, PlayCircle, Plus, Trash2 } from "lucide-react";
+import { AppSecondaryTabButton } from "@/ui/components/tabs/app-tabs";
 
 type FeatureQAProps = {
   token: string;
@@ -239,20 +240,29 @@ export function FeatureQA({
           aria-label={t("tabs.ariaLabel")}
           className="mt-4 flex flex-wrap gap-2"
         >
-          <TabButton
+          <AppSecondaryTabButton
             label={t("tabs.cases")}
+            icon={ClipboardList}
             isActive={activeTab === "cases"}
             onClick={() => handleTabChange("cases")}
+            role="tab"
+            ariaSelected={activeTab === "cases"}
           />
-          <TabButton
+          <AppSecondaryTabButton
             label={t("tabs.runs")}
+            icon={PlayCircle}
             isActive={activeTab === "runs"}
             onClick={() => handleTabChange("runs")}
+            role="tab"
+            ariaSelected={activeTab === "runs"}
           />
-          <TabButton
+          <AppSecondaryTabButton
             label={t("tabs.health")}
+            icon={Activity}
             isActive={activeTab === "health"}
             onClick={() => handleTabChange("health")}
+            role="tab"
+            ariaSelected={activeTab === "health"}
           />
         </div>
       </header>
@@ -279,33 +289,6 @@ export function FeatureQA({
         )}
       </div>
     </section>
-  );
-}
-
-function TabButton({
-  label,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      role="tab"
-      aria-selected={isActive}
-      className={cn(
-        "rounded-full border px-3 py-1 text-sm transition",
-        isActive
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-transparent bg-muted text-muted-foreground hover:border-border hover:bg-background",
-      )}
-      onClick={onClick}
-    >
-      {label}
-    </button>
   );
 }
 

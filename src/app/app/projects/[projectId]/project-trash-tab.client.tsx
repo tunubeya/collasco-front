@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { RefreshCcw, Trash2 } from "lucide-react";
+import { FolderTree, RefreshCcw, Tags, Trash2 } from "lucide-react";
 import type { Project } from "@/lib/model-definitions/project";
 import type { Module } from "@/lib/model-definitions/module";
 import type { Feature } from "@/lib/model-definitions/feature";
@@ -19,6 +19,7 @@ import {
 } from "@/lib/data";
 import { listDeletedProjectLabels, restoreProjectLabel } from "@/lib/api/qa";
 import { cn } from "@/lib/utils";
+import { AppSecondaryTabButton } from "@/ui/components/tabs/app-tabs";
 
 type TrashTab = "projects" | "modules" | "features" | "labels";
 
@@ -151,10 +152,10 @@ export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
 
   const tabs = useMemo(
     () => [
-      { key: "projects" as const, label: t("tabs.projects") },
-      { key: "modules" as const, label: t("tabs.modules") },
-      { key: "features" as const, label: t("tabs.features") },
-      { key: "labels" as const, label: t("tabs.labels") },
+      { key: "projects" as const, label: t("tabs.projects"), icon: FolderTree },
+      { key: "modules" as const, label: t("tabs.modules"), icon: FolderTree },
+      { key: "features" as const, label: t("tabs.features"), icon: FolderTree },
+      { key: "labels" as const, label: t("tabs.labels"), icon: Tags },
     ],
     [t],
   );
@@ -189,19 +190,13 @@ export function ProjectTrashTab({ token, projectId }: ProjectTrashTabProps) {
     <section className="space-y-4">
       <div className="flex flex-wrap gap-2">
         {tabs.map((tab) => (
-          <button
+          <AppSecondaryTabButton
             key={tab.key}
-            type="button"
+            label={tab.label}
+            icon={tab.icon}
+            isActive={activeTab === tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={cn(
-              "rounded-full border px-3 py-1 text-sm transition",
-              activeTab === tab.key
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-muted text-muted-foreground hover:bg-background",
-            )}
-          >
-            {tab.label}
-          </button>
+          />
         ))}
       </div>
 

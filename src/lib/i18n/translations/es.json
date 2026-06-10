@@ -2150,6 +2150,8 @@
         "summary": "Sin leer: {count}",
         "markAll": "Marcar todas como leídas",
         "markRead": "Marcar como leída",
+        "markUnread": "Marcar como no leída",
+        "actions": "Acciones de notificación",
         "delete": "Eliminar",
         "empty": {
           "title": "Aún no hay notificaciones."
@@ -2615,6 +2617,8 @@
       "empty": "Sin notificaciones",
       "markAll": "Marcar todas como leídas",
       "markRead": "Marcar como leída",
+      "markUnread": "Marcar como no leída",
+      "actions": "Acciones de notificación",
       "delete": "Eliminar",
       "errors": {
         "load": "No se pudieron cargar las notificaciones.",

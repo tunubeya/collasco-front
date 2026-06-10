@@ -2150,6 +2150,8 @@
         "summary": "Ongelezen: {count}",
         "markAll": "Alles markeren als gelezen",
         "markRead": "Markeren als gelezen",
+        "markUnread": "Markeren als ongelezen",
+        "actions": "Meldingsacties",
         "delete": "Verwijderen",
         "empty": {
           "title": "Nog geen meldingen."
@@ -2615,6 +2617,8 @@
       "empty": "Geen meldingen",
       "markAll": "Alles markeren als gelezen",
       "markRead": "Markeren als gelezen",
+      "markUnread": "Markeren als ongelezen",
+      "actions": "Meldingsacties",
       "delete": "Verwijderen",
       "errors": {
         "load": "Meldingen konden niet worden geladen.",

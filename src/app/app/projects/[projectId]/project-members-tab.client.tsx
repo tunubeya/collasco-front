@@ -23,8 +23,9 @@ import {
 } from "@/ui/components/dialog/dialog";
 import { cn } from "@/lib/utils";
 import { actionButtonClass } from "@/ui/styles/action-button";
-import { Plus } from "lucide-react";
+import { Plus, Shield, Users } from "lucide-react";
 import { ProjectRolesPanel } from "./project-roles-panel.client";
+import { AppSecondaryTabButton } from "@/ui/components/tabs/app-tabs";
 
 type ProjectMembersTabProps = {
   token: string;
@@ -163,31 +164,19 @@ export function ProjectMembersTab({
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {canManageRoles && (
-            <div className="inline-flex rounded-full border border-border bg-muted/30 p-1 text-xs">
-              <button
-                type="button"
-                className={cn(
-                  "rounded-full px-3 py-1 transition",
-                  activeView === "members"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
+            <div className="flex flex-wrap gap-2">
+              <AppSecondaryTabButton
+                label={t("tabs.members")}
+                icon={Users}
+                isActive={activeView === "members"}
                 onClick={() => setActiveView("members")}
-              >
-                {t("tabs.members")}
-              </button>
-              <button
-                type="button"
-                className={cn(
-                  "rounded-full px-3 py-1 transition",
-                  activeView === "roles"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
+              />
+              <AppSecondaryTabButton
+                label={t("tabs.roles")}
+                icon={Shield}
+                isActive={activeView === "roles"}
                 onClick={() => setActiveView("roles")}
-              >
-                {t("tabs.roles")}
-              </button>
+              />
             </div>
           )}
           {canManageMembers && activeView === "members" && (

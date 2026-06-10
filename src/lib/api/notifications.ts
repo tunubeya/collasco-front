@@ -194,6 +194,24 @@ export async function markNotificationRead(
   }
 }
 
+export async function markNotificationUnread(
+  token: string,
+  id: string
+): Promise<Notification> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/notifications/${id}/unread`,
+      { method: "PATCH" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<Notification>(res);
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
 export async function markAllNotificationsRead(
   token: string
 ): Promise<{ count: number }> {

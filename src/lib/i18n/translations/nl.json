@@ -767,6 +767,7 @@
           "notLoaded": "Laad notities om ze te bewerken.",
           "updated": "Bijgewerkt {date}",
           "generated": "Gegenereerd {date}",
+          "generateTitle": "Changelog genereren",
           "editorLabel": "Releasechangelog",
           "previewLabel": "Preview",
           "placeholder": "Schrijf de releasechangelog.",

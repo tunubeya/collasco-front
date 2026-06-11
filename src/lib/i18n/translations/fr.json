@@ -767,6 +767,7 @@
           "notLoaded": "Chargez les notes pour les modifier.",
           "updated": "Mis à jour {date}",
           "generated": "Généré {date}",
+          "generateTitle": "Générer le changelog",
           "editorLabel": "Changelog de la release",
           "previewLabel": "Aperçu",
           "placeholder": "Rédigez le changelog de la release.",

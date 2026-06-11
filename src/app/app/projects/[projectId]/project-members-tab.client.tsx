@@ -55,6 +55,7 @@ export function ProjectMembersTab({
   const [members, setMembers] = useState<ProjectMember[]>(initialMembers ?? []);
   const [isLoading, setIsLoading] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState<ProjectMember | null>(null);
   const [activeView, setActiveView] = useState<"members" | "roles">("members");
 
   useEffect(() => {
@@ -145,6 +146,7 @@ export function ProjectMembersTab({
       try {
         await removeProjectMember(token, projectId, userId);
         toast.success(t("messages.removed"));
+        setMemberToRemove(null);
         void fetchMembers();
       } catch (error) {
         toast.error(t("messages.removeError"), {
@@ -282,20 +284,7 @@ export function ProjectMembersTab({
                             variant="ghost"
                             size="sm"
                             disabled={role?.isOwner || !canManageMembers}
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  t("messages.removeConfirm", {
-                                    name:
-                                      user?.name ??
-                                      user?.email ??
-                                      member.userId,
-                                  }),
-                                )
-                              ) {
-                                void handleRemove(member.userId);
-                              }
-                            }}
+                            onClick={() => setMemberToRemove(member)}
                           >
                             {t("actions.remove")}
                           </Button>
@@ -329,6 +318,40 @@ export function ProjectMembersTab({
           roles={roles}
         />
       )}
+
+      <Dialog
+        open={Boolean(memberToRemove)}
+        onOpenChange={(open) => {
+          if (!open) setMemberToRemove(null);
+        }}
+      >
+        <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+          <DialogHeading className="text-lg font-semibold">
+            {t("actions.remove")}
+          </DialogHeading>
+          <DialogDescription className="text-sm text-muted-foreground">
+            {memberToRemove
+              ? t("messages.removeConfirm", {
+                  name:
+                    memberToRemove.user?.name ??
+                    memberToRemove.user?.email ??
+                    memberToRemove.userId,
+                })
+              : null}
+          </DialogDescription>
+          <div className="mt-5">
+            <DialogActions
+              closeLabel={t("actions.cancel")}
+              confirmLabel={t("actions.remove")}
+              confirmVariant="destructive"
+              onConfirm={() => {
+                if (!memberToRemove) return false;
+                return handleRemove(memberToRemove.userId);
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

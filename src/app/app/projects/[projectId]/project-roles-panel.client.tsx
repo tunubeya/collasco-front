@@ -58,6 +58,7 @@ export function ProjectRolesPanel({
   const [formOpen, setFormOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [editingRole, setEditingRole] = useState<ProjectRole | null>(null);
+  const [roleToDelete, setRoleToDelete] = useState<ProjectRole | null>(null);
   const [formValues, setFormValues] = useState<RoleFormValues>({
     ...DEFAULT_FORM_VALUES,
   });
@@ -185,13 +186,10 @@ export function ProjectRolesPanel({
   const handleDelete = useCallback(
     async (role: ProjectRole) => {
       if (role.isOwner || role.memberCount > 0) return;
-      const confirmed = window.confirm(
-        t("messages.deleteConfirm", { name: role.name }),
-      );
-      if (!confirmed) return;
       try {
         await deleteProjectRole(token, projectId, role.id);
         toast.success(t("messages.deleted"));
+        setRoleToDelete(null);
         void refreshRoles();
       } catch (error) {
         toast.error(t("messages.deleteError"), {
@@ -291,7 +289,7 @@ export function ProjectRolesPanel({
                         <button
                           type="button"
                           className="rounded border border-border bg-background p-1 text-muted-foreground transition hover:text-foreground disabled:opacity-40"
-                          onClick={() => void handleDelete(role)}
+                          onClick={() => setRoleToDelete(role)}
                           disabled={disableDelete}
                           aria-label={t("actions.delete")}
                           title={
@@ -468,6 +466,34 @@ export function ProjectRolesPanel({
               }}
             />
           </form>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={Boolean(roleToDelete)}
+        onOpenChange={(open) => {
+          if (!open) setRoleToDelete(null);
+        }}
+      >
+        <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+          <DialogHeading className="text-lg font-semibold">
+            {t("actions.delete")}
+          </DialogHeading>
+          <DialogDescription className="text-sm text-muted-foreground">
+            {roleToDelete
+              ? t("messages.deleteConfirm", { name: roleToDelete.name })
+              : null}
+          </DialogDescription>
+          <div className="mt-5">
+            <DialogActions
+              closeLabel={t("actions.cancel")}
+              confirmLabel={t("actions.delete")}
+              confirmVariant="destructive"
+              onConfirm={() => {
+                if (!roleToDelete) return false;
+                return handleDelete(roleToDelete);
+              }}
+            />
+          </div>
         </DialogContent>
       </Dialog>
     </section>

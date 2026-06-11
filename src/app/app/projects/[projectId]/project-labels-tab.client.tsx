@@ -76,6 +76,7 @@ export function ProjectLabelsTab({
   const [formError, setFormError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [labelToDelete, setLabelToDelete] = useState<QaProjectLabel | null>(null);
   const [reorderingId, setReorderingId] = useState<string | null>(null);
 
   const roleOptions = useMemo(() => {
@@ -212,14 +213,11 @@ export function ProjectLabelsTab({
 
   const handleDelete = useCallback(
     async (label: QaProjectLabel) => {
-      const confirmed = window.confirm(
-        t("messages.deleteConfirm", { name: label.name }),
-      );
-      if (!confirmed) return;
       setDeletingId(label.id);
       try {
         await deleteProjectLabel(token, projectId, label.id);
         toast.success(t("messages.deleted"));
+        setLabelToDelete(null);
         void fetchLabels();
       } catch (error) {
         toast.error(t("messages.deleteError"), {
@@ -398,7 +396,7 @@ export function ProjectLabelsTab({
                             variant: "destructive",
                             size: "xs",
                           })}
-                          onClick={() => void handleDelete(label)}
+                          onClick={() => setLabelToDelete(label)}
                           disabled={deletingId === label.id}
                         >
                           {deletingId === label.id ? (
@@ -432,6 +430,34 @@ export function ProjectLabelsTab({
         toggleRole={toggleRole}
         getRoleLabel={getRoleLabel}
       />
+      <Dialog
+        open={Boolean(labelToDelete)}
+        onOpenChange={(open) => {
+          if (!open) setLabelToDelete(null);
+        }}
+      >
+        <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+          <DialogHeading className="text-lg font-semibold">
+            {t("actions.delete")}
+          </DialogHeading>
+          <DialogDescription className="text-sm text-muted-foreground">
+            {labelToDelete
+              ? t("messages.deleteConfirm", { name: labelToDelete.name })
+              : null}
+          </DialogDescription>
+          <div className="mt-5">
+            <DialogActions
+              closeLabel={t("actions.cancel")}
+              confirmLabel={t("actions.delete")}
+              confirmVariant="destructive"
+              onConfirm={() => {
+                if (!labelToDelete) return false;
+                return handleDelete(labelToDelete);
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

@@ -755,6 +755,7 @@
           "notLoaded": "Load notes to edit them.",
           "updated": "Updated {date}",
           "generated": "Generated {date}",
+          "generateTitle": "Generate changelog",
           "editorLabel": "Release changelog",
           "previewLabel": "Preview",
           "placeholder": "Write the release changelog.",

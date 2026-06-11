@@ -92,6 +92,8 @@ export function ProjectReleasesTab({
   const [isReleasePanelOpen, setIsReleasePanelOpen] = useState(true);
   const [isSharePanelOpen, setIsSharePanelOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [generateNotesDialogOpen, setGenerateNotesDialogOpen] = useState(false);
+  const [copyFallbackUrl, setCopyFallbackUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const formatDate = useCallback(
@@ -299,9 +301,6 @@ export function ProjectReleasesTab({
   const handleGenerateNotes = () =>
     selectedRelease &&
     runAction(async () => {
-      if (notesDraft.trim() && !window.confirm(t("notes.generateConfirm"))) {
-        return;
-      }
       const generatedNotes = await generateProjectReleaseNotes(
         token,
         projectId,
@@ -320,7 +319,16 @@ export function ProjectReleasesTab({
           : current,
       );
       await loadList();
+      setGenerateNotesDialogOpen(false);
     }, t("messages.notesGenerateError"));
+
+  const requestGenerateNotes = () => {
+    if (notesDraft.trim()) {
+      setGenerateNotesDialogOpen(true);
+      return;
+    }
+    handleGenerateNotes();
+  };
 
   const handleCreateShareLink = () =>
     runShareAction(async () => {
@@ -350,8 +358,9 @@ export function ProjectReleasesTab({
     const url = resolvePublicReleaseUrl(link);
     try {
       await navigator.clipboard.writeText(url);
+      setCopyFallbackUrl(null);
     } catch {
-      window.prompt(t("share.copyFallback"), url);
+      setCopyFallbackUrl(url);
     }
   };
 
@@ -440,6 +449,7 @@ export function ProjectReleasesTab({
                   <ReleaseShareLinksPanel
                     links={shareLinks}
                     isBusy={isShareBusy}
+                    copyFallbackUrl={copyFallbackUrl}
                     onCreate={handleCreateShareLink}
                     onCopy={copyShareUrl}
                     onDelete={handleDeleteShareLink}
@@ -663,10 +673,36 @@ export function ProjectReleasesTab({
                 canGenerateNotes={canManageQa}
                 isBusy={isBusy}
                 onSave={handleSaveNotes}
-                onGenerate={handleGenerateNotes}
+                onGenerate={requestGenerateNotes}
                 formatDate={formatDate}
               />
             )}
+
+            <Dialog
+              open={generateNotesDialogOpen}
+              onOpenChange={setGenerateNotesDialogOpen}
+            >
+              <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+                <DialogHeading className="text-lg font-semibold">
+                  {t("notes.generateTitle")}
+                </DialogHeading>
+                <DialogDescription className="text-sm text-muted-foreground">
+                  {t("notes.generateConfirm")}
+                </DialogDescription>
+                <div className="mt-5 flex justify-end gap-2">
+                  <DialogClose>{t("actions.cancel")}</DialogClose>
+                  <button
+                    type="button"
+                    className={actionButtonClass({ variant: "neutral" })}
+                    onClick={handleGenerateNotes}
+                    disabled={isBusy}
+                  >
+                    <Wand2 className="mr-2 h-4 w-4" aria-hidden />
+                    {t("actions.generateNotes")}
+                  </button>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
               <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
@@ -927,6 +963,7 @@ function SnapshotItems({
 function ReleaseShareLinksPanel({
   links,
   isBusy,
+  copyFallbackUrl,
   onCreate,
   onCopy,
   onDelete,
@@ -934,6 +971,7 @@ function ReleaseShareLinksPanel({
 }: {
   links: ReleaseShareLink[];
   isBusy: boolean;
+  copyFallbackUrl: string | null;
   onCreate: () => void;
   onCopy: (link: ReleaseShareLink) => void;
   onDelete: (linkId: string) => void;
@@ -1016,6 +1054,12 @@ function ReleaseShareLinksPanel({
           ))}
         </div>
       )}
+      {copyFallbackUrl ? (
+        <div className="rounded-md border border-yellow-200 bg-yellow-50 p-3 text-xs text-yellow-950">
+          <p className="font-medium">{t("share.copyFallback")}</p>
+          <p className="mt-1 break-all font-mono">{copyFallbackUrl}</p>
+        </div>
+      ) : null}
     </div>
   );
 }

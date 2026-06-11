@@ -28,6 +28,13 @@ import {
 } from "@/lib/api/qa";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogDescription,
+  DialogHeading,
+} from "@/ui/components/dialog/dialog";
+import {
   Check,
   Eye,
   History,
@@ -75,6 +82,7 @@ export function EntityDocumentationPanel({
   const [isPublishing, setIsPublishing] = useState(false);
   const [isLoadingVersions, setIsLoadingVersions] = useState(false);
   const [revertingVersionNumber, setRevertingVersionNumber] = useState<number | null>(null);
+  const [versionToRevert, setVersionToRevert] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [labelOptions, setLabelOptions] = useState<
     Awaited<ReturnType<typeof listProjectDocumentationLabels>>
@@ -461,10 +469,6 @@ export function EntityDocumentationPanel({
 
   const handleRevert = useCallback(
     async (versionNumber: number) => {
-      const confirmed = window.confirm(
-        t("versions.confirmRevert", { version: versionNumber }),
-      );
-      if (!confirmed) return;
       setRevertingVersionNumber(versionNumber);
       try {
         await revertDocumentationVersion(
@@ -473,6 +477,7 @@ export function EntityDocumentationPanel({
           entityId,
           versionNumber,
         );
+        setVersionToRevert(null);
         setViewingVersionNumber(null);
         setEditingLabelId(null);
         toast.success(t("versions.messages.reverted", { version: versionNumber }));
@@ -817,7 +822,7 @@ export function EntityDocumentationPanel({
                           </PopoverClose>
                           <PopoverClose
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
-                            onClick={() => void handleRevert(item.versionNumber)}
+                            onClick={() => setVersionToRevert(item.versionNumber)}
                             disabled={revertingVersionNumber === item.versionNumber}
                             aria-label={t("versions.actions.revert")}
                           >
@@ -1272,6 +1277,34 @@ export function EntityDocumentationPanel({
           })}
         </div>
       )}
+      <Dialog
+        open={versionToRevert !== null}
+        onOpenChange={(open) => {
+          if (!open) setVersionToRevert(null);
+        }}
+      >
+        <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+          <DialogHeading className="text-lg font-semibold">
+            {t("versions.actions.revert")}
+          </DialogHeading>
+          <DialogDescription className="text-sm text-muted-foreground">
+            {versionToRevert !== null
+              ? t("versions.confirmRevert", { version: versionToRevert })
+              : null}
+          </DialogDescription>
+          <div className="mt-5">
+            <DialogActions
+              closeLabel={t("actions.cancel")}
+              confirmLabel={t("versions.actions.revert")}
+              confirmVariant="destructive"
+              onConfirm={() => {
+                if (versionToRevert === null) return false;
+                return handleRevert(versionToRevert);
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

@@ -53,6 +53,7 @@ Notas:
 - Si cambia el responsable de un ticket, disparar `notifyTicketCountsChanged()` para que el sidebar actualice el contador.
 - El helper de eventos para conteos esta en `src/ui/components/tickets/ticket-count-events.ts`.
 - En follow-up publico, los clientes externos no ven ni crean secciones `COMMENT`; al agregar respuestas publicas enviar solo `{ content }` y dejar que el backend las guarde como `RESPONSE`.
+- En follow-up publico, si la descripción del ticket falta o está con el placeholder técnico, mostrar primero el editor requerido de descripción y no mostrar el formulario "Agregar respuesta" hasta que la descripción tenga contenido real. Si la descripción faltante está bloqueada, mostrar el aviso de bloqueo y permitir respuestas.
 
 ## Sidebar, notificaciones y soporte
 

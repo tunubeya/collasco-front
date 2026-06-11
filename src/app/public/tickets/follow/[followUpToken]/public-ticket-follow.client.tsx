@@ -213,6 +213,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     [sections]
   );
 
+  const hasDescription = !isMissingDescription(descriptionSection?.content);
   const descriptionLocked = isLockedSection(descriptionSection);
   const showLockedMissingDescription =
     descriptionLocked && isMissingDescription(descriptionSection?.content);
@@ -220,6 +221,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     !isReadOnly && !descriptionLocked && isMissingDescription(descriptionSection?.content);
   const showDescriptionEditor =
     !isReadOnly && !descriptionLocked && (showDescriptionRequired || isEditingDescription);
+  const canAddResponse = !isReadOnly && (hasDescription || showLockedMissingDescription);
   const visibleSections = useMemo(
     () =>
       sections.filter(
@@ -668,7 +670,73 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
               ) : null}
             </div>
 
-            {!isReadOnly ? (
+            {showDescriptionEditor ? (
+              <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    {showDescriptionRequired ? (
+                      <>
+                        <p className="text-sm font-semibold text-amber-900">
+                          {tDetail("messages.descriptionRequired")}
+                        </p>
+                        <p className="mt-1 text-xs text-amber-800">
+                          {tDetail("sectionTypes.DESCRIPTION")}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-sm font-semibold text-amber-900">
+                        {tDetail("sectionTypes.DESCRIPTION")}
+                      </p>
+                    )}
+                  </div>
+                  {!showDescriptionRequired ? (
+                    <button
+                      type="button"
+                      className="rounded border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
+                      onClick={handleCancelDescriptionEdit}
+                      disabled={descriptionSaving}
+                    >
+                      {tDetail("actions.cancel")}
+                    </button>
+                  ) : null}
+                </div>
+                <div className="mt-3">
+                  <RichTextEditor
+                    key={`public-description-${descriptionEditorKey}`}
+                    name="public-description"
+                    label={tDetail("sectionTypes.DESCRIPTION")}
+                    placeholder={tDetail("placeholders.content")}
+                    defaultValue={descriptionSeed}
+                    labels={richTextLabels}
+                    onValueChange={setDescriptionDraft}
+                    hideLabel
+                  />
+                </div>
+                <div className="mt-3 flex justify-end">
+                  <button
+                    type="button"
+                    className={cn(
+                      "inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium",
+                      !descriptionDraft.trim() || descriptionSaving
+                        ? "cursor-not-allowed opacity-70"
+                        : "hover:bg-slate-50"
+                    )}
+                    onClick={() => void handleSaveDescription()}
+                    disabled={!descriptionDraft.trim() || descriptionSaving}
+                  >
+                    {descriptionSaving ? tDetail("actions.saving") : tDetail("actions.save")}
+                  </button>
+                </div>
+              </div>
+            ) : null}
+
+            {showLockedMissingDescription ? (
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                {t("follow.lockedMissingDescription")}
+              </div>
+            ) : null}
+
+            {canAddResponse ? (
               <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-4">
                 <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
 
@@ -732,72 +800,6 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                   </div>
                 ) : null}
               </div>
-
-              {showDescriptionEditor ? (
-                  <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      {showDescriptionRequired ? (
-                        <>
-                          <p className="text-sm font-semibold text-amber-900">
-                            {tDetail("messages.descriptionRequired")}
-                          </p>
-                          <p className="mt-1 text-xs text-amber-800">
-                            {tDetail("sectionTypes.DESCRIPTION")}
-                          </p>
-                        </>
-                      ) : (
-                        <p className="text-sm font-semibold text-amber-900">
-                          {tDetail("sectionTypes.DESCRIPTION")}
-                        </p>
-                      )}
-                    </div>
-                    {!showDescriptionRequired ? (
-                      <button
-                        type="button"
-                        className="rounded border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
-                        onClick={handleCancelDescriptionEdit}
-                        disabled={descriptionSaving}
-                      >
-                        {tDetail("actions.cancel")}
-                      </button>
-                    ) : null}
-                  </div>
-                  <div className="mt-3">
-                    <RichTextEditor
-                      key={`public-description-${descriptionEditorKey}`}
-                      name="public-description"
-                      label={tDetail("sectionTypes.DESCRIPTION")}
-                      placeholder={tDetail("placeholders.content")}
-                      defaultValue={descriptionSeed}
-                      labels={richTextLabels}
-                      onValueChange={setDescriptionDraft}
-                      hideLabel
-                    />
-                  </div>
-                  <div className="mt-3 flex justify-end">
-                    <button
-                      type="button"
-                      className={cn(
-                        "inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium",
-                        !descriptionDraft.trim() || descriptionSaving
-                          ? "cursor-not-allowed opacity-70"
-                          : "hover:bg-slate-50"
-                      )}
-                      onClick={() => void handleSaveDescription()}
-                      disabled={!descriptionDraft.trim() || descriptionSaving}
-                    >
-                      {descriptionSaving ? tDetail("actions.saving") : tDetail("actions.save")}
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-
-              {showLockedMissingDescription ? (
-                  <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
-                  {t("follow.lockedMissingDescription")}
-                </div>
-              ) : null}
 
               {!showDescriptionRequired ? (
                 visibleSections.length === 0 ? (

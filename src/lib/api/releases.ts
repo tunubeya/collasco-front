@@ -237,6 +237,16 @@ export function updateProjectRelease(
   });
 }
 
+export function deleteProjectRelease(
+  token: string,
+  projectId: string,
+  releaseId: string,
+): Promise<{ ok: boolean }> {
+  return requestRelease(token, `/projects/${projectId}/releases/${releaseId}`, {
+    method: "DELETE",
+  });
+}
+
 export function getProjectReleaseDocumentationStatus(
   token: string,
   projectId: string,

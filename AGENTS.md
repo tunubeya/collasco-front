@@ -84,6 +84,8 @@ Notas:
 - En el listado de tickets, las pestanas deben usar wrapping y no scroll horizontal.
 - El filtro de estado de tickets debe estar junto al selector de proyecto.
 - Para pestanas de navegación, usar los botones compartidos `AppPrimaryTabButton` y `AppSecondaryTabButton` de `src/ui/components/tabs/app-tabs.tsx` en vez de recrear estilos locales.
+- Para confirmaciones destructivas, usar los componentes de dialogo del proyecto (`src/ui/components/dialog/dialog.tsx`) en vez de `window.confirm` o `alert`.
+- Los botones destructivos deben verse claramente peligrosos: variante `destructive`, fondo rojo visible e icono cuando aplique.
 
 ### Patrón de vistas públicas tipo changelog/release notes
 
@@ -115,10 +117,14 @@ Notas:
 - `prepare` puede existir con warnings; `release` bloquea si hay documentación sin versión publicada o drafts con cambios pendientes.
 - Un release `PREPARED` puede volver a `DRAFT` con `PATCH /projects/:projectId/releases/:releaseId` enviando `{ "status": "DRAFT" }`; esto solo desbloquea edición. El snapshot documental se refresca al ejecutar `POST /projects/:projectId/releases/:releaseId/prepare` nuevamente.
 - En UI llamar a las release notes "changelog del release".
-- El changelog del release solo se edita o regenera en releases `DRAFT`; en `PREPARED` y `RELEASED` se muestra solo como lectura.
+- El changelog del release se puede editar manualmente en cualquier estado si el usuario tiene permiso QA de escritura.
+- Si se edita el changelog de un release `RELEASED`, mostrar un warning cerca del editor indicando que no se recomienda editar notas ya publicadas.
+- El boton `Generar changelog` no debe mostrarse en modo lectura; solo aparece despues de tocar `Editar`, dentro del modo de edicion, y como accion secundaria poco llamativa.
+- `DELETE /projects/:projectId/releases/:releaseId` solo permite eliminar releases `DRAFT`; en `PREPARED` o `RELEASED` el backend devuelve conflicto.
+- En la UI, la accion de eliminar release solo debe mostrarse para releases `DRAFT` y debe confirmar con dialogo, no con `window.confirm`.
 - Generar el changelog del release sobrescribe el contenido actual; pedir confirmación si ya hay contenido.
 - El changelog del release y cualquier contenido largo editable deben usar `RichTextEditor` y visualizarse con `RichTextPreview`; no usar Markdown ni `textarea` salvo que la solicitud lo pida explícitamente.
-- El endpoint `POST /projects/:projectId/releases/:releaseId/notes/generate` devuelve HTML rich text y solo aplica a releases `DRAFT`; el front debe mostrarlo con `RichTextPreview`/`RichTextEditor`.
+- El endpoint `POST /projects/:projectId/releases/:releaseId/notes/generate` devuelve HTML rich text y puede regenerar el changelog en cualquier estado; el front debe mostrarlo con `RichTextPreview`/`RichTextEditor`.
 - Los links públicos de release notes son por proyecto y muestran todos los releases `RELEASED`: administrar con `/projects/:projectId/releases/share-links` y renderizar `/public/releases/links/:token` sin auth.
 - Toda ruta pública nueva debe agregarse a `publicRoutePrefixes` en `src/middleware.ts` para evitar redirección a login.
 - Las rutas públicas deben salir temprano del middleware antes de refrescar sesión o llamar al backend; el middleware no debe bloquear páginas públicas con trabajo de autenticación.

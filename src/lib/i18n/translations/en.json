@@ -683,6 +683,7 @@
           "saveNotes": "Save notes",
           "generateNotes": "Generate changelog",
           "editChangelog": "Edit",
+          "delete": "Delete",
           "cancel": "Cancel",
           "collapse": "Collapse",
           "expand": "Expand"
@@ -706,6 +707,8 @@
           "prepared": "Prepared {date}",
           "released": "Released {date}",
           "nameLabel": "Name",
+          "deleteTitle": "Delete release",
+          "deleteConfirm": "Delete this draft release?",
           "tabs": {
             "items": "Snapshot",
             "preview": "Preview",
@@ -755,6 +758,7 @@
           "editorLabel": "Release changelog",
           "previewLabel": "Preview",
           "placeholder": "Write the release changelog.",
+          "releasedEditWarning": "Editing the changelog is not recommended after the release has been published.",
           "generateConfirm": "This will replace the current release changelog. Do you want to continue?"
         },
         "share": {
@@ -788,6 +792,7 @@
           "loading": "Loading...",
           "loadError": "We couldn't load releases.",
           "createError": "We couldn't create the release.",
+          "deleteError": "We couldn't delete the release.",
           "saveError": "We couldn't save the release.",
           "prepareError": "We couldn't prepare the release.",
           "moveToDraftError": "We couldn't move the release back to draft.",

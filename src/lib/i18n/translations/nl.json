@@ -695,6 +695,7 @@
           "saveNotes": "Notities opslaan",
           "generateNotes": "Changelog genereren",
           "editChangelog": "Bewerken",
+          "delete": "Verwijderen",
           "cancel": "Annuleren",
           "collapse": "Inklappen",
           "expand": "Uitklappen"
@@ -718,6 +719,8 @@
           "prepared": "Voorbereid {date}",
           "released": "Gepubliceerd {date}",
           "nameLabel": "Naam",
+          "deleteTitle": "Release verwijderen",
+          "deleteConfirm": "Deze conceptrelease verwijderen?",
           "tabs": {
             "items": "Snapshot",
             "preview": "Preview",
@@ -767,6 +770,7 @@
           "editorLabel": "Releasechangelog",
           "previewLabel": "Preview",
           "placeholder": "Schrijf de releasechangelog.",
+          "releasedEditWarning": "Het wordt afgeraden om de changelog te bewerken nadat de release is gepubliceerd.",
           "generateConfirm": "Dit vervangt de huidige releasechangelog. Wil je doorgaan?"
         },
         "share": {
@@ -800,6 +804,7 @@
           "loading": "Laden...",
           "loadError": "Releases konden niet worden geladen.",
           "createError": "Release kon niet worden aangemaakt.",
+          "deleteError": "Release kon niet worden verwijderd.",
           "saveError": "Release kon niet worden opgeslagen.",
           "prepareError": "Release kon niet worden voorbereid.",
           "moveToDraftError": "Release kon niet terug naar concept worden gezet.",

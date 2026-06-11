@@ -695,6 +695,7 @@
           "saveNotes": "Enregistrer les notes",
           "generateNotes": "Générer le changelog",
           "editChangelog": "Modifier",
+          "delete": "Supprimer",
           "cancel": "Annuler",
           "collapse": "Réduire",
           "expand": "Développer"
@@ -718,6 +719,8 @@
           "prepared": "Préparé {date}",
           "released": "Publié {date}",
           "nameLabel": "Nom",
+          "deleteTitle": "Supprimer la release",
+          "deleteConfirm": "Supprimer cette release brouillon ?",
           "tabs": {
             "items": "Snapshot",
             "preview": "Aperçu",
@@ -767,6 +770,7 @@
           "editorLabel": "Changelog de la release",
           "previewLabel": "Aperçu",
           "placeholder": "Rédigez le changelog de la release.",
+          "releasedEditWarning": "Il n'est pas recommandé de modifier le changelog une fois la release publiée.",
           "generateConfirm": "Cela remplacera le changelog actuel de la release. Voulez-vous continuer ?"
         },
         "share": {
@@ -800,6 +804,7 @@
           "loading": "Chargement...",
           "loadError": "Impossible de charger les releases.",
           "createError": "Impossible de créer la release.",
+          "deleteError": "Impossible de supprimer la release.",
           "saveError": "Impossible d'enregistrer la release.",
           "prepareError": "Impossible de préparer la release.",
           "moveToDraftError": "Impossible de remettre la release en brouillon.",

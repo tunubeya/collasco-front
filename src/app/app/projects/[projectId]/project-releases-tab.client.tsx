@@ -23,6 +23,7 @@ import {
 import {
   createProjectRelease,
   createReleaseShareLink,
+  deleteProjectRelease,
   deleteReleaseShareLink,
   generateProjectReleaseNotes,
   getProjectRelease,
@@ -49,6 +50,13 @@ import {
 import { cn } from "@/lib/utils";
 import { actionButtonClass } from "@/ui/styles/action-button";
 import { markdownishToRichTextHtml } from "@/lib/rich-text";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeading,
+} from "@/ui/components/dialog/dialog";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 
@@ -83,6 +91,7 @@ export function ProjectReleasesTab({
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const [isReleasePanelOpen, setIsReleasePanelOpen] = useState(true);
   const [isSharePanelOpen, setIsSharePanelOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const formatDate = useCallback(
@@ -236,6 +245,19 @@ export function ProjectReleasesTab({
       setEditingName(release.name ?? "");
       await loadList();
     }, t("messages.moveToDraftError"));
+
+  const handleDeleteRelease = () =>
+    selectedRelease &&
+    runAction(async () => {
+      await deleteProjectRelease(token, projectId, selectedRelease.id);
+      setDeleteDialogOpen(false);
+      setSelectedRelease(null);
+      setNotes(null);
+      setNotesDraft("");
+      setViewMode("items");
+      const releaseList = await loadList();
+      if (releaseList[0]) await loadRelease(releaseList[0].id);
+    }, t("messages.deleteError", { default: "We couldn't delete the release." }));
 
   const handleRelease = () =>
     selectedRelease &&
@@ -528,15 +550,31 @@ export function ProjectReleasesTab({
 
               <div className="flex flex-wrap gap-2">
                 {canManageQa && selectedRelease.status === "DRAFT" && (
-                  <button
-                    type="button"
-                    className={actionButtonClass({ size: "sm" })}
-                    onClick={handlePrepare}
-                    disabled={isBusy}
-                  >
-                    <RefreshCw className="mr-2 h-4 w-4" aria-hidden />
-                    {t("actions.prepare")}
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className={actionButtonClass({
+                        variant: "destructive",
+                        size: "sm",
+                        className:
+                          "border-red-700 bg-red-600 text-white hover:border-red-700 hover:bg-red-700",
+                      })}
+                      onClick={() => setDeleteDialogOpen(true)}
+                      disabled={isBusy}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                      {t("actions.delete", { default: "Delete" })}
+                    </button>
+                    <button
+                      type="button"
+                      className={actionButtonClass({ size: "sm" })}
+                      onClick={handlePrepare}
+                      disabled={isBusy}
+                    >
+                      <RefreshCw className="mr-2 h-4 w-4" aria-hidden />
+                      {t("actions.prepare")}
+                    </button>
+                  </>
                 )}
                 {canManageQa && selectedRelease.status === "PREPARED" && (
                   <>
@@ -620,13 +658,42 @@ export function ProjectReleasesTab({
                 notes={notes}
                 notesDraft={notesDraft}
                 setNotesDraft={setNotesDraft}
-                canEditNotes={canManageQa && selectedRelease.status === "DRAFT"}
+                releaseStatus={selectedRelease.status}
+                canEditNotes={canManageQa}
+                canGenerateNotes={canManageQa}
                 isBusy={isBusy}
                 onSave={handleSaveNotes}
                 onGenerate={handleGenerateNotes}
                 formatDate={formatDate}
               />
             )}
+
+            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+              <DialogContent className="m-4 max-w-md rounded-2xl bg-background p-6 shadow-lg">
+                <DialogHeading className="text-lg font-semibold">
+                  {t("detail.deleteTitle")}
+                </DialogHeading>
+                <DialogDescription className="text-sm text-muted-foreground">
+                  {t("detail.deleteConfirm", { default: "Delete this draft release?" })}
+                </DialogDescription>
+                <div className="mt-5 flex justify-end gap-2">
+                  <DialogClose>{t("actions.cancel")}</DialogClose>
+                  <button
+                    type="button"
+                    className={actionButtonClass({
+                      variant: "destructive",
+                      className:
+                        "border-red-700 bg-red-600 text-white hover:border-red-700 hover:bg-red-700",
+                    })}
+                    onClick={handleDeleteRelease}
+                    disabled={isBusy}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" aria-hidden />
+                    {t("actions.delete", { default: "Delete" })}
+                  </button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </>
         )}
       </section>
@@ -1120,7 +1187,9 @@ function ReleaseNotesPanel({
   notes,
   notesDraft,
   setNotesDraft,
+  releaseStatus,
   canEditNotes,
+  canGenerateNotes,
   isBusy,
   onSave,
   onGenerate,
@@ -1129,7 +1198,9 @@ function ReleaseNotesPanel({
   notes: ReleaseNotes | null;
   notesDraft: string;
   setNotesDraft: (value: string) => void;
+  releaseStatus: ReleaseStatus;
   canEditNotes: boolean;
+  canGenerateNotes: boolean;
   isBusy: boolean;
   onSave: () => void;
   onGenerate: () => void;
@@ -1162,9 +1233,9 @@ function ReleaseNotesPanel({
         <div className="text-muted-foreground">
           <p>{t("notes.updated", { date: formatDate(notes.updatedAt) })}</p>
         </div>
-        {canEditNotes && (
+        {(canEditNotes || canGenerateNotes) && (
           <div className="flex flex-wrap gap-2">
-            {!isEditing && (
+            {!isEditing && canEditNotes && (
               <button
                 type="button"
                 className={actionButtonClass({ variant: "neutral", size: "sm" })}
@@ -1177,15 +1248,17 @@ function ReleaseNotesPanel({
             )}
             {isEditing && (
               <>
-                <button
-                  type="button"
-                  className={actionButtonClass({ variant: "neutral", size: "sm" })}
-                  onClick={onGenerate}
-                  disabled={isBusy}
-                >
-                  <Wand2 className="mr-2 h-4 w-4" aria-hidden />
-                  {t("actions.generateNotes")}
-                </button>
+                {canGenerateNotes && (
+                  <button
+                    type="button"
+                    className={actionButtonClass({ variant: "neutral", size: "xs" })}
+                    onClick={onGenerate}
+                    disabled={isBusy}
+                  >
+                    <Wand2 className="mr-2 h-4 w-4" aria-hidden />
+                    {t("actions.generateNotes")}
+                  </button>
+                )}
                 <button
                   type="button"
                   className={actionButtonClass({ variant: "neutral", size: "sm" })}
@@ -1215,6 +1288,12 @@ function ReleaseNotesPanel({
           </div>
         )}
       </div>
+      {isEditing && releaseStatus === "RELEASED" ? (
+        <div className="flex items-start gap-2 rounded-md border border-yellow-200 bg-yellow-50 px-3 py-2 text-sm text-yellow-900">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+          <p>{t("notes.releasedEditWarning")}</p>
+        </div>
+      ) : null}
       {canEditNotes && isEditing ? (
         <RichTextEditor
           key={notes.releaseId}

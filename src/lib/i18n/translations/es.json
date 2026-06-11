@@ -695,6 +695,7 @@
           "saveNotes": "Guardar notas",
           "generateNotes": "Generar changelog",
           "editChangelog": "Editar",
+          "delete": "Eliminar",
           "cancel": "Cancelar",
           "collapse": "Colapsar",
           "expand": "Expandir"
@@ -718,6 +719,8 @@
           "prepared": "Preparado {date}",
           "released": "Publicado {date}",
           "nameLabel": "Nombre",
+          "deleteTitle": "Eliminar release",
+          "deleteConfirm": "¿Eliminar este release en borrador?",
           "tabs": {
             "items": "Snapshot",
             "preview": "Preview",
@@ -767,6 +770,7 @@
           "editorLabel": "Changelog del release",
           "previewLabel": "Vista previa",
           "placeholder": "Escribe el changelog del release.",
+          "releasedEditWarning": "No se recomienda editar el changelog cuando el release ya está publicado.",
           "generateConfirm": "Esto reemplazará el changelog actual del release. ¿Quieres continuar?"
         },
         "share": {
@@ -800,6 +804,7 @@
           "loading": "Cargando...",
           "loadError": "No pudimos cargar los releases.",
           "createError": "No pudimos crear el release.",
+          "deleteError": "No pudimos eliminar el release.",
           "saveError": "No pudimos guardar el release.",
           "prepareError": "No pudimos preparar el release.",
           "moveToDraftError": "No pudimos volver el release a borrador.",

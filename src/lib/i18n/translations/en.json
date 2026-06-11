@@ -2276,6 +2276,10 @@
           "title": "Delete ticket?",
           "description": "This will permanently remove the ticket and its images."
         },
+        "description": {
+          "helper": "Initial ticket request.",
+          "empty": "No description available."
+        },
         "meta": {
           "createdBy": "Created by {name}",
           "assignedTo": "Assigned to {name}",

@@ -328,10 +328,7 @@ export function TicketDetailView({
           currentUserId && descriptionSection.authorId === currentUserId
         )
       : Boolean(currentUserId));
-  const hasOnlyDescription = useMemo(
-    () => sections.filter((section) => section.type !== "DESCRIPTION").length === 0,
-    [sections]
-  );
+  const hasDescription = !isMissingDescription(descriptionSection?.content);
   const showDescriptionRequired =
     canEditDescription && isMissingDescription(descriptionSection?.content);
   const showDescriptionEditor =
@@ -1235,29 +1232,21 @@ export function TicketDetailView({
       ) : null}
 
       <section className="rounded-xl border bg-background p-4 space-y-4">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="text-lg font-semibold">{t("sections.activity")}</h2>
-          {!showDescriptionRequired ? (
-            <div className="flex items-center gap-4">
-              <select
-                value={activityOrder}
-                onChange={(event) =>
-                  setActivityOrder(event.target.value as "recent" | "oldest")
-                }
-                className="rounded-md border px-3 py-1.5 pr-8 text-sm"
-              >
-                <option value="recent">{t("activitySort.recent")}</option>
-                <option value="oldest">{t("activitySort.oldest")}</option>
-              </select>
-              <Switch
-                checked={showImages}
-                onChange={(event) => setShowImages(event.target.checked)}
-                label={t("images.toggle")}
-              />
-              <span className="text-xs text-muted-foreground">
-                {t("meta.sectionsCount", { count: visibleSections.length })}
-              </span>
-            </div>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold">{t("sectionTypes.DESCRIPTION")}</h2>
+            <p className="text-xs text-muted-foreground">
+              {t("description.helper")}
+            </p>
+          </div>
+          {canEditDescription && !showDescriptionEditor ? (
+            <button
+              type="button"
+              className={actionButtonClass({ size: "xs" })}
+              onClick={() => setIsEditingDescription(true)}
+            >
+              {t("actions.edit")}
+            </button>
           ) : null}
         </div>
 
@@ -1314,7 +1303,46 @@ export function TicketDetailView({
               </button>
             </div>
           </div>
-        ) : null}
+        ) : hasDescription ? (
+          <div className="rounded-lg border bg-muted/10 p-4">
+            <RichTextPreview
+              value={descriptionSection?.content}
+              emptyLabel={t("description.empty")}
+              imageMap={imageMap}
+              fileOpenLabel={fileOpenLabel}
+            />
+          </div>
+        ) : (
+          <p className="rounded-lg border border-dashed bg-muted/10 p-4 text-sm text-muted-foreground">
+            {t("description.empty")}
+          </p>
+        )}
+      </section>
+
+      <section className="rounded-xl border bg-background p-4 space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-lg font-semibold">{t("sections.activity")}</h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <select
+              value={activityOrder}
+              onChange={(event) =>
+                setActivityOrder(event.target.value as "recent" | "oldest")
+              }
+              className="rounded-md border px-3 py-1.5 pr-8 text-sm"
+            >
+              <option value="recent">{t("activitySort.recent")}</option>
+              <option value="oldest">{t("activitySort.oldest")}</option>
+            </select>
+            <Switch
+              checked={showImages}
+              onChange={(event) => setShowImages(event.target.checked)}
+              label={t("images.toggle")}
+            />
+            <span className="text-xs text-muted-foreground">
+              {t("meta.sectionsCount", { count: visibleSections.length })}
+            </span>
+          </div>
+        </div>
 
         {canRespondTicket && !showDescriptionRequired ? (
           <form
@@ -1412,18 +1440,7 @@ export function TicketDetailView({
                         <span>·</span>
                         <span>{author}</span>
                       </div>
-                      {section.type === "DESCRIPTION" &&
-                      hasOnlyDescription &&
-                      canEditDescription &&
-                      !showDescriptionRequired ? (
-                        <button
-                          type="button"
-                          className={actionButtonClass({ size: "xs" })}
-                          onClick={() => setIsEditingDescription(true)}
-                        >
-                          {t("actions.edit")}
-                        </button>
-                      ) : canEditSection && editingSectionId !== section.id ? (
+                      {canEditSection && editingSectionId !== section.id ? (
                         <button
                           type="button"
                           className={actionButtonClass({ size: "xs" })}

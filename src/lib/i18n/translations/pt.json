@@ -2294,6 +2294,10 @@
           "title": "Excluir ticket?",
           "description": "Isso removerá o ticket e suas imagens."
         },
+        "description": {
+          "helper": "Solicitação inicial do ticket.",
+          "empty": "Nenhuma descrição disponível."
+        },
         "meta": {
           "createdBy": "Criado por {name}",
           "assignedTo": "Atribuído a {name}",

@@ -2294,6 +2294,10 @@
           "title": "Ticket verwijderen?",
           "description": "Dit verwijdert het ticket en alle afbeeldingen."
         },
+        "description": {
+          "helper": "Oorspronkelijk ticketverzoek.",
+          "empty": "Geen beschrijving beschikbaar."
+        },
         "meta": {
           "createdBy": "Gemaakt door {name}",
           "assignedTo": "Toegewezen aan {name}",

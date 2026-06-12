@@ -331,6 +331,12 @@
       "title": "Heb je een fout in het systeem gevonden?",
       "description": "Maak een ticket aan zodat het Collasco-team dit kan bekijken.",
       "action": "Ticket aanmaken"
+    },
+    "resources": {
+      "manual": "Handleiding",
+      "releases": "Changelog",
+      "manualFrameTitle": "Supporthandleiding",
+      "releasesFrameTitle": "Collasco-changelog"
     }
   },
   "plans": {

@@ -321,6 +321,12 @@
       "title": "Found an issue in the system?",
       "description": "Create a ticket so the Collasco team can review it.",
       "action": "Create ticket"
+    },
+    "resources": {
+      "manual": "Manual",
+      "releases": "Changelog",
+      "manualFrameTitle": "Support manual",
+      "releasesFrameTitle": "Collasco changelog"
     }
   },
   "plans": {

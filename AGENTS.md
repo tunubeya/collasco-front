@@ -71,12 +71,14 @@ Notas:
 - La accion "Marcar como no leida" debe mostrarse de forma contextual dentro del menu de acciones de cada notificacion, tanto en la pagina como en la campana.
 - La distincion visual entre notificaciones leidas y no leidas debe ser clara en la pagina y en la campana.
 - El item "Tickets" del sidebar puede mostrar badge de tickets asignados.
-- La pagina `/app/support` muestra primero un CTA para crear tickets publicos si el usuario encuentra un error y luego el manual de Collasco.
+- La pagina `/app/support` muestra primero un CTA para crear tickets publicos si el usuario encuentra un error y luego permite alternar entre el manual y el changelog de Collasco.
 - En soporte, los textos del CTA viven en `support.ticketCta.*`.
+- En soporte, los textos del selector de recursos viven en `support.resources.*`.
 
 ## Links publicos actuales
 
 - Manual de soporte Collasco: `https://collasco.com/public/manual/shared/bbcd7836-bcad-4eb8-bf39-ac1199df43c7`
+- Changelog de Collasco: `https://collasco.com/public/releases/links/ec73b83f1f3672619330a266d6014261d23c465b82f0d8ad037573316eb155f7`
 - Crear ticket publico de soporte: `https://collasco.com/public/tickets/links/acb3a50ab213b354a177602b56b469a69c8a24c4c32bc2cbcef92cbfc6bfc9cd?locale=en`
 
 ## UI

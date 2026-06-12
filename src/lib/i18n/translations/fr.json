@@ -331,6 +331,12 @@
       "title": "Vous avez trouvé une erreur dans le système ?",
       "description": "Créez un ticket afin que l'équipe Collasco puisse l'examiner.",
       "action": "Créer un ticket"
+    },
+    "resources": {
+      "manual": "Manual",
+      "releases": "Changelog",
+      "manualFrameTitle": "Manual de support",
+      "releasesFrameTitle": "Changelog de Collasco"
     }
   },
   "plans": {

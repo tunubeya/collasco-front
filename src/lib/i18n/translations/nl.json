@@ -2165,6 +2165,13 @@
         "markUnread": "Markeren als ongelezen",
         "actions": "Meldingsacties",
         "delete": "Verwijderen",
+        "deleteAll": {
+          "action": "Alles verwijderen",
+          "title": "Alle meldingen verwijderen",
+          "description": "Deze actie verwijdert al je meldingen en kan niet ongedaan worden gemaakt.",
+          "cancel": "Annuleren",
+          "confirm": "Alles verwijderen"
+        },
         "empty": {
           "title": "Nog geen meldingen."
         },

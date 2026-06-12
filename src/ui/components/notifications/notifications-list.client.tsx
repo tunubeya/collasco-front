@@ -18,6 +18,7 @@ import {
 import { toast } from "sonner";
 
 import {
+  deleteAllNotifications,
   deleteNotification,
   markAllNotificationsRead,
   markNotificationRead,
@@ -35,6 +36,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/ui/components/popover/popover";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogDescription,
+  DialogHeading,
+  DialogTrigger,
+} from "@/ui/components/dialog/dialog";
 
 type Pagination = {
   total: number;
@@ -166,6 +175,23 @@ export default function NotificationsList({ token, items, pagination }: Props) {
     }
   }, [isBulkAction, t, token, unreadCount]);
 
+  const handleDeleteAll = useCallback(async () => {
+    if (isBulkAction || total === 0) return false;
+    setIsBulkAction(true);
+    try {
+      await deleteAllNotifications(token);
+      setList([]);
+      setTotal(0);
+      notifyUnreadNotificationsCountChanged(0);
+      return true;
+    } catch {
+      toast.error(t("errors.action"));
+      return false;
+    } finally {
+      setIsBulkAction(false);
+    }
+  }, [isBulkAction, t, token, total]);
+
   if (list.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
@@ -197,6 +223,34 @@ export default function NotificationsList({ token, items, pagination }: Props) {
           >
             {t("markAll")}
           </button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button
+                type="button"
+                disabled={total === 0 || isBulkAction}
+                className="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <Trash2 className="h-4 w-4" aria-hidden />
+                {t("deleteAll.action")}
+              </button>
+            </DialogTrigger>
+            <DialogContent className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+              <DialogHeading className="text-lg font-semibold text-slate-950">
+                {t("deleteAll.title")}
+              </DialogHeading>
+              <DialogDescription className="mt-2 text-sm text-slate-600">
+                {t("deleteAll.description")}
+              </DialogDescription>
+              <div className="mt-6">
+                <DialogActions
+                  closeLabel={t("deleteAll.cancel")}
+                  confirmLabel={t("deleteAll.confirm")}
+                  confirmVariant="destructive"
+                  onConfirm={handleDeleteAll}
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 

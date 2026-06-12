@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Placement } from "@floating-ui/react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { Bell, Check, Mail, MoreHorizontal, Trash2 } from "lucide-react";
+import { Bell, Check, MoreHorizontal, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -12,7 +12,6 @@ import {
   listNotifications,
   markAllNotificationsRead,
   markNotificationRead,
-  markNotificationUnread,
 } from "@/lib/api/notifications";
 import type {
   Notification,
@@ -70,8 +69,9 @@ export default function NotificationsBell({
       const result = await listNotifications(token, {
         page: 1,
         limit: PAGE_LIMIT,
+        isRead: false,
       });
-      setItems(result.items);
+      setItems(result.items.filter((notification) => !notification.isRead));
     } catch {
       toast.error(t("errors.load"));
     } finally {
@@ -102,11 +102,7 @@ export default function NotificationsBell({
       try {
         if (!notification.isRead) {
           await markNotificationRead(token, id);
-          setItems((prev) =>
-            prev.map((item) =>
-              item.id === id ? { ...item, isRead: true } : item
-            )
-          );
+          setItems((prev) => prev.filter((item) => item.id !== id));
           setUnreadCount((prev) => {
             const next = Math.max(0, prev - 1);
             notifyUnreadNotificationsCountChanged(next);
@@ -153,39 +149,12 @@ export default function NotificationsBell({
     [busyIds, setUnreadCount, t, token]
   );
 
-  const handleMarkUnread = useCallback(
-    async (notification: Notification) => {
-      if (!token || !notification.isRead) return;
-      const { id } = notification;
-      if (busyIds[id]) return;
-      setBusyIds((prev) => ({ ...prev, [id]: true }));
-      try {
-        await markNotificationUnread(token, id);
-        setItems((prev) =>
-          prev.map((item) =>
-            item.id === id ? { ...item, isRead: false } : item
-          )
-        );
-        setUnreadCount((prev) => {
-          const next = prev + 1;
-          notifyUnreadNotificationsCountChanged(next);
-          return next;
-        });
-      } catch {
-        toast.error(t("errors.action"));
-      } finally {
-        setBusyIds((prev) => ({ ...prev, [id]: false }));
-      }
-    },
-    [busyIds, setUnreadCount, t, token]
-  );
-
   const handleMarkAll = useCallback(async () => {
     if (!token || isBulkAction || !hasUnread) return;
     setIsBulkAction(true);
     try {
       await markAllNotificationsRead(token);
-      setItems((prev) => prev.map((item) => ({ ...item, isRead: true })));
+      setItems([]);
       setUnreadCount(0);
       notifyUnreadNotificationsCountChanged(0);
     } catch {
@@ -310,27 +279,16 @@ export default function NotificationsBell({
                             </button>
                           </PopoverTrigger>
                           <PopoverContent className="z-50 flex w-44 flex-col gap-1 rounded-lg border bg-background p-2 text-xs shadow-lg">
-                            {notification.isRead ? (
-                              <button
-                                type="button"
-                                onClick={() => handleMarkUnread(notification)}
-                                className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-left transition hover:bg-muted"
-                              >
-                                <Mail className="h-3.5 w-3.5" />
-                                {t("markUnread")}
-                              </button>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleMarkRead(notification, false)
-                                }
-                                className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-left transition hover:bg-muted"
-                              >
-                                <Check className="h-3.5 w-3.5" />
-                                {t("markRead")}
-                              </button>
-                            )}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleMarkRead(notification, false)
+                              }
+                              className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-left transition hover:bg-muted"
+                            >
+                              <Check className="h-3.5 w-3.5" />
+                              {t("markRead")}
+                            </button>
                             <button
                               type="button"
                               onClick={() => handleDelete(notification)}

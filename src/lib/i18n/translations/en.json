@@ -2147,6 +2147,13 @@
         "markUnread": "Mark as unread",
         "actions": "Notification actions",
         "delete": "Delete",
+        "deleteAll": {
+          "action": "Delete all",
+          "title": "Delete all notifications",
+          "description": "This will delete all your notifications and cannot be undone.",
+          "cancel": "Cancel",
+          "confirm": "Delete all"
+        },
         "empty": {
           "title": "No notifications yet."
         },

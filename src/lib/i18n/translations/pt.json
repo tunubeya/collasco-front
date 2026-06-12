@@ -2165,6 +2165,13 @@
         "markUnread": "Marcar como não lida",
         "actions": "Ações da notificação",
         "delete": "Excluir",
+        "deleteAll": {
+          "action": "Excluir todas",
+          "title": "Excluir todas as notificações",
+          "description": "Esta ação excluirá todas as suas notificações e não pode ser desfeita.",
+          "cancel": "Cancelar",
+          "confirm": "Excluir todas"
+        },
         "empty": {
           "title": "Nenhuma notificação ainda."
         },

@@ -43,6 +43,7 @@ export type BroadcastNotificationResponse = {
 export type ListNotificationsParams = {
   page?: number;
   limit?: number;
+  isRead?: boolean;
 };
 
 async function parseJson<T>(res: Response): Promise<T> {
@@ -144,12 +145,15 @@ export async function createAllNotification(
 
 export async function listNotifications(
   token: string,
-  { page = 1, limit = 20 }: ListNotificationsParams = {}
+  { page = 1, limit = 20, isRead }: ListNotificationsParams = {}
 ): Promise<NotificationListResponse> {
   try {
     const url = new URL(`${apiUrl}/notifications`);
     url.searchParams.set("page", String(page));
     url.searchParams.set("limit", String(limit));
+    if (typeof isRead === "boolean") {
+      url.searchParams.set("isRead", String(isRead));
+    }
     const res = await fetchWithAuth(url.toString(), { method: "GET" }, token);
     if (!res.ok) throw res;
     return await parseJson<NotificationListResponse>(res);
@@ -245,6 +249,23 @@ export async function deleteNotification(
       return (await res.json()) as Notification;
     }
     return null;
+  } catch (error) {
+    await handleUnauthorized(error);
+    throw error;
+  }
+}
+
+export async function deleteAllNotifications(
+  token: string
+): Promise<{ count: number }> {
+  try {
+    const res = await fetchWithAuth(
+      `${apiUrl}/notifications/all`,
+      { method: "DELETE" },
+      token
+    );
+    if (!res.ok) throw res;
+    return await parseJson<{ count: number }>(res);
   } catch (error) {
     await handleUnauthorized(error);
     throw error;

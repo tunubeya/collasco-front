@@ -60,7 +60,7 @@ export const RichTextPreview = memo(function RichTextPreview({
           min-height: 1em;
         }
         .rich-text-preview :global(hr) {
-          margin: 1.5rem 0;
+          margin: 0.5rem 0;
           border: 0;
           border-top: 2px solid hsl(var(--muted-foreground) / 0.35);
         }

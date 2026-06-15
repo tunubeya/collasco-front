@@ -76,6 +76,8 @@ export type TicketDetail = {
   receiveEmails?: boolean | null;
   publicReporterName?: string | null;
   publicReporterEmail?: string | null;
+  publicFollowUpToken?: string | null;
+  followUpToken?: string | null;
 };
 
 export type TicketImage = {

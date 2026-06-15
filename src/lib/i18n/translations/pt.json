@@ -2301,7 +2301,8 @@
           "delete": "Excluir",
           "confirmDelete": "Excluir ticket",
           "deleting": "Excluindo...",
-          "addSection": "Enviar"
+          "addSection": "Enviar",
+          "copyFollowUpLink": "Copiar link de acompanhamento"
         },
         "delete": {
           "title": "Excluir ticket?",
@@ -2343,6 +2344,8 @@
           "titleRequired": "O título é obrigatório.",
           "titleUpdated": "Título atualizado.",
           "titleUpdateError": "Não foi possível atualizar o título.",
+          "followUpLinkCopied": "Link de acompanhamento copiado.",
+          "followUpLinkCopyError": "Não foi possível copiar o link de acompanhamento.",
           "save": "Salvar",
           "cancel": "Cancelar"
         },

@@ -2301,7 +2301,8 @@
           "delete": "Verwijderen",
           "confirmDelete": "Ticket verwijderen",
           "deleting": "Verwijderen...",
-          "addSection": "Verzenden"
+          "addSection": "Verzenden",
+          "copyFollowUpLink": "Follow-up link kopieren"
         },
         "delete": {
           "title": "Ticket verwijderen?",
@@ -2343,6 +2344,8 @@
           "titleRequired": "Titel is verplicht.",
           "titleUpdated": "Titel bijgewerkt.",
           "titleUpdateError": "Titel kon niet worden bijgewerkt.",
+          "followUpLinkCopied": "Follow-up link gekopieerd.",
+          "followUpLinkCopyError": "Follow-up link kon niet worden gekopieerd.",
           "save": "Opslaan",
           "cancel": "Annuleren"
         },

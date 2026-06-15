@@ -14,6 +14,7 @@ import {
   FileAudio,
   File,
   ChevronDown,
+  Copy,
   User,
   Pencil,
 } from "lucide-react";
@@ -335,14 +336,8 @@ export function TicketDetailView({
     canEditDescription && (showDescriptionRequired || isEditingDescription);
   const visibleSections = useMemo(
     () =>
-      orderedSections.filter(
-        (section) =>
-          !(
-            section.type === "DESCRIPTION" &&
-            (isMissingDescription(section.content) || showDescriptionEditor)
-          )
-      ),
-    [orderedSections, showDescriptionEditor]
+      orderedSections.filter((section) => section.type !== "DESCRIPTION"),
+    [orderedSections]
   );
 
   useEffect(() => {
@@ -770,6 +765,36 @@ export function TicketDetailView({
     }
   }, [deleting, router, t, ticketState.id, token]);
 
+  const handleCopyFollowUpLink = useCallback(async () => {
+    const followUpToken =
+      ticketState.publicFollowUpToken ?? ticketState.followUpToken;
+    if (!followUpToken) return;
+
+    const url = new URL(
+      `/public/tickets/follow/${followUpToken}`,
+      window.location.origin
+    );
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url.toString());
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = url.toString();
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      toast.success(t("messages.followUpLinkCopied"));
+    } catch (error) {
+      console.error("[TicketDetailView] copy follow-up link error:", error);
+      toast.error(t("messages.followUpLinkCopyError"));
+    }
+  }, [t, ticketState.followUpToken, ticketState.publicFollowUpToken]);
+
   const fileOpenLabel = t("files.actions.open");
 
   const createdAt = format.dateTime(new Date(ticketState.createdAt), {
@@ -784,6 +809,8 @@ export function TicketDetailView({
     : null;
 
   const isExternal = !ticketState.createdBy;
+  const followUpToken =
+    ticketState.publicFollowUpToken ?? ticketState.followUpToken;
   const createdBy = isExternal
     ? (ticketState.publicReporterName && ticketState.publicReporterEmail
         ? `${ticketState.publicReporterName} (${ticketState.publicReporterEmail})`
@@ -818,6 +845,16 @@ export function TicketDetailView({
                 <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
                   {tList("meta.externalTag")}
                 </span>
+              ) : null}
+              {isExternal && followUpToken ? (
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium text-foreground hover:bg-muted"
+                  onClick={() => void handleCopyFollowUpLink()}
+                >
+                  <Copy className="h-3.5 w-3.5" aria-hidden />
+                  {t("actions.copyFollowUpLink")}
+                </button>
               ) : null}
               <span className="flex items-center gap-1">
                 <User className="h-4 w-4" />

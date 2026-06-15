@@ -221,17 +221,11 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     !isReadOnly && !descriptionLocked && isMissingDescription(descriptionSection?.content);
   const showDescriptionEditor =
     !isReadOnly && !descriptionLocked && (showDescriptionRequired || isEditingDescription);
+  const canEditDescription = !isReadOnly && !descriptionLocked && hasDescription;
   const canAddResponse = !isReadOnly && (hasDescription || showLockedMissingDescription);
   const visibleSections = useMemo(
     () =>
-      sections.filter(
-        (section) =>
-          !(
-            section.type === "DESCRIPTION" &&
-            isMissingDescription(section.content) &&
-            isLockedSection(section)
-          )
-      ),
+      sections.filter((section) => section.type !== "DESCRIPTION"),
     [sections]
   );
   const getPublicSectionLabelType = useCallback(
@@ -727,6 +721,34 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                     {descriptionSaving ? tDetail("actions.saving") : tDetail("actions.save")}
                   </button>
                 </div>
+              </div>
+            ) : hasDescription ? (
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold">
+                      {tDetail("sectionTypes.DESCRIPTION")}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {tDetail("description.helper")}
+                    </p>
+                  </div>
+                  {canEditDescription ? (
+                    <button
+                      type="button"
+                      className="rounded border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50"
+                      onClick={() => setIsEditingDescription(true)}
+                    >
+                      {tDetail("actions.edit")}
+                    </button>
+                  ) : null}
+                </div>
+                <RichTextPreview
+                  value={descriptionSection?.content}
+                  emptyLabel={tDetail("description.empty")}
+                  imageMap={imageMap}
+                  fileOpenLabel={tDetail("files.actions.open")}
+                />
               </div>
             ) : null}
 

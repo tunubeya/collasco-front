@@ -2301,7 +2301,8 @@
           "delete": "Eliminar",
           "confirmDelete": "Eliminar ticket",
           "deleting": "Eliminando...",
-          "addSection": "Enviar"
+          "addSection": "Enviar",
+          "copyFollowUpLink": "Copiar link de seguimiento"
         },
         "delete": {
           "title": "¿Eliminar ticket?",
@@ -2343,6 +2344,8 @@
           "titleRequired": "El título es obligatorio.",
           "titleUpdated": "Título actualizado.",
           "titleUpdateError": "No pudimos actualizar el título.",
+          "followUpLinkCopied": "Link de seguimiento copiado.",
+          "followUpLinkCopyError": "No pudimos copiar el link de seguimiento.",
           "save": "Guardar",
           "cancel": "Cancelar"
         },

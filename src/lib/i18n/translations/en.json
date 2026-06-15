@@ -2283,7 +2283,8 @@
           "delete": "Delete",
           "confirmDelete": "Delete ticket",
           "deleting": "Deleting...",
-          "addSection": "Submit"
+          "addSection": "Submit",
+          "copyFollowUpLink": "Copy follow-up link"
         },
         "delete": {
           "title": "Delete ticket?",
@@ -2325,6 +2326,8 @@
           "titleRequired": "Title required.",
           "titleUpdated": "Title updated.",
           "titleUpdateError": "We couldn't update the title.",
+          "followUpLinkCopied": "Follow-up link copied.",
+          "followUpLinkCopyError": "We couldn't copy the follow-up link.",
           "save": "Save",
           "cancel": "Cancel"
         },

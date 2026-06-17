@@ -2463,6 +2463,7 @@
           "submit": "Ticket indienen",
           "creating": "Verzenden...",
           "missing": "Vul alle velden in.",
+          "emailDeliveryHint": "Controleer ook uw map met ongewenste e-mail of spam als u geen e-mail van Collasco ontvangt.",
           "success": "Ticket aangemaakt.",
           "error": "We konden het ticket niet maken.",
           "followUpTitle": "Follow-up link klaar",

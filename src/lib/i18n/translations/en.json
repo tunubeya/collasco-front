@@ -2445,6 +2445,7 @@
           "submit": "Submit ticket",
           "creating": "Submitting...",
           "missing": "Please complete all fields.",
+          "emailDeliveryHint": "If you do not receive an email from Collasco, please also check your spam, junk, or unwanted email folder.",
           "success": "Ticket created.",
           "error": "We couldn't create the ticket.",
           "followUpTitle": "Follow-up link ready",

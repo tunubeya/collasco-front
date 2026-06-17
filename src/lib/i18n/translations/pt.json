@@ -2463,6 +2463,7 @@
           "submit": "Enviar ticket",
           "creating": "Enviando...",
           "missing": "Preencha todos os campos.",
+          "emailDeliveryHint": "Se você não receber um e-mail da Collasco, verifique também sua pasta de spam, lixo eletrônico ou e-mail indesejado.",
           "success": "Ticket criado.",
           "error": "Não foi possível criar o ticket.",
           "followUpTitle": "Link de acompanhamento pronto",

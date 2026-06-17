@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Info, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -139,6 +139,12 @@ export function PublicTicketCreateClient({ token }: Props) {
                 placeholder={t("create.placeholders.email")}
                 className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
+              {email.trim() ? (
+                <span className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-900">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                  <span>{t("create.emailDeliveryHint")}</span>
+                </span>
+              ) : null}
             </label>
           </div>
 

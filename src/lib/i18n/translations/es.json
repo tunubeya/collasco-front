@@ -2540,6 +2540,9 @@
     "admin": {
       "title": "Panel de Administración",
       "subtitle": "Gestiona usuarios, permisos y ajustes globales del sistema.",
+      "nav": {
+        "notifications": "Notificaciones"
+      },
       "cards": {
         "users": {
           "title": "Usuarios",
@@ -2552,38 +2555,26 @@
       },
       "notifications": {
         "title": "Notificaciones",
-        "subtitle": "Envía mensajes a todos, por proyecto o a un usuario específico.",
+        "subtitle": "Envía mensajes a todos los usuarios activos o a un usuario específico.",
         "scopes": {
           "all": "Todos los usuarios",
-          "project": "Por proyecto",
-          "user": "Usuario específico"
+          "user": "Un usuario"
         },
         "fields": {
           "title": "Título",
           "message": "Mensaje",
-          "type": "Tipo",
-          "project": "Proyecto",
-          "roles": "Roles (opcional)",
           "userEmail": "Email del usuario"
         },
         "placeholders": {
           "title": "Ej. Mantenimiento programado",
           "message": "Escribe el mensaje...",
-          "project": "Selecciona un proyecto",
           "userEmail": "usuario@correo.com"
         },
-        "loadingRoles": "Cargando roles...",
-        "emptyRoles": "Sin roles disponibles",
-        "hint": "Puedes seleccionar múltiples roles.",
         "send": "Enviar notificación",
         "sending": "Enviando...",
         "successAll": "Notificación enviada a {count} usuarios.",
-        "successProject": "Notificación enviada a {count} usuarios del proyecto.",
         "successUser": "Notificación enviada al usuario.",
-        "error": "No se pudo enviar la notificación.",
-        "errors": {
-          "roles": "No se pudieron cargar los roles."
-        }
+        "error": "No se pudo enviar la notificación."
       }
     }
   },

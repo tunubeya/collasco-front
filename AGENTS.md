@@ -62,6 +62,7 @@ Notas:
 - Sidebar cliente: `src/ui/components/sidebar/app-sidebar-client.tsx`
 - Campana superior de notificaciones: `src/ui/components/notifications/notifications-bell.client.tsx`
 - Pagina de notificaciones: `src/app/app/notifications/page.tsx`
+- Menu admin: `src/app/app/admin`
 - Pagina de soporte/manual: `src/app/app/support/page.tsx`
 
 Notas:
@@ -71,6 +72,9 @@ Notas:
 - La accion "Marcar como no leida" debe mostrarse de forma contextual dentro del menu de acciones de cada notificacion, tanto en la pagina como en la campana.
 - La distincion visual entre notificaciones leidas y no leidas debe ser clara en la pagina y en la campana.
 - El item "Tickets" del sidebar puede mostrar badge de tickets asignados.
+- El menu admin del sidebar solo debe mostrarse para usuarios `ADMIN`; usar `session.role` y, si hace falta, `profile.role` desde `GET /users/me/profile`.
+- Dentro de `/app/admin`, usar tabs como settings. La primera tab es `/app/admin/notifications`.
+- La vista admin de notificaciones permite enviar titulo y mensaje a todos los usuarios activos (`POST /notifications/all`) o a un usuario por email (`POST /notifications/user`).
 - La pagina `/app/support` muestra primero un CTA para crear tickets publicos si el usuario encuentra un error y luego permite alternar entre el manual y el changelog de Collasco.
 - En soporte, los textos del CTA viven en `support.ticketCta.*`.
 - En soporte, los textos del selector de recursos viven en `support.resources.*`.

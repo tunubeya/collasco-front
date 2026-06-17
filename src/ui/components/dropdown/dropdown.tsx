@@ -55,7 +55,7 @@ const menuItemStyle =
 const rootMenuStyle =
   'px-3.5 py-1.5 border border-purple text-sm bg-background rounded-md data-[open]:bg-secondary-background hover:bg-secondary-background';
 const menuStyle =
-  'bg-background border border-purple backdrop-blur-sm p-1 rounded-md shadow-lg outline-none';
+  'z-50 bg-background border border-purple backdrop-blur-sm p-1 rounded-md shadow-lg outline-none';
 
 export const MenuComponent = React.forwardRef<
   HTMLButtonElement,

@@ -2540,6 +2540,9 @@
     "admin": {
       "title": "Panneau d'administration",
       "subtitle": "Gérez les utilisateurs, les permissions et les paramètres globaux du système.",
+      "nav": {
+        "notifications": "Notifications"
+      },
       "cards": {
         "users": {
           "title": "Utilisateurs",
@@ -2552,38 +2555,26 @@
       },
       "notifications": {
         "title": "Notifications",
-        "subtitle": "Envoyez des messages à tous, par projet ou à un utilisateur spécifique.",
+        "subtitle": "Envoyez des messages à tous les utilisateurs actifs ou à un utilisateur spécifique.",
         "scopes": {
           "all": "Tous les utilisateurs",
-          "project": "Par projet",
-          "user": "Utilisateur spécifique"
+          "user": "Un utilisateur"
         },
         "fields": {
           "title": "Titre",
           "message": "Message",
-          "type": "Type",
-          "project": "Projet",
-          "roles": "Rôles (optionnel)",
           "userEmail": "Email utilisateur"
         },
         "placeholders": {
           "title": "Ex. Maintenance planifiée",
           "message": "Écrivez le message...",
-          "project": "Sélectionnez un projet",
           "userEmail": "utilisateur@email.com"
         },
-        "loadingRoles": "Chargement des rôles...",
-        "emptyRoles": "Aucun rôle disponible",
-        "hint": "Vous pouvez sélectionner plusieurs rôles.",
         "send": "Envoyer la notification",
         "sending": "Envoi...",
         "successAll": "Notification envoyée à {count} utilisateurs.",
-        "successProject": "Notification envoyée à {count} utilisateurs du projet.",
         "successUser": "Notification envoyée à l'utilisateur.",
-        "error": "Impossible d'envoyer la notification.",
-        "errors": {
-          "roles": "Impossible de charger les rôles."
-        }
+        "error": "Impossible d'envoyer la notification."
       }
     }
   },

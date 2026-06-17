@@ -34,7 +34,10 @@ export default async function AppSidebar() {
     { key: 'support', label: t('support'), href: '/app/support', icon: 'support' },
   ];
 
-  if (session?.role === UserRole.ADMIN) {
+  const isAdmin =
+    session?.role === UserRole.ADMIN || profile?.role === UserRole.ADMIN;
+
+  if (isAdmin) {
     items.push({ key: 'admin', label: t('adminPanel'), href: '/app/admin', icon: 'admin' });
   }
 

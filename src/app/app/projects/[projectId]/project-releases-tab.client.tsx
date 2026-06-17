@@ -1344,7 +1344,7 @@ function ReleaseNotesPanel({
           name="release-notes"
           label={t("notes.editorLabel")}
           placeholder={t("notes.placeholder")}
-          defaultValue={notesDraft}
+          defaultValue={notes.content ?? ""}
           labels={toolbarLabels}
           onValueChange={setNotesDraft}
           helperText={tRichText("helper")}

@@ -21,6 +21,10 @@ import {
 } from "lucide-react";
 
 import {
+  getDocumentationVersion,
+  type QaDocumentationVersionContent,
+} from "@/lib/api/qa";
+import {
   createProjectRelease,
   createReleaseShareLink,
   deleteProjectRelease,
@@ -659,6 +663,7 @@ export function ProjectReleasesTab({
                 items={selectedRelease.documentationItems}
                 preview={preview}
                 projectId={projectId}
+                token={token}
                 isLoading={isPreviewLoading}
               />
             )}
@@ -865,11 +870,13 @@ function SnapshotItems({
   items,
   preview,
   projectId,
+  token,
   isLoading,
 }: {
   items: ReleaseDetail["documentationItems"];
   preview: ReleasePreview | null;
   projectId: string;
+  token: string;
   isLoading: boolean;
 }) {
   const t = useTranslations("app.projects.releases");
@@ -932,6 +939,7 @@ function SnapshotItems({
               item={item}
               change={change}
               projectId={projectId}
+              token={token}
             />
           );
         })}
@@ -940,6 +948,7 @@ function SnapshotItems({
             key={entityKey(change.entityType, change.entityId)}
             change={change}
             projectId={projectId}
+            token={token}
           />
         ))}
       </SnapshotGroup>
@@ -1101,18 +1110,70 @@ function ChangedSnapshotItem({
   item,
   change,
   projectId,
+  token,
 }: {
   item?: ReleaseDetail["documentationItems"][number];
   change: ReleasePreview["changes"][number];
   projectId: string;
+  token: string;
 }) {
   const t = useTranslations("app.projects.releases");
   const entityType = item?.entityType ?? change.entityType;
   const entityId = item?.entityId ?? change.entityId;
   const entityName = item?.entityName ?? change.entityName ?? entityId;
+  const [changelogState, setChangelogState] = useState<{
+    status: "idle" | "loading" | "loaded" | "error";
+    previous: QaDocumentationVersionContent | null;
+    current: QaDocumentationVersionContent | null;
+  }>({ status: "idle", previous: null, current: null });
+
+  const loadChangelogs = useCallback(async () => {
+    setChangelogState((current) =>
+      current.status === "idle"
+        ? { ...current, status: "loading" }
+        : current,
+    );
+    try {
+      const documentationEntityType = releaseEntityToDocumentationEntity(entityType);
+      const [previous, current] = await Promise.all([
+        change.previousVersionNumber
+          ? getDocumentationVersion(
+              token,
+              documentationEntityType,
+              entityId,
+              change.previousVersionNumber,
+            )
+          : Promise.resolve(null),
+        change.currentVersionNumber
+          ? getDocumentationVersion(
+              token,
+              documentationEntityType,
+              entityId,
+              change.currentVersionNumber,
+            )
+          : Promise.resolve(null),
+      ]);
+      setChangelogState({ status: "loaded", previous, current });
+    } catch {
+      setChangelogState({ status: "error", previous: null, current: null });
+    }
+  }, [
+    change.currentVersionNumber,
+    change.previousVersionNumber,
+    entityId,
+    entityType,
+    token,
+  ]);
 
   return (
-    <details className="group rounded-md border border-border bg-background">
+    <details
+      className="group rounded-md border border-border bg-background"
+      onToggle={(event) => {
+        if (event.currentTarget.open && changelogState.status === "idle") {
+          void loadChangelogs();
+        }
+      }}
+    >
       <summary className="flex cursor-pointer list-none flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Link
@@ -1134,16 +1195,33 @@ function ChangedSnapshotItem({
               after: change.currentVersionNumber ?? t("common.notAvailable"),
             })}
           </span>
-          {item && (
-            <span className="rounded-full border border-border px-2 py-1 text-muted-foreground">
-              {t("items.snapshotVersion", {
-                version: item.documentationVersion.versionNumber,
-              })}
-            </span>
-          )}
         </div>
       </summary>
       <div className="divide-y divide-border border-t border-border">
+        <div className="grid gap-3 p-3 lg:grid-cols-2">
+          {changelogState.status === "loading" ? (
+            <p className="text-sm text-muted-foreground lg:col-span-2">
+              {t("preview.loadingChangelogs")}
+            </p>
+          ) : changelogState.status === "error" ? (
+            <p className="text-sm text-red-700 lg:col-span-2">
+              {t("preview.changelogLoadError")}
+            </p>
+          ) : (
+            <>
+              <DocumentationVersionChangelog
+                title={t("preview.previousChangelog")}
+                version={change.previousVersionNumber}
+                changelog={changelogState.previous?.changelog ?? null}
+              />
+              <DocumentationVersionChangelog
+                title={t("preview.newChangelog")}
+                version={change.currentVersionNumber}
+                changelog={changelogState.current?.changelog ?? null}
+              />
+            </>
+          )}
+        </div>
         {change.changedLabels.map((label) => (
           <div key={label.labelId} className="grid gap-3 p-3 lg:grid-cols-[180px_1fr_1fr]">
             <div>
@@ -1159,6 +1237,38 @@ function ChangedSnapshotItem({
   );
 }
 
+function DocumentationVersionChangelog({
+  title,
+  version,
+  changelog,
+}: {
+  title: string;
+  version: number | null;
+  changelog: string | null;
+}) {
+  const t = useTranslations("app.projects.releases");
+
+  return (
+    <div className="rounded-md border border-border bg-muted/20 p-3">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <p className="text-xs font-semibold uppercase text-muted-foreground">
+          {title}
+        </p>
+        <span className="rounded-full border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+          {version
+            ? t("items.snapshotVersion", { version })
+            : t("common.notAvailable")}
+        </span>
+      </div>
+      <RichTextPreview
+        value={changelog}
+        emptyLabel={t("preview.noContent")}
+        className="text-sm"
+      />
+    </div>
+  );
+}
+
 function UnchangedSnapshotItem({
   item,
   projectId,
@@ -1170,28 +1280,16 @@ function UnchangedSnapshotItem({
 
   return (
     <div className="rounded-md border border-border bg-background p-3">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <Link
-            className="font-medium text-primary underline-offset-2 hover:underline"
-            href={entityHref(projectId, item.entityType, item.entityId)}
-          >
-            {item.entityName || item.entityId}
-          </Link>
-          <p className="text-xs text-muted-foreground">
-            {t(`entityType.${item.entityType}`)}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-          <span className="rounded-full border border-border px-2 py-1">
-            {t("items.snapshotVersion", {
-              version: item.documentationVersion.versionNumber,
-            })}
-          </span>
-          <span className="rounded-full border border-border px-2 py-1">
-            {item.documentationVersion.changelog || t("common.notAvailable")}
-          </span>
-        </div>
+      <div>
+        <Link
+          className="font-medium text-primary underline-offset-2 hover:underline"
+          href={entityHref(projectId, item.entityType, item.entityId)}
+        >
+          {item.entityName || item.entityId}
+        </Link>
+        <p className="text-xs text-muted-foreground">
+          {t(`entityType.${item.entityType}`)}
+        </p>
       </div>
     </div>
   );
@@ -1199,6 +1297,12 @@ function UnchangedSnapshotItem({
 
 function entityKey(entityType: ReleaseEntityType, entityId: string) {
   return `${entityType}:${entityId}`;
+}
+
+function releaseEntityToDocumentationEntity(entityType: ReleaseEntityType) {
+  if (entityType === "PROJECT") return "project";
+  if (entityType === "MODULE") return "module";
+  return "feature";
 }
 
 function DiffContent({

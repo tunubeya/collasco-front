@@ -766,6 +766,10 @@
           "versionChange": "v{before} -> v{after}",
           "before": "Antes",
           "after": "Después",
+          "previousChangelog": "Changelog anterior",
+          "newChangelog": "Changelog nuevo",
+          "loadingChangelogs": "Cargando changelogs de versiones...",
+          "changelogLoadError": "No pudimos cargar los changelogs de versiones.",
           "noContent": "Sin contenido",
           "notApplicable": "No aplica"
         },

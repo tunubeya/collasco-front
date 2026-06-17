@@ -766,6 +766,10 @@
           "versionChange": "v{before} -> v{after}",
           "before": "Voor",
           "after": "Na",
+          "previousChangelog": "Vorige changelog",
+          "newChangelog": "Nieuwe changelog",
+          "loadingChangelogs": "Versiechangelogs laden...",
+          "changelogLoadError": "We konden de versiechangelogs niet laden.",
           "noContent": "Geen inhoud",
           "notApplicable": "Niet van toepassing"
         },

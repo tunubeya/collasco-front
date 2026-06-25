@@ -120,12 +120,11 @@ export default function AppSidebarDesktopClient({
 
       <AppSidebarClient items={items} token={token} collapsed={collapsed} />
 
-      {!collapsed ? (
-        <AppSidebarClient
-          footerOnly
-          footerExtra={footerExtra}
-        />
-      ) : null}
+      <AppSidebarClient
+        footerOnly
+        footerExtra={footerExtra}
+        collapsed={collapsed}
+      />
     </aside>
   );
 }

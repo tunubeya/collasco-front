@@ -150,17 +150,24 @@
       "label": "Wat Collasco doet",
       "title": "Een gestructureerd, gedeeld proces in één platform",
       "description": "Verbind vereisten, communicatie, validatie en levering in één continuüm.",
+      "ai": {
+        "title": "AI",
+        "description": "AI zet tickets, feedback en pull requests om in gestructureerde vereisten, documentatie en release notes.",
+        "example": "bijv. een supportticket omzetten in een gestructureerde vereiste"
+      },
       "clusters": {
         "captureAlign": {
           "title": "Vastleggen & Afstemmen",
           "items": {
             "supportTickets": {
               "title": "Support tickets",
-              "description": "Verzamel early feedback en koppel tickets direct aan uw kennisbank."
+              "description": "Verzamel early feedback en koppel tickets direct aan uw kennisbank.",
+              "example": "bijv. een klantprobleem omzetten in een traceerbaar functieverzoek"
             },
             "structuredCommunication": {
               "title": "Gestructureerde communicatie",
-              "description": "Houd discussies in context, zodat beslissingen nooit verloren gaan."
+              "description": "Houd discussies in context, zodat beslissingen nooit verloren gaan.",
+              "example": "bijv. een wijziging bij de betreffende functie bespreken"
             }
           }
         },
@@ -169,15 +176,18 @@
           "items": {
             "testingWorkflows": {
               "title": "Testworkflows",
-              "description": "Transformeer validatie in een gestructureerd, herhaalbaar proces."
+              "description": "Transformeer validatie in een gestructureerd, herhaalbaar proces.",
+              "example": "bijv. een acceptatietest uitvoeren voordat een functie wordt uitgebracht"
             },
             "reviewApprovals": {
               "title": "Reviews & goedkeuringen",
-              "description": "Bepaal wie wat valideert en houd elke beslissing traceerbaar."
+              "description": "Bepaal wie wat valideert en houd elke beslissing traceerbaar.",
+              "example": "bijv. iemand aanwijzen om een functie vóór de release te valideren"
             },
             "changeControl": {
               "title": "Wijzigingen vastleggen en beheren",
-              "description": "Leg elke codewijziging vast en dwing validatie af vóór release."
+              "description": "Leg elke codewijziging vast en dwing validatie af vóór release.",
+              "example": "bijv. een commit koppelen aan de functie en validatieworkflow"
             }
           }
         },
@@ -186,11 +196,13 @@
           "items": {
             "versionDocs": {
               "title": "Versie- & release-documentatie",
-              "description": "Maak transparante, controleerbare releasenotes en volg elke wijziging."
+              "description": "Maak transparante, controleerbare releasenotes en volg elke wijziging.",
+              "example": "bijv. release notes genereren op basis van gevalideerde wijzigingen"
             },
             "manuals": {
               "title": "Manuals & kwaliteitsdossiers",
-              "description": "Genereer IQ/OQ/PQ-documentatie vanuit één consistente kennisbasis."
+              "description": "Genereer IQ/OQ/PQ-documentatie vanuit één consistente kennisbasis.",
+              "example": "bijv. IQ/OQ/PQ-documentatie maken op basis van goedgekeurde functies"
             },
             "aiSupport": {
               "title": "AI-ondersteuning",
@@ -620,6 +632,15 @@
       },
       "detail": {
         "updated": "Laatste update: {date}",
+        "navigation": {
+          "title": "Projectstructuur",
+          "empty": "Er zijn nog geen modules of functies.",
+          "searchPlaceholder": "Modules of functies zoeken...",
+          "noResults": "Geen overeenkomende modules of functies.",
+          "clearSearch": "Zoekopdracht wissen",
+          "collapse": "Structuur inklappen",
+          "expand": "Structuur uitklappen"
+        },
         "structure": {
           "documentation": {
             "version": "Documentatie v{version}",

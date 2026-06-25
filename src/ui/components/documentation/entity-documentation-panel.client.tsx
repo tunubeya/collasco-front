@@ -49,6 +49,7 @@ import { cn } from "@/lib/utils";
 import { RichTextEditor } from "@/ui/components/projects/RichTextEditor";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { Switch } from "@/ui/components/form/switch";
+import { documentationSectionId } from "@/lib/structure-helpers";
 import {
   Popover,
   PopoverClose,
@@ -326,6 +327,15 @@ export function EntityDocumentationPanel({
     });
     return [...applicable, ...notApplicable];
   }, [entries, labelOptions, version?.status]);
+
+  useEffect(() => {
+    if (isLoading || typeof window === "undefined") return;
+    const sectionId = window.location.hash.slice(1);
+    if (!sectionId.startsWith("documentation-label-")) return;
+    requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, [displayEntries, isLoading]);
 
   const handleEdit = useCallback((entry: QaDocumentationEntry) => {
     setEditingLabelId(entry.label.id);
@@ -866,8 +876,9 @@ export function EntityDocumentationPanel({
             return (
               <article
                 key={entry.label.id}
+                id={documentationSectionId(entry.label.id)}
                 className={cn(
-                  "rounded-xl border px-4 shadow-sm transition-colors",
+                  "scroll-mt-4 rounded-xl border px-4 shadow-sm transition-colors",
                   isCompactNotApplicable ? "py-2" : "py-3",
                   isNotApplicable
                     ? "border-gray-200 bg-gray-50 text-gray-400"

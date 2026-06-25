@@ -121,6 +121,16 @@ export function FeatureTabs({
     setLinkedFeatures(initialLinkedFeatures);
   }, [initialLinkedFeatures]);
 
+  useEffect(() => {
+    const showDocumentationSection = () => {
+      setActivePrimaryTab("documentation");
+      setActiveTab("documentation");
+    };
+    window.addEventListener("feature-documentation-anchor", showDocumentationSection);
+    return () =>
+      window.removeEventListener("feature-documentation-anchor", showDocumentationSection);
+  }, []);
+
   const canViewDocumentation = canViewQa || canReadFeature;
 
   const availableTabs = useMemo<FeatureTab[]>(() => {

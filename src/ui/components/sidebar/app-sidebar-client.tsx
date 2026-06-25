@@ -78,10 +78,15 @@ export default function AppSidebarClient({
 
   if (footerOnly) {
     return (
-      <div className="mt-auto px-2">
-        <div className="w-full flex items-center justify-between gap-2 text-sm px-2 py-2 rounded-md text-[color:var(--color-foreground)]">
-          <LogoutButton />
-          {footerExtra}
+      <div className={cn('mt-auto', collapsed ? 'px-0' : 'px-2')}>
+        <div
+          className={cn(
+            'flex w-full items-center rounded-md text-sm text-[color:var(--color-foreground)]',
+            collapsed ? 'justify-center py-2' : 'justify-between gap-2 px-2 py-2',
+          )}
+        >
+          <LogoutButton iconOnly={collapsed} />
+          {!collapsed ? footerExtra : null}
         </div>
       </div>
     );

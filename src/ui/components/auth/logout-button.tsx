@@ -4,13 +4,20 @@ import { logout } from '@/lib/actions';
 import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-export default function LogoutButton() {
+export default function LogoutButton({ iconOnly = false }: { iconOnly?: boolean }) {
   const t = useTranslations('auth.login');
+  const label = t('logout');
   return (
     <form action={logout} className='mt-4 md:mt-0'>
-      <Button variant="secondary" type="submit">
-        <LogOut className="w-5 h-5 mr-2" />
-        {t('logout')}
+      <Button
+        variant="secondary"
+        size={iconOnly ? 'icon' : 'default'}
+        type="submit"
+        aria-label={iconOnly ? label : undefined}
+        title={iconOnly ? label : undefined}
+      >
+        <LogOut className="h-5 w-5" />
+        {!iconOnly ? label : null}
       </Button>
     </form>
   );

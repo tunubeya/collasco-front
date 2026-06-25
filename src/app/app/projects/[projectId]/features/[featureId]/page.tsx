@@ -34,6 +34,7 @@ import {
   resolveRolePermissions,
 } from "@/lib/permissions";
 import { UnauthorizedView } from "@/ui/components/error-unauthorized-view";
+import { ProjectStructureWorkspace } from "@/ui/components/projects/project-structure-navigation.client";
 
 type Params = { projectId: string; featureId: string };
 
@@ -76,13 +77,15 @@ export default async function FeatureDetailPage({
     }
   }
 
+  let structureModules: StructureModuleNode[] = [];
   let moduleCrumbs: { id: string; name: string }[] = [];
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
       sort: "sortOrder",
     });
-    const chain = findModulePath(structure.modules, feature?.moduleId || "");
+    structureModules = structure.modules;
+    const chain = findModulePath(structureModules, feature?.moduleId || "");
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
     }
@@ -170,12 +173,8 @@ export default async function FeatureDetailPage({
   }> = [];
   let modulePathById: Record<string, string> = {};
   try {
-    const structure = await fetchProjectStructure(session.token, projectId, {
-      limit: 1000,
-      sort: "sortOrder",
-    });
-    modulePathById = buildModulePathMap(structure.modules, project.name);
-    linkableFeatures = extractFeatureOptions(structure.modules).filter(
+    modulePathById = buildModulePathMap(structureModules, project.name);
+    linkableFeatures = extractFeatureOptions(structureModules).filter(
       (item) => item.id !== feature.id
     );
   } catch (error) {
@@ -210,7 +209,12 @@ export default async function FeatureDetailPage({
   }
 
   return (
-    <div className="grid gap-6">
+    <ProjectStructureWorkspace
+      projectId={projectId}
+      projectName={project.name}
+      roots={structureModules}
+      selectedFeatureId={feature.id}
+    >
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
       <header className="rounded-xl border bg-background p-4">
         <div className="flex items-start justify-between gap-4">
@@ -289,7 +293,7 @@ export default async function FeatureDetailPage({
         </div>
       </header>
 
-      <FeatureTabs
+        <FeatureTabs
         feature={feature}
         project={project}
         featureId={featureId}
@@ -308,8 +312,8 @@ export default async function FeatureDetailPage({
         canReadFeature={canReadFeature}
         canReadTickets={canReadTickets}
         canCreateTicket={canCreateTicket}
-      />
-    </div>
+        />
+    </ProjectStructureWorkspace>
   );
 }
 

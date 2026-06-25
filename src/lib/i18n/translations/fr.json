@@ -150,17 +150,24 @@
       "label": "Ce que fait Collasco",
       "title": "Un processus structuré et partagé sur une plateforme",
       "description": "Connectez exigences, communication, validation et livraison dans un flux continu.",
+      "ai": {
+        "title": "IA",
+        "description": "L’IA transforme les tickets, retours et pull requests en exigences structurées, documentation et notes de release.",
+        "example": "p. ex., transformer un ticket de support en exigence structurée"
+      },
       "clusters": {
         "captureAlign": {
           "title": "Capturer et Aligner",
           "items": {
             "supportTickets": {
               "title": "Tickets de support",
-              "description": "Recueillez les retours tôt et connectez les tickets directement à votre base de connaissances."
+              "description": "Recueillez les retours tôt et connectez les tickets directement à votre base de connaissances.",
+              "example": "p. ex., transformer un problème client en demande de fonctionnalité suivie"
             },
             "structuredCommunication": {
               "title": "Communication structurée",
-              "description": "Gardez les discussions en contexte, pour que les décisions ne soient jamais perdues."
+              "description": "Gardez les discussions en contexte, pour que les décisions ne soient jamais perdues.",
+              "example": "p. ex., discuter d’un changement dans la fonctionnalité concernée"
             }
           }
         },
@@ -169,15 +176,18 @@
           "items": {
             "testingWorkflows": {
               "title": "Workflows de tests",
-              "description": "Transformez la validation en un processus structuré et répétable."
+              "description": "Transformez la validation en un processus structuré et répétable.",
+              "example": "p. ex., exécuter un test d’acceptation avant de publier une fonctionnalité"
             },
             "reviewApprovals": {
               "title": "Revues et validations",
-              "description": "Définissez qui valide quoi et gardez chaque décision traçable."
+              "description": "Définissez qui valide quoi et gardez chaque décision traçable.",
+              "example": "p. ex., désigner une personne pour valider une fonctionnalité avant la release"
             },
             "changeControl": {
               "title": "Capture et contrôle des changements",
-              "description": "Capturez chaque modification de code et enforcez la validation avant la release."
+              "description": "Capturez chaque modification de code et enforcez la validation avant la release.",
+              "example": "p. ex., relier un commit à sa fonctionnalité et à son flux de validation"
             }
           }
         },
@@ -186,11 +196,13 @@
           "items": {
             "versionDocs": {
               "title": "Docs de version et release",
-              "description": "Créez des notes de release transparentes et auditables et suivez chaque changement."
+              "description": "Créez des notes de release transparentes et auditables et suivez chaque changement.",
+              "example": "p. ex., générer des notes de release à partir de changements validés"
             },
             "manuals": {
               "title": "Manuels et dossiers qualité",
-              "description": "Générez la documentation IQ/OQ/PQ depuis une base de connaissances unique et cohérente."
+              "description": "Générez la documentation IQ/OQ/PQ depuis une base de connaissances unique et cohérente.",
+              "example": "p. ex., créer la documentation IQ/OQ/PQ à partir de fonctionnalités approuvées"
             },
             "aiSupport": {
               "title": "Assistance IA",
@@ -620,6 +632,15 @@
       },
       "detail": {
         "updated": "Dernière mise à jour : {date}",
+        "navigation": {
+          "title": "Structure du projet",
+          "empty": "Aucun module ni fonctionnalité pour le moment.",
+          "searchPlaceholder": "Rechercher des modules ou fonctionnalités...",
+          "noResults": "Aucun module ni fonctionnalité correspondant.",
+          "clearSearch": "Effacer la recherche",
+          "collapse": "Réduire la structure",
+          "expand": "Développer la structure"
+        },
         "structure": {
           "documentation": {
             "version": "Documentation v{version}",

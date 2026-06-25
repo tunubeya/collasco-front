@@ -26,6 +26,7 @@ import { listProjectMembers } from "@/lib/api/project-members";
 import { listProjectRoles, type ProjectRole } from "@/lib/api/project-roles";
 import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 import { UnauthorizedView } from "@/ui/components/error-unauthorized-view";
+import { ProjectStructureWorkspace } from "@/ui/components/projects/project-structure-navigation.client";
 
 type Params = {
   projectId: string;
@@ -72,13 +73,15 @@ export default async function ModuleDetailPage({
   }
 
   // 4) Path del módulo dentro de la estructura del proyecto (necesario para breadcrumbs)
+  let projectStructureModules: StructureModuleNode[] = [];
   let moduleCrumbs: { id: string; name: string }[] = [];
   try {
     const structure = await fetchProjectStructure(session.token, projectId, {
       limit: 1000,
       sort: "sortOrder",
     });
-    const chain = findModulePath(structure.modules, moduleId);
+    projectStructureModules = structure.modules;
+    const chain = findModulePath(projectStructureModules, moduleId);
     if (chain) {
       moduleCrumbs = chain.map((node) => ({ id: node.id, name: node.name }));
     }
@@ -166,7 +169,12 @@ export default async function ModuleDetailPage({
   const hasDescription = Boolean(currentModule.description?.trim());
 
   return (
-    <div className="grid gap-6">
+    <ProjectStructureWorkspace
+      projectId={projectId}
+      projectName={project.name}
+      roots={projectStructureModules}
+      selectedModuleId={moduleId}
+    >
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
       <header className="rounded-xl border bg-background p-4">
         <div className="flex items-start justify-between gap-4">
@@ -235,13 +243,13 @@ export default async function ModuleDetailPage({
         </div>
       </header>
 
-      <ModuleTabs
+        <ModuleTabs
         project={project}
         module={currentModule}
         structureNode={structureNode!}
         permissions={permissionKeys}
         token={session.token}
-      />
-    </div>
+        />
+    </ProjectStructureWorkspace>
   );
 }

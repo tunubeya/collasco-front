@@ -608,6 +608,15 @@
       },
       "detail": {
         "updated": "Last update: {date}",
+        "navigation": {
+          "title": "Project structure",
+          "empty": "No modules or features yet.",
+          "searchPlaceholder": "Search modules or features...",
+          "noResults": "No matching modules or features.",
+          "clearSearch": "Clear search",
+          "collapse": "Collapse structure",
+          "expand": "Expand structure"
+        },
         "structure": {
           "documentation": {
             "version": "Documentation v{version}",

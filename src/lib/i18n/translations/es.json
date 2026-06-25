@@ -150,17 +150,24 @@
       "label": "Qué hace Collasco",
       "title": "Un proceso estructurado y compartido en una plataforma",
       "description": "Conecta requisitos, comunicación, validación y entrega en un flujo continuo.",
+      "ai": {
+        "title": "IA",
+        "description": "La IA transforma tickets, comentarios y pull requests en requisitos estructurados, documentación y notas de release.",
+        "example": "p. ej., convertir un ticket de soporte en un requisito estructurado"
+      },
       "clusters": {
         "captureAlign": {
           "title": "Capturar y Alinear",
           "items": {
             "supportTickets": {
               "title": "Tickets de soporte",
-              "description": "Recolecta retroalimentación temprano y conecta tickets directamente a tu base de conocimiento."
+              "description": "Recolecta retroalimentación temprano y conecta tickets directamente a tu base de conocimiento.",
+              "example": "p. ej., convertir un problema de un cliente en una solicitud de funcionalidad trazable"
             },
             "structuredCommunication": {
               "title": "Comunicación estructurada",
-              "description": "Mantén discusiones en contexto, para que las decisiones nunca se pierdan."
+              "description": "Mantén discusiones en contexto, para que las decisiones nunca se pierdan.",
+              "example": "p. ej., debatir un cambio dentro de la funcionalidad relacionada"
             }
           }
         },
@@ -169,15 +176,18 @@
           "items": {
             "testingWorkflows": {
               "title": "Flujos de testing",
-              "description": "Convierte la validación en un proceso estructurado y repetible."
+              "description": "Convierte la validación en un proceso estructurado y repetible.",
+              "example": "p. ej., ejecutar una prueba de aceptación antes de publicar una funcionalidad"
             },
             "reviewApprovals": {
               "title": "Revisiones y aprobaciones",
-              "description": "Define quién valida qué y mantén cada decisión trazable."
+              "description": "Define quién valida qué y mantén cada decisión trazable.",
+              "example": "p. ej., asignar a una persona para validar una funcionalidad antes del release"
             },
             "changeControl": {
               "title": "Captura y control de cambios",
-              "description": "Captura cada cambio de código y fuerza validación antes del release."
+              "description": "Captura cada cambio de código y fuerza validación antes del release.",
+              "example": "p. ej., vincular un commit con su funcionalidad y flujo de validación"
             }
           }
         },
@@ -186,11 +196,13 @@
           "items": {
             "versionDocs": {
               "title": "Documentación de versiones y releases",
-              "description": "Crea notas de release transparentes y auditables y haz seguimiento a cada cambio."
+              "description": "Crea notas de release transparentes y auditables y haz seguimiento a cada cambio.",
+              "example": "p. ej., generar notas de release a partir de cambios validados"
             },
             "manuals": {
               "title": "Manuales y archivos de calidad",
-              "description": "Genera documentación IQ/OQ/PQ desde una única base de conocimiento consistente."
+              "description": "Genera documentación IQ/OQ/PQ desde una única base de conocimiento consistente.",
+              "example": "p. ej., crear documentación IQ/OQ/PQ a partir de funcionalidades aprobadas"
             },
             "aiSupport": {
               "title": "Asistencia con IA",
@@ -620,6 +632,15 @@
       },
       "detail": {
         "updated": "Última actualización: {date}",
+        "navigation": {
+          "title": "Estructura del proyecto",
+          "empty": "Aún no hay módulos ni funcionalidades.",
+          "searchPlaceholder": "Buscar módulos o funcionalidades...",
+          "noResults": "No hay módulos ni funcionalidades coincidentes.",
+          "clearSearch": "Limpiar búsqueda",
+          "collapse": "Colapsar estructura",
+          "expand": "Expandir estructura"
+        },
         "structure": {
           "documentation": {
             "version": "Documentación v{version}",

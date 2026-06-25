@@ -2,11 +2,20 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import { ProjectStatus, ProjectStructureResponse, StructureModuleNode } from "@/lib/definitions";
-import { fetchGetUserProfile, fetchProjectById, fetchProjectStructure } from "@/lib/data";
+import {
+  ProjectStatus,
+  ProjectStructureResponse,
+  StructureModuleNode,
+} from "@/lib/definitions";
+import {
+  fetchGetUserProfile,
+  fetchProjectById,
+  fetchProjectStructure,
+} from "@/lib/data";
 import { getSession } from "@/lib/session";
 import type { Project } from "@/lib/model-definitions/project";
 import { ProjectTabs } from "./project-tabs.client";
+import { ProjectStructureWorkspace } from "@/ui/components/projects/project-structure-navigation.client";
 import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import type { FeatureOption } from "./project-qa.types";
 import { RoutesEnum } from "@/lib/utils";
@@ -23,8 +32,8 @@ import {
 } from "@/lib/api/project-roles";
 import { hasPermission, resolveMemberRoleId, resolveRolePermissions } from "@/lib/permissions";
 
-
 type Params = { projectId: string };
+
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -45,9 +54,9 @@ export default async function ProjectDetailPage({
   let project: Project | null = null;
   try {
     project = await fetchProjectById(session.token, projectId);
-  }  catch (error) {
-  await handlePageError(error);
-}
+  } catch (error) {
+    await handlePageError(error);
+  }
   if (!project) notFound();
 
   // 2) Estructura (módulos + submódulos + features)
@@ -57,9 +66,9 @@ export default async function ProjectDetailPage({
       sort: "sortOrder",
       limit: 100,
     });
-  }  catch (error) {
-  await handlePageError(error);
-}
+  } catch (error) {
+    await handlePageError(error);
+  }
   if (!structureResult) notFound();
 
   let currentUserId: string | null = null;
@@ -106,10 +115,14 @@ export default async function ProjectDetailPage({
   const canViewQa = hasPermission(permissionSet, "qa.read");
 
   return (
-    <div className="grid gap-6">
+    <ProjectStructureWorkspace
+      projectId={projectId}
+      projectName={project.name}
+      roots={structureResult.modules}
+    >
       <Breadcrumb items={breadcrumbItems} className="mb-2" />
       <header className="flex items-center justify-between">
-               <div>
+        <div>
           <h1 className="text-2xl font-bold">{project.name}</h1>
           {project.description && (
             <div className="mt-1">
@@ -170,7 +183,7 @@ export default async function ProjectDetailPage({
         permissionsCatalog={permissionsCatalog.items ?? []}
         canViewQa={canViewQa}
       />
-    </div>
+    </ProjectStructureWorkspace>
   );
 }
 

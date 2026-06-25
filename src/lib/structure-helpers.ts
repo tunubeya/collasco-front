@@ -1,5 +1,9 @@
 import type { StructureModuleNode } from "./definitions";
 
+export function documentationSectionId(labelId: string) {
+  return `documentation-label-${labelId}`;
+}
+
 /**
  * Returns the chain of modules from the first matching root to the target module id.
  * Example: [Root, Child, Target]. Returns null when the module isn't found.

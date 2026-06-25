@@ -18,6 +18,7 @@ import {
   buildProjectManualTree,
   findManualNode,
 } from "@/ui/components/manual/manual-outline.client";
+import { RichTextPreview } from "@/ui/components/projects/RichTextPreview";
 import { cn } from "@/lib/utils";
 import { useLocaleQueryParam } from "@/ui/components/i18n/use-locale-query-param";
 
@@ -386,9 +387,17 @@ export function PublicManualClient({
                 <h1 className="text-3xl font-semibold tracking-tight">
                   {projectInfo.name}
                 </h1>
-                <p className="mt-2 max-w-2xl text-sm text-slate-200">
-                  {projectInfo.description || tManual("noDescription")}
-                </p>
+                {projectInfo.description ? (
+                  <RichTextPreview
+                    value={projectInfo.description}
+                    emptyLabel={tManual("noDescription")}
+                    className="mt-2 max-w-2xl text-slate-200 [&>div]:text-slate-200"
+                  />
+                ) : (
+                  <p className="mt-2 max-w-2xl text-sm text-slate-200">
+                    {tManual("noDescription")}
+                  </p>
+                )}
               </div>
               <div className="grid grid-cols-3 gap-2 text-sm">
                 <PublicManualStat

@@ -2569,6 +2569,7 @@
       "projectSection": "Projecten",
       "tickets": "Tickets",
       "notifications": "Meldingen",
+      "sendNotifications": "Meldingen verzenden",
       "settingSection": "Instellingen",
       "support": "Hulp en support",
       "logout": "Uitloggen",
@@ -2596,9 +2597,14 @@
       "notifications": {
         "title": "Meldingen",
         "subtitle": "Stuur berichten naar alle actieve gebruikers of naar een specifieke gebruiker.",
+        "audience": "Doelgroep",
         "scopes": {
           "all": "Alle gebruikers",
           "user": "Een gebruiker"
+        },
+        "scopeHints": {
+          "all": "Verstuur de melding naar elke actieve gebruiker.",
+          "user": "Verstuur de melding naar een gebruiker via email."
         },
         "fields": {
           "title": "Titel",

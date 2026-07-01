@@ -37,7 +37,12 @@ export default async function AppSidebar() {
     session?.role === UserRole.ADMIN || profile?.role === UserRole.ADMIN;
 
   if (isAdmin) {
-    items.push({ key: 'admin', label: t('adminPanel'), href: '/app/admin', icon: 'admin' });
+    items.push({
+      key: 'admin-notifications',
+      label: t('sendNotifications'),
+      href: '/app/admin/notifications',
+      icon: 'notifications',
+    });
   }
 
   const displayName =

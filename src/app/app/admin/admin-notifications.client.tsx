@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BellRing, Send, UserRound, Users } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
@@ -9,6 +10,7 @@ import {
   createUserNotification,
 } from "@/lib/api/notifications";
 import { cn } from "@/lib/utils";
+import { actionButtonClass } from "@/ui/styles/action-button";
 
 type Scope = "all" | "user";
 
@@ -86,74 +88,113 @@ export default function AdminNotifications({ token }: Props) {
   };
 
   return (
-    <section className="max-w-3xl rounded-lg border bg-white p-6 space-y-5 shadow-sm">
-      <div>
-        <h2 className="text-lg font-semibold">{t("title")}</h2>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+    <section className="max-w-4xl rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+      <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 md:flex-row md:items-start md:justify-between">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-primary">
+            <BellRing className="h-5 w-5" aria-hidden />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-slate-950">{t("title")}</h2>
+            <p className="mt-1 max-w-2xl text-sm text-slate-600">{t("subtitle")}</p>
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {(["all", "user"] as Scope[]).map((value) => (
+      <form
+        className="mt-5 space-y-5"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void handleSubmit();
+        }}
+      >
+        <div>
+          <p className="text-sm font-medium text-slate-900">{t("audience")}</p>
+          <div className="mt-2 grid gap-3 md:grid-cols-2">
+            {(["all", "user"] as Scope[]).map((value) => {
+              const Icon = value === "all" ? Users : UserRound;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setScope(value)}
+                  className={cn(
+                    "flex items-start gap-3 rounded-lg border p-4 text-left transition-colors",
+                    scope === value
+                      ? "border-primary bg-blue-100 text-slate-950"
+                      : "border-slate-200 bg-white text-slate-700 hover:bg-blue-100/60"
+                  )}
+                >
+                  <Icon
+                    className={cn(
+                      "mt-0.5 h-5 w-5 shrink-0",
+                      scope === value ? "text-primary" : "text-slate-500"
+                    )}
+                    aria-hidden
+                  />
+                  <span>
+                    <span className="block text-sm font-semibold">
+                      {t(`scopes.${value}`)}
+                    </span>
+                    <span className="mt-1 block text-xs leading-5 text-slate-600">
+                      {t(`scopeHints.${value}`)}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {requiresUser ? (
+          <label className="block space-y-1 text-sm">
+            <span className="font-medium text-slate-900">{t("fields.userEmail")}</span>
+            <input
+              type="email"
+              value={userEmail}
+              onChange={(event) => setUserEmail(event.target.value)}
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 focus-visible:border-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200"
+              placeholder={t("placeholders.userEmail")}
+            />
+          </label>
+        ) : null}
+
+        <div className="grid gap-4">
+          <label className="block space-y-1 text-sm">
+            <span className="font-medium text-slate-900">{t("fields.title")}</span>
+            <input
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 focus-visible:border-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200"
+              placeholder={t("placeholders.title")}
+            />
+          </label>
+
+          <label className="block space-y-1 text-sm">
+            <span className="font-medium text-slate-900">{t("fields.message")}</span>
+            <textarea
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              rows={5}
+              className="w-full resize-y rounded-md border border-gray-300 bg-white px-3 py-2 focus-visible:border-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200"
+              placeholder={t("placeholders.message")}
+            />
+          </label>
+        </div>
+
+        <div className="flex justify-end">
           <button
-            key={value}
-            type="button"
-            onClick={() => setScope(value)}
-            className={cn(
-              "rounded-full border px-4 py-1.5 text-sm transition",
-              scope === value
-                ? "border-primary bg-primary text-primary-foreground"
-                : "hover:bg-muted"
-            )}
+            type="submit"
+            disabled={!isValid || isSubmitting}
+            className={actionButtonClass({
+              className: "gap-2 disabled:translate-y-0",
+            })}
           >
-            {t(`scopes.${value}`)}
+            <Send className="h-4 w-4" aria-hidden />
+            {isSubmitting ? t("sending") : t("send")}
           </button>
-        ))}
-      </div>
-
-      <label className="space-y-1 text-sm">
-        <span className="font-medium">{t("fields.title")}</span>
-        <input
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          className="w-full rounded-md border px-3 py-2"
-          placeholder={t("placeholders.title")}
-        />
-      </label>
-
-      <label className="space-y-1 text-sm">
-        <span className="font-medium">{t("fields.message")}</span>
-        <textarea
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          rows={4}
-          className="w-full rounded-md border px-3 py-2"
-          placeholder={t("placeholders.message")}
-        />
-      </label>
-
-      {requiresUser ? (
-        <label className="space-y-1 text-sm">
-          <span className="font-medium">{t("fields.userEmail")}</span>
-          <input
-            type="email"
-            value={userEmail}
-            onChange={(event) => setUserEmail(event.target.value)}
-            className="w-full rounded-md border px-3 py-2"
-            placeholder={t("placeholders.userEmail")}
-          />
-        </label>
-      ) : null}
-
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!isValid || isSubmitting}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition disabled:opacity-40"
-        >
-          {isSubmitting ? t("sending") : t("send")}
-        </button>
-      </div>
+        </div>
+      </form>
     </section>
   );
 }

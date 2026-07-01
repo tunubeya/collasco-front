@@ -2569,6 +2569,7 @@
       "projectSection": "Proyectos",
       "tickets": "Tickets",
       "notifications": "Notificaciones",
+      "sendNotifications": "Enviar notificaciones",
       "settingSection": "Ajustes",
       "support": "Ayuda y soporte",
       "logout": "Cerrar sesión",
@@ -2596,9 +2597,14 @@
       "notifications": {
         "title": "Notificaciones",
         "subtitle": "Envía mensajes a todos los usuarios activos o a un usuario específico.",
+        "audience": "Audiencia",
         "scopes": {
           "all": "Todos los usuarios",
           "user": "Un usuario"
+        },
+        "scopeHints": {
+          "all": "Envía la notificación a todos los usuarios activos.",
+          "user": "Envía la notificación a un usuario por email."
         },
         "fields": {
           "title": "Título",

@@ -2539,6 +2539,7 @@
       "projectSection": "Projects",
       "tickets": "Tickets",
       "notifications": "Notifications",
+      "sendNotifications": "Send notifications",
       "settingSection": "Settings",
       "support": "Help & Support",
       "logout": "Logout",
@@ -2566,9 +2567,14 @@
       "notifications": {
         "title": "Notifications",
         "subtitle": "Send messages to all active users or to a specific user.",
+        "audience": "Audience",
         "scopes": {
           "all": "All users",
           "user": "One user"
+        },
+        "scopeHints": {
+          "all": "Deliver the notification to every active user.",
+          "user": "Send the notification to one user by email."
         },
         "fields": {
           "title": "Title",

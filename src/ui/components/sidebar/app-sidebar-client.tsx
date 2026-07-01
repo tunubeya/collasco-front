@@ -113,7 +113,7 @@ export default function AppSidebarClient({
               collapsed ? 'h-10 justify-center px-0' : 'gap-3 px-2 py-2',
               active
                 ? 'bg-primary/15 text-[color:var(--color-foreground)] border-r-2 border-primary'
-                : 'text-[color:var(--color-muted-fg)] hover:bg-[color:var(--color-cream-100)]',
+                : 'text-[color:var(--color-muted-fg)] hover:bg-blue-100 hover:text-[color:var(--color-foreground)]',
             )}
           >
             <Icon size={18} className={cn('shrink-0', active ? '' : 'opacity-80')} />

@@ -10,9 +10,9 @@ export default function LogoutButton({ iconOnly = false }: { iconOnly?: boolean 
   return (
     <form action={logout} className='mt-4 md:mt-0'>
       <Button
-        variant="secondary"
         size={iconOnly ? 'icon' : 'default'}
         type="submit"
+        className="border border-blue-200 bg-white text-[color:var(--color-muted-fg)] hover:bg-blue-100 hover:text-[color:var(--color-foreground)]"
         aria-label={iconOnly ? label : undefined}
         title={iconOnly ? label : undefined}
       >

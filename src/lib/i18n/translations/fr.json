@@ -2416,6 +2416,8 @@
         "attachments": {
           "title": "Pièces jointes",
           "hint": "Les images supportent les tailles. Les fichiers sont listés pour téléchargement.",
+          "count": "{count, plural, one {# pièce jointe} other {# pièces jointes}}",
+          "summary": "{count, plural, one {# téléversée} other {# téléversées}} : {imageCount, plural, one {# image} other {# images}}, {fileCount, plural, one {# fichier} other {# fichiers}}",
           "actions": {
             "add": "Ajouter une pièce jointe"
           }

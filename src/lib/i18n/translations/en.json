@@ -2386,6 +2386,8 @@
         "attachments": {
           "title": "Attachments",
           "hint": "Images support size tokens. Files are shown as downloads.",
+          "count": "{count, plural, one {# attachment} other {# attachments}}",
+          "summary": "{count, plural, one {# uploaded} other {# uploaded}}: {imageCount, plural, one {# image} other {# images}}, {fileCount, plural, one {# file} other {# files}}",
           "actions": {
             "add": "Add attachment"
           }

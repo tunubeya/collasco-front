@@ -2416,6 +2416,8 @@
         "attachments": {
           "title": "Adjuntos",
           "hint": "Las imágenes soportan tamaños. Los archivos se muestran para descarga.",
+          "count": "{count, plural, one {# adjunto} other {# adjuntos}}",
+          "summary": "{count, plural, one {# subido} other {# subidos}}: {imageCount, plural, one {# imagen} other {# imágenes}}, {fileCount, plural, one {# archivo} other {# archivos}}",
           "actions": {
             "add": "Agregar adjunto"
           }

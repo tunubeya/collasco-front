@@ -1074,28 +1074,56 @@ export function TicketDetailView({
 
       {canAccessImages ? (
         <section className="rounded-xl border bg-background p-4 space-y-4">
-          <div className="flex items-center justify-between gap-2">
-            <div>
-              <h2 className="text-lg font-semibold">{t("attachments.title")}</h2>
-              <span className="text-xs text-muted-foreground">
-                {t("attachments.hint")}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setAttachmentsOpen((prev) => !prev)}
-              className="rounded-full border p-1 text-muted-foreground hover:text-foreground"
-              aria-expanded={attachmentsOpen}
-              aria-label={attachmentsOpen ? t("actions.collapse") : t("actions.expand")}
-            >
-              <ChevronDown
+          <button
+            type="button"
+            onClick={() => setAttachmentsOpen((prev) => !prev)}
+            className={cn(
+              "flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-3 text-left transition",
+              images.length > 0
+                ? "border-primary/30 bg-primary/5 hover:bg-primary/10"
+                : "border-transparent hover:bg-blue-100"
+            )}
+            aria-expanded={attachmentsOpen}
+            aria-label={attachmentsOpen ? t("actions.collapse") : t("actions.expand")}
+          >
+            <div className="flex min-w-0 items-start gap-3">
+              <div
                 className={cn(
-                  "h-4 w-4 transition-transform",
-                  attachmentsOpen ? "rotate-180" : "rotate-0"
+                  "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
+                  images.length > 0
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted/30 text-muted-foreground"
                 )}
-              />
-            </button>
-          </div>
+              >
+                <File className="h-4 w-4" aria-hidden />
+              </div>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-lg font-semibold">{t("attachments.title")}</h2>
+                  {images.length > 0 ? (
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
+                      {t("attachments.count", { count: images.length })}
+                    </span>
+                  ) : null}
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {images.length > 0
+                    ? t("attachments.summary", {
+                        count: images.length,
+                        imageCount: imageAttachments.length,
+                        fileCount: fileAttachments.length,
+                      })
+                    : t("attachments.hint")}
+                </span>
+              </div>
+            </div>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
+                attachmentsOpen ? "rotate-180" : "rotate-0"
+              )}
+            />
+          </button>
 
           {attachmentsOpen ? (
             <>

@@ -2416,6 +2416,8 @@
         "attachments": {
           "title": "Bijlagen",
           "hint": "Afbeeldingen ondersteunen groottes. Bestanden worden als downloads getoond.",
+          "count": "{count, plural, one {# bijlage} other {# bijlagen}}",
+          "summary": "{count, plural, one {# geupload} other {# geupload}}: {imageCount, plural, one {# afbeelding} other {# afbeeldingen}}, {fileCount, plural, one {# bestand} other {# bestanden}}",
           "actions": {
             "add": "Bijlage toevoegen"
           }

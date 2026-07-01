@@ -8,6 +8,8 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
+  ChevronsDown,
+  ChevronsUp,
   CircleAlert,
   FileText,
   Folder,
@@ -187,16 +189,18 @@ export function StructureTree({
               <button
                 type="button"
                 onClick={handleExpandAll}
-                className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+                className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-muted"
               >
-                ⤢ {expandLabel}
+                <ChevronsDown className="h-3.5 w-3.5" aria-hidden />
+                {expandLabel}
               </button>
               <button
                 type="button"
                 onClick={handleCollapseAll}
-                className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+                className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-muted"
               >
-                ⤡ {collapseLabel}
+                <ChevronsUp className="h-3.5 w-3.5" aria-hidden />
+                {collapseLabel}
               </button>
             </>
           )}

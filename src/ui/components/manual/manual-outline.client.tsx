@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronDown, ChevronRight, Share2 } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronsDown, ChevronsUp, Share2 } from "lucide-react";
 
 import type { Project } from "@/lib/model-definitions/project";
 import type {
@@ -213,16 +213,18 @@ export function ManualOutline({
               <button
                 type="button"
                 onClick={handleExpandAll}
-                className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+                className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-muted"
               >
-                ⤢ {expandLabel}
+                <ChevronsDown className="h-3.5 w-3.5" aria-hidden />
+                {expandLabel}
               </button>
               <button
                 type="button"
                 onClick={handleCollapseAll}
-                className="rounded-md border px-2 py-1 text-xs hover:bg-muted"
+                className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-muted"
               >
-                ⤡ {collapseLabel}
+                <ChevronsUp className="h-3.5 w-3.5" aria-hidden />
+                {collapseLabel}
               </button>
             </div>
           )}

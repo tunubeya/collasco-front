@@ -5,15 +5,13 @@
   /* —— PALETA BASE (de tu imagen) —— */
   --color-cream-50:  #F5EFE6;   /* fondo muy suave */
   --color-cream-100: #E8DFCA;   /* superficie/acento cálido */
+  --color-blue-100:  #EEF6FF;   /* fondo azul claro */
   --color-blue-400:  #CBDCEB;   /* azul claro UI */
   --color-blue-600:  #6D94C5;   /* azul marca (primary) */
 
   /* —— TOKENS SEMÁNTICOS —— */
   --color-background: #ffffff;
   --color-foreground: #0d141c;
-
-  --color-surface:    var(--color-cream-50);
-  --color-surface-2:  var(--color-cream-100);
 
   --color-primary:            var(--color-blue-600);
   --color-primary-soft:       var(--color-blue-400);
@@ -55,10 +53,10 @@
   --muted: var(--color-muted);                      /* cream-100 */
   --muted-foreground: var(--color-muted-fg);        /* gris medio cálido */
 
-  --card: var(--color-surface);                     /* cream-50 */
+  --card: var(--color-blue-100);
   --card-foreground: var(--color-foreground);
 
-  --popover: var(--color-surface);
+  --popover: var(--color-blue-100);
   --popover-foreground: var(--color-foreground);
 
   --primary: var(--color-primary);                  /* azul marca */

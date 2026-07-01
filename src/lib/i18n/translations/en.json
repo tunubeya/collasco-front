@@ -317,6 +317,7 @@
     "subjectPlaceholder": "Subject",
     "descriptionPlaceholder": "Describe your query...",
     "sendButton": "Send Message",
+    "sendEmail": "Send by Email",
     "ticketCta": {
       "title": "Found an issue in the system?",
       "description": "Create a ticket so the Collasco team can review it.",

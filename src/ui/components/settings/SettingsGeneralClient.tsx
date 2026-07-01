@@ -147,8 +147,8 @@ export default function SettingsGeneralClient({ initial }: Props) {
   );
 
   return (
-    <div className="grid gap-8 bg-surface border border-[color:var(--color-border)] rounded-2xl p-6">
-      <section className="rounded-2xl border border-sky-200 bg-sky-50/70 p-4">
+    <div className="grid gap-5">
+      <section className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6">
         <div>
           <h2 className="text-lg font-semibold">{t("ticketPrefs.title")}</h2>
           <p className="text-sm text-slate-600">{t("ticketPrefs.subtitle")}</p>
@@ -180,10 +180,10 @@ export default function SettingsGeneralClient({ initial }: Props) {
             <div
               key={item.key}
               className={cn(
-                "flex items-start justify-between gap-3 rounded-xl border p-3 transition-colors",
+                "flex items-start justify-between gap-3 rounded-lg border p-3 transition-colors",
                 ticketPrefs[item.key]
-                  ? "border-sky-300 bg-white"
-                  : "border-sky-100 bg-white/70"
+                  ? "border-blue-300 bg-blue-100/60"
+                  : "border-slate-200 bg-white"
               )}
             >
               <div className="space-y-1">
@@ -217,7 +217,7 @@ export default function SettingsGeneralClient({ initial }: Props) {
         )}
       </section>
 
-      <section>
+      <section className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6">
         <h2 className="text-lg font-semibold">{t("github.title")}</h2>
         <p className="text-sm text-[color:var(--color-muted-fg)] mb-3">
           {t("github.subtitle")}

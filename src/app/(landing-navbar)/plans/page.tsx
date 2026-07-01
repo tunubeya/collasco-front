@@ -34,7 +34,7 @@ export default async function PlansPage() {
 
   return (
     <div className="min-h-[calc(100vh-64px)] w-full
-                    bg-gradient-to-br from-surface to-primary/10
+                    bg-gradient-to-br from-white to-primary/10
                     flex flex-col gap-7 px-6 py-12 items-center">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
         {t('title')}

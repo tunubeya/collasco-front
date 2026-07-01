@@ -82,6 +82,7 @@ export default function ResetPasswordForm({ token }: Readonly<{ token: string }>
             label={field.label}
             type={field.type}
             placeholder={field.placeholder}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             errorMessage={state?.errors?.[errorKey]}
             {...(field.description && { description: field.description })}
           />

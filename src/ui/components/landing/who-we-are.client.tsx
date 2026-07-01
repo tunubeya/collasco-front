@@ -130,7 +130,7 @@ export default function WhoWeArePage() {
               </motion.div>
             </motion.div>
             <motion.div 
-              className="rounded-3xl bg-surface p-8 shadow-sm border border-[color:var(--color-border)] lg:p-12"
+              className="rounded-3xl bg-blue-100 p-8 shadow-sm border border-[color:var(--color-border)] lg:p-12"
               variants={fadeInUp}
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2 }}
@@ -145,7 +145,7 @@ export default function WhoWeArePage() {
       </section>
 
       {/* The Team - Modern Cards */}
-      <section className="bg-surface py-24 sm:py-32">
+      <section className="bg-blue-100 py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div 
             className="mx-auto max-w-2xl lg:mx-0"
@@ -193,7 +193,7 @@ export default function WhoWeArePage() {
                       <div className="mt-6 flex justify-center gap-4 sm:justify-start">
                         <motion.a 
                           href={`mailto:${member.email}`} 
-                          className="rounded-full bg-surface p-2 text-primary"
+                          className="rounded-full bg-blue-100 p-2 text-primary"
                           whileHover={{ scale: 1.1, backgroundColor: 'var(--color-primary)', color: 'white' }}
                           transition={{ duration: 0.2 }}
                         >
@@ -201,7 +201,7 @@ export default function WhoWeArePage() {
                         </motion.a>
                         <motion.a 
                           href={member.linkedin} 
-                          className="rounded-full bg-surface p-2 text-primary"
+                          className="rounded-full bg-blue-100 p-2 text-primary"
                           whileHover={{ scale: 1.1, backgroundColor: 'var(--color-primary)', color: 'white' }}
                           transition={{ duration: 0.2 }}
                           target="_blank"
@@ -241,7 +241,7 @@ export default function WhoWeArePage() {
       </section>
 
       {/* How We Work - Grid of Values */}
-      <section className="bg-surface py-24 sm:py-32 border-t border-[color:var(--color-border)]">
+      <section className="bg-blue-100 py-24 sm:py-32 border-t border-[color:var(--color-border)]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div 
             className="mx-auto max-w-2xl text-center"

@@ -10,6 +10,7 @@ import { Input } from "@/ui/components/form/input";
 import { authenticate } from "@/lib/actions";
 import { toast } from "sonner";
 import { RoutesEnum } from "@/lib/utils";
+import { AuthSplitLayout } from "@/ui/components/auth/auth-split-layout";
 
 export default function LoginPageClient() {
   const t = useTranslations("auth.login");
@@ -54,81 +55,61 @@ export default function LoginPageClient() {
   ] as const;
 
   return (
-    <div
-      className="min-h-[calc(100vh-64px)] w-full
-                    bg-white from-surface to-primary/10
-                    flex items-center justify-center px-6 py-12"
-    >
-      <div className="w-full max-w-md">
-        {/* Card */}
-        <div
-          className="bg-surface border border-[color:var(--color-border)]
-                        shadow-sm rounded-2xl p-6 md:p-8"
-        >
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-[color:var(--color-foreground)]">
-              {t("title_01")}
-            </h1>
-            <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
-              {t("description_01")}
-            </p>
-          </div>
-
-          {/* Form */}
-          <form action={action} className="flex flex-col gap-5">
-            {fields.map((f) => (
-              <Input
-                key={f.name}
-                name={f.name}
-                label={f.label}
-                type={f.type}
-                className="bg-white"
-                placeholder={f.placeholder}
-              />
-            ))}
-
-            <div className="flex items-center justify-between text-sm">
-              <Link
-                href={RoutesEnum.FORGOT_PASSWORD}
-                className="underline text-primary hover:opacity-90"
-              >
-                {t("recover")}
-              </Link>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={pending}
-              className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:opacity-90"
-            >
-              {pending ? t("loading") ?? "Signing in…" : t("loginButton")}
-            </Button>
-          </form>
-
-          {/* Divider (sin Google) */}
-          {/* Si más adelante reactivas Google, aquí reinsertas el botón */}
-          {/* <div className="mt-6">
-              <GoogleLoginButton redirectUrl={RoutesEnum.LOGGED_OPTIONS} />
-            </div> */}
-
-          {/* Footer links */}
-          <p className="mt-6 text-center text-sm text-[color:var(--color-muted-fg)]">
-            {t("alreadyAccount")}{" "}
-            <Link
-              href={RoutesEnum.REGISTER}
-              className="underline text-primary hover:opacity-90"
-            >
-              {t("createAccount")}
-            </Link>
-          </p>
-        </div>
-
-        {/* Mini disclaimer/brand */}
+    <AuthSplitLayout
+      footer={
         <p className="mt-4 text-center text-xs text-[color:var(--color-muted-fg)]">
           © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
+      }
+    >
+      <div className="mb-7 text-center">
+        <h1 className="text-3xl font-bold tracking-tight text-[color:var(--color-foreground)]">
+          {t("title_01")}
+        </h1>
+        <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
+          {t("description_01")}
+        </p>
       </div>
-    </div>
+
+      <form action={action} className="flex flex-col gap-5">
+        {fields.map((f) => (
+          <Input
+            key={f.name}
+            name={f.name}
+            label={f.label}
+            type={f.type}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
+            placeholder={f.placeholder}
+          />
+        ))}
+
+        <div className="flex items-center justify-between text-sm">
+          <Link
+            href={RoutesEnum.FORGOT_PASSWORD}
+            className="underline text-primary hover:opacity-90"
+          >
+            {t("recover")}
+          </Link>
+        </div>
+
+        <Button
+          type="submit"
+          disabled={pending}
+          className="w-full bg-slate-950 text-white hover:bg-slate-800"
+        >
+          {pending ? t("loading") ?? "Signing in…" : t("loginButton")}
+        </Button>
+      </form>
+
+      <p className="mt-7 text-center text-sm text-[color:var(--color-muted-fg)]">
+        {t("alreadyAccount")}{" "}
+        <Link
+          href={RoutesEnum.REGISTER}
+          className="font-semibold underline text-slate-950 hover:opacity-90"
+        >
+          {t("createAccount")}
+        </Link>
+      </p>
+    </AuthSplitLayout>
   );
 }

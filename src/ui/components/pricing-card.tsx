@@ -24,7 +24,7 @@ export default async function PricingCard({
     <div
       className="flex flex-col min-w-[280px] max-w-[320px]
                     rounded-2xl border border-[color:var(--color-border)]
-                    bg-surface shadow-sm p-6 md:p-8"
+                    bg-white shadow-sm p-6 md:p-8"
     >
       {/* Badge */}
       <div className="flex justify-start">

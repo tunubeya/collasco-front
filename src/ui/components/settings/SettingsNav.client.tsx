@@ -19,7 +19,7 @@ export default function SettingsNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-wrap gap-3 text-sm">
+    <nav className="flex flex-wrap gap-2 text-sm">
       {items.map((item) => {
         const isActive =
           item.href === "/app/settings"

@@ -27,11 +27,11 @@ export default function TermsAndConditionsPage() {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-64px)] w-full 
-                    bg-gradient-to-br from-surface to-primary/10 
+    <div className="min-h-[calc(100vh-64px)] w-full
+                    bg-gradient-to-br from-white to-primary/10
                     flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-4xl bg-surface 
-                      border border-[color:var(--color-border)] 
+      <div className="w-full max-w-4xl bg-white
+                      border border-[color:var(--color-border)]
                       shadow-sm rounded-2xl p-6 md:p-10">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-center mb-8">
           {t('title')}

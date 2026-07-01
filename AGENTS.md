@@ -88,6 +88,7 @@ Notas:
 ## UI
 
 - Mantener la interfaz sobria y funcional.
+- No usar `--color-surface`, `bg-surface` ni `from-surface`; para fondos suaves usar `--color-blue-100` / `bg-blue-100` y reservar `bg-white` para tarjetas, formularios y paneles de contenido.
 - En pantallas pequenas, evitar scroll horizontal innecesario si el contenido puede partirse en varias filas.
 - En el listado de tickets, las pestanas deben usar wrapping y no scroll horizontal.
 - El filtro de estado de tickets debe estar junto al selector de proyecto.

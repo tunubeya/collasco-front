@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import ForgotPasswordClient from '@/ui/components/auth/forgot-password-page';
+import { AuthSplitLayout } from '@/ui/components/auth/auth-split-layout';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('auth.forgot-password');
@@ -9,15 +10,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="min-h-[calc(100vh-64px)] w-full
-                    bg-gradient-to-br from-surface to-primary/10
-                    flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-md">
-        <ForgotPasswordClient />
+    <AuthSplitLayout
+      footer={
         <p className="mt-4 text-center text-xs text-[color:var(--color-muted-fg)]">
           © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
-      </div>
-    </div>
+      }
+    >
+      <ForgotPasswordClient />
+    </AuthSplitLayout>
   );
 }

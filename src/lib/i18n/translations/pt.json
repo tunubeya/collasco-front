@@ -336,9 +336,10 @@
     "metadata_title": "Suporte | Collasco",
     "title": "Central de Suporte",
     "description": "Envie-nos seus comentários, sugestões ou problemas. Sua opinião é importante para nós.",
-    "subjectPlaceholder": "Asunto",
+    "subjectPlaceholder": "Assunto",
     "descriptionPlaceholder": "Descreva sua dúvida...",
     "sendButton": "Enviar Mensagem",
+    "sendEmail": "Enviar por e-mail",
     "ticketCta": {
       "title": "Encontrou um erro no sistema?",
       "description": "Crie um ticket para que a equipe da Collasco possa revisar.",

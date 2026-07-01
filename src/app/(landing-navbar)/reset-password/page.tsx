@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import ResetPasswordForm from '@/ui/components/auth/reset-password-form';
 import { RoutesEnum } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import { AuthSplitLayout } from '@/ui/components/auth/auth-split-layout';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('auth.reset-password');
@@ -25,28 +26,23 @@ export default async function ResetPasswordPage({
   if (!tokenStr) redirect(RoutesEnum.APP_ROOT);
 
   return (
-    <div className="min-h-[calc(100vh-64px)] w-full
-                    bg-gradient-to-br from-surface to-primary/10
-                    flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-surface border border-[color:var(--color-border)]
-                        shadow-sm rounded-2xl p-6 md:p-8">
-          <div className="mb-6 text-center">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-              {t('title')}
-            </h1>
-            <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
-              {t('description')}
-            </p>
-          </div>
-
-          <ResetPasswordForm token={tokenStr} />
-        </div>
-
+    <AuthSplitLayout
+      footer={
         <p className="mt-4 text-center text-xs text-[color:var(--color-muted-fg)]">
           © {new Date().getFullYear()} Collasco. All rights reserved.
         </p>
+      }
+    >
+      <div className="mb-7 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">
+          {t('title')}
+        </h1>
+        <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
+          {t('description')}
+        </p>
       </div>
-    </div>
+
+      <ResetPasswordForm token={tokenStr} />
+    </AuthSplitLayout>
   );
 }

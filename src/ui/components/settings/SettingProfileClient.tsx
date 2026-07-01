@@ -56,8 +56,7 @@ export default function SettingsProfileClient({
   }, [passwordState?.success]);
 
   return (
-    <div className="grid gap-8">
-      {/* Bloque Perfil */}
+    <div className="grid gap-5">
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -68,9 +67,12 @@ export default function SettingsProfileClient({
             triggerProfile(formData);
           });
         }}
-        className="bg-surface border border-[color:var(--color-border)] rounded-2xl p-6"
+        className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6"
       >
-        <h2 className="text-lg font-semibold mb-4">{t("title")}</h2>
+        <h2 className="mb-1 text-lg font-semibold">{t("title")}</h2>
+        <p className="mb-5 text-sm text-[color:var(--color-muted-fg)]">
+          {t("hint")}
+        </p>
 
         <div className="grid gap-4">
           <Input
@@ -111,17 +113,13 @@ export default function SettingsProfileClient({
           </p>
         )}
 
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <button type="submit" className={actionButtonClass()}>
             {t("save")}
           </button>
-          <span className="text-xs text-[color:var(--color-muted-fg)]">
-            {t("hint")}
-          </span>
         </div>
       </form>
 
-      {/* Bloque Contraseña */}
       <form
         action={(formData) => {
           formData.set("currentPassword", currentPassword);
@@ -129,9 +127,12 @@ export default function SettingsProfileClient({
           formData.set("confirmPassword", confirmPassword);
           return triggerPassword(formData);
         }}
-        className="bg-surface border border-[color:var(--color-border)] rounded-2xl p-6"
+        className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6"
       >
-        <h2 className="text-lg font-semibold mb-4">{t("password.title")}</h2>
+        <h2 className="mb-1 text-lg font-semibold">{t("password.title")}</h2>
+        <p className="mb-5 text-sm text-[color:var(--color-muted-fg)]">
+          {t("password.hint")}
+        </p>
 
         <div className="grid gap-4">
           <Input
@@ -189,13 +190,10 @@ export default function SettingsProfileClient({
           </p>
         )}
 
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <button type="submit" className={actionButtonClass()}>
             {t("password.save")}
           </button>
-          <span className="text-xs text-[color:var(--color-muted-fg)]">
-            {t("password.hint")}
-          </span>
         </div>
       </form>
     </div>

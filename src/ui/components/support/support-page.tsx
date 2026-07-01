@@ -48,7 +48,7 @@ export default function SupportPageClient() {
   };
 
   return (
-    <div className="bg-surface border border-[color:var(--color-border)]
+    <div className="bg-white border border-[color:var(--color-border)]
                     shadow-sm rounded-2xl p-6 md:p-8">
       <div className="mb-6 text-center">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
@@ -68,6 +68,7 @@ export default function SupportPageClient() {
             placeholder={t('subjectPlaceholder')}
             value={subject}
             maxLength={subjectMax}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setSubject(e.target.value)}
           />
           <p className="mt-1 text-[10px] text-[color:var(--color-muted-fg)] text-right">
@@ -82,6 +83,7 @@ export default function SupportPageClient() {
             placeholder={t('descriptionPlaceholder')}
             value={description}
             maxLength={descMax}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setDescription(e.target.value)}
             rows={6}
           />
@@ -106,7 +108,7 @@ export default function SupportPageClient() {
             onClick={handleEmail}
             disabled={!isValid}
           >
-            {t('sendEmail') ?? 'Send by Email'}
+            {t('sendEmail')}
           </Button>
         </div>
 

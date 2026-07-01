@@ -25,10 +25,9 @@ export default function ForgotPasswordClient() {
   }, [state, t]);
 
   return (
-    <div className="bg-surface border border-[color:var(--color-border)]
-                    shadow-sm rounded-2xl p-6 md:p-8">
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+    <>
+      <div className="mb-7 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">
           {t('title')}
         </h1>
         <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
@@ -42,12 +41,13 @@ export default function ForgotPasswordClient() {
           type="email"
           label={t('emailPlaceholder') ?? 'Email'}
           placeholder={t('emailPlaceholder')}
+          className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
           disabled={mailSent}
         />
 
         <Button
           type="submit"
-          className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:opacity-90"
+          className="w-full bg-slate-950 text-white hover:bg-slate-800"
           disabled={pending || mailSent}
         >
           {mailSent ? t('recoverButtonSent') : t('recoverButton')}
@@ -60,6 +60,6 @@ export default function ForgotPasswordClient() {
           </p>
         )}
       </form>
-    </div>
+    </>
   );
 }

@@ -88,9 +88,9 @@ export default function RegisterAccount() {
   ];
 
   return (
-    <div className="bg-surface border border-[color:var(--color-border)] shadow-sm rounded-2xl p-6 md:p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+    <>
+      <div className="mb-7 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">
           {t("title_01")}
         </h1>
         <p className="mt-2 text-sm text-[color:var(--color-muted-fg)]">
@@ -110,7 +110,7 @@ export default function RegisterAccount() {
               key={f.name}
               name={f.name}
               label={f.label}
-              className="bg-white"
+              className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
               type={f.type}
               placeholder={f.placeholder}
               errorMessage={state?.errors?.[errorKey]}
@@ -144,7 +144,7 @@ export default function RegisterAccount() {
 
         <Button
           type="submit"
-          className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:opacity-90"
+          className="w-full bg-slate-950 text-white hover:bg-slate-800"
           disabled={isPending || !checkbox}
         >
           {isPending
@@ -159,6 +159,6 @@ export default function RegisterAccount() {
           </Link>
         </p>
       </form>
-    </div>
+    </>
   );
 }

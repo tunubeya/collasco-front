@@ -151,7 +151,7 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
       </section>
 
       {/* Personas */}
-      <section className="bg-surface py-16 md:py-20">
+      <section className="bg-blue-100 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
           <motion.div 
             className="text-center"
@@ -213,7 +213,7 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
           {featureClusters.map((cluster) => (
             <motion.div 
               key={cluster.key} 
-              className="relative rounded-2xl border border-[color:var(--color-border)] bg-surface/30 p-6"
+              className="relative rounded-2xl border border-[color:var(--color-border)] bg-blue-100/30 p-6"
               variants={fadeInUp}
               whileHover={{ y: -2 }}
             >
@@ -275,7 +275,7 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
       </section>
 
       {/* Promise */}
-      <section className="bg-surface py-16 text-center md:py-20">
+      <section className="bg-blue-100 py-16 text-center md:py-20">
         <div className="mx-auto max-w-4xl px-6">
           <motion.div 
             initial={fadeInUp.initial}
@@ -374,7 +374,7 @@ export default function LandingContent({ translations: tr, scheduleMeetingUrl }:
       </section>
 
       {/* Stay connected */}
-      <section className="bg-surface py-16 md:py-20">
+      <section className="bg-blue-100 py-16 md:py-20">
         <div className="mx-auto grid max-w-5xl gap-10 px-6 md:grid-cols-2">
           <motion.div 
             initial={fadeInUp.initial}

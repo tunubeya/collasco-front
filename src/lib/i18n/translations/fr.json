@@ -339,6 +339,7 @@
     "subjectPlaceholder": "Sujet",
     "descriptionPlaceholder": "Décrivez votre demande...",
     "sendButton": "Envoyer le message",
+    "sendEmail": "Envoyer par e-mail",
     "ticketCta": {
       "title": "Vous avez trouvé une erreur dans le système ?",
       "description": "Créez un ticket afin que l'équipe Collasco puisse l'examiner.",

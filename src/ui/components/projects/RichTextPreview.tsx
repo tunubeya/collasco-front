@@ -250,6 +250,9 @@ function splitOnce(value: string, delimiter: string): [string, string | null] {
 }
 
 function autolinkUrls(value: string): string {
+  if (typeof window !== "undefined" && /<[^>]+>/.test(value)) {
+    return autolinkTextNodes(value);
+  }
   const urlPattern = /\bhttps?:\/\/[^\s<]+/gi;
   return value.replace(urlPattern, (raw) => {
     const match = raw.match(/^(.*?)([),.;:!?]+)?$/);
@@ -259,4 +262,50 @@ function autolinkUrls(value: string): string {
       href
     )}</a>${escapeAttribute(trailing)}`;
   });
+}
+
+function autolinkTextNodes(value: string): string {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(value, "text/html");
+  const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+  const nodes: Text[] = [];
+  let current = walker.nextNode();
+  while (current) {
+    nodes.push(current as Text);
+    current = walker.nextNode();
+  }
+
+  nodes.forEach((node) => {
+    if (node.parentElement?.closest("a")) return;
+    const text = node.textContent ?? "";
+    if (!/\bhttps?:\/\//i.test(text)) return;
+    const fragment = doc.createDocumentFragment();
+    let lastIndex = 0;
+    const urlPattern = /\bhttps?:\/\/[^\s<]+/gi;
+    text.replace(urlPattern, (raw, offset: number) => {
+      if (offset > lastIndex) {
+        fragment.appendChild(doc.createTextNode(text.slice(lastIndex, offset)));
+      }
+      const match = raw.match(/^(.*?)([),.;:!?]+)?$/);
+      const href = match?.[1] ?? raw;
+      const trailing = match?.[2] ?? "";
+      const link = doc.createElement("a");
+      link.setAttribute("href", href);
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noreferrer");
+      link.textContent = href;
+      fragment.appendChild(link);
+      if (trailing) {
+        fragment.appendChild(doc.createTextNode(trailing));
+      }
+      lastIndex = offset + raw.length;
+      return raw;
+    });
+    if (lastIndex < text.length) {
+      fragment.appendChild(doc.createTextNode(text.slice(lastIndex)));
+    }
+    node.replaceWith(fragment);
+  });
+
+  return doc.body.innerHTML;
 }

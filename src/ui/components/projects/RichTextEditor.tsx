@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Mark, mergeAttributes } from "@tiptap/core";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -16,6 +17,64 @@ import {
 
 import { cn } from "@/lib/utils";
 import { normalizeRichTextInput } from "@/lib/rich-text";
+
+const HtmlLink = Mark.create({
+  name: "link",
+
+  inclusive: false,
+
+  addAttributes() {
+    return {
+      href: {
+        default: null,
+      },
+      target: {
+        default: "_blank",
+      },
+      rel: {
+        default: "noreferrer",
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "a[href]",
+        getAttrs: (node) => {
+          if (!(node instanceof HTMLElement)) return false;
+          const href = node.getAttribute("href") ?? "";
+          if (!isSafeLinkHref(href)) return false;
+          return {
+            href,
+            target: node.getAttribute("target") || "_blank",
+            rel: node.getAttribute("rel") || "noreferrer",
+          };
+        },
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    const href = typeof HTMLAttributes.href === "string" ? HTMLAttributes.href : "";
+    if (!isSafeLinkHref(href)) {
+      return ["span", 0];
+    }
+    return [
+      "a",
+      mergeAttributes(HTMLAttributes, {
+        href,
+        target: HTMLAttributes.target || "_blank",
+        rel: HTMLAttributes.rel || "noreferrer",
+      }),
+      0,
+    ];
+  },
+});
+
+function isSafeLinkHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
 
 type ToolbarLabels = {
   bold: string;
@@ -71,6 +130,7 @@ export function RichTextEditor({
         orderedList: { keepMarks: true },
       }),
       Underline,
+      HtmlLink,
     ],
     content: normalized || "<p></p>",
     editable: !disabled,
@@ -234,6 +294,11 @@ export function RichTextEditor({
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
             "Liberation Mono", "Courier New", monospace;
           font-size: 0.85em;
+        }
+        .rich-text-content :global(a) {
+          color: hsl(var(--primary));
+          text-decoration: underline;
+          text-underline-offset: 2px;
         }
       `}</style>
     </div>

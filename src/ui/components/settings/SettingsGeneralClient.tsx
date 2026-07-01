@@ -147,14 +147,14 @@ export default function SettingsGeneralClient({ initial }: Props) {
   );
 
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-5 xl:grid-cols-2 xl:items-start">
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
         <div>
           <h2 className="text-lg font-semibold">{t("ticketPrefs.title")}</h2>
           <p className="text-sm text-slate-600">{t("ticketPrefs.subtitle")}</p>
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
           {[
             {
               key: "notifyAssignedTickets" as const,

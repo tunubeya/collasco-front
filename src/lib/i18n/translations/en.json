@@ -2498,6 +2498,9 @@
           "emptyContent": "No content.",
           "images": "Images",
           "addResponse": "Add a response",
+          "addNewResponse": "Add response",
+          "descriptionSubmit": "Submit",
+          "descriptionSubmitting": "Submitting...",
           "fields": {
             "type": "Type",
             "content": "Message"

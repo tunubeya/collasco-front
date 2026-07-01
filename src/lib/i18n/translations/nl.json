@@ -2528,6 +2528,9 @@
           "emptyContent": "Geen inhoud.",
           "images": "Afbeeldingen",
           "addResponse": "Reactie toevoegen",
+          "addNewResponse": "Reactie toevoegen",
+          "descriptionSubmit": "Indienen",
+          "descriptionSubmitting": "Indienen...",
           "fields": {
             "type": "Type",
             "content": "Bericht"

@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import {
   Loader2,
   ChevronDown,
+  Plus,
   FileArchive,
   FileCode,
   FileImage,
@@ -116,6 +117,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
   const [sectionContent, setSectionContent] = useState("");
   const [sectionEditorKey, setSectionEditorKey] = useState(0);
   const [sectionSaving, setSectionSaving] = useState(false);
+  const [showResponseComposer, setShowResponseComposer] = useState(false);
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState("");
   const [editingSeed, setEditingSeed] = useState("");
@@ -254,6 +256,12 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
     }
   }, [descriptionSection]);
 
+  useEffect(() => {
+    if (!canAddResponse) {
+      setShowResponseComposer(false);
+    }
+  }, [canAddResponse]);
+
   const handleSaveDescription = useCallback(async () => {
     if (isReadOnly || !descriptionDraft.trim() || descriptionSaving) return;
     setDescriptionSaving(true);
@@ -345,6 +353,7 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
       });
       setSectionContent("");
       setSectionEditorKey((prev) => prev + 1);
+      setShowResponseComposer(false);
       toast.success(t("follow.sectionAdded"));
       await loadTicket();
     } catch (err) {
@@ -718,7 +727,9 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
                     onClick={() => void handleSaveDescription()}
                     disabled={!descriptionDraft.trim() || descriptionSaving}
                   >
-                    {descriptionSaving ? tDetail("actions.saving") : tDetail("actions.save")}
+                    {descriptionSaving
+                      ? t("follow.descriptionSubmitting")
+                      : t("follow.descriptionSubmit")}
                   </button>
                 </div>
               </div>
@@ -759,43 +770,56 @@ export function PublicTicketFollowClient({ followUpToken }: Props) {
             ) : null}
 
             {canAddResponse ? (
-              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-4">
-                <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
-
-                <div className="grid gap-4">
-                  <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-3 text-sm">
-                    <span className="font-medium">{t("follow.fields.content")}</span>
-                    <RichTextEditor
-                      key={`public-response-${sectionEditorKey}`}
-                      name="public-response"
-                      label={t("follow.fields.content")}
-                      placeholder={t("follow.placeholders.content")}
-                      defaultValue=""
-                      labels={richTextLabels}
-                      onValueChange={setSectionContent}
-                      hideLabel
-                    />
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    {tDetail("images.hint")}
-                  </p>
-                </div>
-
-                <div className="flex justify-end">
+              <div className="mt-4">
+                {!showResponseComposer ? (
                   <button
                     type="button"
-                    className={cn(
-                      "inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium",
-                      sectionSaving
-                        ? "cursor-not-allowed opacity-70"
-                        : "hover:bg-slate-50"
-                    )}
-                    onClick={() => void handleAddSection()}
-                    disabled={sectionSaving}
+                    className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/85"
+                    onClick={() => setShowResponseComposer(true)}
                   >
-                    {sectionSaving ? t("follow.saving") : t("follow.submit")}
+                    <Plus className="h-4 w-4" aria-hidden />
+                    {t("follow.addNewResponse")}
                   </button>
-                </div>
+                ) : (
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-4">
+                    <h3 className="text-sm font-semibold">{t("follow.addResponse")}</h3>
+
+                    <div className="grid gap-4">
+                      <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-3 text-sm">
+                        <span className="font-medium">{t("follow.fields.content")}</span>
+                        <RichTextEditor
+                          key={`public-response-${sectionEditorKey}`}
+                          name="public-response"
+                          label={t("follow.fields.content")}
+                          placeholder={t("follow.placeholders.content")}
+                          defaultValue=""
+                          labels={richTextLabels}
+                          onValueChange={setSectionContent}
+                          hideLabel
+                        />
+                      </div>
+                      <p className="text-[10px] text-muted-foreground">
+                        {tDetail("images.hint")}
+                      </p>
+                    </div>
+
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        className={cn(
+                          "inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium",
+                          sectionSaving
+                            ? "cursor-not-allowed opacity-70"
+                            : "hover:bg-slate-50"
+                        )}
+                        onClick={() => void handleAddSection()}
+                        disabled={sectionSaving}
+                      >
+                        {sectionSaving ? t("follow.saving") : t("follow.submit")}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : null}
 

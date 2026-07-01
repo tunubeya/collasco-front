@@ -144,7 +144,7 @@ export default function RegisterAccount() {
 
         <Button
           type="submit"
-          className="w-full bg-slate-950 text-white hover:bg-slate-800"
+          className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:bg-primary/85"
           disabled={isPending || !checkbox}
         >
           {isPending

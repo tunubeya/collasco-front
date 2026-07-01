@@ -23,15 +23,6 @@ export function AuthSplitLayout({
         )}
       >
         <section className="flex min-h-[42rem] flex-col px-6 py-8 md:px-12 lg:px-16">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-white">
-              C
-            </span>
-            <span className="text-lg font-semibold tracking-tight text-slate-950">
-              Collasco
-            </span>
-          </div>
-
           <div className="flex flex-1 items-center justify-center py-10">
             <div className="w-full max-w-sm">{children}</div>
           </div>

@@ -148,7 +148,7 @@ export default function SettingsGeneralClient({ initial }: Props) {
 
   return (
     <div className="grid gap-5">
-      <section className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
         <div>
           <h2 className="text-lg font-semibold">{t("ticketPrefs.title")}</h2>
           <p className="text-sm text-slate-600">{t("ticketPrefs.subtitle")}</p>
@@ -217,7 +217,7 @@ export default function SettingsGeneralClient({ initial }: Props) {
         )}
       </section>
 
-      <section className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
         <h2 className="text-lg font-semibold">{t("github.title")}</h2>
         <p className="text-sm text-[color:var(--color-muted-fg)] mb-3">
           {t("github.subtitle")}
@@ -229,6 +229,7 @@ export default function SettingsGeneralClient({ initial }: Props) {
               type="password"
               label={t("github.maskedLabel")}
               value={initial.apiTokenMasked}
+              className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
               readOnly
               autoComplete="off"
             />
@@ -255,6 +256,7 @@ export default function SettingsGeneralClient({ initial }: Props) {
             label={t("github.inputLabel")}
             placeholder={t("github.placeholder")}
             value={githubToken}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => {
               setGithubToken(e.target.value);
               if (githubFeedback) setGithubFeedback(null);
@@ -282,13 +284,18 @@ export default function SettingsGeneralClient({ initial }: Props) {
           )}
 
           <div className="flex flex-wrap items-center gap-3">
-            <Button type="submit" disabled={!githubToken.trim()}>
+            <Button
+              type="submit"
+              className="bg-primary text-[color:var(--color-primary-foreground)] hover:bg-primary/85"
+              disabled={!githubToken.trim()}
+            >
               {t("github.save")}
             </Button>
             {hasGithubToken && (
               <Button
                 type="button"
-                variant="secondary"
+                variant="outline"
+                className="border border-gray-300 bg-white text-slate-700 hover:bg-blue-100 hover:text-slate-950"
                 onClick={handleDisconnect}
                 disabled={revoking}
               >

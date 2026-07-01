@@ -91,7 +91,7 @@ export default function ResetPasswordForm({ token }: Readonly<{ token: string }>
 
       <Button
         type="submit"
-        className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:opacity-90"
+        className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:bg-primary/85"
         disabled={isPending}
       >
         {t('recoverButton')}

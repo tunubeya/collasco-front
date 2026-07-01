@@ -95,7 +95,7 @@ export default function LoginPageClient() {
         <Button
           type="submit"
           disabled={pending}
-          className="w-full bg-slate-950 text-white hover:bg-slate-800"
+          className="w-full bg-primary text-[color:var(--color-primary-foreground)] hover:bg-primary/85"
         >
           {pending ? t("loading") ?? "Signing in…" : t("loginButton")}
         </Button>

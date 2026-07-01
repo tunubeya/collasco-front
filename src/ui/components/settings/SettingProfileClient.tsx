@@ -56,7 +56,7 @@ export default function SettingsProfileClient({
   }, [passwordState?.success]);
 
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-5 xl:grid-cols-2 xl:items-start">
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -67,7 +67,7 @@ export default function SettingsProfileClient({
             triggerProfile(formData);
           });
         }}
-        className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6"
+        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6"
       >
         <h2 className="mb-1 text-lg font-semibold">{t("title")}</h2>
         <p className="mb-5 text-sm text-[color:var(--color-muted-fg)]">
@@ -80,6 +80,7 @@ export default function SettingsProfileClient({
             label={t("name.title")}
             placeholder="John Doe"
             value={name}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setName(e.target.value)}
             errorMessage={
               profileState.fieldErrors?.name
@@ -93,6 +94,7 @@ export default function SettingsProfileClient({
             label={t("email.title")}
             placeholder="you@company.com"
             value={email}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setEmail(e.target.value)}
             errorMessage={
               profileState.fieldErrors?.email
@@ -114,7 +116,12 @@ export default function SettingsProfileClient({
         )}
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <button type="submit" className={actionButtonClass()}>
+          <button
+            type="submit"
+            className={actionButtonClass({
+              className: "border-primary bg-primary text-primary-foreground hover:bg-primary/85",
+            })}
+          >
             {t("save")}
           </button>
         </div>
@@ -127,7 +134,7 @@ export default function SettingsProfileClient({
           formData.set("confirmPassword", confirmPassword);
           return triggerPassword(formData);
         }}
-        className="rounded-xl border border-blue-200 bg-white p-5 shadow-sm md:p-6"
+        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:p-6"
       >
         <h2 className="mb-1 text-lg font-semibold">{t("password.title")}</h2>
         <p className="mb-5 text-sm text-[color:var(--color-muted-fg)]">
@@ -141,6 +148,7 @@ export default function SettingsProfileClient({
             label={t("password.current")}
             placeholder="********"
             value={currentPassword}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setCurrentPassword(e.target.value)}
             errorMessage={
               passwordState.fieldErrors?.currentPassword
@@ -155,6 +163,7 @@ export default function SettingsProfileClient({
             placeholder="********"
             description={t("password.rules")}
             value={newPassword}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setNewPassword(e.target.value)}
             errorMessage={
               passwordState.fieldErrors?.newPassword
@@ -168,6 +177,7 @@ export default function SettingsProfileClient({
             label={t("password.confirm")}
             placeholder="********"
             value={confirmPassword}
+            className="border border-gray-300 bg-white focus-visible:border-gray-500 focus-visible:ring-gray-200"
             onChange={(e) => setConfirmPassword(e.target.value)}
             errorMessage={
               passwordState.fieldErrors?.confirmPassword
@@ -191,7 +201,12 @@ export default function SettingsProfileClient({
         )}
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <button type="submit" className={actionButtonClass()}>
+          <button
+            type="submit"
+            className={actionButtonClass({
+              className: "border-primary bg-primary text-primary-foreground hover:bg-primary/85",
+            })}
+          >
             {t("password.save")}
           </button>
         </div>

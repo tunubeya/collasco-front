@@ -2306,6 +2306,12 @@
           "title": "Delete ticket?",
           "description": "This will permanently remove the ticket and its images."
         },
+        "notFound": {
+          "title": "Ticket unavailable",
+          "description": "This ticket was deleted or is no longer available. The notification can stay in your inbox, but it no longer has an active ticket to open.",
+          "notifications": "Back to notifications",
+          "tickets": "View tickets"
+        },
         "description": {
           "helper": "Initial ticket request.",
           "empty": "No description available."

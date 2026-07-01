@@ -88,6 +88,7 @@ Notas:
 ## UI
 
 - Mantener la interfaz sobria y funcional.
+- Para acciones principales, usar el token semántico del proyecto (`bg-primary` con `text-primary-foreground`, y hover como `hover:bg-primary/85` u opacidad). No usar fondos negros tipo `bg-slate-900`/`bg-black` para botones primarios salvo que el diseño existente lo requiera explícitamente.
 - No usar `--color-surface`, `bg-surface` ni `from-surface`; para fondos suaves usar `--color-blue-100` / `bg-blue-100` y reservar `bg-white` para tarjetas, formularios y paneles de contenido.
 - En sidebar y acciones neutras como logout, evitar hovers cálidos/crema o variantes genéricas que traigan colores viejos; usar `hover:bg-blue-100` o grises neutros suaves con texto de foreground.
 - En pantallas pequenas, evitar scroll horizontal innecesario si el contenido puede partirse en varias filas.

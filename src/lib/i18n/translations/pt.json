@@ -2336,6 +2336,12 @@
           "title": "Excluir ticket?",
           "description": "Isso removerá o ticket e suas imagens."
         },
+        "notFound": {
+          "title": "Ticket indisponível",
+          "description": "Este ticket foi excluído ou não está mais disponível. A notificação pode ficar na sua caixa de entrada, mas não há mais um ticket ativo para abrir.",
+          "notifications": "Voltar para notificações",
+          "tickets": "Ver tickets"
+        },
         "description": {
           "helper": "Solicitação inicial do ticket.",
           "empty": "Nenhuma descrição disponível."

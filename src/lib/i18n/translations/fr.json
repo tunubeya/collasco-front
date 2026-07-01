@@ -2336,6 +2336,12 @@
           "title": "Supprimer le ticket ?",
           "description": "Cela supprimera définitivement le ticket et ses images."
         },
+        "notFound": {
+          "title": "Ticket indisponible",
+          "description": "Ce ticket a été supprimé ou n'est plus disponible. La notification peut rester dans votre boîte, mais elle n'a plus de ticket actif à ouvrir.",
+          "notifications": "Retour aux notifications",
+          "tickets": "Voir les tickets"
+        },
         "description": {
           "helper": "Demande initiale du ticket.",
           "empty": "Aucune description disponible."

@@ -25,6 +25,7 @@ import {
   AppPrimaryTabButton as PrimaryTabButton,
   AppSecondaryTabButton as SecondaryTabButton,
 } from "@/ui/components/tabs/app-tabs";
+import { useStructureSessionTab } from "@/ui/components/projects/use-structure-session-tab";
 
 type ModuleTabsProps = {
   project: Project;
@@ -59,7 +60,6 @@ export function ModuleTabs({
 }: ModuleTabsProps) {
   const [activePrimaryTab, setActivePrimaryTab] =
     useState<ModulePrimaryTab>("overview");
-  const [activeTab, setActiveTab] = useState<ModuleTab>("structure");
   const tModule = useTranslations("app.projects.module");
   const tProjectDetail = useTranslations("app.projects.detail");
   const tProjectTabs = useTranslations("app.projects.detail.tabs");
@@ -81,12 +81,10 @@ export function ModuleTabs({
     if (canViewManual) tabs.push("manual");
     return tabs;
   }, [canViewDocumentation, canViewManual, canViewStructure]);
-
-  useEffect(() => {
-    if (!availableTabs.includes(activeTab)) {
-      setActiveTab(availableTabs[0] ?? "structure");
-    }
-  }, [activeTab, availableTabs]);
+  const [activeTab, setActiveTab] = useStructureSessionTab<ModuleTab>(
+    availableTabs,
+    "structure",
+  );
 
   const structureLabel = tProjectTabs("structure");
   const documentationLabel = tProjectTabs("sections");
@@ -138,6 +136,15 @@ export function ModuleTabs({
       setActiveTab(fallbackGroup.items[0].key);
     }
   }, [activePrimaryTab, navigationGroups]);
+
+  useEffect(() => {
+    const groupForActiveTab = navigationGroups.find((group) =>
+      group.items.some((item) => item.key === activeTab),
+    );
+    if (groupForActiveTab && groupForActiveTab.key !== activePrimaryTab) {
+      setActivePrimaryTab(groupForActiveTab.key);
+    }
+  }, [activePrimaryTab, activeTab, navigationGroups]);
 
   const activeGroup = useMemo(
     () =>

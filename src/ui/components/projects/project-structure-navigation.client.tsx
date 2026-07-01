@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { Children, type ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   ChevronDown,
   ChevronRight,
   ChevronsLeft,
+  ChevronsDown,
+  ChevronsUp,
   FileText,
   Folder,
   FolderOpen,
@@ -23,6 +26,10 @@ import type {
 } from "@/lib/definitions";
 import { documentationSectionId } from "@/lib/structure-helpers";
 import { cn } from "@/lib/utils";
+import {
+  readStoredStructureTab,
+  subscribeToStructureTabChange,
+} from "@/ui/components/projects/use-structure-session-tab";
 
 type ProjectStructureWorkspaceProps = {
   projectId: string;
@@ -44,12 +51,18 @@ export function ProjectStructureWorkspace({
   children,
 }: ProjectStructureWorkspaceProps) {
   const t = useTranslations("app.projects.detail.navigation");
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState(
+    () => searchParams.get("tab") ?? readStoredStructureTab(),
+  );
   const activeModuleIds = useMemo(
     () => findActiveModuleIds(roots, selectedModuleId, selectedFeatureId),
     [roots, selectedFeatureId, selectedModuleId],
   );
+  const allModuleIds = useMemo(() => collectModuleIds(roots), [roots]);
+  const expandedStorageKey = `project-structure-expanded:${projectId}`;
   const [expanded, setExpanded] = useState<ExpandedMap>(() =>
-    Object.fromEntries(activeModuleIds.map((id) => [id, true])),
+    restoreExpandedMap(expandedStorageKey, activeModuleIds),
   );
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
@@ -65,6 +78,38 @@ export function ProjectStructureWorkspace({
         : roots,
     [normalizedQuery, roots],
   );
+  const navigationQuery = activeTab ? `?tab=${encodeURIComponent(activeTab)}` : "";
+
+  useEffect(() => {
+    setActiveTab(searchParams.get("tab") ?? readStoredStructureTab());
+  }, [searchParams]);
+
+  useEffect(
+    () => subscribeToStructureTabChange((tab) => setActiveTab(tab)),
+    [],
+  );
+
+  useEffect(() => {
+    setExpanded((current) => {
+      const next = { ...current };
+      activeModuleIds.forEach((id) => {
+        next[id] = true;
+      });
+      return next;
+    });
+  }, [activeModuleIds]);
+
+  useEffect(() => {
+    window.sessionStorage.setItem(expandedStorageKey, JSON.stringify(expanded));
+  }, [expanded, expandedStorageKey]);
+
+  function handleExpandAll() {
+    setExpanded(Object.fromEntries(allModuleIds.map((id) => [id, true])));
+  }
+
+  function handleCollapseAll() {
+    setExpanded(Object.fromEntries(activeModuleIds.map((id) => [id, true])));
+  }
 
   const tree = (
     <nav aria-label={t("title")}>
@@ -75,6 +120,7 @@ export function ProjectStructureWorkspace({
               <NavigationModule
                 node={root}
                 projectId={projectId}
+                navigationQuery={navigationQuery}
                 selectedModuleId={selectedModuleId}
                 selectedFeatureId={selectedFeatureId}
                 expanded={expanded}
@@ -96,7 +142,7 @@ export function ProjectStructureWorkspace({
   const expandedPanel = (
     <>
       <div className="mb-3 flex items-start justify-between gap-2">
-        <Link href={`/app/projects/${projectId}`} className="min-w-0 px-1">
+        <Link href={`/app/projects/${projectId}${navigationQuery}`} className="min-w-0 px-1">
           <span className="block truncate text-lg font-semibold">{projectName}</span>
           <span className="text-xs text-muted-foreground">{t("title")}</span>
         </Link>
@@ -110,6 +156,26 @@ export function ProjectStructureWorkspace({
           <ChevronsLeft className="h-4 w-4" aria-hidden />
         </button>
       </div>
+      {allModuleIds.length ? (
+        <div className="mb-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            onClick={handleExpandAll}
+          >
+            <ChevronsDown className="h-3.5 w-3.5" aria-hidden />
+            {t("expandAll")}
+          </button>
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            onClick={handleCollapseAll}
+          >
+            <ChevronsUp className="h-3.5 w-3.5" aria-hidden />
+            {t("collapseAll")}
+          </button>
+        </div>
+      ) : null}
       <div className="relative mb-3">
         <Search
           className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -204,6 +270,7 @@ export function ProjectStructureWorkspace({
 function NavigationModule({
   node,
   projectId,
+  navigationQuery,
   selectedModuleId,
   selectedFeatureId,
   expanded,
@@ -213,6 +280,7 @@ function NavigationModule({
 }: {
   node: StructureModuleNode;
   projectId: string;
+  navigationQuery: string;
   selectedModuleId?: string;
   selectedFeatureId?: string;
   expanded: ExpandedMap;
@@ -252,7 +320,7 @@ function NavigationModule({
           <Folder className="h-4 w-4 shrink-0 text-slate-600" aria-hidden />
         )}
         <Link
-          href={`/app/projects/${projectId}/modules/${node.id}`}
+          href={`/app/projects/${projectId}/modules/${node.id}${navigationQuery}`}
           className="min-w-0 flex-1 truncate font-medium"
         >
           {node.name}
@@ -268,6 +336,7 @@ function NavigationModule({
                 <NavigationModule
                   node={item}
                   projectId={projectId}
+                  navigationQuery={navigationQuery}
                   selectedModuleId={selectedModuleId}
                   selectedFeatureId={selectedFeatureId}
                   expanded={expanded}
@@ -279,6 +348,7 @@ function NavigationModule({
                 <NavigationFeature
                   feature={item}
                   projectId={projectId}
+                  navigationQuery={navigationQuery}
                   isSelected={item.id === selectedFeatureId}
                   level={level + 1}
                 />
@@ -294,11 +364,13 @@ function NavigationModule({
 function NavigationFeature({
   feature,
   projectId,
+  navigationQuery,
   isSelected,
   level,
 }: {
   feature: StructureFeatureItem;
   projectId: string;
+  navigationQuery: string;
   isSelected: boolean;
   level: number;
 }) {
@@ -313,7 +385,7 @@ function NavigationFeature({
       >
         <FileText className="h-4 w-4 shrink-0 text-slate-600" aria-hidden />
         <Link
-          href={`/app/projects/${projectId}/features/${feature.id}`}
+          href={`/app/projects/${projectId}/features/${feature.id}${navigationQuery}`}
           className={cn("min-w-0 flex-1 truncate", isSelected && "font-medium")}
         >
           {feature.name}
@@ -441,4 +513,41 @@ function findActiveModuleIds(
     if (childPath.length) return [node.id, ...childPath];
   }
   return [];
+}
+
+function collectModuleIds(nodes: StructureModuleNode[]): string[] {
+  const ids: string[] = [];
+  const walk = (node: StructureModuleNode) => {
+    ids.push(node.id);
+    node.items.forEach((item) => {
+      if (item.type === "module") {
+        walk(item);
+      }
+    });
+  };
+  nodes.forEach(walk);
+  return ids;
+}
+
+function restoreExpandedMap(
+  storageKey: string,
+  activeModuleIds: string[],
+): ExpandedMap {
+  if (typeof window === "undefined") {
+    return Object.fromEntries(activeModuleIds.map((id) => [id, true]));
+  }
+
+  try {
+    const saved = window.sessionStorage.getItem(storageKey);
+    const parsed = saved ? JSON.parse(saved) : {};
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return Object.fromEntries(activeModuleIds.map((id) => [id, true]));
+    }
+    return {
+      ...(parsed as ExpandedMap),
+      ...Object.fromEntries(activeModuleIds.map((id) => [id, true])),
+    };
+  } catch {
+    return Object.fromEntries(activeModuleIds.map((id) => [id, true]));
+  }
 }

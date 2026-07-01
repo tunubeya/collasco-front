@@ -639,7 +639,9 @@
           "noResults": "Aucun module ni fonctionnalité correspondant.",
           "clearSearch": "Effacer la recherche",
           "collapse": "Réduire la structure",
-          "expand": "Développer la structure"
+          "expand": "Développer la structure",
+          "expandAll": "Tout développer",
+          "collapseAll": "Tout réduire"
         },
         "structure": {
           "documentation": {

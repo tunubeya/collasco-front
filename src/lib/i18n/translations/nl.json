@@ -639,7 +639,9 @@
           "noResults": "Geen overeenkomende modules of functies.",
           "clearSearch": "Zoekopdracht wissen",
           "collapse": "Structuur inklappen",
-          "expand": "Structuur uitklappen"
+          "expand": "Structuur uitklappen",
+          "expandAll": "Alles uitvouwen",
+          "collapseAll": "Alles samenvouwen"
         },
         "structure": {
           "documentation": {

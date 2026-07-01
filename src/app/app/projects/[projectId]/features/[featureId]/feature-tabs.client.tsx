@@ -26,6 +26,7 @@ import {
   AppPrimaryTabButton as PrimaryTabButton,
   AppSecondaryTabButton as SecondaryTabButton,
 } from "@/ui/components/tabs/app-tabs";
+import { useStructureSessionTab } from "@/ui/components/projects/use-structure-session-tab";
 
 type LinkedOption = {
   id: string;
@@ -113,7 +114,6 @@ export function FeatureTabs({
   const formatter = useFormatter();
   const [activePrimaryTab, setActivePrimaryTab] =
     useState<FeaturePrimaryTab>("documentation");
-  const [activeTab, setActiveTab] = useState<FeatureTab>("documentation");
   const [linkedFeatures, setLinkedFeatures] =
     useState<QaLinkedFeature[]>(initialLinkedFeatures);
 
@@ -144,6 +144,10 @@ export function FeatureTabs({
     tabs.push("versions");
     return tabs;
   }, [canReadTickets, canViewDocumentation, canViewQa]);
+  const [activeTab, setActiveTab] = useStructureSessionTab<FeatureTab>(
+    availableTabs,
+    "documentation",
+  );
 
   const linkedBadgeCount =
     linkedFeatures.length ??
@@ -230,19 +234,6 @@ export function FeatureTabs({
   ]);
 
   useEffect(() => {
-    if (!availableTabs.includes(activeTab)) {
-      const fallbackTab = availableTabs[0] ?? "issues";
-      setActiveTab(fallbackTab);
-      const fallbackGroup = navigationGroups.find((group) =>
-        group.items.some((item) => item.key === fallbackTab),
-      );
-      if (fallbackGroup) {
-        setActivePrimaryTab(fallbackGroup.key);
-      }
-    }
-  }, [activeTab, availableTabs, navigationGroups]);
-
-  useEffect(() => {
     const activeGroup = navigationGroups.find(
       (group) => group.key === activePrimaryTab,
     );
@@ -253,6 +244,15 @@ export function FeatureTabs({
       setActiveTab(fallbackGroup.items[0].key);
     }
   }, [activePrimaryTab, navigationGroups]);
+
+  useEffect(() => {
+    const groupForActiveTab = navigationGroups.find((group) =>
+      group.items.some((item) => item.key === activeTab),
+    );
+    if (groupForActiveTab && groupForActiveTab.key !== activePrimaryTab) {
+      setActivePrimaryTab(groupForActiveTab.key);
+    }
+  }, [activePrimaryTab, activeTab, navigationGroups]);
 
   const activeGroup = useMemo(
     () =>

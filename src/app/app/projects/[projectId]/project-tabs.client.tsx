@@ -26,6 +26,7 @@ import type { ProjectPermission, ProjectRole } from "@/lib/api/project-roles";
 import { hasPermission } from "@/lib/permissions";
 import { ProjectReleasesTab } from "./project-releases-tab.client";
 import { ProjectQaDashboard } from "./project-qa-dashboard.client";
+import { useStructureSessionTab } from "@/ui/components/projects/use-structure-session-tab";
 import {
   Activity,
   Archive,
@@ -107,7 +108,6 @@ export function ProjectTabs({
   const tManual = useTranslations("app.projects.manual");
   const [activePrimaryTab, setActivePrimaryTab] =
     useState<ProjectPrimaryTab>("overview");
-  const [activeTab, setActiveTab] = useState<ProjectTab>("structure");
   const permissionSet = useMemo(() => new Set(permissions), [permissions]);
   const canViewProject = hasPermission(permissionSet, "project.read");
   const canViewStructure = canViewProject || hasPermission(permissionSet, "module.read");
@@ -157,6 +157,10 @@ export function ProjectTabs({
     canViewQa,
     canViewStructure,
   ]);
+  const [activeTab, setActiveTab] = useStructureSessionTab<ProjectTab>(
+    availableTabs,
+    "structure",
+  );
 
   const navigationGroups = useMemo<ProjectNavigationGroup[]>(() => {
     const groups: ProjectNavigationGroup[] = [
@@ -239,12 +243,6 @@ export function ProjectTabs({
   ]);
 
   useEffect(() => {
-    if (!availableTabs.includes(activeTab)) {
-      setActiveTab(availableTabs[0] ?? "structure");
-    }
-  }, [activeTab, availableTabs]);
-
-  useEffect(() => {
     const activeGroup = navigationGroups.find(
       (group) => group.key === activePrimaryTab,
     );
@@ -255,6 +253,15 @@ export function ProjectTabs({
       setActiveTab(fallbackGroup.items[0].key);
     }
   }, [activePrimaryTab, navigationGroups]);
+
+  useEffect(() => {
+    const groupForActiveTab = navigationGroups.find((group) =>
+      group.items.some((item) => item.key === activeTab),
+    );
+    if (groupForActiveTab && groupForActiveTab.key !== activePrimaryTab) {
+      setActivePrimaryTab(groupForActiveTab.key);
+    }
+  }, [activePrimaryTab, activeTab, navigationGroups]);
 
   const activeGroup = useMemo(
     () =>

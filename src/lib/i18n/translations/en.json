@@ -615,7 +615,9 @@
           "noResults": "No matching modules or features.",
           "clearSearch": "Clear search",
           "collapse": "Collapse structure",
-          "expand": "Expand structure"
+          "expand": "Expand structure",
+          "expandAll": "Expand all",
+          "collapseAll": "Collapse all"
         },
         "structure": {
           "documentation": {

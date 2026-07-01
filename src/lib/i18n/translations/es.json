@@ -639,7 +639,9 @@
           "noResults": "No hay módulos ni funcionalidades coincidentes.",
           "clearSearch": "Limpiar búsqueda",
           "collapse": "Colapsar estructura",
-          "expand": "Expandir estructura"
+          "expand": "Expandir estructura",
+          "expandAll": "Expandir todo",
+          "collapseAll": "Colapsar todo"
         },
         "structure": {
           "documentation": {
